@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.github.microsphere-projects</groupId>
+        <artifactId>microsphere-spring-cloud-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../microsphere-spring-cloud-parent/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.microsphere-projects</groupId>
+    <artifactId>microshpere-spring-cloud-fault-tolerance-common</artifactId>
+    <version>${revision}</version>
+
+    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Common</name>
+    <description>Microsphere Spring Cloud Fault Tolerance Common</description>
+
+    <dependencies>
+        <!-- Microsphere -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-core-spring-boot-starter</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>
