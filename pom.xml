@@ -41,9 +41,9 @@
     <modules>
         <module>microsphere-spring-cloud-parent</module>
         <module>microsphere-spring-cloud-dependencies</module>
-        <module>microshpere-spring-cloud-fault-tolerance-common</module>
-        <module>microshpere-spring-cloud-starter-fault-tolerance-tomcat</module>
-        <module>microshpere-spring-cloud-starter-fault-tolerance-sentinel</module>
+        <module>microsphere-spring-cloud-fault-tolerance-common</module>
+        <module>microsphere-spring-cloud-starter-fault-tolerance-tomcat</module>
+        <module>microsphere-spring-cloud-starter-fault-tolerance-sentinel</module>
         <module>microsphere-spring-cloud-actuator</module>
     </modules>
 

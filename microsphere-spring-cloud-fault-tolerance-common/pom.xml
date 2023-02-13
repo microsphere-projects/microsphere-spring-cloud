@@ -11,24 +11,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microshpere-spring-cloud-starter-fault-tolerance-sentinel</artifactId>
+    <artifactId>microsphere-spring-cloud-fault-tolerance-common</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Starter :: Sentinel</name>
-    <description>Microsphere Spring Cloud Fault Tolerance Sentinel Starter</description>
+    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Common</name>
+    <description>Microsphere Spring Cloud Fault Tolerance Common</description>
 
     <dependencies>
-        <!-- Microshpere -->
+        <!-- Microsphere -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microshpere-spring-cloud-fault-tolerance-common</artifactId>
-            <version>${revision}</version>
+            <artifactId>microsphere-core-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- Alibaba Sentinel -->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-i18n</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <!-- Spring Cloud -->
@@ -52,26 +51,26 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring Framework -->
+        <!-- MyBatis -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <!-- Testing -->
+        <!-- Redis -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-redis</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <scope>test</scope>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>
-
 </project>

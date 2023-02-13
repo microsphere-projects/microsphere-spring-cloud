@@ -11,23 +11,31 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microshpere-spring-cloud-starter-fault-tolerance-tomcat</artifactId>
+    <artifactId>microsphere-spring-cloud-starter-fault-tolerance-sentinel</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Starter :: Tomcat</name>
-    <description>Microsphere Spring Cloud Fault Tolerance Tomcat Starter</description>
+    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Starter :: Sentinel</name>
+    <description>Microsphere Spring Cloud Fault Tolerance Sentinel Starter</description>
 
     <dependencies>
-        <!-- Microshpere -->
+        <!-- Microsphere -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microshpere-spring-cloud-fault-tolerance-common</artifactId>
+            <artifactId>microsphere-spring-cloud-fault-tolerance-common</artifactId>
             <version>${revision}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-core-spring-boot-starter</artifactId>
+            <artifactId>microsphere-spring-redis</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Alibaba Sentinel -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
 
         <!-- Spring Cloud -->
@@ -51,10 +59,23 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring Framework -->
+        <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- MyBatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
             <optional>true</optional>
         </dependency>
 
