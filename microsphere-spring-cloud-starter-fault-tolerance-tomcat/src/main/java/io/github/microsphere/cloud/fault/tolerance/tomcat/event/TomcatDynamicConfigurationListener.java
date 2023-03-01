@@ -37,9 +37,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.github.microsphere.util.Configurer.configure;
-import static io.github.microsphere.spring.boot.util.ConfigurationPropertyUtils.bind;
+import static io.github.microsphere.spring.boot.context.properties.bind.util.BindUtils.bind;
 import static io.github.microsphere.spring.util.EnvironmentUtils.getProperties;
+import static io.github.microsphere.util.Configurer.configure;
 
 /**
  * An {@link ApplicationListener} of {@link EnvironmentChangeEvent} to change
@@ -52,7 +52,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
     private static final Logger logger = LoggerFactory.getLogger(TomcatDynamicConfigurationListener.class);
 
-    private static final String SERVER_PROPERTIES_PREFIX = "server.";
+    private static final String SERVER_PROPERTIES_PREFIX = "server";
 
     private final TomcatWebServer tomcatWebServer;
 
