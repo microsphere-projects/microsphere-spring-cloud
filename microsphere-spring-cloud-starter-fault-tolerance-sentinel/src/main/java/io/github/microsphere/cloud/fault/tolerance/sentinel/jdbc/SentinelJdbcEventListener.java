@@ -61,7 +61,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
         Entry entry = getEntry();
 
         if (entry == null) {
-            logger.debug("The Sentinel Entry could not be found by the current thread, statementInformation : '{}'", statementInformation);
+            logger.debug("The Sentinel Entry was not bound at the current thread, the statement sql : '{}'", statementInformation.getSql());
             return;
         }
 
@@ -77,7 +77,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
     }
 
     private String getResourceName(StatementInformation statementInformation) {
-        // TODO
+        // TODO may bound the sql to prevent OOM.
         String resourceName = statementInformation.getSql();
         logger.trace("Sentinel JDBC StatementInformation resource[name : '{}']", resourceName);
         return resourceName;
@@ -89,7 +89,8 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
     }
 
     private String getContextName(StatementInformation statementInformation) {
-        return "microsphere.sentinel.jdbc.context-" + statementInformation;
+        int connectionId = statementInformation.getConnectionInformation().getConnectionId();
+        return "microsphere.sentinel.jdbc.context-" + connectionId;
     }
 
     private void entranceEntry(String resourceName) {
