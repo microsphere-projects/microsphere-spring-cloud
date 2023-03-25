@@ -1,1 +1,1 @@
-io.github.microsphere.cloud.fault.tolerance.sentinel.jdbc.SentinelJdbcEventListener
+io.github.microsphere.spring.cloud.fault.tolerance.sentinel.jdbc.SentinelJdbcEventListener

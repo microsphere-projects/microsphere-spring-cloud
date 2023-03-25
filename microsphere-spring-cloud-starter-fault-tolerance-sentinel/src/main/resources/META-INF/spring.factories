@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.github.microsphere.cloud.fault.tolerance.sentinel.autoconfigure.SentinelFaultToleranceAutoConfiguration
+autoconfigure.sentinel.tolerance.fault.io.github.microsphere.spring.cloud.SentinelFaultToleranceAutoConfiguration

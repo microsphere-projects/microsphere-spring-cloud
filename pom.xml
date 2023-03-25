@@ -45,6 +45,7 @@
         <module>microsphere-spring-cloud-fault-tolerance-common</module>
         <module>microsphere-spring-cloud-starter-fault-tolerance-tomcat</module>
         <module>microsphere-spring-cloud-starter-fault-tolerance-sentinel</module>
+        <module>microsphere-spring-cloud-starter-fault-tolerance-resilience4j</module>
         <module>microsphere-spring-cloud-actuator</module>
     </modules>
 
