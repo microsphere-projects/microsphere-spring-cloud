@@ -11,10 +11,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-spring-cloud-starter-fault-tolerance-resilience4j</artifactId>
+    <artifactId>microsphere-spring-cloud-fault-tolerance-resilience4j</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Starter :: Resilience4j</name>
+    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Resilience4j</name>
     <description>Microsphere Spring Cloud Fault Tolerance Resilience4j Starter</description>
 
 

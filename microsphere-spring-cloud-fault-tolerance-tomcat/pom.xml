@@ -11,14 +11,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-spring-cloud-starter-fault-tolerance-sentinel</artifactId>
+    <artifactId>microsphere-spring-cloud-fault-tolerance-tomcat</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Starter :: Sentinel</name>
-    <description>Microsphere Spring Cloud Fault Tolerance Sentinel Starter</description>
+    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Tomcat</name>
+    <description>Microsphere Spring Cloud Fault Tolerance Tomcat Starter</description>
 
     <dependencies>
-        <!-- Microsphere -->
+        <!-- microsphere -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-spring-cloud-fault-tolerance-common</artifactId>
@@ -27,15 +27,7 @@
 
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-redis</artifactId>
-            <version>${revision}</version>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- Alibaba Sentinel -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <artifactId>microsphere-core-spring-boot-starter</artifactId>
         </dependency>
 
         <!-- Spring Cloud -->
@@ -59,30 +51,10 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring -->
+        <!-- Spring Framework -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- MyBatis -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- JDBC -->
-        <dependency>
-            <groupId>p6spy</groupId>
-            <artifactId>p6spy</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -90,12 +62,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-test</artifactId>
             <scope>test</scope>
         </dependency>
 
