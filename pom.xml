@@ -42,6 +42,7 @@
         <module>microsphere-spring-cloud-parent</module>
         <module>microsphere-spring-cloud-dependencies</module>
         <module>microsphere-spring-cloud-context</module>
+        <module>microsphere-spring-cloud-commons</module>
         <module>microsphere-spring-cloud-netflix-eureka-client</module>
         <module>microsphere-spring-cloud-fault-tolerance-common</module>
         <module>microsphere-spring-cloud-fault-tolerance-tomcat</module>
