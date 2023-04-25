@@ -180,15 +180,14 @@ public class MultipleEurekaClientAutoConfiguration {
 
     private EurekaClientConfig customizeEurekaClientConfig(EurekaClientConfig eurekaClientConfig, int index) {
         EurekaClientConfigBean copy = new EurekaClientConfigBean();
-        // 复制 eurekaClientConfig Bean 属性到 copy 对象
         BeanUtils.copyProperties(eurekaClientConfig, copy);
-        // 重置 service URL
+        // Reset service URL
         Map<String, String> serviceUrlsMap = copy.getServiceUrl();
         for (Map.Entry<String, String> entry : serviceUrlsMap.entrySet()) {
             String zone = entry.getKey();
             List<String> serviceUrls = eurekaClientConfig.getEurekaServerServiceUrls(zone);
-            String serviceUrl = serviceUrls.get(index); // 目标 Eureka Server 服务地址
-            entry.setValue(serviceUrl); // 修改 Entry 值
+            String serviceUrl = serviceUrls.get(index);
+            entry.setValue(serviceUrl);
         }
         return copy;
     }
