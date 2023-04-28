@@ -16,50 +16,71 @@
  */
 package io.github.microsphere.spring.cloud.netflix.eureka.client.autoconfigure;
 
-import com.netflix.discovery.EurekaClient;
+import com.netflix.appinfo.HealthCheckHandler;
+import com.netflix.discovery.EurekaEventListener;
+import com.netflix.discovery.PreRegistrationHandler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link MultipleEurekaClientAutoConfiguration} Test
+ * {@link EnhancedEurekaClientAutoConfiguration} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-        MultipleEurekaClientAutoConfigurationTest.class
+        EnhancedEurekaClientAutoConfigurationTest.class,
+        EnhancedEurekaClientAutoConfigurationTest.Config.class
 })
 @TestPropertySource(
         properties = {
                 "spring.application.name=test-eureka",
                 "server.port=12345",
-                "eureka.client.serviceUrl.defaultZone=http://127.0.0.1:12345/eureka,http://127.0.0.1:12345/eureka",
-                "microsphere.eureka.client.multiple=true"
+                "eureka.client.serviceUrl.defaultZone=http://127.0.0.1:12345/eureka"
         }
 )
 @EnableAutoConfiguration
 @EnableEurekaServer
-public class MultipleEurekaClientAutoConfigurationTest {
+public class EnhancedEurekaClientAutoConfigurationTest {
 
-    @Autowired
-    private MultipleEurekaClientAutoConfiguration config;
+    private static final AtomicBoolean preRegistered = new AtomicBoolean(false);
+
+    static class Config {
+        @Bean
+        public PreRegistrationHandler preRegistrationHandler() {
+            return () -> {
+                preRegistered.set(true);
+            };
+        }
+
+        @Bean
+        public EurekaEventListener eurekaEventListener() {
+            return event -> {
+                System.out.println(event);
+            };
+        }
+
+        @Bean
+        public HealthCheckHandler healthCheckHandler() {
+            return currentStatus -> currentStatus;
+        }
+    }
 
     @Test
     public void test() throws Throwable {
         Thread.sleep(TimeUnit.SECONDS.toMillis(1));
-        List<EurekaClient> eurekaClients = config.getEurekaClients();
-        assertEquals(2, eurekaClients.size());
+        assertTrue(preRegistered.get());
     }
 }

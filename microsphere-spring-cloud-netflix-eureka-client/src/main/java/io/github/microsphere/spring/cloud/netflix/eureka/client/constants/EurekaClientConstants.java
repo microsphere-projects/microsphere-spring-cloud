@@ -32,6 +32,11 @@ public interface EurekaClientConstants {
     String EUREKA_CLIENT_PROPERTY_PREFIX = "microsphere.eureka.client";
 
     /**
+     * The property name of "multiple"
+     */
+    String MULTIPLE_PROPERTY_NAME = "multiple";
+
+    /**
      * The property name of "enabled"
      */
     String ENABLED_PROPERTY_NAME = "enabled";

@@ -51,6 +51,7 @@ import java.util.Map;
 
 import static io.github.microsphere.spring.cloud.netflix.eureka.client.constants.EurekaClientConstants.ENABLED_PROPERTY_NAME;
 import static io.github.microsphere.spring.cloud.netflix.eureka.client.constants.EurekaClientConstants.EUREKA_CLIENT_PROPERTY_PREFIX;
+import static io.github.microsphere.spring.cloud.netflix.eureka.client.constants.EurekaClientConstants.MULTIPLE_PROPERTY_NAME;
 import static org.springframework.beans.factory.config.BeanDefinition.ROLE_INFRASTRUCTURE;
 import static org.springframework.cloud.netflix.eureka.EurekaClientConfigBean.DEFAULT_ZONE;
 
@@ -63,7 +64,7 @@ import static org.springframework.cloud.netflix.eureka.EurekaClientConfigBean.DE
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnDiscoveryEnabled
 @ConditionalOnEurekaClientEnabled
-@ConditionalOnProperty(prefix = EUREKA_CLIENT_PROPERTY_PREFIX, name = ENABLED_PROPERTY_NAME, matchIfMissing = true)
+@ConditionalOnProperty(prefix = EUREKA_CLIENT_PROPERTY_PREFIX, name = MULTIPLE_PROPERTY_NAME)
 @AutoConfigureAfter(EurekaClientAutoConfiguration.class)
 public class MultipleEurekaClientAutoConfiguration {
 
