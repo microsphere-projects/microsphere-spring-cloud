@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.github.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration
+io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration

@@ -21,8 +21,8 @@
     <properties>
         <!-- BOM versions -->
         <spring-boot.version>2.7.12</spring-boot.version>
-        <spring-cloud.version>3.1.4</spring-cloud.version>
-        <spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
+        <spring-cloud.version>3.1.6</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.7</spring-cloud-alibaba.version>
 
         <!-- Third-party versions -->
         <mybatis-starter.version>3.0.1</mybatis-starter.version>
