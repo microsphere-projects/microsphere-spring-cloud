@@ -1,4 +1,4 @@
-package io.microsphere.spring.cloud.openfeign.omponents;
+package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.QueryMapEncoder;
 import org.springframework.cloud.openfeign.FeignClientProperties;

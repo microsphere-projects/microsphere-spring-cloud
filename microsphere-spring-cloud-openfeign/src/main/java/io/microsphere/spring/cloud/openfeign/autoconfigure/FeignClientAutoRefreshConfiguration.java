@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Scope;
 class FeignClientAutoRefreshConfiguration {
 
     @Bean
-    public FeignTargeterBeanPostProcessor feignTargeterBeanPostProcessor(FeignComponentRegistry registry, FeignContext feignContext) {
-        return new FeignTargeterBeanPostProcessor(registry, feignContext);
+    public FeignTargeterBeanPostProcessor feignTargeterBeanPostProcessor() {
+        return new FeignTargeterBeanPostProcessor();
     }
 
     @Bean
@@ -34,8 +34,8 @@ class FeignClientAutoRefreshConfiguration {
     }
 
     @Bean
-    public FeignComponentRegistry feignClientRegistry() {
-        return new FeignComponentRegistry();
+    public FeignComponentRegistry feignClientRegistry(FeignClientProperties clientProperties) {
+        return new FeignComponentRegistry(clientProperties.getDefaultConfig());
     }
 
 }

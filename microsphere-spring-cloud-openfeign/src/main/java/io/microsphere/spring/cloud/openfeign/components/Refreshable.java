@@ -1,4 +1,4 @@
-package io.microsphere.spring.cloud.openfeign.omponents;
+package io.microsphere.spring.cloud.openfeign.components;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>

@@ -1,9 +1,8 @@
-package io.microsphere.spring.cloud.openfeign.omponents;
+package io.microsphere.spring.cloud.openfeign.components;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignContext;
-import org.springframework.core.ResolvableType;
 import org.springframework.lang.NonNull;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;

@@ -15,13 +15,9 @@ import org.springframework.cloud.openfeign.Targeter;
 public class DelegatingTargeter implements Targeter {
 
     private final Targeter delegate;
-    private final BeanFactory beanFactory;
-    private final FeignComponentRegistry registry;
 
-    public DelegatingTargeter(BeanFactory beanFactory, FeignComponentRegistry registry, Targeter delegate) {
-        this.beanFactory = beanFactory;
+    public DelegatingTargeter(Targeter delegate) {
         this.delegate = delegate;
-        this.registry = registry;
     }
 
     @Override
@@ -30,6 +26,6 @@ public class DelegatingTargeter implements Targeter {
             RefreshableBuilder refreshableBuilder = (RefreshableBuilder) feign;
             refreshableBuilder.setClientName(factory.getContextId());
         }
-        return feign.target(target);
+        return delegate.target(factory, feign, context, target);
     }
 }

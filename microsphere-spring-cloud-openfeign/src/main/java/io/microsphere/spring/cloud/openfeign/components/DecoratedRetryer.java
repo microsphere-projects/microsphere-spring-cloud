@@ -1,6 +1,5 @@
-package io.microsphere.spring.cloud.openfeign.omponents;
+package io.microsphere.spring.cloud.openfeign.components;
 
-import feign.QueryMapEncoder;
 import feign.RetryableException;
 import feign.Retryer;
 import org.springframework.cloud.openfeign.FeignClientProperties;

@@ -5,16 +5,14 @@ import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
 import io.microsphere.spring.cloud.openfeign.autorefresh.FeignComponentRegistry;
-import io.microsphere.spring.cloud.openfeign.omponents.*;
+import io.microsphere.spring.cloud.openfeign.components.*;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignContext;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
+ * 构建{@link CompositedRequestInterceptor}
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */

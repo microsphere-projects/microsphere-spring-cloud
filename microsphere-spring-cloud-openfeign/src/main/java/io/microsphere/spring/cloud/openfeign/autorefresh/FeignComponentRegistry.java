@@ -1,6 +1,6 @@
 package io.microsphere.spring.cloud.openfeign.autorefresh;
 
-import io.microsphere.spring.cloud.openfeign.omponents.Refreshable;
+import io.microsphere.spring.cloud.openfeign.components.Refreshable;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -16,6 +16,12 @@ public class FeignComponentRegistry {
 
     private final Map<String, List<Refreshable>> refreshableComponents = new ConcurrentHashMap<>(32);
 
+    private final String DEFAULT_CLIENT_NAME;
+
+    public FeignComponentRegistry(String defaultClientName) {
+        this.DEFAULT_CLIENT_NAME = defaultClientName;
+    }
+
     public void register(String clientName, List<Refreshable> components) {
         List<Refreshable> componentList = this.refreshableComponents.computeIfAbsent(clientName, name -> new ArrayList<>());
         componentList.addAll(componentList);
@@ -28,6 +34,13 @@ public class FeignComponentRegistry {
 
 
     public void refresh(String clientName) {
+        if (DEFAULT_CLIENT_NAME.equals(clientName)) {
+            //default configs changed, need refresh all
+            refreshableComponents.values().stream()
+                    .flatMap(List::stream)
+                    .forEach(Refreshable::refresh);
+            return;
+        }
         List<Refreshable> components = this.refreshableComponents.get(clientName);
         if (CollectionUtils.isEmpty(components))
             return;
