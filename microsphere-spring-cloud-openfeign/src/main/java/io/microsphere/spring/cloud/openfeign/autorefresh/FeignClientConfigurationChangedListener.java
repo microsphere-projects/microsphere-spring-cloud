@@ -3,6 +3,7 @@ package io.microsphere.spring.cloud.openfeign.autorefresh;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.context.ApplicationListener;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,22 +23,20 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
 
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
-        Set<String> effectiveClients = resolveChangedClient(event);
-        for (String client : effectiveClients)
-            this.registry.refresh(client);
+        Map<String, Set<String>> effectiveClients = resolveChangedClient(event);
+        effectiveClients.forEach(registry::refresh);
 
     }
 
-    protected Set<String> resolveChangedClient(EnvironmentChangeEvent event) {
+    protected Map<String, Set<String>> resolveChangedClient(EnvironmentChangeEvent event) {
         Set<String> keys = event.getKeys();
         return keys.stream()
                 .filter(str -> str.startsWith(PREFIX))
                 .map(str -> str.replace(PREFIX, ""))
-                .map(str -> {
+                .collect(Collectors.groupingBy(str -> {
                     int index = str.indexOf(".");
                     return str.substring(0, index);
-                })
-                .collect(Collectors.toSet());
+                }, Collectors.toSet()));
 
     }
 
