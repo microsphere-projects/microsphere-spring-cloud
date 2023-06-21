@@ -87,6 +87,13 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
     }
 
     @Override
+    public RequestInterceptor enrich(RequestInterceptor requestInterceptor) {
+        if (this.componentRegistry.registerRequestInterceptor(contextId, requestInterceptor)) {
+            return this.componentRegistry.getRequestInterceptor(contextId);
+        } else return NoOpRequestInterceptor.INSTANCE;
+    }
+
+    @Override
     public QueryMapEncoder enrich(QueryMapEncoder queryMapEncoder) {
         if (queryMapEncoder == null)
             return null;

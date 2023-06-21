@@ -6,7 +6,9 @@ import io.microsphere.spring.cloud.openfeign.encoder.BEncoder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
+import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
+import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
@@ -53,13 +55,12 @@ public class RequestInterceptorChangedTest extends BaseTest {
         MutablePropertySources propertySources = ((ConfigurableEnvironment)this.environment).getPropertySources();
         Map<String, Object> map = new HashMap<>();
         System.out.println("替换requestInterceptor: BRequestInterceptor");
-        map.put("feign.client.config.aaa.request-interceptors[0]", BRequestInterceptor.class);
+        map.put("feign.client.config.aaa.request-interceptors[0]", BRequestInterceptor.class.getName());
         propertySources.addFirst(new MapPropertySource("addition", map));
 
         EnvironmentChangeEvent event = new EnvironmentChangeEvent(keys);
 
-        this.eventPublisher.publishEvent(new RefreshEvent(new Object(), new Object(), "test"));
-
+        triggerRefreshEvent();
         this.eventPublisher.publishEvent(event);
     }
 

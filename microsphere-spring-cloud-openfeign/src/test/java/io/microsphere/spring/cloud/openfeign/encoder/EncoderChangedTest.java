@@ -56,7 +56,7 @@ public class EncoderChangedTest extends BaseTest {
 
         EnvironmentChangeEvent event = new EnvironmentChangeEvent(keys);
 
-        this.eventPublisher.publishEvent(new RefreshEvent(new Object(), new Object(), "test"));
+        triggerRefreshEvent();
 
         this.eventPublisher.publishEvent(event);
     }

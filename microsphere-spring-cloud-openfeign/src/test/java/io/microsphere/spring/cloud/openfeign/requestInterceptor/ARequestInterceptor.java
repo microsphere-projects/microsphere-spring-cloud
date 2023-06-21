@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-@Component
 public class ARequestInterceptor implements RequestInterceptor {
 
     @Override

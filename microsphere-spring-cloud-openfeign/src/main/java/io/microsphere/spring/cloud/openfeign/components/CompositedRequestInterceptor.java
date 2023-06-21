@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.util.CollectionUtils;
@@ -15,20 +16,40 @@ import java.util.*;
 public class CompositedRequestInterceptor implements RequestInterceptor, Refreshable {
 
     private final BeanFactory beanFactory;
-    private String contextId;
+    private final String contextId;
 
-    private List<RequestInterceptor> list = new ArrayList<>();
+    private final Set<RequestInterceptor> set = new HashSet<>();
 
-    public CompositedRequestInterceptor(BeanFactory beanFactory) {
+    public CompositedRequestInterceptor(String contextId, BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
-        refresh();
+        this.contextId = contextId;
     }
 
 
     @Override
     public void apply(RequestTemplate template) {
-        if (!this.list.isEmpty())
-            list.forEach(requestInterceptor -> requestInterceptor.apply(template));
+        synchronized (this.set) {
+            if (!this.set.isEmpty())
+                set.forEach(requestInterceptor -> requestInterceptor.apply(template));
+        }
+
+    }
+
+    public boolean addRequestInterceptor(RequestInterceptor requestInterceptor) {
+        synchronized (this.set) {
+            boolean isFirst = this.set.isEmpty();
+            this.set.add(requestInterceptor);
+            return isFirst;
+        }
+
+    }
+
+    private RequestInterceptor getInterceptorOrInstantiate(Class<? extends RequestInterceptor> clazz) {
+        try {
+            return this.beanFactory.getBean(clazz);
+        } catch (Exception e) {
+            return BeanUtils.instantiateClass(clazz);
+        }
     }
 
     @Override
@@ -62,34 +83,33 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
 
         }
 
-        this.list.clear();
-        for (Class<RequestInterceptor> interceptorClass : interceptors)
-            list.add(this.beanFactory.getBean(interceptorClass));
+        synchronized (this.set) {
+            this.set.clear();
+            for (Class<RequestInterceptor> interceptorClass : interceptors)
+                set.add(getInterceptorOrInstantiate(interceptorClass));
 
-        if (!CollectionUtils.isEmpty(headers))
-            list.add(requestTemplate -> {
-                Map<String, Collection<String>> requestHeader = requestTemplate.headers();
-                headers.keySet().forEach(key -> {
-                    if (!requestHeader.containsKey(key)) {
-                        requestTemplate.header(key, headers.get(key));
-                    }
+            if (!CollectionUtils.isEmpty(headers))
+                set.add(requestTemplate -> {
+                    Map<String, Collection<String>> requestHeader = requestTemplate.headers();
+                    headers.keySet().forEach(key -> {
+                        if (!requestHeader.containsKey(key)) {
+                            requestTemplate.header(key, headers.get(key));
+                        }
+                    });
                 });
-            });
 
-        if (!CollectionUtils.isEmpty(params))
-            list.add(requestTemplate -> {
-                Map<String, Collection<String>> requestQueries = requestTemplate.queries();
-                params.keySet().forEach(key -> {
-                    if (!requestQueries.containsKey(key)) {
-                        requestTemplate.query(key, params.get(key));
-                    }
+            if (!CollectionUtils.isEmpty(params))
+                set.add(requestTemplate -> {
+                    Map<String, Collection<String>> requestQueries = requestTemplate.queries();
+                    params.keySet().forEach(key -> {
+                        if (!requestQueries.containsKey(key)) {
+                            requestTemplate.query(key, params.get(key));
+                        }
+                    });
                 });
-            });
+        }
 
 
-    }
 
-    public void injectContextId(String contextId) {
-        this.contextId = contextId;
     }
 }
