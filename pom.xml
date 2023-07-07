@@ -49,6 +49,7 @@
         <module>microsphere-spring-cloud-fault-tolerance-sentinel</module>
         <module>microsphere-spring-cloud-fault-tolerance-resilience4j</module>
         <module>microsphere-spring-cloud-actuator</module>
+        <module>microsphere-spring-cloud-openfeign</module>
     </modules>
 
     <properties>
