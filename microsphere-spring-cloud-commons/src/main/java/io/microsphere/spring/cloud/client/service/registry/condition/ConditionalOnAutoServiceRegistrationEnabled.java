@@ -54,10 +54,10 @@ public @interface ConditionalOnAutoServiceRegistrationEnabled {
 
     /**
      * Specify if the condition should match if the property is not set. Defaults to
-     * {@code false}.
+     * {@code true}.
      *
      * @return if the condition should match if the property is missing
      */
     @AliasFor(annotation = ConditionalOnProperty.class, attribute = "matchIfMissing")
-    boolean matchIfMissing() default false;
+    boolean matchIfMissing() default true;
 }
