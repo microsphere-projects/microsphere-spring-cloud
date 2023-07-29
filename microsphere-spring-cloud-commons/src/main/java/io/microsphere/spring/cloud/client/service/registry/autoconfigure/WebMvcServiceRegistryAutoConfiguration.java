@@ -16,22 +16,25 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.cloud.client.service.registry.aspect.RegistrationEventPublishingAspect;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+
+import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
- * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry}
+ * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry} on the Spring WebMVC Application
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnAutoServiceRegistrationEnabled
-@Import(value = {
-        RegistrationEventPublishingAspect.class
+@ConditionalOnWebApplication(type = SERVLET)
+@AutoConfigureAfter(value = {
+        ServiceRegistryAutoConfiguration.class
 })
-public class ServiceRegistryAutoConfiguration {
+public class WebMvcServiceRegistryAutoConfiguration {
+
 }
