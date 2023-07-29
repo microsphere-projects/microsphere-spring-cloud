@@ -19,6 +19,8 @@ package io.microsphere.spring.cloud.client.service.registry.event;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.lang.NonNull;
+import org.springframework.util.Assert;
 
 /**
  * The Spring event for {@link ServiceRegistry}
@@ -37,28 +39,64 @@ public abstract class RegistrationEvent extends ApplicationEvent {
 
     public RegistrationEvent(ServiceRegistry<Registration> registry, Registration source) {
         super(source);
+        Assert.notNull(registry, "The 'registry' must not be null");
         this.registry = registry;
     }
 
-    @Override
-    public Registration getSource() {
-        return (Registration) super.getSource();
+    /**
+     * Get the registration
+     *
+     * @return non-null
+     */
+    @NonNull
+    public Registration getRegistration() {
+        return (Registration) getSource();
     }
 
+    /**
+     * Get the {@link ServiceRegistry}
+     *
+     * @return non-null
+     */
+    @NonNull
     public ServiceRegistry<Registration> getRegistry() {
         return registry;
     }
 
+    /**
+     * Current event is raised before the {@link #getRegistration() registration} is
+     * {@link ServiceRegistry#register(Registration) registered}.
+     *
+     * @return <code>true</code> if pre-registered
+     */
     public final boolean isPreRegistered() {
         return !isRegistered();
     }
 
+    /**
+     * Current event is raised after the {@link #getRegistration() registration} is
+     * {@link ServiceRegistry#register(Registration) registered}.
+     *
+     * @return <code>true</code> if registered
+     */
     public abstract boolean isRegistered();
 
+    /**
+     * Current event is raised before the {@link #getRegistration() registration} is
+     * {@link ServiceRegistry#deregister(Registration) deregistered}.
+     *
+     * @return <code>true</code> if pre-deregistered
+     */
     public final boolean isPreDeregistered() {
         return !isDeregistered();
     }
 
+    /**
+     * Current event is raised after the {@link #getRegistration() registration} is
+     * {@link ServiceRegistry#deregister(Registration) deregistered}.
+     *
+     * @return <code>true</code> if deregistered
+     */
     public abstract boolean isDeregistered();
 
 }
