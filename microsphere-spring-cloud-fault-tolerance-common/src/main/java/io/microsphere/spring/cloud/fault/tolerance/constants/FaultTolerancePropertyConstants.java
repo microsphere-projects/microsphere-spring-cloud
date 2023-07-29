@@ -2,6 +2,8 @@ package io.microsphere.spring.cloud.fault.tolerance.constants;
 
 import java.util.concurrent.TimeUnit;
 
+import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
+
 /**
  * Fault-Tolerance Property Constants
  *
@@ -11,19 +13,14 @@ import java.util.concurrent.TimeUnit;
 public interface FaultTolerancePropertyConstants {
 
     /**
-     * The property name of "enabled"
-     */
-    String ENABLED_PROPERTY_NAME = "enabled";
-
-    /**
      * Property name prefix
      */
-    String PROPERTY_NAME_PREFIX = "microsphere.fault-tolerance.";
+    String FAULT_TOLERANCE_PROPERTY_NAME_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "fault-tolerance.";
 
     /**
      * Load Balancers' property name prefix
      */
-    String LOAD_BALANCER_PROPERTY_PREFIX = PROPERTY_NAME_PREFIX + "load-balancer.";
+    String LOAD_BALANCER_PROPERTY_PREFIX = FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "load-balancer.";
 
     /**
      * The metadata name of management
@@ -38,12 +35,12 @@ public interface FaultTolerancePropertyConstants {
     /**
      * The metadata name of warm-up time
      */
-    String WARMUP_TIME_PROPERTY_NAME = PROPERTY_NAME_PREFIX + "warmup-time";
+    String WARMUP_TIME_PROPERTY_NAME = FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "warmup-time";
 
     /**
      * The property name of weight
      */
-    String WEIGHT_PROPERTY_NAME = PROPERTY_NAME_PREFIX + "weight";
+    String WEIGHT_PROPERTY_NAME = FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "weight";
 
     /**
      * The default property value of warm-up time ：10 minutes

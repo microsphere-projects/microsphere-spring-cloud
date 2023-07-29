@@ -16,6 +16,7 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.aspect;
 
+import io.microsphere.spring.cloud.client.service.registry.RegistrationCustomizer;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationDeregisteredEvent;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreDeregisteredEvent;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
@@ -23,10 +24,12 @@ import io.microsphere.spring.cloud.client.service.registry.event.RegistrationReg
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * {@link Registration} Event-Publishing Aspect.
@@ -39,7 +42,7 @@ import org.springframework.context.ApplicationEventPublisherAware;
  * @since 1.0.0
  */
 @Aspect
-public class RegistrationEventPublishingAspect implements ApplicationEventPublisherAware {
+public class RegistrationEventPublishingAspect implements ApplicationContextAware {
 
     /**
      * The pointcut expression for {@link ServiceRegistry#register(Registration)}.
@@ -51,30 +54,36 @@ public class RegistrationEventPublishingAspect implements ApplicationEventPublis
      */
     public static final String DEREGISTER_POINTCUT_EXPRESSION = "execution(* org.springframework.cloud.client.serviceregistry.ServiceRegistry.deregister(*)) && target(registry) && args(registration)";
 
-    private ApplicationEventPublisher applicationEventPublisher;
+    private ApplicationContext context;
+
+    private ObjectProvider<RegistrationCustomizer> registrationCustomizers;
 
     @Before(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeRegister(ServiceRegistry registry, Registration registration) {
-        applicationEventPublisher.publishEvent(new RegistrationPreRegisteredEvent(registry, registration));
+        context.publishEvent(new RegistrationPreRegisteredEvent(registry, registration));
+        registrationCustomizers.ifAvailable(customizer -> {
+            customizer.customize(registration);
+        });
     }
 
     @Before(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeDeregister(ServiceRegistry registry, Registration registration) {
-        applicationEventPublisher.publishEvent(new RegistrationPreDeregisteredEvent(registry, registration));
+        context.publishEvent(new RegistrationPreDeregisteredEvent(registry, registration));
     }
 
     @After(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterRegister(ServiceRegistry registry, Registration registration) {
-        applicationEventPublisher.publishEvent(new RegistrationRegisteredEvent(registry, registration));
+        context.publishEvent(new RegistrationRegisteredEvent(registry, registration));
     }
 
     @After(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterDeregister(ServiceRegistry registry, Registration registration) {
-        applicationEventPublisher.publishEvent(new RegistrationDeregisteredEvent(registry, registration));
+        context.publishEvent(new RegistrationDeregisteredEvent(registry, registration));
     }
 
     @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.applicationEventPublisher = applicationEventPublisher;
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
+        this.registrationCustomizers = applicationContext.getBeanProvider(RegistrationCustomizer.class);
     }
 }

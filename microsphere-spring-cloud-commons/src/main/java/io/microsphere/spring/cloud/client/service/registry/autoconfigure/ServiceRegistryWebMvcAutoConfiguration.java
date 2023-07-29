@@ -14,34 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.constants;
+package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
+
+import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * The property constants for Spring Cloud Commons
+ * Auto-Configuration class for {@link ServiceRegistry ServiceRegistries'} Spring WebMVC
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-public interface CommonsPropertyConstants {
-
-    /**
-     * The property name of "enabled"
-     */
-    String ENABLED_PROPERTY_NAME = "enabled";
-
-    /**
-     * The property name prefix of Spring Cloud properties
-     */
-    String SPRING_CLOUD_PROPERTY_PREFIX = "spring.cloud.";
-
-    /**
-     * The property name prefix of Spring Cloud Service Registry
-     */
-    String SERVICE_REGISTRY_PROPERTY_PREFIX = SPRING_CLOUD_PROPERTY_PREFIX + "service-registry.";
-
-    /**
-     * The property name for Spring Cloud Service Registry Auto-Registration Feature
-     */
-    String SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME = SERVICE_REGISTRY_PROPERTY_PREFIX + "auto-registration." + ENABLED_PROPERTY_NAME;
-
+@Configuration(proxyBeanMethods = false)
+@ConditionalOnAutoServiceRegistrationEnabled
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+public class ServiceRegistryWebMvcAutoConfiguration {
 }

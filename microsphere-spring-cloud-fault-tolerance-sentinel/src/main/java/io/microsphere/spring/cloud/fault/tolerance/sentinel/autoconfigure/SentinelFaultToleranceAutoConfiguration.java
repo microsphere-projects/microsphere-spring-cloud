@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-import static io.microsphere.spring.cloud.fault.tolerance.constants.FaultTolerancePropertyConstants.ENABLED_PROPERTY_NAME;
+import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.fault.tolerance.sentinel.autoconfigure.SentinelFaultToleranceAutoConfiguration.PROPERTY_NAME_PREFIX;
 
 /**
@@ -39,7 +39,7 @@ import static io.microsphere.spring.cloud.fault.tolerance.sentinel.autoconfigure
 })
 public class SentinelFaultToleranceAutoConfiguration {
 
-    public static final String PROPERTY_NAME_PREFIX = FaultTolerancePropertyConstants.PROPERTY_NAME_PREFIX + "sentinel";
+    public static final String PROPERTY_NAME_PREFIX = FaultTolerancePropertyConstants.FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "sentinel";
 
     @ConditionalOnClass(RedisMethodInterceptor.class)
     static class RedisConfiguration {

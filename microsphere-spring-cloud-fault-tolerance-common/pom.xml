@@ -18,7 +18,14 @@
     <description>Microsphere Spring Cloud Fault Tolerance Common</description>
 
     <dependencies>
+
         <!-- Microsphere -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-cloud-commons</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-core-spring-boot-starter</artifactId>
@@ -27,7 +34,6 @@
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-i18n</artifactId>
-            <version>${revision}</version>
         </dependency>
 
         <!-- Spring Cloud -->
