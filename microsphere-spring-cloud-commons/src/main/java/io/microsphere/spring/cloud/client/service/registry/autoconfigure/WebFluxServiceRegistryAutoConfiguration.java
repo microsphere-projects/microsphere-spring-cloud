@@ -23,7 +23,6 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.annotation.Configuration;
 
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
-import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
  * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry} on the Spring WebFlux Application
@@ -33,6 +32,7 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = REACTIVE)
+@ConditionalOnAutoServiceRegistrationEnabled
 @AutoConfigureAfter(value = {
         ServiceRegistryAutoConfiguration.class
 })
