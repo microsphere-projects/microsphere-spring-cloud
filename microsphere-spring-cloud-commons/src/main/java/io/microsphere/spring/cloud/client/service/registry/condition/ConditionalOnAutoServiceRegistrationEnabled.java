@@ -17,6 +17,7 @@
 package io.microsphere.spring.cloud.client.service.registry.condition;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.client.serviceregistry.AutoServiceRegistration;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.Documented;
@@ -28,10 +29,11 @@ import java.lang.annotation.Target;
 import static io.microsphere.spring.cloud.client.constants.CommonsPropertyConstants.SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME;
 
 /**
- * The conditional annotation meta-annotates
- * {@link ConditionalOnProperty @ConditionalOnProperty} for Service Registry Auto-Registration enabled.
+ * The conditional annotation meta-annotates {@link ConditionalOnProperty @ConditionalOnProperty} for
+ * {@link AutoServiceRegistration Service Registry Auto-Registration} enabled.
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see AutoServiceRegistration
  * @see ConditionalOnProperty
  * @since 1.0.0
  */
@@ -39,7 +41,7 @@ import static io.microsphere.spring.cloud.client.constants.CommonsPropertyConsta
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
 @ConditionalOnProperty(name = SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME)
-public @interface ConditionalOnServiceRegistryAutoRegistrationEnabled {
+public @interface ConditionalOnAutoServiceRegistrationEnabled {
 
     /**
      * The string representation of the expected value for the properties. If not
