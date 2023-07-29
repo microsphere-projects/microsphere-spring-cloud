@@ -61,6 +61,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
     }
 
     private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
+        // TODO remove the duplicated mappings
         Map<String, String> metadata = registration.getMetadata();
         StringJoiner jsonBuilder = new StringJoiner(",", "[", "]");
         webEndpointMappings.stream().map(WebEndpointMapping::toJSON).forEach(jsonBuilder::add);
