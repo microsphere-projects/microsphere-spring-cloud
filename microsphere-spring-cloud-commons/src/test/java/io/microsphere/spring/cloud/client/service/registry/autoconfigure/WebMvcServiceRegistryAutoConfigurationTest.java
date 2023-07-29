@@ -18,8 +18,15 @@ package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import io.microsphere.spring.webmvc.annotation.EnableCommonWebMvc;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.client.serviceregistry.Registration;
+
+import java.util.Map;
+
+import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_MAPPINGS_METADATA_NAME;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * {@link WebMvcServiceRegistryAutoConfiguration} Test
@@ -38,8 +45,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @EnableCommonWebMvc
 public class WebMvcServiceRegistryAutoConfigurationTest {
 
+    @Autowired
+    private Registration registration;
+
     @Test
     public void test() {
-
+        Map<String, String> metadata = registration.getMetadata();
+        assertNotNull(metadata.get(WEB_MAPPINGS_METADATA_NAME));
     }
 }
