@@ -17,11 +17,22 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
+import io.microsphere.spring.web.metadata.WebEndpointMapping;
+import io.microsphere.spring.webmvc.metadata.WebEndpointMappingsReadyEvent;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.StringJoiner;
+
+import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_MAPPINGS_METADATA_NAME;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
@@ -32,9 +43,29 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = SERVLET)
+@ConditionalOnAutoServiceRegistrationEnabled
 @AutoConfigureAfter(value = {
         ServiceRegistryAutoConfiguration.class
 })
 public class WebMvcServiceRegistryAutoConfiguration {
+
+    @Autowired
+    private ObjectProvider<Registration> registrationProvider;
+
+    @EventListener(WebEndpointMappingsReadyEvent.class)
+    public void onApplicationEvent(WebEndpointMappingsReadyEvent event) {
+        registrationProvider.ifAvailable(registration -> {
+            Collection<WebEndpointMapping> webEndpointMappings = event.getMappings();
+            attachWebMappingsMetadata(registration, webEndpointMappings);
+        });
+    }
+
+    private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
+        Map<String, String> metadata = registration.getMetadata();
+        StringJoiner jsonBuilder = new StringJoiner(",", "[", "]");
+        webEndpointMappings.stream().map(WebEndpointMapping::toJSON).forEach(jsonBuilder::add);
+        String json = jsonBuilder.toString();
+        metadata.put(WEB_MAPPINGS_METADATA_NAME, json);
+    }
 
 }
