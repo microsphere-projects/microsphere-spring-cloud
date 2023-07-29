@@ -48,9 +48,19 @@ public abstract class RegistrationEvent extends ApplicationEvent {
      *
      * @return non-null
      */
+    @Override
+    public Registration getSource() {
+        return (Registration) super.getSource();
+    }
+
+    /**
+     * Get the registration
+     *
+     * @return non-null
+     */
     @NonNull
     public Registration getRegistration() {
-        return (Registration) getSource();
+        return getSource();
     }
 
     /**
