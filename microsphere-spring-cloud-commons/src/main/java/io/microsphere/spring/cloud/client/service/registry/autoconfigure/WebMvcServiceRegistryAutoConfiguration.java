@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
+import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
@@ -40,7 +40,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -63,7 +62,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(WebMvcServiceRegistryAutoConfiguration.class);
 
-    private static final List<String> DEFAULT_FILTER_URL_MAPPINGS = Arrays.asList("/*");
+    private static final List<String> DEFAULT_URL_MAPPINGS = Arrays.asList("/*");
 
     @Autowired
     private ObjectProvider<Registration> registrationProvider;
@@ -72,10 +71,10 @@ public class WebMvcServiceRegistryAutoConfiguration {
     private String actuatorBasePath;
 
     @Autowired
-    private ObjectProvider<WebMvcProperties> webMvcPropertiesProvider;
+    private ObjectProvider<FilterRegistrationBean> filterRegistrationBeansProvider;
 
     @Autowired
-    private ObjectProvider<FilterRegistrationBean> filterRegistrationBeansProvider;
+    private ObjectProvider<DispatcherServletRegistrationBean> dispatcherServletRegistrationBeanProvider;
 
     @EventListener(WebEndpointMappingsReadyEvent.class)
     public void onApplicationEvent(WebEndpointMappingsReadyEvent event) {
@@ -100,39 +99,22 @@ public class WebMvcServiceRegistryAutoConfiguration {
         while (iterator.hasNext()) {
             WebEndpointMapping mapping = iterator.next();
             String[] patterns = mapping.getPatterns();
-            if (isBuiltInFilterMapping(mapping, patterns)) {
-                iterator.remove();
-                continue;
-            }
-            for (String pattern : patterns) {
-                if (isActuatorWebEndpointMapping(pattern)
-                        || isDispatcherServletMapping(pattern)
-                ) {
-                    iterator.remove();
-                    break;
+            if (isBuiltInFilterMapping(patterns)
+                    || isDispatcherServletMapping(patterns)
+                    || isActuatorWebEndpointMapping(patterns)
+            ) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("The '{}' was removed", mapping);
                 }
+                iterator.remove();
             }
+
         }
     }
 
-    private boolean isActuatorWebEndpointMapping(String pattern) {
-        return pattern.startsWith(actuatorBasePath);
-    }
-
-    private boolean isDispatcherServletMapping(String pattern) {
-        WebMvcProperties webMvcProperties = webMvcPropertiesProvider.getIfAvailable();
-        if (webMvcProperties != null) {
-            String path = webMvcProperties.getServlet().getPath();
-            return Objects.equals(pattern, path);
-        }
-        return false;
-    }
-
-    private boolean isBuiltInFilterMapping(WebEndpointMapping mapping, String[] patterns) {
-        Collection<String> patternsSet = Arrays.asList(patterns);
-
+    private boolean isBuiltInFilterMapping(String[] patterns) {
         boolean found = filterRegistrationBeansProvider.stream()
-                .filter(filterRegistrationBean -> matchFilter(filterRegistrationBean, patternsSet))
+                .filter(filterRegistrationBean -> matchFilter(filterRegistrationBean, patterns))
                 .filter(filterRegistrationBean -> {
                     Filter filter = filterRegistrationBean.getFilter();
                     Class<? extends Filter> filterClass = filter.getClass();
@@ -142,20 +124,37 @@ public class WebMvcServiceRegistryAutoConfiguration {
                 .findFirst()
                 .isPresent();
 
-        if (found) {
-            Object source = mapping.getSource();
-            logger.debug("The build-in filter[name : '{}' , url patterns : '{}'] was matched", source, patternsSet);
-        }
-
         return found;
     }
 
-    private boolean matchFilter(FilterRegistrationBean filterRegistrationBean, Collection<String> patterns) {
-        Collection<String> urlPatterns = filterRegistrationBean.getUrlPatterns();
-        if (urlPatterns.isEmpty()) {
-            urlPatterns = DEFAULT_FILTER_URL_MAPPINGS;
+    private boolean isDispatcherServletMapping(String[] patterns) {
+        DispatcherServletRegistrationBean registrationBean = dispatcherServletRegistrationBeanProvider.getIfAvailable();
+        if (registrationBean != null) {
+            return matchUrlPatterns(registrationBean.getUrlMappings(), patterns);
         }
-        return urlPatterns.equals(patterns);
+        return false;
+    }
+
+
+    private boolean isActuatorWebEndpointMapping(String[] patterns) {
+        for (String pattern : patterns) {
+            if (pattern.startsWith(actuatorBasePath)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean matchFilter(FilterRegistrationBean filterRegistrationBean, String[] patterns) {
+        Collection<String> urlPatterns = filterRegistrationBean.getUrlPatterns();
+        return matchUrlPatterns(urlPatterns, patterns);
+    }
+
+    private boolean matchUrlPatterns(Collection<String> urlPatterns, String[] patterns) {
+        if (urlPatterns == null || urlPatterns.isEmpty()) {
+            urlPatterns = DEFAULT_URL_MAPPINGS;
+        }
+        return urlPatterns.equals(Arrays.asList(patterns));
     }
 
 }
