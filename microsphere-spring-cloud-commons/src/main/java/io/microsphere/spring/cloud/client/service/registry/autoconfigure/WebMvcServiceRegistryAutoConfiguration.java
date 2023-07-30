@@ -34,6 +34,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
 import javax.servlet.Filter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -91,7 +93,12 @@ public class WebMvcServiceRegistryAutoConfiguration {
         StringJoiner jsonBuilder = new StringJoiner(",", "[", "]");
         mappings.stream().map(WebEndpointMapping::toJSON).forEach(jsonBuilder::add);
         String json = jsonBuilder.toString();
-        metadata.put(WEB_MAPPINGS_METADATA_NAME, json);
+        try {
+            json = URLEncoder.encode(json, "UTF-8");
+            metadata.put(WEB_MAPPINGS_METADATA_NAME, json);
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     private void excludeMappings(Set<WebEndpointMapping> mappings) {
