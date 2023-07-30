@@ -38,8 +38,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -62,7 +62,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(WebMvcServiceRegistryAutoConfiguration.class);
 
-    private static final List<String> DEFAULT_URL_MAPPINGS = Arrays.asList("/*");
+    private static final String[] DEFAULT_URL_MAPPINGS = {"/*"};
 
     @Autowired
     private ObjectProvider<Registration> registrationProvider;
@@ -100,7 +100,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
             WebEndpointMapping mapping = iterator.next();
             String[] patterns = mapping.getPatterns();
             if (isBuiltInFilterMapping(patterns)
-                    || isDispatcherServletMapping(patterns)
+                    || isDispatcherServletMapping(mapping, patterns)
                     || isActuatorWebEndpointMapping(patterns)
             ) {
                 if (logger.isDebugEnabled()) {
@@ -127,10 +127,15 @@ public class WebMvcServiceRegistryAutoConfiguration {
         return found;
     }
 
-    private boolean isDispatcherServletMapping(String[] patterns) {
+    private boolean isDispatcherServletMapping(WebEndpointMapping mapping, String[] patterns) {
         DispatcherServletRegistrationBean registrationBean = dispatcherServletRegistrationBeanProvider.getIfAvailable();
         if (registrationBean != null) {
-            return matchUrlPatterns(registrationBean.getUrlMappings(), patterns);
+            Object source = mapping.getSource();
+            String servletName = registrationBean.getServletName();
+            if (Objects.equals(source, servletName)) {
+                Collection<String> urlMappings = registrationBean.getUrlMappings();
+                return matchUrlPatterns(urlMappings, patterns);
+            }
         }
         return false;
     }
@@ -151,10 +156,8 @@ public class WebMvcServiceRegistryAutoConfiguration {
     }
 
     private boolean matchUrlPatterns(Collection<String> urlPatterns, String[] patterns) {
-        if (urlPatterns == null || urlPatterns.isEmpty()) {
-            urlPatterns = DEFAULT_URL_MAPPINGS;
-        }
-        return urlPatterns.equals(Arrays.asList(patterns));
+        String[] urlPatternsArray = urlPatterns.isEmpty() ? DEFAULT_URL_MAPPINGS : urlPatterns.toArray(new String[0]);
+        return Arrays.equals(urlPatternsArray, patterns);
     }
 
 }
