@@ -34,18 +34,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
 import javax.servlet.Filter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.StringJoiner;
 
-import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_MAPPINGS_METADATA_NAME;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
@@ -89,16 +85,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
     private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
         Set<WebEndpointMapping> mappings = new HashSet<>(webEndpointMappings);
         excludeMappings(mappings);
-        Map<String, String> metadata = registration.getMetadata();
-        StringJoiner jsonBuilder = new StringJoiner(",", "[", "]");
-        mappings.stream().map(WebEndpointMapping::toJSON).forEach(jsonBuilder::add);
-        String json = jsonBuilder.toString();
-        try {
-            json = URLEncoder.encode(json, "UTF-8");
-            metadata.put(WEB_MAPPINGS_METADATA_NAME, json);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage(), e);
-        }
+        attachMetadata(registration, webEndpointMappings);
     }
 
     private void excludeMappings(Set<WebEndpointMapping> mappings) {
