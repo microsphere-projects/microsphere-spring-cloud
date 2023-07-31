@@ -18,6 +18,8 @@ package io.microsphere.spring.cloud.netflix.eureka.client.constants;
 
 import com.netflix.discovery.EurekaClient;
 
+import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
+
 /**
  * The constants for {@link EurekaClient}
  *
@@ -29,7 +31,7 @@ public interface EurekaClientConstants {
     /**
      * The property prefix of {@link EurekaClient}
      */
-    String EUREKA_CLIENT_PROPERTY_PREFIX = "microsphere.eureka.client";
+    String EUREKA_CLIENT_PROPERTY_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "eureka.client";
 
     /**
      * The property name of "multiple"

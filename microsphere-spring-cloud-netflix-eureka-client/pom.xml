@@ -57,11 +57,16 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Microsphere Spring Guice -->
+        <!-- Microsphere -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-cloud-commons</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-spring-guice</artifactId>
-            <version>${revision}</version>
         </dependency>
 
         <!-- Testing -->
