@@ -27,5 +27,5 @@ public interface InstanceConstants {
     /**
      * The meta-data name of Web Mappings
      */
-    String WEB_MAPPINGS_METADATA_NAME = "web-mappings";
+    String WEB_MAPPINGS_METADATA_NAME = "web.mappings";
 }
