@@ -16,14 +16,22 @@
  */
 package io.microsphere.spring.cloud.netflix.eureka.client.autoconfigure;
 
+import com.netflix.appinfo.ApplicationInfoManager;
+import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
+import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
 import io.microsphere.spring.cloud.netflix.eureka.client.ConditionalOnEurekaClientEnabled;
 import io.microsphere.spring.guice.annotation.EnableGuice;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.ConditionalOnDiscoveryEnabled;
+import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration;
+import org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
+
+import java.util.Map;
 
 import static io.microsphere.spring.cloud.netflix.eureka.client.constants.EurekaClientConstants.ENABLED_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.netflix.eureka.client.constants.EurekaClientConstants.EUREKA_CLIENT_PROPERTY_PREFIX;
@@ -41,5 +49,18 @@ import static io.microsphere.spring.cloud.netflix.eureka.client.constants.Eureka
 @ConditionalOnProperty(prefix = EUREKA_CLIENT_PROPERTY_PREFIX, name = ENABLED_PROPERTY_NAME, matchIfMissing = true)
 @AutoConfigureBefore(EurekaClientAutoConfiguration.class)
 public class EnhancedEurekaClientAutoConfiguration {
+
+    @EventListener(RegistrationPreRegisteredEvent.class)
+    public void onRegistrationPreRegisteredEvent(RegistrationPreRegisteredEvent event) {
+        Registration registration = event.getRegistration();
+        if (registration instanceof EurekaRegistration) {
+            EurekaRegistration eurekaRegistration = (EurekaRegistration) registration;
+            ApplicationInfoManager applicationInfoManager = eurekaRegistration.getApplicationInfoManager();
+            InstanceInfo instanceInfo = applicationInfoManager.getInfo();
+            Map<String, String> metadata = registration.getMetadata();
+            // Sync metadata from Registration to InstanceInfo
+            instanceInfo.getMetadata().putAll(metadata);
+        }
+    }
 
 }
