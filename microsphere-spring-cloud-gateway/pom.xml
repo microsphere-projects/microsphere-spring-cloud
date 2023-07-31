@@ -10,35 +10,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>microsphere-spring-cloud-commons</artifactId>
+    <artifactId>microsphere-spring-cloud-gateway</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Commons</name>
-    <description>Microsphere Spring Cloud Commons</description>
+    <name>Microsphere Spring Projects :: Spring Cloud :: Gateway</name>
+    <description>Microsphere Spring Cloud Gateway</description>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
 
         <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -61,40 +44,17 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Spring Cloud Gateway -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+
         <!-- Microsphere -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-cloud-context</artifactId>
+            <artifactId>microsphere-spring-cloud-commons</artifactId>
             <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-core-spring-boot-starter</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-core-spring-boot-starter</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-context</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-webmvc</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-webflux</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <!-- Testing -->
@@ -132,5 +92,4 @@
         </dependency>
 
     </dependencies>
-
 </project>

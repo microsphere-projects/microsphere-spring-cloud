@@ -44,12 +44,13 @@
         <module>microsphere-spring-cloud-context</module>
         <module>microsphere-spring-cloud-commons</module>
         <module>microsphere-spring-cloud-netflix-eureka-client</module>
+        <module>microsphere-spring-cloud-openfeign</module>
+        <module>microsphere-spring-cloud-gateway</module>
         <module>microsphere-spring-cloud-fault-tolerance-common</module>
         <module>microsphere-spring-cloud-fault-tolerance-tomcat</module>
         <module>microsphere-spring-cloud-fault-tolerance-sentinel</module>
         <module>microsphere-spring-cloud-fault-tolerance-resilience4j</module>
         <module>microsphere-spring-cloud-actuator</module>
-        <module>microsphere-spring-cloud-openfeign</module>
     </modules>
 
     <properties>
