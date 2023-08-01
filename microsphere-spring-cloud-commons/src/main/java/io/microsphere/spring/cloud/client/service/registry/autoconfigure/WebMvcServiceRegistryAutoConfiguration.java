@@ -85,7 +85,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
     private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
         Set<WebEndpointMapping> mappings = new HashSet<>(webEndpointMappings);
         excludeMappings(mappings);
-        attachMetadata(registration, webEndpointMappings);
+        attachMetadata(registration, mappings);
     }
 
     private void excludeMappings(Set<WebEndpointMapping> mappings) {
