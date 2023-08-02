@@ -124,7 +124,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
     private boolean isDispatcherServletMapping(WebEndpointMapping mapping, String[] patterns) {
         DispatcherServletRegistrationBean registrationBean = dispatcherServletRegistrationBeanProvider.getIfAvailable();
         if (registrationBean != null) {
-            Object source = mapping.getSource();
+            Object source = mapping.getEndpoint();
             String servletName = registrationBean.getServletName();
             if (Objects.equals(source, servletName)) {
                 Collection<String> urlMappings = registrationBean.getUrlMappings();
