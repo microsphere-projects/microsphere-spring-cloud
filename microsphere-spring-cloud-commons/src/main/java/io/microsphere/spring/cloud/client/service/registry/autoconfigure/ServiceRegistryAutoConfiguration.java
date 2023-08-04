@@ -16,7 +16,7 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.cloud.client.service.registry.aspect.RegistrationEventPublishingAspect;
+import io.microsphere.spring.cloud.client.service.registry.aspect.EventPublishingRegistrationAspect;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnAutoServiceRegistrationEnabled
 @Import(value = {
-        RegistrationEventPublishingAspect.class
+        EventPublishingRegistrationAspect.class
 })
 public class ServiceRegistryAutoConfiguration {
 }

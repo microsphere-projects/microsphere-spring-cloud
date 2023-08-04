@@ -32,7 +32,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * {@link Registration} Event-Publishing Aspect.
+ * Event-Publishing Aspect for {@link Registration}.
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see RegistrationPreRegisteredEvent
@@ -42,7 +42,7 @@ import org.springframework.context.ApplicationContextAware;
  * @since 1.0.0
  */
 @Aspect
-public class RegistrationEventPublishingAspect implements ApplicationContextAware {
+public class EventPublishingRegistrationAspect implements ApplicationContextAware {
 
     /**
      * The pointcut expression for {@link ServiceRegistry#register(Registration)}.
