@@ -39,9 +39,9 @@ import org.springframework.util.ObjectUtils;
  * @see ParentHeartbeatEvent
  * @since 1.0.0
  */
-public class RouteRefreshListenerDisabledHeartbeatEventInterceptor implements ApplicationListenerInterceptor {
+public class DisabledHeartbeatEventRouteRefreshListenerInterceptor implements ApplicationListenerInterceptor {
 
-    private static final Logger logger = LoggerFactory.getLogger(RouteRefreshListenerDisabledHeartbeatEventInterceptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(DisabledHeartbeatEventRouteRefreshListenerInterceptor.class);
 
     private static final Class<RouteRefreshListener> INTERCEPTED_CLASS = RouteRefreshListener.class;
 

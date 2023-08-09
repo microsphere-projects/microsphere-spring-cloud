@@ -16,7 +16,7 @@
  */
 package io.microsphere.spring.cloud.gateway.autoconfigure;
 
-import io.microsphere.spring.cloud.gateway.event.RouteRefreshListenerDisabledHeartbeatEventInterceptor;
+import io.microsphere.spring.cloud.gateway.event.DisabledHeartbeatEventRouteRefreshListenerInterceptor;
 import io.microsphere.spring.cloud.gateway.filter.WebEndpointMappingGlobalFilter;
 import io.microsphere.spring.context.annotation.EnableEventManagement;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -36,6 +36,6 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnProperty(name = "spring.cloud.gateway.enabled", matchIfMissing = true)
 @AutoConfigureAfter(org.springframework.cloud.gateway.config.GatewayAutoConfiguration.class)
 @EnableEventManagement(intercepted = true)
-@Import(RouteRefreshListenerDisabledHeartbeatEventInterceptor.class)
+@Import(DisabledHeartbeatEventRouteRefreshListenerInterceptor.class)
 public class GatewayAutoConfiguration {
 }
