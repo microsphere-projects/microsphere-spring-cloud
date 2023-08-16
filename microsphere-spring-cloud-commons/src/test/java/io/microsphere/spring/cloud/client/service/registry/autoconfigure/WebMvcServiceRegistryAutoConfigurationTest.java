@@ -16,7 +16,7 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.webmvc.annotation.EnableCommonWebMvc;
+import io.microsphere.spring.webmvc.annotation.EnableWebMvcExtension;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @EnableAutoConfiguration
-@EnableCommonWebMvc
+@EnableWebMvcExtension
 public class WebMvcServiceRegistryAutoConfigurationTest {
 
     @Autowired
