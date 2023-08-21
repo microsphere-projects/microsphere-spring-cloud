@@ -48,7 +48,8 @@ public class FilteringWebHandlerBeanDefinitionRegistryPostProcessor implements B
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         BeanDefinitionRegistry registry = this.registry;
-        String[] beanNames = beanFactory.getBeanNamesForType(FilteringWebHandler.class, false, false);
+        String[] beanNames = beanFactory.getBeanNamesForType(FilteringWebHandler.class,
+                false, false);
         for (String beanName : beanNames) {
             registry.removeBeanDefinition(beanName);
             registerBeanDefinition(registry, beanName, CachingFilteringWebHandler.class);

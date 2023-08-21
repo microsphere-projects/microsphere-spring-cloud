@@ -27,7 +27,6 @@ import org.springframework.cloud.gateway.handler.FilteringWebHandler;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.ApplicationListener;
-import org.springframework.lang.Nullable;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -39,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 
 import static io.microsphere.invoke.MethodHandleUtils.LookupMode.ALL;
+import static io.microsphere.util.ArrayUtils.asArray;
+import static java.util.Collections.emptyList;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR;
 import static org.springframework.core.annotation.AnnotationAwareOrderComparator.sort;
 
@@ -63,9 +64,11 @@ public class CachingFilteringWebHandler extends FilteringWebHandler implements A
 
     private static final MethodHandle globalFiltersMethodHandle;
 
-    private final List<GatewayFilter> globalFilters;
+    private final GatewayFilter[] globalFilters;
 
     private volatile Map<String, GatewayFilterChain> routedFilterChainsCache = null;
+
+    private volatile Map<String, List<GatewayFilter>> routedGatewayFiltersCache = null;
 
     static {
         try {
@@ -84,15 +87,15 @@ public class CachingFilteringWebHandler extends FilteringWebHandler implements A
     public void onApplicationEvent(RefreshRoutesResultEvent event) {
         if (matchesEvent(event)) {
             RouteLocator routeLocator = (RouteLocator) event.getSource();
-            this.routedFilterChainsCache = buildRoutedFilterChainCache(routeLocator);
+            this.routedGatewayFiltersCache = buildRoutedGatewayFiltersCache(routeLocator);
         }
     }
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange) {
         Route route = exchange.getRequiredAttribute(GATEWAY_ROUTE_ATTR);
-        GatewayFilterChain gatewayFilterChain = getGatewayFilterChain(route);
-        return gatewayFilterChain.filter(exchange);
+        List<GatewayFilter> routedGatewayFilters = getRoutedGatewayFilters(route);
+        return new DefaultGatewayFilterChain(routedGatewayFilters).filter(exchange);
     }
 
     @Override
@@ -105,43 +108,35 @@ public class CachingFilteringWebHandler extends FilteringWebHandler implements A
     private Map<String, List<GatewayFilter>> buildRoutedGatewayFiltersCache(RouteLocator routeLocator) {
         Map<String, List<GatewayFilter>> routedGatewayFiltersCache = new HashMap<>();
         routeLocator.getRoutes().toStream().forEach(route -> {
-            List<GatewayFilter> globalFilters = getGlobalFilters();
-            List<GatewayFilter> gatewayFilters = route.getFilters();
-            List<GatewayFilter> combined = new ArrayList<>(gatewayFilters.size() + gatewayFilters.size());
-            combined.addAll(globalFilters);
-            combined.addAll(gatewayFilters);
-            sort(combined);
-
             String routeId = route.getId();
-            routedGatewayFiltersCache.put(routeId, combined);
+            // TODO combinedGatewayFilters to be array ,instead of ArrayList
+            List<GatewayFilter> combinedGatewayFilters = combineGatewayFilters(route);
+            routedGatewayFiltersCache.put(routeId, combinedGatewayFilters);
         });
         return routedGatewayFiltersCache;
     }
 
-    @Nullable
-    private GatewayFilterChain getGatewayFilterChain(Route route) {
-        String id = route.getId();
-        Map<String, GatewayFilterChain> routedFilterChainsCache = this.routedFilterChainsCache;
-        return routedFilterChainsCache == null ? null : routedFilterChainsCache.get(id);
-    }
-
-    private Map<String, GatewayFilterChain> buildRoutedFilterChainCache(RouteLocator routeLocator) {
-        Map<String, GatewayFilterChain> routedFilterChainsCache = new HashMap<>();
-        routeLocator.getRoutes().toStream().forEach(route -> {
+    private List<GatewayFilter> getRoutedGatewayFilters(Route route) {
+        Map<String, List<GatewayFilter>> routedGatewayFiltersCache = this.routedGatewayFiltersCache;
+        if (routedGatewayFiltersCache == null) {
+            return emptyList();
+        } else {
             String id = route.getId();
-            List<GatewayFilter> combinedGatewayFilters = combineGatewayFilters(route);
-            GatewayFilterChain gatewayFilterChain = new DefaultGatewayFilterChain(combinedGatewayFilters);
-            routedFilterChainsCache.put(id, gatewayFilterChain);
-        });
-        return routedFilterChainsCache;
+            return routedGatewayFiltersCache.getOrDefault(id, emptyList());
+        }
     }
-
 
     private List<GatewayFilter> combineGatewayFilters(Route route) {
-        List<GatewayFilter> globalFilters = getGlobalFilters();
+        GatewayFilter[] globalFilters = getGlobalFilters();
+        int globalFiltersLength = globalFilters.length;
         List<GatewayFilter> gatewayFilters = route.getFilters();
-        List<GatewayFilter> combinedGatewayFilters = new ArrayList<>(gatewayFilters.size() + gatewayFilters.size());
-        combinedGatewayFilters.addAll(globalFilters);
+        List<GatewayFilter> combinedGatewayFilters = new ArrayList<>(globalFiltersLength +
+                gatewayFilters.size());
+
+        for (int i = 0; i < globalFiltersLength; i++) {
+            combinedGatewayFilters.add(globalFilters[i]);
+        }
+
         combinedGatewayFilters.addAll(gatewayFilters);
         sort(combinedGatewayFilters);
         return combinedGatewayFilters;
@@ -151,17 +146,17 @@ public class CachingFilteringWebHandler extends FilteringWebHandler implements A
         return event.isSuccess() && (event.getSource() instanceof RouteLocator);
     }
 
-    private List<GatewayFilter> getGlobalFilters() {
+    private GatewayFilter[] getGlobalFilters() {
         return globalFilters;
     }
 
-    private List<GatewayFilter> resolveGlobalFilters() {
+    private GatewayFilter[] resolveGlobalFilters() {
         final List<GatewayFilter> globalFilters;
         try {
             globalFilters = (List<GatewayFilter>) globalFiltersMethodHandle.invoke(this);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
-        return globalFilters;
+        return asArray(globalFilters, GatewayFilter.class);
     }
 }
