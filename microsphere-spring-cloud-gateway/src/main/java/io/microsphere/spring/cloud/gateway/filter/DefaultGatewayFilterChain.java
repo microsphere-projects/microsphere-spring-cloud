@@ -21,8 +21,6 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 /**
  * Default {@link GatewayFilterChain}
  *
@@ -32,22 +30,22 @@ import java.util.List;
  */
 public class DefaultGatewayFilterChain implements GatewayFilterChain {
 
-    private final List<GatewayFilter> gatewayFilters;
+    private final GatewayFilter[] gatewayFilters;
 
-    private final int size;
+    private final int length;
 
     private int position;
 
-    public DefaultGatewayFilterChain(List<GatewayFilter> gatewayFilters) {
+    public DefaultGatewayFilterChain(GatewayFilter[] gatewayFilters) {
         this.gatewayFilters = gatewayFilters;
-        this.size = gatewayFilters.size();
+        this.length = gatewayFilters.length;
         this.position = 0;
     }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange) {
-        if (position < size) {
-            GatewayFilter gatewayFilter = this.gatewayFilters.get(position++);
+        if (position < length) {
+            GatewayFilter gatewayFilter = this.gatewayFilters[position++];
             return gatewayFilter.filter(exchange, this);
         }
         return Mono.empty();

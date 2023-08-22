@@ -21,7 +21,6 @@ import io.microsphere.spring.cloud.gateway.filter.DefaultGatewayFilterChain;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.cloud.gateway.event.RefreshRoutesResultEvent;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.handler.FilteringWebHandler;
 import org.springframework.cloud.gateway.route.Route;
@@ -32,14 +31,12 @@ import reactor.core.publisher.Mono;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static io.microsphere.invoke.MethodHandleUtils.LookupMode.ALL;
 import static io.microsphere.util.ArrayUtils.asArray;
-import static java.util.Collections.emptyList;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR;
 import static org.springframework.core.annotation.AnnotationAwareOrderComparator.sort;
 
@@ -64,11 +61,11 @@ public class CachingFilteringWebHandler extends FilteringWebHandler implements A
 
     private static final MethodHandle globalFiltersMethodHandle;
 
+    private static final GatewayFilter[] EMPTY_FILTER_ARRAY = new GatewayFilter[0];
+
     private final GatewayFilter[] globalFilters;
 
-    private volatile Map<String, GatewayFilterChain> routedFilterChainsCache = null;
-
-    private volatile Map<String, List<GatewayFilter>> routedGatewayFiltersCache = null;
+    private volatile Map<String, GatewayFilter[]> routedGatewayFiltersCache = null;
 
     static {
         try {
@@ -94,50 +91,53 @@ public class CachingFilteringWebHandler extends FilteringWebHandler implements A
     @Override
     public Mono<Void> handle(ServerWebExchange exchange) {
         Route route = exchange.getRequiredAttribute(GATEWAY_ROUTE_ATTR);
-        List<GatewayFilter> routedGatewayFilters = getRoutedGatewayFilters(route);
+        GatewayFilter[] routedGatewayFilters = getRoutedGatewayFilters(route);
         return new DefaultGatewayFilterChain(routedGatewayFilters).filter(exchange);
     }
 
     @Override
     public void destroy() throws Exception {
-        if (routedFilterChainsCache != null) {
-            routedFilterChainsCache.clear();
+        if (routedGatewayFiltersCache != null) {
+            routedGatewayFiltersCache.clear();
         }
     }
 
-    private Map<String, List<GatewayFilter>> buildRoutedGatewayFiltersCache(RouteLocator routeLocator) {
-        Map<String, List<GatewayFilter>> routedGatewayFiltersCache = new HashMap<>();
+    private Map<String, GatewayFilter[]> buildRoutedGatewayFiltersCache(RouteLocator routeLocator) {
+        Map<String, GatewayFilter[]> routedGatewayFiltersCache = new HashMap<>();
         routeLocator.getRoutes().toStream().forEach(route -> {
             String routeId = route.getId();
             // TODO combinedGatewayFilters to be array ,instead of ArrayList
-            List<GatewayFilter> combinedGatewayFilters = combineGatewayFilters(route);
+            GatewayFilter[] combinedGatewayFilters = combineGatewayFilters(route);
             routedGatewayFiltersCache.put(routeId, combinedGatewayFilters);
         });
         return routedGatewayFiltersCache;
     }
 
-    private List<GatewayFilter> getRoutedGatewayFilters(Route route) {
-        Map<String, List<GatewayFilter>> routedGatewayFiltersCache = this.routedGatewayFiltersCache;
+    private GatewayFilter[] getRoutedGatewayFilters(Route route) {
+        Map<String, GatewayFilter[]> routedGatewayFiltersCache = this.routedGatewayFiltersCache;
         if (routedGatewayFiltersCache == null) {
-            return emptyList();
+            return EMPTY_FILTER_ARRAY;
         } else {
             String id = route.getId();
-            return routedGatewayFiltersCache.getOrDefault(id, emptyList());
+            return routedGatewayFiltersCache.getOrDefault(id, EMPTY_FILTER_ARRAY);
         }
     }
 
-    private List<GatewayFilter> combineGatewayFilters(Route route) {
+    private GatewayFilter[] combineGatewayFilters(Route route) {
         GatewayFilter[] globalFilters = getGlobalFilters();
-        int globalFiltersLength = globalFilters.length;
         List<GatewayFilter> gatewayFilters = route.getFilters();
-        List<GatewayFilter> combinedGatewayFilters = new ArrayList<>(globalFiltersLength +
-                gatewayFilters.size());
+        int globalFiltersLength = globalFilters.length;
+        int length = globalFiltersLength + gatewayFilters.size();
+        GatewayFilter[] combinedGatewayFilters = new GatewayFilter[length];
 
         for (int i = 0; i < globalFiltersLength; i++) {
-            combinedGatewayFilters.add(globalFilters[i]);
+            combinedGatewayFilters[i] = globalFilters[i];
         }
 
-        combinedGatewayFilters.addAll(gatewayFilters);
+        for (int i = globalFiltersLength, j = 0; i < length; i++) {
+            combinedGatewayFilters[i] = gatewayFilters.get(j++);
+        }
+
         sort(combinedGatewayFilters);
         return combinedGatewayFilters;
     }
