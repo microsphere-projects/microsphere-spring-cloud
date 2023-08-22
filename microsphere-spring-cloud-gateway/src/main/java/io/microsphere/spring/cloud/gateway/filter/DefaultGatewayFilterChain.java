@@ -46,12 +46,10 @@ public class DefaultGatewayFilterChain implements GatewayFilterChain {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange) {
-        return Mono.defer(() -> {
-            if (position < size) {
-                GatewayFilter gatewayFilter = this.gatewayFilters.get(position++);
-                gatewayFilter.filter(exchange, this);
-            }
-            return Mono.empty();
-        });
+        if (position < size) {
+            GatewayFilter gatewayFilter = this.gatewayFilters.get(position++);
+            return gatewayFilter.filter(exchange, this);
+        }
+        return Mono.empty();
     }
 }
