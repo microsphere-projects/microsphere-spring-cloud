@@ -188,7 +188,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             Map<String, Collection<RequestMappingContext>> routedContexts = new HashMap<>();
             Map<String, Config> routedConfigs = new HashMap<>();
             RouteLocator routeLocator = (RouteLocator) event.getSource();
-            routeLocator.getRoutes().toStream().filter(this::isWebEndpointRoute).forEach(route -> {
+            routeLocator.getRoutes().filter(this::isWebEndpointRoute).subscribe((route -> {
                 String routeId = route.getId();
                 Config config = createConfig(route);
                 routedConfigs.put(routeId, config);
@@ -206,7 +206,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
                                     });
                         });
                 routedContexts.put(routeId, mappedContexts.values());
-            });
+            })).dispose();
 
             // exchange
             synchronized (this) {

@@ -104,12 +104,12 @@ public class CachingFilteringWebHandler extends FilteringWebHandler implements A
 
     private Map<String, GatewayFilter[]> buildRoutedGatewayFiltersCache(RouteLocator routeLocator) {
         Map<String, GatewayFilter[]> routedGatewayFiltersCache = new HashMap<>();
-        routeLocator.getRoutes().toStream().forEach(route -> {
+        routeLocator.getRoutes().subscribe(route -> {
             String routeId = route.getId();
             // TODO combinedGatewayFilters to be array ,instead of ArrayList
             GatewayFilter[] combinedGatewayFilters = combineGatewayFilters(route);
             routedGatewayFiltersCache.put(routeId, combinedGatewayFilters);
-        });
+        }).dispose();
         return routedGatewayFiltersCache;
     }
 
