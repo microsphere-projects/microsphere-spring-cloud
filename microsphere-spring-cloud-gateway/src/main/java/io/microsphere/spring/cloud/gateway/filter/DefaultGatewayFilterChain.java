@@ -46,7 +46,7 @@ public class DefaultGatewayFilterChain implements GatewayFilterChain {
     public Mono<Void> filter(ServerWebExchange exchange) {
         if (position < length) {
             GatewayFilter gatewayFilter = this.gatewayFilters[position++];
-            return gatewayFilter.filter(exchange, this);
+            return Mono.defer(() -> gatewayFilter.filter(exchange, this));
         }
         return Mono.empty();
     }
