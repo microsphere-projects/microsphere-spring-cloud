@@ -18,7 +18,7 @@ package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
-import io.microsphere.spring.web.metadata.WebEndpointMappingsReadyEvent;
+import io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;

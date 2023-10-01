@@ -20,7 +20,7 @@ import io.microsphere.spring.cloud.gateway.event.DisabledHeartbeatEventRouteRefr
 import io.microsphere.spring.cloud.gateway.event.PropagatingRefreshRoutesEventApplicationListener;
 import io.microsphere.spring.cloud.gateway.filter.WebEndpointMappingGlobalFilter;
 import io.microsphere.spring.cloud.gateway.handler.FilteringWebHandlerBeanDefinitionRegistryPostProcessor;
-import io.microsphere.spring.context.annotation.EnableEventManagement;
+import io.microsphere.spring.context.annotation.EnableEventExtension;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +37,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "spring.cloud.gateway.enabled", matchIfMissing = true)
 @AutoConfigureAfter(org.springframework.cloud.gateway.config.GatewayAutoConfiguration.class)
-@EnableEventManagement(intercepted = true)
+@EnableEventExtension(intercepted = true)
 @Import(value = {
         DisabledHeartbeatEventRouteRefreshListenerInterceptor.class,
         PropagatingRefreshRoutesEventApplicationListener.class,
