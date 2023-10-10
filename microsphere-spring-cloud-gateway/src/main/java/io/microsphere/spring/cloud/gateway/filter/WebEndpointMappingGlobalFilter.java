@@ -17,6 +17,7 @@
 package io.microsphere.spring.cloud.gateway.filter;
 
 import io.microsphere.spring.boot.context.config.BindableConfigurationBeanBinder;
+import io.microsphere.spring.cloud.gateway.handler.WebEndpointServiceInstanceChooseHandler;
 import io.microsphere.spring.context.config.ConfigurationBeanBinder;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import org.springframework.beans.factory.DisposableBean;
@@ -37,13 +38,9 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.microsphere.collection.PropertiesUtils.flatProperties;
@@ -84,6 +81,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
     public static final String METADATA_KEY = "web-endpoint";
 
     private final DiscoveryClient discoveryClient;
+    private WebEndpointServiceInstanceChooseHandler webEndpointServiceInstanceChooseHandler;
 
     private volatile Map<String, Collection<RequestMappingContext>> routedRequestMappingContexts = null;
 
@@ -91,6 +89,10 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
 
     public WebEndpointMappingGlobalFilter(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
+    }
+
+    public void setWebEndpointServiceInstanceChooseHandler(WebEndpointServiceInstanceChooseHandler webEndpointServiceInstanceChooseHandler) {
+        this.webEndpointServiceInstanceChooseHandler = webEndpointServiceInstanceChooseHandler;
     }
 
     @Override
@@ -106,7 +108,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
 
         if (requestMappingContext != null) {
             // The RequestMappingContext found
-            ServiceInstance serviceInstance = requestMappingContext.choose();
+            ServiceInstance serviceInstance = requestMappingContext.choose(exchange);
             if (serviceInstance != null) {
                 String basePath = buildBasePath(serviceInstance);
                 URI targetURI = create(basePath + url.getPath());
@@ -202,6 +204,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
                                     .stream()
                                     .forEach(webEndpointMapping -> {
                                         RequestMappingContext requestMappingContext = mappedContexts.computeIfAbsent(webEndpointMapping, RequestMappingContext::new);
+                                        requestMappingContext.setWebEndpointServiceInstanceChooseHandler(webEndpointServiceInstanceChooseHandler);
                                         requestMappingContext.addServiceInstance(serviceInstance);
                                     });
                         });
@@ -337,7 +340,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
     static class RequestMappingContext {
 
         private final RequestMappingInfo requestMappingInfo;
-
+        private WebEndpointServiceInstanceChooseHandler webEndpointServiceInstanceChooseHandler;
         private int id;
 
         private List<ServiceInstance> serviceInstances = new LinkedList<>();
@@ -351,12 +354,18 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             this.id = webEndpointMapping.getId();
         }
 
+        public void setWebEndpointServiceInstanceChooseHandler(WebEndpointServiceInstanceChooseHandler webEndpointServiceInstanceChooseHandler) {
+            this.webEndpointServiceInstanceChooseHandler = webEndpointServiceInstanceChooseHandler;
+        }
+
         void addServiceInstance(ServiceInstance serviceInstance) {
             this.serviceInstances.add(serviceInstance);
         }
 
-        ServiceInstance choose() {
-            List<ServiceInstance> serviceInstances = this.serviceInstances;
+        ServiceInstance choose(ServerWebExchange exchange) {
+            List<ServiceInstance> serviceInstances = this.serviceInstances.stream()
+                    .filter(serviceInstance -> serviceInstancePredicate(exchange, serviceInstance))
+                    .collect(Collectors.toList());
             int size = serviceInstances.size();
             if (size == 0) {
                 return null;
@@ -365,6 +374,14 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             int offset = size == 1 ? 0 : this.position.incrementAndGet() % size;
             return serviceInstances.get(offset);
         }
+
+        boolean serviceInstancePredicate(ServerWebExchange exchange, ServiceInstance serviceInstance) {
+            if (this.webEndpointServiceInstanceChooseHandler == null) {
+                return true;
+            }
+            return webEndpointServiceInstanceChooseHandler.selectable(exchange, serviceInstance);
+        }
+
     }
 
     private String buildBasePath(ServiceInstance serviceInstance) {

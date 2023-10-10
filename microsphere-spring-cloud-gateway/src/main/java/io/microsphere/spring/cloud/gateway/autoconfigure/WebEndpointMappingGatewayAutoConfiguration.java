@@ -17,9 +17,12 @@
 package io.microsphere.spring.cloud.gateway.autoconfigure;
 
 import io.microsphere.spring.cloud.gateway.filter.WebEndpointMappingGlobalFilter;
+import io.microsphere.spring.cloud.gateway.handler.WebEndpointServiceInstanceChooseHandler;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.cloud.client.ConditionalOnDiscoveryEnabled;
@@ -45,8 +48,19 @@ public class WebEndpointMappingGatewayAutoConfiguration {
 
     @Bean
     @ConditionalOnEnabledGlobalFilter
-    @ConditionalOnBean(value = DiscoveryClient.class, search = SearchStrategy.CURRENT)
-    public WebEndpointMappingGlobalFilter webEndpointMappingGlobalFilter(DiscoveryClient discoveryClient) {
-        return new WebEndpointMappingGlobalFilter(discoveryClient);
+    @ConditionalOnMissingBean(value = WebEndpointServiceInstanceChooseHandler.class)
+    public WebEndpointServiceInstanceChooseHandler webEndpointServiceInstanceChooseHandler() {
+        return (serverWebExchange, serviceInstance) -> true;
     }
+
+    @Bean
+    @ConditionalOnEnabledGlobalFilter
+    @ConditionalOnBean(value = DiscoveryClient.class, search = SearchStrategy.CURRENT)
+    public WebEndpointMappingGlobalFilter webEndpointMappingGlobalFilter(DiscoveryClient discoveryClient,
+                                                                         ObjectProvider<WebEndpointServiceInstanceChooseHandler> webEndpointServiceInstanceChooseHandler) {
+        WebEndpointMappingGlobalFilter webEndpointMappingGlobalFilter = new WebEndpointMappingGlobalFilter(discoveryClient);
+        webEndpointMappingGlobalFilter.setWebEndpointServiceInstanceChooseHandler(webEndpointServiceInstanceChooseHandler.getIfAvailable());
+        return webEndpointMappingGlobalFilter;
+    }
+
 }
