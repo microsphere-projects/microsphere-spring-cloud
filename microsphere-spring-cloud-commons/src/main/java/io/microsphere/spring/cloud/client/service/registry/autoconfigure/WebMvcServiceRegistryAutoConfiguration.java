@@ -67,6 +67,8 @@ public class WebMvcServiceRegistryAutoConfiguration {
 
     @Value("${management.endpoints.web.base-path:/actuator}")
     private String actuatorBasePath;
+    @Value("${server.servlet.context-path:}")
+    private String contextPath;
 
     @Autowired
     private ObjectProvider<FilterRegistrationBean> filterRegistrationBeansProvider;
@@ -85,7 +87,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
     private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
         Set<WebEndpointMapping> mappings = new HashSet<>(webEndpointMappings);
         excludeMappings(mappings);
-        attachMetadata(registration, mappings);
+        attachMetadata(contextPath, registration, mappings);
     }
 
     private void excludeMappings(Set<WebEndpointMapping> mappings) {

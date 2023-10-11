@@ -17,6 +17,7 @@
 package io.microsphere.spring.cloud.gateway.filter;
 
 import io.microsphere.spring.boot.context.config.BindableConfigurationBeanBinder;
+import io.microsphere.spring.cloud.gateway.handler.ServiceInstancePredicate;
 import io.microsphere.spring.context.config.ConfigurationBeanBinder;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import org.springframework.beans.factory.DisposableBean;
@@ -37,16 +38,13 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.microsphere.collection.PropertiesUtils.flatProperties;
+import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_CONTEXT_PATH_METADATA_NAME;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getWebEndpointMappings;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.ID_HEADER_NAME;
 import static io.microsphere.util.ArrayUtils.isNotEmpty;
@@ -84,6 +82,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
     public static final String METADATA_KEY = "web-endpoint";
 
     private final DiscoveryClient discoveryClient;
+    private ServiceInstancePredicate serviceInstancePredicate;
 
     private volatile Map<String, Collection<RequestMappingContext>> routedRequestMappingContexts = null;
 
@@ -91,6 +90,10 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
 
     public WebEndpointMappingGlobalFilter(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
+    }
+
+    public void setWebEndpointServiceInstanceChooseHandler(ServiceInstancePredicate serviceInstancePredicate) {
+        this.serviceInstancePredicate = serviceInstancePredicate;
     }
 
     @Override
@@ -106,10 +109,11 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
 
         if (requestMappingContext != null) {
             // The RequestMappingContext found
-            ServiceInstance serviceInstance = requestMappingContext.choose();
+            ServiceInstance serviceInstance = requestMappingContext.choose(exchange);
             if (serviceInstance != null) {
                 String basePath = buildBasePath(serviceInstance);
-                URI targetURI = create(basePath + url.getPath());
+                String path = buildPath(serviceInstance, url);
+                URI targetURI = create(basePath + path);
                 int id = requestMappingContext.id;
                 ServerHttpRequest request = exchange.getRequest()
                         .mutate()
@@ -202,6 +206,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
                                     .stream()
                                     .forEach(webEndpointMapping -> {
                                         RequestMappingContext requestMappingContext = mappedContexts.computeIfAbsent(webEndpointMapping, RequestMappingContext::new);
+                                        requestMappingContext.setWebEndpointServiceInstanceChooseHandler(serviceInstancePredicate);
                                         requestMappingContext.addServiceInstance(serviceInstance);
                                     });
                         });
@@ -337,7 +342,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
     static class RequestMappingContext {
 
         private final RequestMappingInfo requestMappingInfo;
-
+        private ServiceInstancePredicate serviceInstancePredicate;
         private int id;
 
         private List<ServiceInstance> serviceInstances = new LinkedList<>();
@@ -351,12 +356,18 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             this.id = webEndpointMapping.getId();
         }
 
+        public void setWebEndpointServiceInstanceChooseHandler(ServiceInstancePredicate serviceInstancePredicate) {
+            this.serviceInstancePredicate = serviceInstancePredicate;
+        }
+
         void addServiceInstance(ServiceInstance serviceInstance) {
             this.serviceInstances.add(serviceInstance);
         }
 
-        ServiceInstance choose() {
-            List<ServiceInstance> serviceInstances = this.serviceInstances;
+        ServiceInstance choose(ServerWebExchange exchange) {
+            List<ServiceInstance> serviceInstances = this.serviceInstances.stream()
+                    .filter(serviceInstance -> serviceInstancePredicate(exchange, serviceInstance))
+                    .collect(Collectors.toList());
             int size = serviceInstances.size();
             if (size == 0) {
                 return null;
@@ -365,6 +376,14 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             int offset = size == 1 ? 0 : this.position.incrementAndGet() % size;
             return serviceInstances.get(offset);
         }
+
+        boolean serviceInstancePredicate(ServerWebExchange exchange, ServiceInstance serviceInstance) {
+            if (this.serviceInstancePredicate == null) {
+                return true;
+            }
+            return serviceInstancePredicate.test(exchange, serviceInstance);
+        }
+
     }
 
     private String buildBasePath(ServiceInstance serviceInstance) {
@@ -375,6 +394,20 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
                 .append(serviceInstance.getPort());
         // TODO append the context path
         return basePathBuilder.toString();
+    }
+
+    private String buildPath(ServiceInstance serviceInstance, URI url) {
+        Map<String, String> metadata = serviceInstance.getMetadata();
+        String path = url.getPath();
+        if (isEmpty(metadata)) {
+            return path;
+        }
+        String contextPath = metadata.get(WEB_CONTEXT_PATH_METADATA_NAME);
+        String servicePath = "/" + serviceInstance.getServiceId().toLowerCase();
+        if (path.startsWith(servicePath)) {
+            return path.replaceFirst(servicePath, contextPath);
+        }
+        return path;
     }
 
     private static RequestMappingInfo buildRequestMappingInfo(WebEndpointMapping webEndpointMapping) {

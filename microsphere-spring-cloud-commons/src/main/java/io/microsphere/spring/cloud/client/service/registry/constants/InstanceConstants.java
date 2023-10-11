@@ -28,4 +28,8 @@ public interface InstanceConstants {
      * The meta-data name of Web Mappings
      */
     String WEB_MAPPINGS_METADATA_NAME = "web.mappings";
+    /**
+     * The meta-data name of Web Context Path
+     */
+    String WEB_CONTEXT_PATH_METADATA_NAME = "web.context-path";
 }
