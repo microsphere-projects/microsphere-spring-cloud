@@ -403,7 +403,11 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             return path;
         }
         String contextPath = metadata.get(WEB_CONTEXT_PATH_METADATA_NAME);
-        return path.replaceFirst("/" + serviceInstance.getServiceId().toLowerCase(), contextPath);
+        String servicePath = "/" + serviceInstance.getServiceId().toLowerCase();
+        if (path.startsWith(servicePath)) {
+            return path.replaceFirst(servicePath, contextPath);
+        }
+        return path;
     }
 
     private static RequestMappingInfo buildRequestMappingInfo(WebEndpointMapping webEndpointMapping) {
