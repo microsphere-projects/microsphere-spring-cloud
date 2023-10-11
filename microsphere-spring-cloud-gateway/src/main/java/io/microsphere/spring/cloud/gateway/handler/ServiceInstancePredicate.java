@@ -10,7 +10,7 @@ import org.springframework.web.server.ServerWebExchange;
  * @author <a href="mailto:835010418@qq.com">caiti</a>
  * @since 1.0.0
  */
-public interface WebEndpointServiceInstanceChooseHandler {
+public interface ServiceInstancePredicate {
 
     /**
      * Is the current service selectable
