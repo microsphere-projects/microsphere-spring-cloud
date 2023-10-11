@@ -381,7 +381,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             if (this.serviceInstancePredicate == null) {
                 return true;
             }
-            return serviceInstancePredicate.selectable(exchange, serviceInstance);
+            return serviceInstancePredicate.test(exchange, serviceInstance);
         }
 
     }

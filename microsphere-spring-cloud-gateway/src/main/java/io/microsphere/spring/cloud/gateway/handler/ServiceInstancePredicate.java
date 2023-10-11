@@ -19,6 +19,6 @@ public interface ServiceInstancePredicate {
      * @param serviceInstance
      * @return <code>true</code> if selectable
      */
-    boolean selectable(ServerWebExchange exchange, ServiceInstance serviceInstance);
+    boolean test(ServerWebExchange exchange, ServiceInstance serviceInstance);
 
 }
