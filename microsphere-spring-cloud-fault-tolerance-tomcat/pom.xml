@@ -14,7 +14,7 @@
     <artifactId>microsphere-spring-cloud-fault-tolerance-tomcat</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Tomcat</name>
+    <name>Microsphere :: Spring Cloud :: Fault Tolerance :: Tomcat</name>
     <description>Microsphere Spring Cloud Fault Tolerance Tomcat Starter</description>
 
     <dependencies>

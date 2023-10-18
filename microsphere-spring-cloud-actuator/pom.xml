@@ -15,7 +15,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Actuator</name>
+    <name>Microsphere :: Spring Cloud :: Actuator</name>
     <description>Microsphere Spring Cloud Actuator</description>
 
 </project>

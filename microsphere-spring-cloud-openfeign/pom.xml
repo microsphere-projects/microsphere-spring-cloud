@@ -15,7 +15,7 @@
 
     <groupId>io.github.microsphere-projects</groupId>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: OpenFeign</name>
+    <name>Microsphere :: Spring Cloud :: OpenFeign</name>
     <description>Microsphere Spring Cloud OpenFeign</description>
 
     <properties>

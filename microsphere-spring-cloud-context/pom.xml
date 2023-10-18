@@ -14,7 +14,7 @@
     <artifactId>microsphere-spring-cloud-context</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Context</name>
+    <name>Microsphere :: Spring Cloud :: Context</name>
     <description>Microsphere Spring Cloud Context</description>
 
 </project>

@@ -14,7 +14,7 @@
     <artifactId>microsphere-spring-cloud-fault-tolerance-sentinel</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Sentinel</name>
+    <name>Microsphere :: Spring Cloud :: Fault Tolerance :: Sentinel</name>
     <description>Microsphere Spring Cloud Fault Tolerance Sentinel Starter</description>
 
     <dependencies>

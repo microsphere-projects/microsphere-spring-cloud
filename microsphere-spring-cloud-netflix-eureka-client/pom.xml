@@ -14,7 +14,7 @@
     <artifactId>microsphere-spring-cloud-netflix-eureka-client</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Netflix Eureka Client</name>
+    <name>Microsphere :: Spring Cloud :: Netflix Eureka Client</name>
     <description>Microsphere Spring Cloud Netflix Eureka Client</description>
 
     <dependencies>

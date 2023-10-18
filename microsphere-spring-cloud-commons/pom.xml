@@ -13,7 +13,7 @@
     <artifactId>microsphere-spring-cloud-commons</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Commons</name>
+    <name>Microsphere :: Spring Cloud :: Commons</name>
     <description>Microsphere Spring Cloud Commons</description>
 
     <dependencies>

@@ -14,7 +14,7 @@
     <artifactId>microsphere-spring-cloud-fault-tolerance-common</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Fault Tolerance :: Common</name>
+    <name>Microsphere :: Spring Cloud :: Fault Tolerance :: Common</name>
     <description>Microsphere Spring Cloud Fault Tolerance Common</description>
 
     <dependencies>

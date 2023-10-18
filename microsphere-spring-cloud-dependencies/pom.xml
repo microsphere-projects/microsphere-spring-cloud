@@ -15,7 +15,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Dependencies</name>
+    <name>Microsphere :: Spring Cloud :: Dependencies</name>
     <description>Microsphere Spring Cloud Dependencies</description>
 
     <dependencyManagement>

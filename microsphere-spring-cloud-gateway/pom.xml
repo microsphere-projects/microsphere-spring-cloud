@@ -13,7 +13,7 @@
     <artifactId>microsphere-spring-cloud-gateway</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere Spring Projects :: Spring Cloud :: Gateway</name>
+    <name>Microsphere :: Spring Cloud :: Gateway</name>
     <description>Microsphere Spring Cloud Gateway</description>
 
     <dependencies>
