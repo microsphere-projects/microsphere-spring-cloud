@@ -110,18 +110,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             // NO Web-Endpoint scheme
             return chain.filter(exchange);
         }
-
-        PathContainer pathWithinApplication = exchange.getRequest().getPath().pathWithinApplication();
-        ServerWebExchange newExchange = exchange;
-        if (serviceInstancePredicate != null && pathWithinApplication.elements().size() >= 2) {
-            // remove applicationName
-            String applicationName = pathWithinApplication.subPath(0, 2).value();
-            RequestPath requestPath = exchange.getRequest().getPath().modifyContextPath(applicationName);
-            ServerHttpRequest request = exchange.getRequest().mutate().path(requestPath.pathWithinApplication().value()).build();
-            newExchange = exchange.mutate().request(request).build();
-        }
-
-        RequestMappingContext requestMappingContext = getMatchingRequestMappingContext(newExchange);
+        RequestMappingContext requestMappingContext = getMatchingRequestMappingContext(exchange);
 
         if (requestMappingContext != null) {
             // The RequestMappingContext found
@@ -165,15 +154,25 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
         }
 
         RequestMappingContext target = null;
-
+        PathContainer pathWithinApplication = exchange.getRequest().getPath().pathWithinApplication();
+        ServerWebExchange newExchange;
+        if (serviceInstancePredicate != null && pathWithinApplication.elements().size() >= 2) {
+            // remove applicationName
+            String applicationName = pathWithinApplication.subPath(0, 2).value();
+            RequestPath requestPath = exchange.getRequest().getPath().modifyContextPath(applicationName);
+            ServerHttpRequest request = exchange.getRequest().mutate().path(requestPath.pathWithinApplication().value()).build();
+            newExchange = exchange.mutate().request(request).build();
+        } else {
+            newExchange = exchange;
+        }
         List<RequestMappingContext> matchesRequestMappings = new ArrayList<>();
         for (RequestMappingContext requestMappingContext : requestMappingContexts) {
-            if (matchesRequestMapping(exchange, requestMappingContext)) {
+            if (matchesRequestMapping(newExchange, requestMappingContext)) {
                 // matches the request mappings
                 matchesRequestMappings.add(requestMappingContext);
             }
         }
-        matchesRequestMappings.sort((v1, v2) -> v1.compareTo(v2, exchange));
+        matchesRequestMappings.sort((v1, v2) -> v1.compareTo(v2, newExchange));
         if (CollectionUtils.isNotEmpty(matchesRequestMappings)) {
             // matches the request mapping
             target = matchesRequestMappings.get(0);
