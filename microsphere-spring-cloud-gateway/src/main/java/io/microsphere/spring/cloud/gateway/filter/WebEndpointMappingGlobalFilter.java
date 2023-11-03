@@ -111,7 +111,17 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             return chain.filter(exchange);
         }
 
-        RequestMappingContext requestMappingContext = getMatchingRequestMappingContext(exchange);
+        PathContainer pathWithinApplication = exchange.getRequest().getPath().pathWithinApplication();
+        ServerWebExchange newExchange = exchange;
+        if (serviceInstancePredicate != null && pathWithinApplication.elements().size() >= 2) {
+            // remove applicationName
+            String applicationName = pathWithinApplication.subPath(0, 2).value();
+            RequestPath requestPath = exchange.getRequest().getPath().modifyContextPath(applicationName);
+            ServerHttpRequest request = exchange.getRequest().mutate().path(requestPath.pathWithinApplication().value()).build();
+            newExchange = exchange.mutate().request(request).build();
+        }
+
+        RequestMappingContext requestMappingContext = getMatchingRequestMappingContext(newExchange);
 
         if (requestMappingContext != null) {
             // The RequestMappingContext found
@@ -163,7 +173,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
                 matchesRequestMappings.add(requestMappingContext);
             }
         }
-        matchesRequestMappings.sort(Comparator.comparing(requestMappingContext -> requestMappingContext.compareTo(requestMappingContext, exchange)));
+        matchesRequestMappings.sort((v1, v2) -> v1.compareTo(v2, exchange));
         if (CollectionUtils.isNotEmpty(matchesRequestMappings)) {
             // matches the request mapping
             target = matchesRequestMappings.get(0);
@@ -181,17 +191,8 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
     }
 
     private boolean matchesRequestMapping(ServerWebExchange exchange, RequestMappingContext requestMappingContext) {
-        ServerWebExchange newExchange = exchange;
         RequestMappingInfo requestMappingInfo = requestMappingContext.requestMappingInfo;
-        PathContainer pathWithinApplication = exchange.getRequest().getPath().pathWithinApplication();
-        if (serviceInstancePredicate != null && pathWithinApplication.elements().size() >= 2) {
-            // remove applicationName
-            String applicationName = pathWithinApplication.subPath(0, 2).value();
-            RequestPath requestPath = exchange.getRequest().getPath().modifyContextPath(applicationName);
-            ServerHttpRequest request = exchange.getRequest().mutate().path(requestPath.pathWithinApplication().value()).build();
-            newExchange = exchange.mutate().request(request).build();
-        }
-        return requestMappingInfo.getMatchingCondition(newExchange) != null;
+        return requestMappingInfo.getMatchingCondition(exchange) != null;
     }
 
     private boolean isExcludedRequest(String routeId, ServerWebExchange exchange) {
