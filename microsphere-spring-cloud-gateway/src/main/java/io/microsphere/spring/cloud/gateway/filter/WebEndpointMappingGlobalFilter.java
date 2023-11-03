@@ -16,10 +16,12 @@
  */
 package io.microsphere.spring.cloud.gateway.filter;
 
+import io.microsphere.collection.CollectionUtils;
 import io.microsphere.spring.boot.context.config.BindableConfigurationBeanBinder;
 import io.microsphere.spring.cloud.gateway.handler.ServiceInstancePredicate;
 import io.microsphere.spring.context.config.ConfigurationBeanBinder;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
+import javafx.collections.transformation.SortedList;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -31,8 +33,12 @@ import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.PathContainer;
+import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.reactive.result.condition.CompositeRequestCondition;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -104,7 +110,6 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             // NO Web-Endpoint scheme
             return chain.filter(exchange);
         }
-
         RequestMappingContext requestMappingContext = getMatchingRequestMappingContext(exchange);
 
         if (requestMappingContext != null) {
@@ -149,12 +154,28 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
         }
 
         RequestMappingContext target = null;
-
+        PathContainer pathWithinApplication = exchange.getRequest().getPath().pathWithinApplication();
+        ServerWebExchange newExchange;
+        if (serviceInstancePredicate != null && pathWithinApplication.elements().size() >= 2) {
+            // remove applicationName
+            String applicationName = pathWithinApplication.subPath(0, 2).value();
+            RequestPath requestPath = exchange.getRequest().getPath().modifyContextPath(applicationName);
+            ServerHttpRequest request = exchange.getRequest().mutate().path(requestPath.pathWithinApplication().value()).build();
+            newExchange = exchange.mutate().request(request).build();
+        } else {
+            newExchange = exchange;
+        }
+        List<RequestMappingContext> matchesRequestMappings = new ArrayList<>();
         for (RequestMappingContext requestMappingContext : requestMappingContexts) {
-            if (matchesRequestMapping(exchange, requestMappingContext)) {
-                // matches the request mapping
-                target = requestMappingContext;
+            if (matchesRequestMapping(newExchange, requestMappingContext)) {
+                // matches the request mappings
+                matchesRequestMappings.add(requestMappingContext);
             }
+        }
+        matchesRequestMappings.sort((v1, v2) -> v1.compareTo(v2, newExchange));
+        if (CollectionUtils.isNotEmpty(matchesRequestMappings)) {
+            // matches the request mapping
+            target = matchesRequestMappings.get(0);
         }
         return target;
     }
@@ -383,6 +404,10 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
             }
             return serviceInstancePredicate.test(exchange, serviceInstance);
         }
+
+       public int compareTo(RequestMappingContext other, ServerWebExchange exchange) {
+            return this.requestMappingInfo.compareTo(other.requestMappingInfo, exchange);
+       }
 
     }
 
