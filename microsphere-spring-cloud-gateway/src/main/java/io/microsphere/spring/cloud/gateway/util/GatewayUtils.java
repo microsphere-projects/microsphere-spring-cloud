@@ -16,17 +16,13 @@
  */
 package io.microsphere.spring.cloud.gateway.util;
 
-import io.microsphere.spring.util.PropertySourcesUtils;
 import io.microsphere.util.BaseUtils;
 import org.springframework.cloud.gateway.config.GatewayProperties;
-import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertySources;
 import org.springframework.lang.NonNull;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
