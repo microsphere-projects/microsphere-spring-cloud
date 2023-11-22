@@ -48,7 +48,6 @@
         <module>microsphere-spring-cloud-gateway</module>
         <module>microsphere-spring-cloud-fault-tolerance-common</module>
         <module>microsphere-spring-cloud-fault-tolerance-tomcat</module>
-        <module>microsphere-spring-cloud-fault-tolerance-sentinel</module>
         <module>microsphere-spring-cloud-actuator</module>
     </modules>
 
