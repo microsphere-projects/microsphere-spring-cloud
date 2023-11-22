@@ -67,14 +67,7 @@
             <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
             <optional>true</optional>
         </dependency>
-
-        <!-- Microsphere -->
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-cloud-commons</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
+        
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
