@@ -17,7 +17,9 @@
 package io.microsphere.spring.cloud.client.discovery;
 
 import org.apache.commons.lang3.ClassUtils;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
@@ -36,9 +38,11 @@ import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryCl
  * @see CompositeDiscoveryClient
  * @since 1.0.0
  */
-public final class UnionDiscoveryClient implements DiscoveryClient {
+public final class UnionDiscoveryClient implements DiscoveryClient, SmartInitializingSingleton, DisposableBean {
 
     private final ObjectProvider<DiscoveryClient> discoveryClientsProvider;
+
+    private List<DiscoveryClient> discoveryClients;
 
     public UnionDiscoveryClient(ObjectProvider<DiscoveryClient> discoveryClientsProvider) {
         this.discoveryClientsProvider = discoveryClientsProvider;
@@ -76,7 +80,13 @@ public final class UnionDiscoveryClient implements DiscoveryClient {
     }
 
     public List<DiscoveryClient> getDiscoveryClients() {
-        List<DiscoveryClient> discoveryClients = new LinkedList<>();
+        List<DiscoveryClient> discoveryClients = this.discoveryClients;
+        if (discoveryClients != null) {
+            return discoveryClients;
+        }
+
+        discoveryClients = new LinkedList<>();
+
         for (DiscoveryClient discoveryClient : discoveryClientsProvider) {
             String className = ClassUtils.getName(discoveryClient);
             if (COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME.equals(className) || this.equals(discoveryClient)) {
@@ -91,5 +101,15 @@ public final class UnionDiscoveryClient implements DiscoveryClient {
     @Override
     public int getOrder() {
         return HIGHEST_PRECEDENCE;
+    }
+
+    @Override
+    public void afterSingletonsInstantiated() {
+        this.discoveryClients = getDiscoveryClients();
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        this.discoveryClients.clear();
     }
 }
