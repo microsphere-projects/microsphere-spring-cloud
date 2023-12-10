@@ -16,11 +16,21 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
+import com.alibaba.cloud.nacos.registry.NacosRegistration;
+import com.alibaba.cloud.nacos.registry.NacosServiceRegistry;
+import io.microsphere.spring.cloud.client.service.registry.MultipleRegistration;
+import io.microsphere.spring.cloud.client.service.registry.MultipleServiceRegistry;
 import io.microsphere.spring.cloud.client.service.registry.aspect.EventPublishingRegistrationAspect;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
+import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnMultipleRegistrationEnabled;
+import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
+
+import java.util.List;
 
 /**
  * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry}
@@ -34,4 +44,19 @@ import org.springframework.context.annotation.Import;
         EventPublishingRegistrationAspect.class
 })
 public class ServiceRegistryAutoConfiguration {
+
+    @ConditionalOnMultipleRegistrationEnabled
+    @Primary
+    @Bean
+    public MultipleRegistration multipleRegistration(List<Registration> registrationProvider) {
+        return new MultipleRegistration(NacosRegistration.class, registrationProvider);
+    }
+
+    @ConditionalOnMultipleRegistrationEnabled
+    @Primary
+    @Bean
+    public MultipleServiceRegistry multipleServiceRegistry(List<ServiceRegistry> serviceRegistries) {
+        return new MultipleServiceRegistry(NacosServiceRegistry.class, serviceRegistries);
+    }
+
 }

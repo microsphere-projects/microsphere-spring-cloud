@@ -52,4 +52,9 @@ public interface CommonsPropertyConstants {
      */
     String MICROSPHERE_SPRING_CLOUD_WEB_MVC_PROPERTY_NAME_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "web.mvc.";
 
+    /**
+     * The property name for Spring Cloud Service Registry Auto-Registration Feature
+     */
+    String MULTIPLE_REGISTRATION_ENABLED_PROPERTY_NAME = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "multiple-registration." + ENABLED_PROPERTY_NAME;
+
 }

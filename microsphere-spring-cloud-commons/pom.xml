@@ -119,6 +119,27 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring Cloud Nacos -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+<!--            <scope>test</scope>-->
+        </dependency>
+
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <name>nexus</name>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
