@@ -119,6 +119,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring Cloud Nacos -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -19,6 +19,7 @@ package io.microsphere.spring.cloud.netflix.eureka.client.autoconfigure;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
+import io.microsphere.spring.cloud.client.service.registry.MultipleRegistration;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
 import io.microsphere.spring.cloud.netflix.eureka.client.ConditionalOnEurekaClientEnabled;
 import io.microsphere.spring.guice.annotation.EnableGuice;
@@ -53,6 +54,13 @@ public class EnhancedEurekaClientAutoConfiguration {
     @EventListener(RegistrationPreRegisteredEvent.class)
     public void onRegistrationPreRegisteredEvent(RegistrationPreRegisteredEvent event) {
         Registration registration = event.getRegistration();
+        if (registration instanceof MultipleRegistration) {
+            registration = ((MultipleRegistration) registration).special(EurekaRegistration.class);
+        }
+
+        if (registration == null)
+            return;
+
         if (registration instanceof EurekaRegistration) {
             EurekaRegistration eurekaRegistration = (EurekaRegistration) registration;
             ApplicationInfoManager applicationInfoManager = eurekaRegistration.getApplicationInfoManager();
