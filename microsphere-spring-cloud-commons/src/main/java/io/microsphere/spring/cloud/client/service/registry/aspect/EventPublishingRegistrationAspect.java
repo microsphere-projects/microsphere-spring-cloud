@@ -16,6 +16,7 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.aspect;
 
+import io.microsphere.spring.cloud.client.service.registry.MultipleServiceRegistry;
 import io.microsphere.spring.cloud.client.service.registry.RegistrationCustomizer;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationDeregisteredEvent;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreDeregisteredEvent;
@@ -40,7 +41,9 @@ import org.springframework.context.ApplicationContextAware;
  * @see RegistrationPreDeregisteredEvent
  * @see RegistrationDeregisteredEvent
  * @since 1.0.0
+ * @deprecated using {@link MultipleServiceRegistry}
  */
+@Deprecated
 @Aspect
 public class EventPublishingRegistrationAspect implements ApplicationContextAware {
 

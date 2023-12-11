@@ -11,12 +11,13 @@ import java.util.Optional;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- * @since 1.0
+ * @since 1.0.0
  */
 public class MultipleRegistration implements Registration {
 
     private Map<Class<? extends Registration>, Registration> registrationMap = new HashMap<>();
     private Registration defaultRegistration;
+    private final RegistrationMetaData metaData;
 
     public MultipleRegistration(Class<? extends Registration> defaultRegistrationClass, Collection<Registration> registrations) {
         if (CollectionUtils.isEmpty(registrations))
@@ -24,13 +25,14 @@ public class MultipleRegistration implements Registration {
         //init map
         for (Registration registration : registrations) {
             Class<? extends Registration> clazz = registration.getClass();
-            if (clazz.equals(defaultRegistrationClass))
+            if (defaultRegistrationClass.isAssignableFrom(clazz))
                 this.defaultRegistration = registration;
             this.registrationMap.put(clazz, registration);
         }
 
         if (defaultRegistration == null)
             throw new IllegalArgumentException("default registration not specified");
+        this.metaData = new RegistrationMetaData(registrations);
     }
 
     @Override
@@ -60,17 +62,6 @@ public class MultipleRegistration implements Registration {
 
     @Override
     public Map<String, String> getMetadata() {
-        //组合metadata
-
-        Map<String, String> metaData = new HashMap<>();
-
-        for (Registration registration : this.registrationMap.values()) {
-            Map<String, String> map = registration.getMetadata();
-            //todo 不同实现考虑不同前缀?
-            if (!CollectionUtils.isEmpty(map))
-                metaData.putAll(map);
-        }
-
         return metaData;
     }
 
@@ -78,11 +69,11 @@ public class MultipleRegistration implements Registration {
         return defaultRegistration;
     }
 
-    public Optional<Registration> special(Class<? extends Registration> specialClass) {
+    public <T extends Registration> T special(Class<T> specialClass) {
         if (specialClass.equals(Registration.class))
-            return Optional.of(this);
+            return (T) this;
 
 
-        return Optional.ofNullable(this.registrationMap.get(specialClass));
+        return (T) this.registrationMap.getOrDefault(specialClass, null);
     }
 }

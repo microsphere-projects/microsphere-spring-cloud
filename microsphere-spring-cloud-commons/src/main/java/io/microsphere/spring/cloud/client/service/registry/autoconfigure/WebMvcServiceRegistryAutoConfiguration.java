@@ -25,6 +25,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -51,6 +52,7 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnBean(Registration.class)
 @ConditionalOnWebApplication(type = SERVLET)
 @ConditionalOnAutoServiceRegistrationEnabled
 @AutoConfigureAfter(value = {
@@ -63,7 +65,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
     private static final String[] DEFAULT_URL_MAPPINGS = {"/*"};
 
     @Autowired
-    private ObjectProvider<Registration> registrationProvider;
+    private Registration registration;
 
     @Value("${management.endpoints.web.base-path:/actuator}")
     private String actuatorBasePath;
@@ -78,10 +80,8 @@ public class WebMvcServiceRegistryAutoConfiguration {
 
     @EventListener(WebEndpointMappingsReadyEvent.class)
     public void onApplicationEvent(WebEndpointMappingsReadyEvent event) {
-        registrationProvider.ifAvailable(registration -> {
-            Collection<WebEndpointMapping> webEndpointMappings = event.getMappings();
-            attachWebMappingsMetadata(registration, webEndpointMappings);
-        });
+        Collection<WebEndpointMapping> webEndpointMappings = event.getMappings();
+        attachWebMappingsMetadata(registration, webEndpointMappings);
     }
 
     private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
