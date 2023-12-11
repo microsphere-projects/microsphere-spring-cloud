@@ -45,35 +45,39 @@ import java.util.stream.Collectors;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnAutoServiceRegistrationEnabled
 @Import(value = {
-        EventPublishingRegistrationAspect.class
+        EventPublishingRegistrationAspect.class,
+        ServiceRegistryAutoConfiguration.MultipleRegistrationConfiguration.class
 })
 public class ServiceRegistryAutoConfiguration {
 
-    @ConditionalOnMultipleRegistrationEnabled
-    @Primary
-    @Bean
-    public MultipleRegistration multipleRegistration(@Value("${microsphere.spring.cloud.default-registration.type}") Class<? extends Registration> defaultRegistrationClass,
-                                                     ObjectProvider<Registration> registrationProvider) {
-        return new MultipleRegistration(defaultRegistrationClass, registrationProvider.stream().collect(Collectors.toList()));
-    }
 
     @ConditionalOnMultipleRegistrationEnabled
-    @Primary
-    @Bean
-    public MultipleServiceRegistry multipleServiceRegistry(@Value("${microsphere.spring.cloud.default-service-registry.type}") Class<? extends ServiceRegistry> defaultServiceRegistryClass,
-                                                           ObjectProvider<ServiceRegistry> serviceRegistries,
-                                                           ObjectProvider<RegistrationCustomizer> registrationCustomizers)  {
-        return new MultipleServiceRegistry(defaultServiceRegistryClass, serviceRegistries.stream().collect(Collectors.toList()), registrationCustomizers);
+    public static class MultipleRegistrationConfiguration {
+
+        @Primary
+        @Bean
+        public MultipleRegistration multipleRegistration(@Value("${microsphere.spring.cloud.default-registration.type}") Class<? extends Registration> defaultRegistrationClass,
+                                                         ObjectProvider<Registration> registrationProvider) {
+            return new MultipleRegistration(defaultRegistrationClass, registrationProvider.stream().collect(Collectors.toList()));
+        }
+
+        @Primary
+        @Bean
+        public MultipleServiceRegistry multipleServiceRegistry(@Value("${microsphere.spring.cloud.default-service-registry.type}") Class<? extends ServiceRegistry> defaultServiceRegistryClass,
+                                                               ObjectProvider<ServiceRegistry> serviceRegistries,
+                                                               ObjectProvider<RegistrationCustomizer> registrationCustomizers) {
+            return new MultipleServiceRegistry(defaultServiceRegistryClass, serviceRegistries.stream().collect(Collectors.toList()), registrationCustomizers);
+        }
+
+        @ConditionalOnBean(AutoServiceRegistrationProperties.class)
+        @Primary
+        @Bean
+        public MultipleAutoServiceRegistration multipleAutoServiceRegistration(
+                MultipleRegistration multipleRegistration,
+                MultipleServiceRegistry serviceRegistry,
+                AutoServiceRegistrationProperties properties) {
+            return new MultipleAutoServiceRegistration(multipleRegistration, serviceRegistry, properties);
+        }
     }
 
-    @ConditionalOnMultipleRegistrationEnabled
-    @ConditionalOnBean(AutoServiceRegistrationProperties.class)
-    @Primary
-    @Bean
-    public MultipleAutoServiceRegistration multipleAutoServiceRegistration(
-            MultipleRegistration multipleRegistration,
-            MultipleServiceRegistry serviceRegistry,
-            AutoServiceRegistrationProperties properties) {
-        return new MultipleAutoServiceRegistration(multipleRegistration, serviceRegistry, properties);
-    }
 }

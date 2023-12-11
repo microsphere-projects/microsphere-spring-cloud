@@ -31,7 +31,7 @@ public final class RegistrationMetaData implements Map<String, String> {
             if (!CollectionUtils.isEmpty(metaData)) {
                 //check key and value must not be null
                 metaData.forEach((k, v) -> {
-                    if (ObjectUtils.isEmpty(k) || ObjectUtils.isEmpty(v))
+                    if (k == null || v == null)
                         return;
                     this.applicationMetaData.put(k, v);
                 });
