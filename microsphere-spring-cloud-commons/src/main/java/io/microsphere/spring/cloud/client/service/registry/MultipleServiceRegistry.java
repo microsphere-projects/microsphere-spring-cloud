@@ -4,6 +4,7 @@ import io.microsphere.spring.cloud.client.service.registry.event.RegistrationDer
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreDeregisteredEvent;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationRegisteredEvent;
+import io.microsphere.spring.util.SpringFactoriesLoaderUtils;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.ObjectProvider;
@@ -12,88 +13,90 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
+import static org.springframework.core.io.support.SpringFactoriesLoader.loadFactoryNames;
+import static org.springframework.util.ClassUtils.resolveClassName;
 
 /**
+ * The Delegating {@link ServiceRegistry} for the multiple service registration
+ *
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see MultipleRegistration
+ * @see MultipleAutoServiceRegistration
  * @since 1.0.0
  */
-public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistration>, ApplicationEventPublisherAware {
+public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistration> {
 
-    private final Collection<ServiceRegistry> serviceRegistries;
+    private final Map<String, ServiceRegistry> registriesMap;
+
+    /**
+     * Spring Bean Name -> Registration.class
+     */
+    private final Map<String, Class<? extends Registration>> beanNameToRegistrationTypesMap;
 
     private ServiceRegistry defaultServiceRegistry;
 
-    private final ObjectProvider<RegistrationCustomizer> registrationCustomizers;
-
-    private final Map<Class<? extends Registration>, ServiceRegistry> registryMap = new HashMap<>();
-
-    private ApplicationEventPublisher publisher;
-
-    public MultipleServiceRegistry(Class<? extends ServiceRegistry> defaultServiceRegistryClass,
-                                   Collection<ServiceRegistry> serviceRegistries,
-                                   ObjectProvider<RegistrationCustomizer> registrationCustomizers) {
-        if (CollectionUtils.isEmpty(serviceRegistries))
+    public MultipleServiceRegistry(Map<String, ServiceRegistry> registriesMap) {
+        if (CollectionUtils.isEmpty(registriesMap)) {
             throw new IllegalArgumentException("service registry cannot be empty");
-
-        this.serviceRegistries = serviceRegistries;
-        this.registrationCustomizers = registrationCustomizers;
-
-        for (ServiceRegistry<? extends Registration> serviceRegistry : serviceRegistries) {
-            Class<? extends Registration> registrationClass = getRegistrationClass(serviceRegistry.getClass());
-            this.registryMap.put(registrationClass, serviceRegistry);
-            if (defaultServiceRegistryClass.isAssignableFrom(serviceRegistry.getClass()))
-                defaultServiceRegistry = serviceRegistry;
         }
 
-        if (defaultServiceRegistry == null)
-            throw new IllegalArgumentException("default service registry not specified");
+        this.registriesMap = registriesMap;
+        this.beanNameToRegistrationTypesMap = new HashMap<>(registriesMap.size());
 
+        for (Map.Entry<String, ServiceRegistry> entry : registriesMap.entrySet()) {
+            String beanName = entry.getKey();
+            ServiceRegistry serviceRegistry = entry.getValue();
+            Class<? extends Registration> registrationClass = getRegistrationClass(serviceRegistry.getClass());
+            beanNameToRegistrationTypesMap.put(beanName, registrationClass);
+            defaultServiceRegistry = serviceRegistry;
+        }
     }
 
     @Override
     public void register(MultipleRegistration registration) {
-        this.registryMap.forEach((clazz, serviceRegistry) -> {
-            Registration selectedRegistration = registration.special(clazz);
-            if (selectedRegistration != null) {
-                beforeRegister(serviceRegistry, selectedRegistration);
-                serviceRegistry.register(selectedRegistration);
-                afterRegister(serviceRegistry, selectedRegistration);
-            }
-
-        });
+        iterate(registration, (reg, registry) -> registry.register(registration));
     }
 
     @Override
     public void deregister(MultipleRegistration registration) {
-        this.registryMap.forEach((clazz, serviceRegistry) -> {
-            Registration selectedRegistration = registration.special(clazz);
-            if (selectedRegistration != null) {
-                beforeDeregister(serviceRegistry, selectedRegistration);
-                serviceRegistry.deregister(selectedRegistration);
-                afterDeregister(serviceRegistry, selectedRegistration);
-            }
-        });
+        iterate(registration, (reg, registry) -> registry.deregister(registration));
     }
 
     @Override
     public void close() {
-        for (ServiceRegistry serviceRegistry : this.serviceRegistries)
-            serviceRegistry.close();
+        iterate(ServiceRegistry::close);
     }
 
     @Override
     public void setStatus(MultipleRegistration registration, String status) {
-        this.registryMap.forEach((clazz, serviceRegistry) -> {
-            Registration selectedRegistration = registration.special(clazz);
-            if (selectedRegistration != null)
-                serviceRegistry.setStatus(selectedRegistration, status);
+        iterate(registration, (reg, registry) -> registry.setStatus(reg, status));
+    }
+
+    private void iterate(MultipleRegistration registration, BiConsumer<Registration, ServiceRegistry> action) {
+        registriesMap.forEach((beanName, registry) -> {
+            Class<? extends Registration> registrationClass = beanNameToRegistrationTypesMap.get(beanName);
+            Registration targetRegistration = registration.special(registrationClass);
+            if (targetRegistration != null) {
+                action.accept(targetRegistration, registry);
+            }
         });
+    }
+
+    private void iterate(Consumer<ServiceRegistry> action) {
+        registriesMap.values().forEach(action);
     }
 
     @Override
@@ -102,34 +105,19 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
     }
 
     private static Class<? extends Registration> getRegistrationClass(Class<? extends ServiceRegistry> serviceRegistryClass) {
-        ResolvableType resolvableType = ResolvableType.forClass(serviceRegistryClass);
-        return (Class<? extends Registration>)resolvableType.getInterfaces()[0].getGeneric(0).getRawClass();
-    }
+        Class<?> registrationClass = ResolvableType.forClass(serviceRegistryClass)
+                .as(ServiceRegistry.class)
+                .getGeneric(0)
+                .resolve();
 
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = applicationEventPublisher;
-    }
-
-
-    //intercept register
-    protected void beforeRegister(ServiceRegistry registry, Registration registration) {
-        this.publisher.publishEvent(new RegistrationPreRegisteredEvent(registry, registration));
-        registrationCustomizers.ifAvailable(customizer -> {
-            customizer.customize(registration);
-        });
-    }
-
-    //intercept deregister
-    protected void beforeDeregister(ServiceRegistry registry, Registration registration) {
-        this.publisher.publishEvent(new RegistrationPreDeregisteredEvent(registry, registration));
-    }
-
-    protected void afterRegister(ServiceRegistry registry, Registration registration) {
-        this.publisher.publishEvent(new RegistrationRegisteredEvent(registry, registration));
-    }
-
-    protected void afterDeregister(ServiceRegistry registry, Registration registration) {
-        this.publisher.publishEvent(new RegistrationDeregisteredEvent(registry, registration));
+        if (Registration.class.equals(registrationClass)) { // If the class is not the subclass of Registration
+            // The configured class will try to be loaded based on SpringFactoriesLoader
+            ClassLoader classLoader = serviceRegistryClass.getClassLoader();
+            List<String> registrationClassNames = loadFactoryNames(serviceRegistryClass, classLoader);
+            for (String registrationClassName : registrationClassNames) {
+                registrationClass = resolveClassName(registrationClassName, classLoader);
+            }
+        }
+        return (Class<? extends Registration>) registrationClass;
     }
 }

@@ -3,5 +3,6 @@ io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoCo
 io.microsphere.spring.cloud.client.service.registry.autoconfigure.ServiceRegistryAutoConfiguration,\
 io.microsphere.spring.cloud.client.service.registry.autoconfigure.WebMvcServiceRegistryAutoConfiguration,\
 io.microsphere.spring.cloud.client.service.registry.autoconfigure.WebFluxServiceRegistryAutoConfiguration,\
-io.microsphere.spring.cloud.client.service.registry.autoconfigure.SimpleAutoServiceRegistrationAutoConfiguration,\
-io.microsphere.spring.cloud.client.service.registry.autoconfigure.CompositeServiceRegistryAutoConfiguration
+io.microsphere.spring.cloud.client.service.registry.autoconfigure.SimpleAutoServiceRegistrationAutoConfiguration
+
+com.alibaba.cloud.nacos.registry.NacosServiceRegistry = com.alibaba.cloud.nacos.registry.NacosRegistration

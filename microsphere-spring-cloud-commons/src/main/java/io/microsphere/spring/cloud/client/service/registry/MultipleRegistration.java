@@ -10,28 +10,30 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
+ * The Delegating {@link Registration} for the multiple service registration
+ *
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @see MultipleAutoServiceRegistration
+ * @see MultipleServiceRegistry
  * @since 1.0.0
  */
 public class MultipleRegistration implements Registration {
 
     private Map<Class<? extends Registration>, Registration> registrationMap = new HashMap<>();
+
     private Registration defaultRegistration;
+
     private final RegistrationMetaData metaData;
 
-    public MultipleRegistration(Class<? extends Registration> defaultRegistrationClass, Collection<Registration> registrations) {
+    public MultipleRegistration(Collection<Registration> registrations) {
         if (CollectionUtils.isEmpty(registrations))
             throw new IllegalArgumentException("registrations cannot be empty");
         //init map
         for (Registration registration : registrations) {
             Class<? extends Registration> clazz = registration.getClass();
-            if (defaultRegistrationClass.isAssignableFrom(clazz))
-                this.defaultRegistration = registration;
             this.registrationMap.put(clazz, registration);
+            this.defaultRegistration = registration;
         }
-
-        if (defaultRegistration == null)
-            throw new IllegalArgumentException("default registration not specified");
         this.metaData = new RegistrationMetaData(registrations);
     }
 
@@ -72,8 +74,6 @@ public class MultipleRegistration implements Registration {
     public <T extends Registration> T special(Class<T> specialClass) {
         if (specialClass.equals(Registration.class))
             return (T) this;
-
-
         return (T) this.registrationMap.getOrDefault(specialClass, null);
     }
 }

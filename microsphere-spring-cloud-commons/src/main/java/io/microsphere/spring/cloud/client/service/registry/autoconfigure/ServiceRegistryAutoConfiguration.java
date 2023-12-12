@@ -19,13 +19,11 @@ package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 import io.microsphere.spring.cloud.client.service.registry.MultipleAutoServiceRegistration;
 import io.microsphere.spring.cloud.client.service.registry.MultipleRegistration;
 import io.microsphere.spring.cloud.client.service.registry.MultipleServiceRegistry;
-import io.microsphere.spring.cloud.client.service.registry.RegistrationCustomizer;
 import io.microsphere.spring.cloud.client.service.registry.aspect.EventPublishingRegistrationAspect;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnMultipleRegistrationEnabled;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
@@ -34,7 +32,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry}
@@ -46,37 +45,38 @@ import java.util.stream.Collectors;
 @ConditionalOnAutoServiceRegistrationEnabled
 @Import(value = {
         EventPublishingRegistrationAspect.class,
-        ServiceRegistryAutoConfiguration.MultipleRegistrationConfiguration.class
+        ServiceRegistryAutoConfiguration.MultipleConfiguration.class
 })
 public class ServiceRegistryAutoConfiguration {
 
-
+    /**
+     * The configuration class of the multiple service registration
+     */
     @ConditionalOnMultipleRegistrationEnabled
-    public static class MultipleRegistrationConfiguration {
+    static class MultipleConfiguration {
 
         @Primary
         @Bean
-        public MultipleRegistration multipleRegistration(@Value("${microsphere.spring.cloud.default-registration.type}") Class<? extends Registration> defaultRegistrationClass,
-                                                         ObjectProvider<Registration> registrationProvider) {
-            return new MultipleRegistration(defaultRegistrationClass, registrationProvider.stream().collect(Collectors.toList()));
+        @ConditionalOnMissingBean
+        public MultipleRegistration multipleRegistration(Collection<Registration> registrations) {
+            return new MultipleRegistration(registrations);
         }
 
-        @Primary
         @Bean
-        public MultipleServiceRegistry multipleServiceRegistry(@Value("${microsphere.spring.cloud.default-service-registry.type}") Class<? extends ServiceRegistry> defaultServiceRegistryClass,
-                                                               ObjectProvider<ServiceRegistry> serviceRegistries,
-                                                               ObjectProvider<RegistrationCustomizer> registrationCustomizers) {
-            return new MultipleServiceRegistry(defaultServiceRegistryClass, serviceRegistries.stream().collect(Collectors.toList()), registrationCustomizers);
+        @Primary
+        @ConditionalOnMissingBean
+        public MultipleServiceRegistry multipleServiceRegistry(Map<String, ServiceRegistry> registriesMap) {
+            return new MultipleServiceRegistry(registriesMap);
         }
 
         @ConditionalOnBean(AutoServiceRegistrationProperties.class)
         @Primary
         @Bean
-        public MultipleAutoServiceRegistration multipleAutoServiceRegistration(
-                MultipleRegistration multipleRegistration,
-                MultipleServiceRegistry serviceRegistry,
-                AutoServiceRegistrationProperties properties) {
-            return new MultipleAutoServiceRegistration(multipleRegistration, serviceRegistry, properties);
+        @ConditionalOnMissingBean
+        public MultipleAutoServiceRegistration multipleAutoServiceRegistration(MultipleRegistration multipleRegistration,
+                                                                               MultipleServiceRegistry multipleServiceRegistry,
+                                                                               AutoServiceRegistrationProperties properties) {
+            return new MultipleAutoServiceRegistration(multipleRegistration, multipleServiceRegistry, properties);
         }
     }
 
