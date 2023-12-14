@@ -1,27 +1,15 @@
 package io.microsphere.spring.cloud.client.service.registry;
 
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationDeregisteredEvent;
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreDeregisteredEvent;
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationRegisteredEvent;
-import io.microsphere.spring.util.SpringFactoriesLoaderUtils;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.aop.framework.AopProxyUtils;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -47,6 +35,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
     private final Map<String, Class<? extends Registration>> beanNameToRegistrationTypesMap;
 
     private ServiceRegistry defaultServiceRegistry;
+    private String defaultRegistrationBeanName;
 
     public MultipleServiceRegistry(Map<String, ServiceRegistry> registriesMap) {
         if (CollectionUtils.isEmpty(registriesMap)) {
@@ -59,20 +48,21 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         for (Map.Entry<String, ServiceRegistry> entry : registriesMap.entrySet()) {
             String beanName = entry.getKey();
             ServiceRegistry serviceRegistry = entry.getValue();
-            Class<? extends Registration> registrationClass = getRegistrationClass(serviceRegistry.getClass());
+            Class<? extends Registration> registrationClass = getRegistrationClass(serviceRegistry.getClass(), entry.getValue());
             beanNameToRegistrationTypesMap.put(beanName, registrationClass);
             defaultServiceRegistry = serviceRegistry;
+            defaultRegistrationBeanName = beanName;
         }
     }
 
     @Override
     public void register(MultipleRegistration registration) {
-        iterate(registration, (reg, registry) -> registry.register(registration));
+        iterate(registration, (reg, registry) -> registry.register(reg));
     }
 
     @Override
     public void deregister(MultipleRegistration registration) {
-        iterate(registration, (reg, registry) -> registry.deregister(registration));
+        iterate(registration, (reg, registry) -> registry.deregister(reg));
     }
 
     @Override
@@ -101,10 +91,12 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
 
     @Override
     public <T> T getStatus(MultipleRegistration registration) {
-        return (T) defaultServiceRegistry.getStatus(registration.getDefaultRegistration());
+        Class<? extends Registration> registrationClass = beanNameToRegistrationTypesMap.get(defaultRegistrationBeanName);
+        Registration targetRegistration = registration.special(registrationClass);
+        return (T) defaultServiceRegistry.getStatus(targetRegistration);
     }
 
-    private static Class<? extends Registration> getRegistrationClass(Class<? extends ServiceRegistry> serviceRegistryClass) {
+    private static Class<? extends Registration> getRegistrationClass(Class<? extends ServiceRegistry> serviceRegistryClass, ServiceRegistry serviceRegistry) {
         Class<?> registrationClass = ResolvableType.forClass(serviceRegistryClass)
                 .as(ServiceRegistry.class)
                 .getGeneric(0)
@@ -113,7 +105,14 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         if (Registration.class.equals(registrationClass)) { // If the class is not the subclass of Registration
             // The configured class will try to be loaded based on SpringFactoriesLoader
             ClassLoader classLoader = serviceRegistryClass.getClassLoader();
-            List<String> registrationClassNames = loadFactoryNames(serviceRegistryClass, classLoader);
+            List<String> registrationClassNames;
+
+            if (AopUtils.isAopProxy(serviceRegistry)) {
+                registrationClassNames = loadFactoryNames(AopProxyUtils.ultimateTargetClass(serviceRegistry), classLoader);
+            } else {
+                registrationClassNames = loadFactoryNames(serviceRegistryClass, classLoader);
+            }
+
             for (String registrationClassName : registrationClassNames) {
                 registrationClass = resolveClassName(registrationClassName, classLoader);
             }

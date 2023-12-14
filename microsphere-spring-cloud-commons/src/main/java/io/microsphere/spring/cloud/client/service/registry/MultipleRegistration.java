@@ -7,7 +7,6 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * The Delegating {@link Registration} for the multiple service registration
