@@ -11,6 +11,7 @@ import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPre
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.CommonsClientAutoConfiguration;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationAutoConfiguration;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
@@ -21,6 +22,7 @@ import org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.config.DiscoveryClientOptionalArgsConfiguration;
 import org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -56,6 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 "eureka.client.service-url.defaultZone=http://127.0.0.1:12345/eureka",
         }
 )
+@EnableAutoConfiguration
 class MultipleServiceRegistryTest implements ApplicationListener<RegistrationPreRegisteredEvent> {
 
 
