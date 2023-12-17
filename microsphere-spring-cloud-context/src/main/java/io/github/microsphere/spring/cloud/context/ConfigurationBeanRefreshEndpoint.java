@@ -1,4 +1,4 @@
-package io.microsphere.spring.cloud.context;
+package io.github.microsphere.spring.cloud.context;
 
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;

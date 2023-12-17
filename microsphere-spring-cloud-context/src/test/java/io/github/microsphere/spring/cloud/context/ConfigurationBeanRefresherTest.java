@@ -1,7 +1,7 @@
-package io.microsphere.spring.cloud.context;
+package io.github.microsphere.spring.cloud.context;
 
 import io.microsphere.spring.beans.factory.annotation.EnableConfigurationBeanBinding;
-import io.microsphere.spring.cloud.context.autoconfigure.ConfigurationBeanRefresherAutoConfiguration;
+import io.github.microsphere.spring.cloud.context.autoconfigure.ConfigurationBeanRefresherAutoConfiguration;
 import io.microsphere.spring.context.event.ConfigurationBeanRefreshedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

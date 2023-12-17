@@ -1,10 +1,10 @@
-package io.microsphere.spring.cloud.context.autoconfigure;
+package io.github.microsphere.spring.cloud.context.autoconfigure;
 
 import io.microsphere.spring.beans.factory.annotation.RefreshableConfigurationBeanPredicate;
 import io.microsphere.spring.beans.factory.annotation.RefreshableConfigurationBeans;
-import io.microsphere.spring.cloud.context.ConfigurationBeanRefreshEndpoint;
-import io.microsphere.spring.cloud.context.ConfigurationBeanRefresher;
-import io.microsphere.spring.cloud.context.RefreshScopeConfigurationBeanPredicate;
+import io.github.microsphere.spring.cloud.context.ConfigurationBeanRefreshEndpoint;
+import io.github.microsphere.spring.cloud.context.ConfigurationBeanRefresher;
+import io.github.microsphere.spring.cloud.context.RefreshScopeConfigurationBeanPredicate;
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

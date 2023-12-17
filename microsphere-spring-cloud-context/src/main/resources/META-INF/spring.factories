@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.microsphere.spring.cloud.context.autoconfigure.ConfigurationBeanRefresherAutoConfiguration
+io.github.microsphere.spring.cloud.context.autoconfigure.ConfigurationBeanRefresherAutoConfiguration

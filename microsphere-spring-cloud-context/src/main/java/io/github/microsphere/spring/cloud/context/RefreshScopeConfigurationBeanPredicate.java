@@ -1,4 +1,4 @@
-package io.microsphere.spring.cloud.context;
+package io.github.microsphere.spring.cloud.context;
 
 import io.microsphere.spring.beans.factory.annotation.RefreshableConfigurationBeanPredicate;
 import org.springframework.beans.BeansException;
