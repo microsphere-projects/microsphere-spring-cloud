@@ -90,6 +90,15 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- Microsphere Spring Dependencies -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-spring-dependencies</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- Microsphere Spring Boot Dependencies -->
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>

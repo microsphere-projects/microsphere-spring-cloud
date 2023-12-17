@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 "eureka.client.service-url.defaultZone=http://127.0.0.1:12345/eureka",
         }
 )
-@EnableAutoConfiguration
+//@EnableAutoConfiguration
 class MultipleServiceRegistryTest implements ApplicationListener<RegistrationPreRegisteredEvent> {
 
 
