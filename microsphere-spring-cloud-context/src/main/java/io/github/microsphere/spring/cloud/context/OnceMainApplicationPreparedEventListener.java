@@ -50,13 +50,14 @@ public abstract class OnceMainApplicationPreparedEventListener extends OnceAppli
         boolean main = true;
         String parentId = null;
         boolean bootApplicationListenerReady = isBootApplicationListenerReady(context);
+
         if (bootApplicationListenerReady) {
             ApplicationContext parentContext = context.getParent();
             parentId = parentContext == null ? null : parentContext.getId();
             if (parentContext != null) {
                 parentId = parentContext.getId();
+                main = BOOTSTRAP_CONTEXT_ID.equals(parentId);
             }
-            main = BOOTSTRAP_CONTEXT_ID.equals(parentId);
         }
 
         logger.debug("Current ApplicationContext[id : '{}' , parentId : '{}'] is {}main ApplicationContext , BootstrapApplicationListener is {}",
