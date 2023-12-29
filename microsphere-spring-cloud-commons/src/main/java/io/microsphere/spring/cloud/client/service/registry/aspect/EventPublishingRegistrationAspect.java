@@ -64,7 +64,7 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
         if (registry.getClass().isAssignableFrom(MultipleServiceRegistry.class))
             return;//Remove redundant register
         context.publishEvent(new RegistrationPreRegisteredEvent(registry, registration));
-        registrationCustomizers.ifAvailable(customizer -> {
+        registrationCustomizers.forEach(customizer -> {
             customizer.customize(registration);
         });
     }
