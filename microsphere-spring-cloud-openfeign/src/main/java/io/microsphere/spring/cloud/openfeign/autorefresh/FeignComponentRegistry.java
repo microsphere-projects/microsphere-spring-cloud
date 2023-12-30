@@ -11,10 +11,14 @@ import io.microsphere.spring.cloud.openfeign.components.CompositedRequestInterce
 import io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor;
 import io.microsphere.spring.cloud.openfeign.components.Refreshable;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
