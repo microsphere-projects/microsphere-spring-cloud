@@ -2,13 +2,9 @@ package io.microsphere.spring.cloud.openfeign.requestInterceptor;
 
 import io.microsphere.spring.cloud.openfeign.BaseClient;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
-import io.microsphere.spring.cloud.openfeign.encoder.BEncoder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
-import org.springframework.cloud.context.refresh.ContextRefresher;
-import org.springframework.cloud.endpoint.event.RefreshEvent;
-import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;

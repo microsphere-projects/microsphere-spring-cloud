@@ -9,9 +9,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.util.ClassUtils;
 
-import static java.util.Arrays.asList;
-
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 
 /**

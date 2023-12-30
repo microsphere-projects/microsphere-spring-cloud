@@ -6,8 +6,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration;
-import org.springframework.cloud.context.properties.ConfigurationPropertiesRebinder;
-import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationEventPublisher;
