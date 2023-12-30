@@ -18,7 +18,6 @@ package io.microsphere.spring.cloud.client.service.registry.event;
 
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
-import org.springframework.context.ApplicationEvent;
 
 /**
  * The before-{@link ServiceRegistry#deregister(Registration) deregister} event.

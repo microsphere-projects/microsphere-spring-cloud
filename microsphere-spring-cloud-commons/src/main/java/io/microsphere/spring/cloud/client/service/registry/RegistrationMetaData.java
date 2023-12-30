@@ -2,9 +2,11 @@ package io.microsphere.spring.cloud.client.service.registry;
 
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
