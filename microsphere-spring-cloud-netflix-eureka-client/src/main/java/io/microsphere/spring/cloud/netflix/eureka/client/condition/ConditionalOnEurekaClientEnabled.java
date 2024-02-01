@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.netflix.eureka.client;
+package io.microsphere.spring.cloud.netflix.eureka.client.condition;
 
 import com.netflix.discovery.EurekaClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

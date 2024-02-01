@@ -21,7 +21,7 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import io.microsphere.spring.cloud.client.service.registry.MultipleRegistration;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
-import io.microsphere.spring.cloud.netflix.eureka.client.ConditionalOnEurekaClientEnabled;
+import io.microsphere.spring.cloud.netflix.eureka.client.condition.ConditionalOnEurekaClientEnabled;
 import io.microsphere.spring.guice.annotation.EnableGuice;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

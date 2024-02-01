@@ -24,7 +24,7 @@ import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.EurekaClientConfig;
 import com.netflix.discovery.shared.Application;
 import com.netflix.discovery.shared.Applications;
-import io.microsphere.spring.cloud.netflix.eureka.client.ConditionalOnEurekaClientEnabled;
+import io.microsphere.spring.cloud.netflix.eureka.client.condition.ConditionalOnEurekaClientEnabled;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.PointcutAdvisor;
