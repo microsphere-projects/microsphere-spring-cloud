@@ -37,7 +37,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(
         classes = {WebMvcServiceRegistryAutoConfigurationTest.class},
         properties = {
-                "microsphere.spring.cloud.simple.enabled=true"
+                "microsphere.spring.cloud.simple.enabled=true",
+                "spring.cloud.kubernetes.enabled=false",
+                "kubernetes.informer.enabled=false",
+                "kubernetes.manifests.enabled=false",
+                "kubernetes.reconciler.enabled=false"
         },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
