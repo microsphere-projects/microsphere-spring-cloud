@@ -115,6 +115,13 @@
             <scope>test</scope>
         </dependency>
 
-    </dependencies>
+        <!-- Spring Cloud Kubernetes -->
+       <dependency>
+           <groupId>org.springframework.cloud</groupId>
+           <artifactId>spring-cloud-starter-kubernetes-client-all</artifactId>
+           <scope>test</scope>
+       </dependency>
+
+   </dependencies>
 
 </project>
