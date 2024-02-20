@@ -64,6 +64,11 @@
         <!-- Microsphere -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-core-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-spring-webmvc</artifactId>
             <optional>true</optional>
         </dependency>
