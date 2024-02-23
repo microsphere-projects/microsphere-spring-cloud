@@ -10,11 +10,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>microsphere-spring-cloud-gateway</artifactId>
+    <artifactId>microsphere-spring-cloud-gateway-mvc</artifactId>
     <version>${revision}</version>
 
-    <name>Microsphere :: Spring Cloud :: Gateway Reactive Server</name>
-    <description>Microsphere Spring Cloud Gateway Reactive Server</description>
+    <name>Microsphere :: Spring Cloud :: Gateway Server MVC</name>
+    <description>Microsphere Spring Cloud Gateway Server MVC</description>
+
+    <properties>
+        <spring-cloud-gateway.version>4.1.1</spring-cloud-gateway.version>
+    </properties>
 
     <dependencies>
 
@@ -56,10 +60,11 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring Cloud Gateway -->
+        <!-- Spring Cloud Gateway Server MVC -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <artifactId>spring-cloud-starter-gateway-mvc</artifactId>
+            <version>${spring-cloud-gateway.version}</version>
         </dependency>
 
         <dependency>

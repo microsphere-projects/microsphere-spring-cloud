@@ -49,6 +49,7 @@
         <module>microsphere-spring-cloud-netflix-eureka-client</module>
         <module>microsphere-spring-cloud-openfeign</module>
         <module>microsphere-spring-cloud-gateway</module>
+        <module>microsphere-spring-cloud-gateway-mvc</module>
         <module>microsphere-spring-cloud-fault-tolerance-common</module>
         <module>microsphere-spring-cloud-fault-tolerance-tomcat</module>
         <module>microsphere-spring-cloud-actuator</module>

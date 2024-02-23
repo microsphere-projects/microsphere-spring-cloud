@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.microsphere.spring.cloud.gateway.autoconfigure.GatewayAutoConfiguration,\
+io.microsphere.spring.cloud.gateway.autoconfigure.WebEndpointMappingGatewayAutoConfiguration
