@@ -8,12 +8,7 @@ import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
-import io.microsphere.spring.cloud.openfeign.components.DecoratedContract;
-import io.microsphere.spring.cloud.openfeign.components.DecoratedDecoder;
-import io.microsphere.spring.cloud.openfeign.components.DecoratedEncoder;
-import io.microsphere.spring.cloud.openfeign.components.DecoratedErrorDecoder;
-import io.microsphere.spring.cloud.openfeign.components.DecoratedQueryMapEncoder;
-import io.microsphere.spring.cloud.openfeign.components.DecoratedRetryer;
+import io.microsphere.spring.cloud.openfeign.components.*;
 import org.springframework.beans.BeansException;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignContext;
@@ -32,6 +27,8 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     private String contextId;
 
+    private static final String CONTEXT_ID_PROPERTY_NAME = "feign.client.name";
+
     public AutoRefreshCapability(FeignClientProperties clientProperties, FeignContext feignContext, FeignComponentRegistry componentRegistry) {
         this.clientProperties = clientProperties;
         this.feignContext = feignContext;
@@ -40,8 +37,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        String contextId = applicationContext.getDisplayName().split("-")[1];
-        this.contextId = contextId;
+        this.contextId = applicationContext.getEnvironment().getProperty(CONTEXT_ID_PROPERTY_NAME);
     }
 
 
@@ -50,7 +46,9 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (retryer == null)
             return null;
 
-        DecoratedRetryer decoratedRetryer = new DecoratedRetryer(contextId, feignContext, clientProperties, retryer);
+        DecoratedRetryer decoratedRetryer = DecoratedFeignComponent.instantiate(DecoratedRetryer.class, Retryer.class,
+                contextId, feignContext, clientProperties, retryer);
+
         this.componentRegistry.register(contextId, decoratedRetryer);
         return decoratedRetryer;
     }
@@ -60,7 +58,8 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (contract == null)
             return null;
 
-        DecoratedContract decoratedContract = new DecoratedContract(contextId, feignContext, clientProperties, contract);
+        DecoratedContract decoratedContract = DecoratedFeignComponent.instantiate(DecoratedContract.class, Contract.class,
+                contextId, feignContext, clientProperties, contract);
         this.componentRegistry.register(contextId, decoratedContract);
         return decoratedContract;
     }
@@ -70,7 +69,8 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (decoder == null)
             return null;
 
-        DecoratedDecoder decoratedDecoder = new DecoratedDecoder(contextId, feignContext, clientProperties, decoder);
+        DecoratedDecoder decoratedDecoder = DecoratedFeignComponent.instantiate(DecoratedDecoder.class, Decoder.class,
+                contextId, feignContext, clientProperties, decoder);
         this.componentRegistry.register(contextId, decoratedDecoder);
         return decoratedDecoder;
     }
@@ -80,7 +80,8 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (encoder == null)
             return null;
 
-        DecoratedEncoder decoratedEncoder = new DecoratedEncoder(contextId, feignContext, clientProperties, encoder);
+        DecoratedEncoder decoratedEncoder = DecoratedFeignComponent.instantiate(DecoratedEncoder.class, Encoder.class,
+                contextId, feignContext, clientProperties, encoder);
         this.componentRegistry.register(contextId, decoratedEncoder);
         return decoratedEncoder;
     }
@@ -90,7 +91,8 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (decoder == null)
             return null;
 
-        DecoratedErrorDecoder decoratedErrorDecoder = new DecoratedErrorDecoder(contextId, feignContext, clientProperties, decoder);
+        DecoratedErrorDecoder decoratedErrorDecoder = DecoratedFeignComponent.instantiate(DecoratedErrorDecoder.class, ErrorDecoder.class,
+                contextId, feignContext, clientProperties, decoder);
         this.componentRegistry.register(contextId, decoratedErrorDecoder);
         return decoratedErrorDecoder;
     }
@@ -105,7 +107,9 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (queryMapEncoder == null)
             return null;
 
-        DecoratedQueryMapEncoder decoratedQueryMapEncoder = new DecoratedQueryMapEncoder(contextId, feignContext, clientProperties, queryMapEncoder);
+        DecoratedQueryMapEncoder decoratedQueryMapEncoder = DecoratedFeignComponent.instantiate(DecoratedQueryMapEncoder.class, QueryMapEncoder.class,
+                contextId, feignContext, clientProperties, queryMapEncoder);
+
         this.componentRegistry.register(contextId, decoratedQueryMapEncoder);
         return decoratedQueryMapEncoder;
     }

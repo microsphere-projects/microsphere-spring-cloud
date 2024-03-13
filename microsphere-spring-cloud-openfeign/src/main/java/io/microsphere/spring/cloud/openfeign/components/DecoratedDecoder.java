@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-public class DecoratedDecoder extends DecoratedComponent<Decoder> implements Decoder {
+public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implements Decoder {
 
     public DecoratedDecoder(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, Decoder delegate) {
         super(contextId, feignContext, clientProperties, delegate);

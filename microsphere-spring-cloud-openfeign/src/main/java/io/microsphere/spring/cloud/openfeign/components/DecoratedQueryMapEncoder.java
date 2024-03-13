@@ -10,7 +10,7 @@ import java.util.Map;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-public class DecoratedQueryMapEncoder extends DecoratedComponent<QueryMapEncoder> implements QueryMapEncoder {
+public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEncoder> implements QueryMapEncoder {
 
     public DecoratedQueryMapEncoder(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, QueryMapEncoder delegate) {
         super(contextId, feignContext, clientProperties, delegate);

@@ -11,7 +11,7 @@ import java.util.List;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-public class DecoratedContract extends DecoratedComponent<Contract> implements Contract {
+public class DecoratedContract extends DecoratedFeignComponent<Contract> implements Contract {
 
     public DecoratedContract(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, Contract delegate) {
         super(contextId, feignContext, clientProperties, delegate);
