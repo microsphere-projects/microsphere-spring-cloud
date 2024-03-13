@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FeignContext;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-public class DecoratedErrorDecoder extends DecoratedComponent<ErrorDecoder> implements ErrorDecoder {
+public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder> implements ErrorDecoder {
 
     public DecoratedErrorDecoder(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, ErrorDecoder delegate) {
         super(contextId, feignContext, clientProperties, delegate);

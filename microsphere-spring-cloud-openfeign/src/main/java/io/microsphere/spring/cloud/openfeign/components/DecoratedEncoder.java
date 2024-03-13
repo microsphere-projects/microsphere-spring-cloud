@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-public class DecoratedEncoder extends DecoratedComponent<Encoder> implements Encoder {
+public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implements Encoder {
 
     public DecoratedEncoder(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, Encoder delegate) {
         super(contextId, feignContext, clientProperties, delegate);

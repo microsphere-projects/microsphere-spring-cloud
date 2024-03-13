@@ -25,4 +25,9 @@ public class FeignClientAutoRefreshConfiguration {
         return new FeignComponentRegistry(clientProperties.getDefaultConfig(), beanFactory);
     }
 
+    @Bean
+    public FeignClientSpecificationPostProcessor feignClientSpecificationPostProcessor() {
+        return new FeignClientSpecificationPostProcessor();
+    }
+
 }
