@@ -70,7 +70,7 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
             ReflectionUtils.makeAccessible(method);
             returnValue = method.invoke(serviceRegistration);
         } catch (Throwable e) {
-            logger.error("执行方法：" + methodName + "失败", e);
+            logger.error("Invocation on method ：" + methodName + "is failed", e);
         }
         return returnValue;
     }
