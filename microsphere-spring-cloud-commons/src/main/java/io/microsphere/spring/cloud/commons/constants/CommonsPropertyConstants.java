@@ -16,6 +16,9 @@
  */
 package io.microsphere.spring.cloud.commons.constants;
 
+import org.springframework.cloud.client.CommonsClientAutoConfiguration;
+import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationAutoConfiguration;
+
 import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
 import static io.microsphere.constants.PropertyConstants.MICROSPHERE_PROPERTY_NAME_PREFIX;
 
@@ -39,9 +42,18 @@ public interface CommonsPropertyConstants {
 
     /**
      * The property name for Spring Cloud Service Registry Auto-Registration Feature
+     *
+     * @see AutoServiceRegistrationAutoConfiguration
      */
     String SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME = SERVICE_REGISTRY_PROPERTY_PREFIX + "auto-registration." + ENABLED_PROPERTY_NAME;
 
+    /**
+     * The property name for enabling Spring Cloud Features
+     *
+     * @see CommonsClientAutoConfiguration.ActuatorConfiguration
+     */
+    String FEATURES_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "features." + ENABLED_PROPERTY_NAME;
+    
     /**
      * The property name prefix of Microsphere Cloud
      */
