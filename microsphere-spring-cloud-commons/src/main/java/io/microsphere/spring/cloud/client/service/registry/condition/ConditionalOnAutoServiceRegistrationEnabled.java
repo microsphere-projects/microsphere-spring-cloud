@@ -44,15 +44,6 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
 public @interface ConditionalOnAutoServiceRegistrationEnabled {
 
     /**
-     * The string representation of the expected value for the properties. If not
-     * specified, the property must <strong>not</strong> be equal to {@code false}.
-     *
-     * @return the expected value
-     */
-    @AliasFor(annotation = ConditionalOnProperty.class, attribute = "havingValue")
-    String havingValue() default "";
-
-    /**
      * Specify if the condition should match if the property is not set. Defaults to
      * {@code true}.
      *
