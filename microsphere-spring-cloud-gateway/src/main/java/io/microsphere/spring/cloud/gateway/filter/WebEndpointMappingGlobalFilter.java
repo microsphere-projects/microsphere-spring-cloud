@@ -224,6 +224,7 @@ public class WebEndpointMappingGlobalFilter implements GlobalFilter, Application
                 getSubscribedServices(route, config)
                         .stream()
                         .map(discoveryClient::getInstances)
+                        // TODO Add ZonePreferenceFilter
                         .flatMap(List::stream)
                         .forEach(serviceInstance -> {
                             getWebEndpointMappings(serviceInstance)
