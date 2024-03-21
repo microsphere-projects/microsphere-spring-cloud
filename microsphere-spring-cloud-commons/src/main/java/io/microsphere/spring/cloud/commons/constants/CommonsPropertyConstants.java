@@ -72,7 +72,7 @@ public interface CommonsPropertyConstants {
     String MULTIPLE_REGISTRATION_DEFAULT_REGISTRATION_PROPERTY_NAME = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "default-registration.type";
 
     String MULTIPLE_REGISTRATION_DEFAULT_REGISTRY_PROPERTY_NAME = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "default-service-registry.type";
-    
+
     /**
      * The property name for Composite Service Registry Enabled Feature
      */
