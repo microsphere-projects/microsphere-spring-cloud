@@ -16,7 +16,11 @@
  */
 package io.microsphere.spring.cloud.client.condition;
 
+import io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.client.CommonsClientAutoConfiguration;
+import org.springframework.cloud.client.actuator.FeaturesEndpoint;
+import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistration;
 import org.springframework.core.annotation.AliasFor;
 
@@ -27,14 +31,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.FEATURES_ENABLED_PROPERTY_NAME;
-import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME;
 
 /**
  * The conditional annotation meta-annotates {@link ConditionalOnProperty @ConditionalOnProperty} for
- * {@link AutoServiceRegistration Service Registry Auto-Registration} enabled.
+ * {@link FeaturesEndpoint @FeaturesEndpoint} enabled.
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see AutoServiceRegistration
+ * @see CommonsClientAutoConfiguration.ActuatorConfiguration
+ * @see FeaturesEndpoint
+ * @see HasFeatures
+ * @see CommonsPropertyConstants#FEATURES_ENABLED_PROPERTY_NAME
  * @see ConditionalOnProperty
  * @since 1.0.0
  */
