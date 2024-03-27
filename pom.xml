@@ -61,8 +61,6 @@
         <module>microsphere-spring-cloud-dependencies</module>
         <module>microsphere-spring-cloud-commons</module>
         <module>microsphere-spring-cloud-openfeign</module>
-        <module>microsphere-spring-cloud-gateway</module>
-        <module>microsphere-spring-cloud-gateway-mvc</module>
         <module>microsphere-spring-cloud-fault-tolerance-common</module>
         <module>microsphere-spring-cloud-fault-tolerance-tomcat</module>
     </modules>
