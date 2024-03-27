@@ -23,7 +23,7 @@
             <artifactId>aspectjweaver</artifactId>
         </dependency>
 
-        <!-- Spring Boot -->
+        <!-- Spring Boot Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -54,7 +54,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring Cloud -->
+        <!-- Spring Cloud Dependencies -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-commons</artifactId>
@@ -67,7 +67,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Microsphere -->
+        <!-- Microsphere Dependencies -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-core-spring-boot-starter</artifactId>
