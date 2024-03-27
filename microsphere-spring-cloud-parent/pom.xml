@@ -21,33 +21,18 @@
     <properties>
         <!-- BOM versions -->
         <spring-boot.version>2.7.18</spring-boot.version>
-        <spring-cloud.version>3.1.8</spring-cloud.version>
-        <spring-cloud-commons.version>3.1.7</spring-cloud-commons.version>
-        <spring-cloud-netflix.version>3.1.7</spring-cloud-netflix.version>
-        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
         <spring-cloud-dependencies.version>2021.0.8</spring-cloud-dependencies.version>
-        <spring-cloud-kubernetes-dependencies.version>2.1.9</spring-cloud-kubernetes-dependencies.version>
-        <!-- Third-party versions -->
-        <mybatis-starter.version>3.0.1</mybatis-starter.version>
-        <mybatis.version>3.5.11</mybatis.version>
+        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Spring Boot Dependencies -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
-            <!-- Spring Cloud Dependencies -->
+            <!-- Microsphere Spring Boot Dependencies -->
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-build-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-spring-boot-dependencies</artifactId>
+                <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -61,35 +46,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-kubernetes-dependencies</artifactId>
-                <version>${spring-cloud-kubernetes-dependencies.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-context</artifactId>
-                <version>${spring-cloud-commons.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-commons</artifactId>
-                <version>${spring-cloud-commons.version}</version>
-            </dependency>
-
-            <!-- Spring Cloud Netflix Dependencies -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-netflix-dependencies</artifactId>
-                <version>${spring-cloud-netflix.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- Spring Cloud Alibaba Dependencies -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -99,49 +55,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Microsphere Spring Boot Dependencies -->
-            <dependency>
-                <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-spring-boot-dependencies</artifactId>
-                <version>${revision}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-starter.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <profiles>
-        <profile>
-            <id>spring-boot-2.6</id>
-            <properties>
-                <spring-boot.version>2.6.16</spring-boot.version>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>spring-boot-2.5</id>
-            <properties>
-                <spring-boot.version>2.5.14</spring-boot.version>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>spring-boot-2.4</id>
-            <properties>
-                <spring-boot.version>2.4.13</spring-boot.version>
-            </properties>
-        </profile>
-    </profiles>
 </project>
