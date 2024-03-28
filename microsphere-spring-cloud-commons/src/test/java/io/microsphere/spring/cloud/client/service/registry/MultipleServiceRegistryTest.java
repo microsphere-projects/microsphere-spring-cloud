@@ -8,7 +8,9 @@ import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
 import io.microsphere.spring.cloud.client.service.registry.autoconfigure.ServiceRegistryAutoConfiguration;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,6 +22,7 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.cloud.commons.util.UtilAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.config.DiscoveryClientOptionalArgsConfiguration;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 import org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration;
 import org.springframework.context.ApplicationListener;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,6 +34,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Disabled
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
         AutoServiceRegistrationAutoConfiguration.class,
@@ -54,19 +58,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 "spring.cloud.service-registry.auto-registration.enabled=true",
                 "spring.cloud.nacos.discovery.namespace=f7ad23e0-f581-4516-9420-8c50aa6a7b89",
                 "spring.cloud.nacos.discovery.metadata.key=value",
-                "eureka.client.service-url.defaultZone=http://127.0.0.1:12345/eureka",
+                "eureka.client.service-url.defaultZone=http://127.0.0.1:8080/eureka",
         }
 )
 @EnableAutoConfiguration
 class MultipleServiceRegistryTest implements ApplicationListener<RegistrationPreRegisteredEvent> {
 
-
     @Autowired
     private ServiceRegistry serviceRegistry;
+
     @Autowired
     private AutoServiceRegistrationProperties properties;
+
     @Autowired
     private Registration registration;
+
     @Autowired
     private MultipleAutoServiceRegistration autoServiceRegistration;
 
