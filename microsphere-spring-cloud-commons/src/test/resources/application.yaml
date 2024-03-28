@@ -2,7 +2,6 @@ spring:
   application:
     name: microsphere-spring-cloud-commons-application
 
-
   # default disable all
   cloud:
     nacos:
@@ -13,6 +12,13 @@ spring:
       enabled: false
     consul:
       enabled: false
+    kubernetes:
+      enabled: false
+      config:
+        enabled: false
+        enableApi: false
+      secrets:
+        enabled: false
 
 eureka:
   client:
@@ -63,3 +69,12 @@ spring:
       enabled: true
       host: 127.0.0.1
       port: 8500
+
+
+---
+spring:
+  profiles: kubernetes
+
+  cloud:
+    kubernetes:
+      enabled: true
