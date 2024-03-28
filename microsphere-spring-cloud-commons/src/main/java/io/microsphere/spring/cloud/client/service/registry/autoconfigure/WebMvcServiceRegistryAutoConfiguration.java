@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -52,6 +53,10 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(name = {
+        "io.microsphere.spring.web.metadata.WebEndpointMapping",
+        "io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent"
+})
 @ConditionalOnBean(Registration.class)
 @ConditionalOnWebApplication(type = SERVLET)
 @ConditionalOnAutoServiceRegistrationEnabled
