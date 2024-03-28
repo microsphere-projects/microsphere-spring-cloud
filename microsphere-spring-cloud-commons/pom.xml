@@ -92,47 +92,88 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring Cloud Netflix Eureka Client -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-netflix-eureka-client</artifactId>
-            <scope>test</scope>
-        </dependency>
+    </dependencies>
 
-        <dependency>
-            <groupId>com.netflix.eureka</groupId>
-            <artifactId>eureka-client</artifactId>
-            <scope>test</scope>
-        </dependency>
+    <profiles>
+        <profile>
+            <id>eureka-client</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <!-- Spring Cloud Netflix Eureka Client -->
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-eureka-client</artifactId>
+                    <scope>test</scope>
+                </dependency>
 
-        <!-- Spring Cloud Consul -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
-            <scope>test</scope>
-        </dependency>
+                <dependency>
+                    <groupId>com.netflix.eureka</groupId>
+                    <artifactId>eureka-client</artifactId>
+                    <scope>test</scope>
+                </dependency>
 
-        <!-- Spring Cloud Zookeeper -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-            <scope>test</scope>
-        </dependency>
+                <!-- Spring Cloud Netflix Eureka Server -->
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-eureka-server</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
 
-        <!-- Spring Cloud Nacos -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <profile>
+            <id>nacos</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <!-- Spring Cloud Nacos -->
+                <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
 
-        <!-- Spring Cloud Kubernetes -->
-       <dependency>
-           <groupId>org.springframework.cloud</groupId>
-           <artifactId>spring-cloud-starter-kubernetes-client-all</artifactId>
-           <scope>test</scope>
-       </dependency>
+        <profile>
+            <id>zookeeper</id>
+            <dependencies>
+                <!-- Spring Cloud Zookeeper -->
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
 
-   </dependencies>
+        <profile>
+            <id>consul</id>
+            <dependencies>
+                <!-- Spring Cloud Consul -->
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>kubernetes</id>
+            <dependencies>
+                <!-- Spring Cloud Kubernetes -->
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-kubernetes-client-all</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+    </profiles>
 
 </project>
