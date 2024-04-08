@@ -29,18 +29,6 @@
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-spring-cloud-fault-tolerance-common</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-spring-cloud-fault-tolerance-tomcat</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.github.microsphere-projects</groupId>
                 <artifactId>microsphere-spring-cloud-openfeign</artifactId>
                 <version>${revision}</version>
             </dependency>
