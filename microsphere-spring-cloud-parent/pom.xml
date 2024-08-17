@@ -20,9 +20,7 @@
 
     <properties>
         <!-- BOM versions -->
-        <spring-boot.version>2.7.18</spring-boot.version>
-        <spring-cloud-dependencies.version>2021.0.8</spring-cloud-dependencies.version>
-        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+        <microsphere-spring-boot.version>0.0.2</microsphere-spring-boot.version>
     </properties>
 
     <dependencyManagement>
@@ -32,7 +30,7 @@
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
                 <artifactId>microsphere-spring-boot-dependencies</artifactId>
-                <version>${revision}</version>
+                <version>${microsphere-spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -46,6 +44,7 @@
                 <scope>import</scope>
             </dependency>
 
+
             <!-- Spring Cloud Alibaba Dependencies -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -57,4 +56,68 @@
 
         </dependencies>
     </dependencyManagement>
+
+    <profiles>
+
+        <profile>
+            <id>spring-cloud-finchley</id>
+            <properties>
+                <spring-cloud-dependencies.version>Finchley.SR4</spring-cloud-dependencies.version>
+                <spring-cloud-alibaba.version>2.0.4.RELEASE</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-greenwich</id>
+            <properties>
+                <spring-cloud-dependencies.version>Greenwich.SR6</spring-cloud-dependencies.version>
+                <spring-cloud-alibaba.version>2.1.4.RELEASE</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-hoxton</id>
+            <properties>
+                <spring-cloud-dependencies.version>Hoxton.SR12</spring-cloud-dependencies.version>
+                <spring-cloud-alibaba.version>2.2.9.RELEASE</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-2020</id>
+            <properties>
+                <spring-cloud-dependencies.version>2020.0.6</spring-cloud-dependencies.version>
+                <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-2021</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring-cloud-dependencies.version>2021.0.9</spring-cloud-dependencies.version>
+                <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-2022</id>
+            <properties>
+                <java.version>17</java.version>
+                <spring-cloud-dependencies.version>2022.0.5</spring-cloud-dependencies.version>
+                <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-2023</id>
+            <properties>
+                <java.version>17</java.version>
+                <spring-cloud-dependencies.version>2023.0.3</spring-cloud-dependencies.version>
+                <spring-cloud-alibaba.version>2023.0.1.2</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+    </profiles>
 </project>
