@@ -23,7 +23,7 @@
         <spring-boot.version>2.7.18</spring-boot.version>
         <spring-cloud.version>2021.0.9</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
-        <microsphere-spring-boot.version>0.0.2</microsphere-spring-boot.version>
+        <microsphere-spring-boot.version>0.1.0</microsphere-spring-boot.version>
         <testcontainers.version>1.20.1</testcontainers.version>
     </properties>
 
