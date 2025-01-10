@@ -8,6 +8,8 @@ spring:
       discovery:
         enabled: false
         register-enabled: false
+      config:
+        import-check.enabled: false
     zookeeper:
       enabled: false
     consul:
