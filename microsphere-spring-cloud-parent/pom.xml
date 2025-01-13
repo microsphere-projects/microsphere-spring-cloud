@@ -126,9 +126,6 @@
         <!-- Spring Cloud Netflix Eureka -->
         <profile>
             <id>spring-cloud-netflix-eureka</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.springframework.cloud</groupId>
