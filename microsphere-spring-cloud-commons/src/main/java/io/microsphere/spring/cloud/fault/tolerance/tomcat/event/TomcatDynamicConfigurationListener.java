@@ -85,7 +85,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
     }
 
     private boolean isBeanPresent(Class<?> beanType) {
-        return context.getBeanProvider(ConfigurationPropertiesRebinder.class).getIfAvailable() != null;
+        return context.getBeanProvider(beanType).getIfAvailable() != null;
     }
 
     @Override
