@@ -24,15 +24,11 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
 
     private void injectAutoRefreshCapability(FeignClientSpecification defaultSpecification) {
         Class<?>[] originConfigurationClasses = defaultSpecification.getConfiguration();
-        if (originConfigurationClasses != null) {
-            int length = originConfigurationClasses.length;
-            Class<?>[] replacedConfigurationClasses = new Class<?>[originConfigurationClasses.length + 1];
-            //copy origin and inject AutoRefreshCapability
-            System.arraycopy(originConfigurationClasses, 0, replacedConfigurationClasses, 0, length);
-            replacedConfigurationClasses[length] = AUTO_REFRESH_CAPABILITY;
-            defaultSpecification.setConfiguration(replacedConfigurationClasses);
-        } else {
-            defaultSpecification.setConfiguration(new Class<?>[]{AUTO_REFRESH_CAPABILITY});
-        }
+        int length = originConfigurationClasses.length;
+        Class<?>[] replacedConfigurationClasses = new Class<?>[originConfigurationClasses.length + 1];
+        //copy origin and inject AutoRefreshCapability
+        System.arraycopy(originConfigurationClasses, 0, replacedConfigurationClasses, 0, length);
+        replacedConfigurationClasses[length] = AUTO_REFRESH_CAPABILITY;
+        defaultSpecification.setConfiguration(replacedConfigurationClasses);
     }
 }
