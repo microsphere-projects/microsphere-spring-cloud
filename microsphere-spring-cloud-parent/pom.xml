@@ -45,6 +45,15 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- Spring Cloud Alibaba Dependencies -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- Microsphere Spring Boot Dependencies -->
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
@@ -54,14 +63,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Spring Cloud Alibaba Dependencies -->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-alibaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
             <!-- Testcontainers Dependencies -->
             <dependency>
