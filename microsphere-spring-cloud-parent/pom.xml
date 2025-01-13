@@ -20,9 +20,6 @@
 
     <properties>
         <!-- BOM versions -->
-        <spring-boot.version>2.7.18</spring-boot.version>
-        <spring-cloud.version>2021.0.9</spring-cloud.version>
-        <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
         <microsphere-spring-boot.version>0.1.1</microsphere-spring-boot.version>
         <testcontainers.version>1.20.1</testcontainers.version>
     </properties>
@@ -103,7 +100,7 @@
             <properties>
                 <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
                 <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
-                <spring-cloud-alibaba.version>2.2.9.RELEASE</spring-cloud-alibaba.version>
+                <spring-cloud-alibaba.version>2.2.10</spring-cloud-alibaba.version>
             </properties>
         </profile>
 
@@ -111,7 +108,7 @@
             <id>spring-cloud-2020</id>
             <properties>
                 <spring-boot.version>2.4.13</spring-boot.version>
-                <spring-cloud.version>2020.0.6</spring-cloud.version>
+                <spring-cloud.version>2020.0.5</spring-cloud.version>
                 <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
             </properties>
         </profile>
@@ -121,6 +118,11 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <spring-boot.version>2.6.15</spring-boot.version>
+                <spring-cloud.version>2021.0.9</spring-cloud.version>
+                <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
+            </properties>
         </profile>
 
         <!-- Spring Cloud Netflix Eureka -->
