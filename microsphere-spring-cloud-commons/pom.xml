@@ -99,6 +99,25 @@
             <scope>test</scope>
         </dependency>
 
-    </dependencies>
+        <!-- Netflix Eureka Client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-netflix-eureka-client</artifactId>
+            <scope>test</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>com.netflix.eureka</groupId>
+            <artifactId>eureka-client</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Alibaba Nacos Discovery -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
 </project>
