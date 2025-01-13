@@ -16,7 +16,7 @@
  */
 package io.microsphere.spring.cloud.fault.tolerance.tomcat.event;
 
-import io.microsphere.spring.util.PropertySourcesUtils;
+
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.ProtocolHandler;
@@ -38,7 +38,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.microsphere.spring.boot.context.properties.bind.util.BindUtils.bind;
-import static io.microsphere.spring.util.EnvironmentUtils.getProperties;
+import static io.microsphere.spring.core.env.EnvironmentUtils.getProperties;
+import static io.microsphere.spring.core.env.PropertySourcesUtils.getSubProperties;
 import static io.microsphere.util.Configurer.configure;
 
 /**
@@ -104,7 +105,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
     }
 
     private ServerProperties getCurrentServerProperties(ConfigurableEnvironment environment) {
-        Map<String, Object> properties = PropertySourcesUtils.getSubProperties(environment, SERVER_PROPERTIES_PREFIX);
+        Map<String, Object> properties = getSubProperties(environment, SERVER_PROPERTIES_PREFIX);
         return bind(properties, "", ServerProperties.class);
     }
 
