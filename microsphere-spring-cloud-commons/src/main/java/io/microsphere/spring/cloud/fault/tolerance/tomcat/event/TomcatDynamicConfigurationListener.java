@@ -17,12 +17,12 @@
 package io.microsphere.spring.cloud.fault.tolerance.tomcat.event;
 
 
+import io.microsphere.logging.Logger;
+import io.microsphere.logging.LoggerFactory;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
