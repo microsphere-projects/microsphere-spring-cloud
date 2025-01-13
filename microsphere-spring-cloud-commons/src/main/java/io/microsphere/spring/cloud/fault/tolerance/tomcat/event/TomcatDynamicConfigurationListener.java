@@ -91,13 +91,17 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
         if (!isSourceFrom(event)) {
-            logger.debug("Current context[id : '{}'] receives the other changed property names : {}", context.getId(), event.getKeys());
+            if(logger.isTraceEnabled()) {
+                logger.trace("Current context[id : '{}'] receives the other changed property names : {}", context.getId(), event.getKeys());
+            }
             return;
         }
 
         Set<String> serverPropertyNames = filterServerPropertyNames(event);
         if (serverPropertyNames.isEmpty()) {
-            logger.debug("Current context[id : '{}'] does not receive the property change of ServerProperties, keys : {}", context.getId(), event.getKeys());
+            if(logger.isTraceEnabled()) {
+                logger.trace("Current context[id : '{}'] does not receive the property change of ServerProperties, keys : {}", context.getId(), event.getKeys());
+            }
             return;
         }
 
@@ -123,7 +127,9 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
     private void configureTomcatIfChanged(Set<String> serverPropertyNames) {
         ServerProperties refreshableServerProperties = getRefreshableServerProperties(serverPropertyNames);
-        logger.debug("The ServerProperties property is changed to: {}", getProperties(environment, serverPropertyNames));
+        if(logger.isTraceEnabled()) {
+            logger.debug("The ServerProperties property is changed to: {}", getProperties(environment, serverPropertyNames));
+        }
         configureConnector(refreshableServerProperties);
         // Reset current ServerProperties
         initCurrentServerProperties();

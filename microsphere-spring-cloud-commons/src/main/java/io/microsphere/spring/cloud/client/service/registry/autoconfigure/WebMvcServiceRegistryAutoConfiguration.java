@@ -104,8 +104,8 @@ public class WebMvcServiceRegistryAutoConfiguration {
                     || isDispatcherServletMapping(mapping, patterns)
                     || isActuatorWebEndpointMapping(patterns)
             ) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("The '{}' was removed", mapping);
+                if (logger.isTraceEnabled()) {
+                    logger.trace("The '{}' was removed", mapping);
                 }
                 iterator.remove();
             }
