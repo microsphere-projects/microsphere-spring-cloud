@@ -1,64 +1,23 @@
 package io.microsphere.spring.cloud.openfeign.encoder;
 
-import io.microsphere.spring.cloud.openfeign.BaseClient;
+import feign.codec.Encoder;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-public class EncoderChangedTest extends BaseTest {
+@SpringBootTest(classes = EncoderChangedTest.class)
+public class EncoderChangedTest extends BaseTest<Encoder> {
 
-    @Autowired
-    private Environment environment;
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
-
-    @Autowired
-    private BaseClient baseClient;
-
-    @Test
-    public void testEncoderChange() {
-        try {
-            baseClient.echo("aaa");
-
-        } catch (Exception ignored) {
-        }
-        applyEnvironmentChange();
-        try {
-            baseClient.echo("bbb");
-        } catch (Exception ignored) {
-
-        }
+    @Override
+    protected String afterTestComponentConfigKey() {
+        return "feign.client.config.my-client.encoder";
     }
 
-    private void applyEnvironmentChange() {
-        Set<String> keys = Collections.singleton("feign.client.config.aaa.encoder");
-        MutablePropertySources propertySources = ((ConfigurableEnvironment)this.environment).getPropertySources();
-        Map<String, Object> map = new HashMap<>();
-        System.out.println("替换encoder: BEncoder");
-        map.put("feign.client.config.aaa.encoder", BEncoder.class);
-        propertySources.addFirst(new MapPropertySource("addition", map));
-
-        EnvironmentChangeEvent event = new EnvironmentChangeEvent(keys);
-
-        triggerRefreshEvent();
-
-        this.eventPublisher.publishEvent(event);
+    @Override
+    protected Class<? extends Encoder> afterTestComponent() {
+        return BEncoder.class;
     }
-
-
 }
