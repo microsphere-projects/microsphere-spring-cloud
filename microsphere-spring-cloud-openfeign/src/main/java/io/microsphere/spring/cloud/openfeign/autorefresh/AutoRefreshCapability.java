@@ -92,6 +92,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         return decoratedEncoder;
     }
 
+    @Override
     public ErrorDecoder enrich(ErrorDecoder decoder) {
         if (decoder == null)
             return null;

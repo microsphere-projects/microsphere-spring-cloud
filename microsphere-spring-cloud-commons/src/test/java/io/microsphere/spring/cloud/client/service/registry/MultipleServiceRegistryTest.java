@@ -3,6 +3,7 @@ package io.microsphere.spring.cloud.client.service.registry;
 import com.alibaba.cloud.nacos.NacosServiceAutoConfiguration;
 import com.alibaba.cloud.nacos.discovery.NacosDiscoveryAutoConfiguration;
 import com.alibaba.cloud.nacos.registry.NacosServiceRegistryAutoConfiguration;
+import com.alibaba.cloud.nacos.util.UtilIPv6AutoConfiguration;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
 import io.microsphere.spring.cloud.client.service.registry.autoconfigure.ServiceRegistryAutoConfiguration;
@@ -41,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         NacosServiceRegistryAutoConfiguration.class,
         NacosServiceAutoConfiguration.class,
         NacosDiscoveryAutoConfiguration.class,
+        UtilIPv6AutoConfiguration.class,
         UtilAutoConfiguration.class,
         MultipleServiceRegistryTest.class,
         ServiceRegistryAutoConfiguration.class,
