@@ -4,6 +4,7 @@ import io.microsphere.spring.cloud.openfeign.BaseClient;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -20,6 +21,7 @@ import java.util.Set;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
+@EnableAutoConfiguration
 public class EncoderChangedTest extends BaseTest {
 
     @Autowired

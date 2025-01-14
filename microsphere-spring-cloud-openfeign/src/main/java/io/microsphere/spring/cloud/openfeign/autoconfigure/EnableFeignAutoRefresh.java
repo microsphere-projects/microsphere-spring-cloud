@@ -15,6 +15,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Documented
-@Import({FeignClientAutoRefreshConfiguration.class})
+@Import(value = {EnableFeignAutoRefresh.Marker.class})
 public @interface EnableFeignAutoRefresh {
+
+    class Marker {
+
+    }
 }
