@@ -28,7 +28,7 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SERVICE_REGISTRY_PROPERTY_PREFIX;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SPRING_CLOUD_PROPERTY_PREFIX;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * {@link CommonsPropertyConstants} Test
