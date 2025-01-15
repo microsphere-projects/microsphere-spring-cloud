@@ -46,12 +46,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         UtilAutoConfiguration.class,
         SimpleDiscoveryClientAutoConfiguration.class,
         CompositeDiscoveryClientAutoConfiguration.class,
-        DiscoveryClientAutoConfiguration.class,
+        UnionDiscoveryClient.class,
         UnionDiscoveryClientTest.class
 })
 @TestPropertySource(
         properties = {
-                "microsphere.spring.cloud.client.discovery.mode=union",
                 "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
                 "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
                 "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
