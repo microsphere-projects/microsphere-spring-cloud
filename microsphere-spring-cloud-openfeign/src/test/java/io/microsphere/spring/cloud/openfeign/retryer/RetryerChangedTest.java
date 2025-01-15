@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.retryer;
 
 import feign.Retryer;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @since 1.0
  */
 @SpringBootTest(classes = RetryerChangedTest.class)
+@EnableAutoConfiguration
 public class RetryerChangedTest extends BaseTest<Retryer> {
 
     @Override
