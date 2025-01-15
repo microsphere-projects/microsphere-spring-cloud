@@ -3,6 +3,7 @@ package io.microsphere.spring.cloud.openfeign.requestInterceptor;
 import feign.RequestInterceptor;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  * @since 0.0.1
  */
 @SpringBootTest(classes = RequestInterceptorChangedTest.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@EnableAutoConfiguration
 public class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> {
 
     @Override
@@ -23,7 +25,6 @@ public class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> 
     protected Class<? extends RequestInterceptor> afterTestComponent() {
         return BRequestInterceptor.class;
     }
-
 
 
 }

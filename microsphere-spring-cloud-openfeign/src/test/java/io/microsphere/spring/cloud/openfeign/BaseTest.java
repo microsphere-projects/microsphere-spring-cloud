@@ -35,7 +35,6 @@ import java.util.Set;
         "feign.client.config.default.default-request-headers.app=my-app",
         "feign.client.config.default.default-query-parameters.sign=my-sign",
 })
-@EnableAutoConfiguration
 @ComponentScan(basePackages = "io.microsphere.spring.cloud.openfeign")
 @EnableFeignClients(clients = BaseClient.class)
 @EnableFeignAutoRefresh

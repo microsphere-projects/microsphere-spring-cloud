@@ -18,6 +18,7 @@ package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import io.microsphere.spring.webmvc.annotation.EnableWebMvcExtension;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         classes = {WebMvcServiceRegistryAutoConfigurationTest.class},
         properties = {
                 "microsphere.spring.cloud.simple.enabled=true",
+                "spring.cloud.service-registry.auto-registration.enabled=true",
                 "spring.cloud.kubernetes.enabled=false",
                 "kubernetes.informer.enabled=false",
                 "kubernetes.manifests.enabled=false",

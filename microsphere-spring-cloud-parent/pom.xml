@@ -20,19 +20,18 @@
 
     <properties>
         <!-- BOM versions -->
-        <spring-boot.version>2.7.18</spring-boot.version>
-        <spring-cloud-dependencies.version>2021.0.8</spring-cloud-dependencies.version>
-        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+        <microsphere-spring-boot.version>0.1.1</microsphere-spring-boot.version>
+        <testcontainers.version>1.20.1</testcontainers.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
 
-            <!-- Microsphere Spring Boot Dependencies -->
+            <!-- Spring Boot Dependencies -->
             <dependency>
-                <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-spring-boot-dependencies</artifactId>
-                <version>${revision}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -41,7 +40,16 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud-dependencies.version}</version>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Microsphere Spring Boot Dependencies -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-spring-boot-dependencies</artifactId>
+                <version>${microsphere-spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -55,6 +63,145 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- Testcontainers Dependencies -->
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
+
+    <profiles>
+
+        <profile>
+            <id>spring-cloud-hoxton</id>
+            <properties>
+                <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
+                <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+                <spring-cloud-alibaba.version>2.2.10</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-2020</id>
+            <properties>
+                <spring-boot.version>2.4.13</spring-boot.version>
+                <spring-cloud.version>2020.0.5</spring-cloud.version>
+                <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-2021</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring-boot.version>2.6.15</spring-boot.version>
+                <spring-cloud.version>2021.0.9</spring-cloud.version>
+                <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <!-- Spring Cloud Netflix Eureka -->
+        <profile>
+            <id>spring-cloud-netflix-eureka</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-eureka-client</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>com.netflix.eureka</groupId>
+                    <artifactId>eureka-client</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-eureka-server</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- Spring Cloud Nacos -->
+        <profile>
+            <id>spring-cloud-alibaba-nacos</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- Spring Cloud Zookeeper -->
+        <profile>
+            <id>spring-cloud-zookeeper</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-zookeeper-config</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- Spring Cloud Consul -->
+        <profile>
+            <id>spring-cloud-consul</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-consul-config</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.testcontainers</groupId>
+                    <artifactId>consul</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- Spring Cloud Kubernetes -->
+        <profile>
+            <id>spring-cloud-kubernetes</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-kubernetes-client-all</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+    </profiles>
 </project>
