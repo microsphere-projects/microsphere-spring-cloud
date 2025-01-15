@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.errordecoder;
 
 import feign.codec.ErrorDecoder;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @since 1.0
  */
 @SpringBootTest(classes = ErrorDecoderChangedTest.class)
+@EnableAutoConfiguration
 public class ErrorDecoderChangedTest extends BaseTest<ErrorDecoder> {
 
     @Override
