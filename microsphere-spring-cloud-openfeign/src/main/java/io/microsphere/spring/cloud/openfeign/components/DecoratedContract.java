@@ -2,8 +2,8 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.Contract;
 import feign.MethodMetadata;
+import org.springframework.cloud.openfeign.FeignClientFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
-import org.springframework.cloud.openfeign.FeignContext;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class DecoratedContract extends DecoratedFeignComponent<Contract> implements Contract {
 
-    public DecoratedContract(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, Contract delegate) {
-        super(contextId, feignContext, clientProperties, delegate);
+    public DecoratedContract(String contextId, FeignClientFactory feignClientFactory, FeignClientProperties clientProperties, Contract delegate) {
+        super(contextId, feignClientFactory, clientProperties, delegate);
     }
 
     @Override

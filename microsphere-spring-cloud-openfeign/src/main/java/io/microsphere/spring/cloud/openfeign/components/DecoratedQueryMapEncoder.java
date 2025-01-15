@@ -2,8 +2,8 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.QueryMapEncoder;
 import io.microsphere.logging.Logger;
+import org.springframework.cloud.openfeign.FeignClientFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
-import org.springframework.cloud.openfeign.FeignContext;
 
 import java.lang.invoke.MethodHandle;
 import java.util.Map;
@@ -23,8 +23,8 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
 
     private static final MethodHandle getQueryMapEncoderMethodHandle = findVirtual(FeignClientProperties.FeignClientConfiguration.class, getQueryMapEncoderMethodName);
 
-    public DecoratedQueryMapEncoder(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, QueryMapEncoder delegate) {
-        super(contextId, feignContext, clientProperties, delegate);
+    public DecoratedQueryMapEncoder(String contextId, FeignClientFactory feignClientFactory, FeignClientProperties clientProperties, QueryMapEncoder delegate) {
+        super(contextId, feignClientFactory, clientProperties, delegate);
     }
 
     @Override
