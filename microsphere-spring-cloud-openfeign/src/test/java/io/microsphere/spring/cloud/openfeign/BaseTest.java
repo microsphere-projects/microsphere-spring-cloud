@@ -1,92 +1,40 @@
 package io.microsphere.spring.cloud.openfeign;
 
 import io.microsphere.spring.cloud.openfeign.autoconfigure.EnableFeignAutoRefresh;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration;
-import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
 import org.springframework.test.context.TestPropertySource;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-@TestPropertySource(properties = {
-        "spring.main.allow-bean-definition-overriding=true",
-        "feign.client.config.default.encoder=io.microsphere.spring.cloud.openfeign.encoder.AEncoder",
-        "feign.client.config.default.request-interceptors[0]=io.microsphere.spring.cloud.openfeign.requestInterceptor.ARequestInterceptor",
-        "feign.client.config.default.default-request-headers.app=my-app",
-        "feign.client.config.default.default-query-parameters.sign=my-sign",
-})
+@SpringBootTest(classes = {BaseTest.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "io.microsphere.spring.cloud.openfeign")
+@TestPropertySource(
+        properties = {
+                "spring.main.allow-bean-definition-overriding=true",
+                "feign.client.config.default.encoder=io.microsphere.spring.cloud.openfeign.encoder.AEncoder",
+                "feign.client.config.default.request-interceptors[0]=io.microsphere.spring.cloud.openfeign.requestInterceptor.ARequestInterceptor"
+        }
+)
 @EnableFeignClients(clients = BaseClient.class)
 @EnableFeignAutoRefresh
 @AutoConfigureAfter(ConfigurationPropertiesRebinderAutoConfiguration.class)
-public abstract class BaseTest<T> {
+public class BaseTest {
 
-    private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
     @Autowired
     private ApplicationEventPublisher publisher;
-    @Autowired
-    private Environment environment;
-    @Autowired
-    private BaseClient client;
-
-    protected abstract String afterTestComponentConfigKey();
-    protected abstract Class<? extends T> afterTestComponent();
-
-    public void replaceConfig() {
-        final String key = afterTestComponentConfigKey();
-        Set<String> keys = Collections.singleton(key);
-        final Class<?> className = afterTestComponent();
-        MutablePropertySources propertySources = ((ConfigurableEnvironment)this.environment).getPropertySources();
-        Map<String, Object> map = new HashMap<>();
-        log.trace("replacing config key {} with value {}", key, className.getName());
-        map.put(key, className);
-        propertySources.addFirst(new MapPropertySource("after", map));
-
-        EnvironmentChangeEvent event = new EnvironmentChangeEvent(keys);
-
-        triggerRefreshEvent();
-
-        this.publisher.publishEvent(event);
-    }
-
-    @Test
-    public void testInternal() {
-        try {
-            this.client.echo("hello", "1.0");
-
-        } catch (Exception ignored) {
-
-        }
-        replaceConfig();
-        try {
-            this.client.echo("world", "1.0");
-        } catch (Exception ignored) {
-
-        }
-
-
-    }
 
     protected void triggerRefreshEvent() {
         this.publisher.publishEvent(new RefreshEvent(new Object(), new Object(), "test"));

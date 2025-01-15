@@ -26,10 +26,22 @@
 
     <dependencies>
 
+        <!-- Microsphere Dependencies -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-boot-core</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-ribbon</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -44,45 +56,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            <optional>true</optional>
+        </dependency>
 
     </dependencies>
-
-    <profiles>
-
-        <profile>
-            <id>spring-cloud-hoxton</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-                    <optional>true</optional>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <profile>
-            <id>spring-cloud-2020</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-                    <optional>true</optional>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <profile>
-            <id>spring-cloud-2021</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-                    <optional>true</optional>
-                </dependency>
-            </dependencies>
-        </profile>
-
-    </profiles>
-
 
 </project>
