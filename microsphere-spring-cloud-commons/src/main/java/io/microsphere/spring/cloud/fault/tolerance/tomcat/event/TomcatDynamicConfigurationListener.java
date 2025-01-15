@@ -213,8 +213,8 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
             // Max HTTP Header Size
             configure("Tomcat HTTP Headers' max size(bytes)")
-                    .value(refreshableServerProperties::getMaxHttpHeaderSize)
-                    .compare(currentServerProperties::getMaxHttpHeaderSize)
+                    .value(refreshableServerProperties::getMaxHttpRequestHeaderSize)
+                    .compare(currentServerProperties::getMaxHttpRequestHeaderSize)
                     .as(this::toIntBytes)
                     .on(this::isPositive)
                     .apply(protocol::setMaxHttpHeaderSize);
