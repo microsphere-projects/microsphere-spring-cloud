@@ -20,8 +20,8 @@
 
     <properties>
         <!-- BOM versions -->
-        <microsphere-spring-boot.version>0.1.1</microsphere-spring-boot.version>
-        <testcontainers.version>1.20.1</testcontainers.version>
+        <microsphere-spring-boot.version>0.2.1</microsphere-spring-boot.version>
+        <testcontainers.version>1.20.4</testcontainers.version>
     </properties>
 
     <dependencyManagement>
@@ -78,32 +78,32 @@
     <profiles>
 
         <profile>
-            <id>spring-cloud-hoxton</id>
+            <id>spring-cloud-2022</id>
             <properties>
-                <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
-                <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
-                <spring-cloud-alibaba.version>2.2.10</spring-cloud-alibaba.version>
+                <spring-boot.version>3.0.13</spring-boot.version>
+                <spring-cloud.version>2022.0.5</spring-cloud.version>
+                <spring-cloud-alibaba.version>2022.0.0.2</spring-cloud-alibaba.version>
             </properties>
         </profile>
 
         <profile>
-            <id>spring-cloud-2020</id>
+            <id>spring-cloud-2023</id>
             <properties>
-                <spring-boot.version>2.4.13</spring-boot.version>
-                <spring-cloud.version>2020.0.5</spring-cloud.version>
-                <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+                <spring-boot.version>3.2.12</spring-boot.version>
+                <spring-cloud.version>2023.0.5</spring-cloud.version>
+                <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
             </properties>
         </profile>
 
         <profile>
-            <id>spring-cloud-2021</id>
+            <id>spring-cloud-2024</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spring-boot.version>2.6.15</spring-boot.version>
-                <spring-cloud.version>2021.0.9</spring-cloud.version>
-                <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
+                <spring-boot.version>3.4.0</spring-boot.version>
+                <spring-cloud.version>2024.0.0</spring-cloud.version>
+                <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
             </properties>
         </profile>
 

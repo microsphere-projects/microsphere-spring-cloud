@@ -52,7 +52,8 @@
     </scm>
 
     <properties>
-        <revision>0.1.1-SNAPSHOT</revision>
+        <revision>2.0.0-SNAPSHOT</revision>
+        <java.version>17</java.version>
     </properties>
 
     <modules>

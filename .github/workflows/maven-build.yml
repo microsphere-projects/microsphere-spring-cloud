@@ -10,17 +10,17 @@ name: Maven Build
 
 on:
   push:
-    branches: [ 'dev-1.x' ]
+    branches: [ 'dev' ]
   pull_request:
-    branches: [ 'dev-1.x' , 'release-1.x' ]
+    branches: [ 'main', 'dev' , 'release' ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '8', '11' , '17' , '21' ]
-        maven-profile-spring-cloud: [ 'spring-cloud-hoxton' , 'spring-cloud-2020' , 'spring-cloud-2021' ]
+        java: [ '17' , '21' ]
+        maven-profile-spring-cloud: [ 'spring-cloud-2022' , 'spring-cloud-2023' , 'spring-cloud-2024' ]
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
@@ -45,4 +45,4 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: microsphere-projects/microsphere-spring-boot
+          slug: microsphere-projects/microsphere-spring-cloud
