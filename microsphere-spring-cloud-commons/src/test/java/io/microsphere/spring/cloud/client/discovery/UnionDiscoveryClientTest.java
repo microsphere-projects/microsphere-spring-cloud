@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.discovery.autoconfigure;
+package io.microsphere.spring.cloud.client.discovery;
 
-import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
+import io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
