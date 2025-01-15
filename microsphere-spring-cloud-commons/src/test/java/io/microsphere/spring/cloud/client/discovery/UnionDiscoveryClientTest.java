@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.discovery.autoconfigure;
+package io.microsphere.spring.cloud.client.discovery;
 
-import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
+import io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +46,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         UtilAutoConfiguration.class,
         SimpleDiscoveryClientAutoConfiguration.class,
         CompositeDiscoveryClientAutoConfiguration.class,
-        DiscoveryClientAutoConfiguration.class,
+        UnionDiscoveryClient.class,
         UnionDiscoveryClientTest.class
 })
 @TestPropertySource(
         properties = {
-                "microsphere.spring.cloud.client.discovery.mode=union",
                 "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
                 "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
                 "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
