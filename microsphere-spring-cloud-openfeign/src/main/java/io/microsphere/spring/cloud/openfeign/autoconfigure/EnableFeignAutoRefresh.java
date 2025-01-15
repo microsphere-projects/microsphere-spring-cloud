@@ -9,12 +9,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Enable Feign Auto Refresh
+ *
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see FeignClientAutoRefreshAutoConfiguration
  * @since 0.0.1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Documented
-@Import(FeignClientAutoRefreshConfiguration.class)
+@Import(FeignClientAutoRefreshAutoConfiguration.class)
 public @interface EnableFeignAutoRefresh {
+
+    class Marker {
+    }
 }
