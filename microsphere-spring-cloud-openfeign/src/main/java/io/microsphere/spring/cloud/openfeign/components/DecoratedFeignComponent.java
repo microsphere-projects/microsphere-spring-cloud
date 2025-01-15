@@ -1,5 +1,7 @@
 package io.microsphere.spring.cloud.openfeign.components;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.openfeign.FeignClientProperties;
@@ -15,11 +17,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public abstract class DecoratedFeignComponent<T> implements Refreshable {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final FeignContext feignContext;
     private final String contextId;
 
     private final FeignClientProperties clientProperties;
+
 
     protected volatile T delegate;
 
@@ -38,6 +42,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     public T delegate() {
         readLock.lock();
         if (delegate == null) {
+            log.trace("the component {} - Creating delegate instance for contextId: {}", componentType().getSimpleName(), contextId);
             readLock.unlock();
             return loadInstance();
         }
@@ -58,6 +63,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
 
     public void refresh() {
         writeLock.lock();
+        log.debug("the component {} - Refreshing delegate instance for contextId: {}", componentType().getSimpleName(), contextId);
         this.delegate = null;
         writeLock.unlock();
     }
@@ -79,10 +85,12 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         try {
             T component = getFeignContext().getInstance(contextId, componentType);
             if (component == null)
-                return BeanUtils.instantiateClass(componentType);
+                component = BeanUtils.instantiateClass(componentType);
+            this.delegate = component;
             return component;
-        } catch (Exception e) {
-            return BeanUtils.instantiateClass(componentType);
+        } catch (Throwable ex) {
+            this.delegate = BeanUtils.instantiateClass(componentType);
+            return delegate;
         } finally {
             writeLock.unlock();
         }

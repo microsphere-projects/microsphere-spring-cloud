@@ -1,25 +1,25 @@
-package io.microsphere.spring.cloud.openfeign.encoder;
+package io.microsphere.spring.cloud.openfeign.retryer;
 
-import feign.codec.Encoder;
+import feign.Retryer;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- * @since 0.0.1
+ * @since 1.0
  */
-@SpringBootTest(classes = EncoderChangedTest.class)
+@SpringBootTest(classes = RetryerChangedTest.class)
 @EnableAutoConfiguration
-public class EncoderChangedTest extends BaseTest<Encoder> {
+public class RetryerChangedTest extends BaseTest<Retryer> {
 
     @Override
     protected String afterTestComponentConfigKey() {
-        return "feign.client.config.my-client.encoder";
+        return "feign.client.config.my-client.retryer";
     }
 
     @Override
-    protected Class<? extends Encoder> afterTestComponent() {
-        return BEncoder.class;
+    protected Class<? extends Retryer> afterTestComponent() {
+        return ARetry.class;
     }
 }

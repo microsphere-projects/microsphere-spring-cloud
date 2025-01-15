@@ -3,14 +3,12 @@ package io.microsphere.spring.cloud.client.service.registry;
 import com.alibaba.cloud.nacos.NacosServiceAutoConfiguration;
 import com.alibaba.cloud.nacos.discovery.NacosDiscoveryAutoConfiguration;
 import com.alibaba.cloud.nacos.registry.NacosServiceRegistryAutoConfiguration;
-import com.alibaba.cloud.nacos.util.UtilIPv6AutoConfiguration;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
 import io.microsphere.spring.cloud.client.service.registry.autoconfigure.ServiceRegistryAutoConfiguration;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -22,7 +20,6 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.cloud.commons.util.UtilAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.config.DiscoveryClientOptionalArgsConfiguration;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 import org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration;
 import org.springframework.context.ApplicationListener;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,7 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         NacosServiceRegistryAutoConfiguration.class,
         NacosServiceAutoConfiguration.class,
         NacosDiscoveryAutoConfiguration.class,
-        UtilIPv6AutoConfiguration.class,
         UtilAutoConfiguration.class,
         MultipleServiceRegistryTest.class,
         ServiceRegistryAutoConfiguration.class,
