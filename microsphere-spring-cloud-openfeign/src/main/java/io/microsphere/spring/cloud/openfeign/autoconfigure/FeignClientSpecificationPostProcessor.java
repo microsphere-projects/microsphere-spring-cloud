@@ -1,17 +1,14 @@
 package io.microsphere.spring.cloud.openfeign.autoconfigure;
 
 import io.microsphere.logging.Logger;
-import io.microsphere.reflect.MethodUtils;
 import io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapability;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cloud.context.named.NamedContextFactory;
 
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static io.microsphere.invoke.MethodHandleUtils.findVirtual;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.reflect.MethodUtils.findMethod;
 import static io.microsphere.util.ArrayUtils.combine;
