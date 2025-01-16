@@ -4,7 +4,7 @@ import feign.FeignException;
 import feign.Response;
 import feign.codec.DecodeException;
 import feign.codec.Decoder;
-import org.springframework.cloud.openfeign.FeignClientFactory;
+import io.microsphere.spring.cloud.openfeign.FeignComponentProvider;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 
 import java.io.IOException;
@@ -16,8 +16,8 @@ import java.lang.reflect.Type;
  */
 public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implements Decoder {
 
-    public DecoratedDecoder(String contextId, FeignClientFactory feignClientFactory, FeignClientProperties clientProperties, Decoder delegate) {
-        super(contextId, feignClientFactory, clientProperties, delegate);
+    public DecoratedDecoder(String contextId, FeignComponentProvider feignComponentProvider, FeignClientProperties clientProperties, Decoder delegate) {
+        super(contextId, feignComponentProvider, clientProperties, delegate);
     }
 
     @Override

@@ -2,7 +2,7 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.RetryableException;
 import feign.Retryer;
-import org.springframework.cloud.openfeign.FeignClientFactory;
+import io.microsphere.spring.cloud.openfeign.FeignComponentProvider;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 
 /**
@@ -11,8 +11,8 @@ import org.springframework.cloud.openfeign.FeignClientProperties;
  */
 public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implements Retryer  {
 
-    public DecoratedRetryer(String contextId, FeignClientFactory feignClientFactory, FeignClientProperties clientProperties, Retryer delegate) {
-        super(contextId, feignClientFactory, clientProperties, delegate);
+    public DecoratedRetryer(String contextId, FeignComponentProvider feignComponentProvider, FeignClientProperties clientProperties, Retryer delegate) {
+        super(contextId, feignComponentProvider, clientProperties, delegate);
     }
 
     @Override

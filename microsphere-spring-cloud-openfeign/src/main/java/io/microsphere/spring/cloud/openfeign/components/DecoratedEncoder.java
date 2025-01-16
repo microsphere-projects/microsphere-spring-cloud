@@ -3,7 +3,7 @@ package io.microsphere.spring.cloud.openfeign.components;
 import feign.RequestTemplate;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
-import org.springframework.cloud.openfeign.FeignClientFactory;
+import io.microsphere.spring.cloud.openfeign.FeignComponentProvider;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 
 import java.lang.reflect.Type;
@@ -14,8 +14,8 @@ import java.lang.reflect.Type;
  */
 public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implements Encoder {
 
-    public DecoratedEncoder(String contextId, FeignClientFactory feignClientFactory, FeignClientProperties clientProperties, Encoder delegate) {
-        super(contextId, feignClientFactory, clientProperties, delegate);
+    public DecoratedEncoder(String contextId, FeignComponentProvider feignComponentProvider, FeignClientProperties clientProperties, Encoder delegate) {
+        super(contextId, feignComponentProvider, clientProperties, delegate);
     }
 
     @Override

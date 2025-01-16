@@ -1,10 +1,10 @@
 package io.microsphere.spring.cloud.openfeign.components;
 
+import io.microsphere.spring.cloud.openfeign.FeignComponentProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.cloud.openfeign.FeignClientFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.lang.NonNull;
 
@@ -19,7 +19,8 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final FeignClientFactory feignClientFactory;
+    //private final FeignClientFactory feignClientFactory;
+    private final FeignComponentProvider componentProvider;
     private final String contextId;
 
     private final FeignClientProperties clientProperties;
@@ -32,9 +33,9 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     private final ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
     private final ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
 
-    public DecoratedFeignComponent(String contextId, FeignClientFactory feignClientFactory, FeignClientProperties clientProperties, T delegate) {
+    public DecoratedFeignComponent(String contextId, FeignComponentProvider feignComponentProvider, FeignClientProperties clientProperties, T delegate) {
         this.contextId = contextId;
-        this.feignClientFactory = feignClientFactory;
+        this.componentProvider = feignComponentProvider;
         this.clientProperties = clientProperties;
         this.delegate = delegate;
     }
@@ -52,9 +53,9 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     @NonNull
-    public FeignClientFactory getFeignClientFactory() {
-        return this.feignClientFactory;
-    }
+    public FeignComponentProvider getFeignComponentProvider() {
+        return this.componentProvider;
+    };
 
     @NonNull
     public String contextId() {
@@ -83,7 +84,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         String contextId = contextId();
         writeLock.lock();
         try {
-            T component = getFeignClientFactory().getInstance(contextId, componentType);
+            T component = getFeignComponentProvider().getInstance(contextId, componentType);
             if (component == null)
                 component = BeanUtils.instantiateClass(componentType);
             this.delegate = component;
@@ -112,10 +113,10 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     public static <W extends DecoratedFeignComponent<T>, T> W instantiate(Class<W> decoratedClass, Class<T> componentClass,
-                                                                          String contextId, FeignClientFactory feignClientFactory, FeignClientProperties clientProperties, T delegate) {
+                                                                          String contextId, FeignComponentProvider feignComponentProvider, FeignClientProperties clientProperties, T delegate) {
         try {
-            Constructor<W> constructor = decoratedClass.getConstructor(String.class, FeignClientFactory.class, FeignClientProperties.class, componentClass);
-            return BeanUtils.instantiateClass(constructor, contextId, feignClientFactory, clientProperties, delegate);
+            Constructor<W> constructor = decoratedClass.getConstructor(String.class, FeignComponentProvider.class, FeignClientProperties.class, componentClass);
+            return BeanUtils.instantiateClass(constructor, contextId, feignComponentProvider, clientProperties, delegate);
         } catch (NoSuchMethodException noSuchMethodException) {
             throw new BeanInstantiationException(decoratedClass, noSuchMethodException.getLocalizedMessage());
         }
