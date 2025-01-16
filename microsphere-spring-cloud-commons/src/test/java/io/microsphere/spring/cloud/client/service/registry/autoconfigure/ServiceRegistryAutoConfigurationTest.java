@@ -1,7 +1,5 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * {@link ServiceRegistryAutoConfiguration} Test
  *
