@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -72,7 +69,6 @@ public abstract class BaseTest<T> {
     public void testInternal() {
         try {
             this.client.echo("hello", "1.0");
-
         } catch (Exception ignored) {
 
         }
