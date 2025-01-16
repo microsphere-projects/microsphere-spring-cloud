@@ -18,8 +18,15 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.DEREGISTERED;
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_DEREGISTERED;
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_REGISTERED;
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.REGISTERED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.aop.support.AopUtils.getTargetClass;
 
 /**
@@ -85,18 +92,38 @@ public class ServiceRegistryAutoConfigurationTest {
 
     private void onRegistrationPreRegisteredEvent(RegistrationPreRegisteredEvent event) {
         assertRegistrationEvent(event);
+        assertTrue(event.isPreRegistered());
+        assertFalse(event.isRegistered());
+        assertFalse(event.isPreDeregistered());
+        assertFalse(event.isDeregistered());
+        assertEquals(PRE_REGISTERED, event.getType());
     }
 
     private void onRegistrationRegisteredEvent(RegistrationRegisteredEvent event) {
         assertRegistrationEvent(event);
+        assertFalse(event.isPreRegistered());
+        assertTrue(event.isRegistered());
+        assertFalse(event.isPreDeregistered());
+        assertFalse(event.isDeregistered());
+        assertEquals(REGISTERED, event.getType());
     }
 
     private void onRegistrationPreDeregisteredEvent(RegistrationPreDeregisteredEvent event) {
         assertRegistrationEvent(event);
+        assertFalse(event.isPreRegistered());
+        assertFalse(event.isRegistered());
+        assertTrue(event.isPreDeregistered());
+        assertFalse(event.isDeregistered());
+        assertEquals(PRE_DEREGISTERED, event.getType());
     }
 
     private void onRegistrationDeregisteredEvent(RegistrationDeregisteredEvent event) {
         assertRegistrationEvent(event);
+        assertFalse(event.isPreRegistered());
+        assertFalse(event.isRegistered());
+        assertFalse(event.isPreDeregistered());
+        assertTrue(event.isDeregistered());
+        assertEquals(DEREGISTERED, event.getType());
     }
 
     private void assertRegistrationEvent(RegistrationEvent event) {
@@ -104,6 +131,8 @@ public class ServiceRegistryAutoConfigurationTest {
         assertEquals(this.registration, registration);
         assertSame(this.registration, registration);
         assertSame(getTargetClass(this.serviceRegistry), getTargetClass(event.getRegistry()));
+        assertNotNull(event.getSource());
+        assertNotNull(event.getType());
         count++;
     }
 }

@@ -19,6 +19,9 @@ package io.microsphere.spring.cloud.client.service.registry.event;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_REGISTERED;
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.REGISTERED;
+
 /**
  * The after-{@link ServiceRegistry#register(Registration) register} event.
  *
@@ -33,12 +36,7 @@ public class RegistrationRegisteredEvent extends RegistrationEvent {
     }
 
     @Override
-    public boolean isRegistered() {
-        return true;
-    }
-
-    @Override
-    public boolean isDeregistered() {
-        return false;
+    public Type getType() {
+        return REGISTERED;
     }
 }
