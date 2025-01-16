@@ -15,7 +15,7 @@ public class RetryerChangedTest extends BaseTest<Retryer> {
 
     @Override
     protected String afterTestComponentConfigKey() {
-        return "feign.client.config.my-client.retryer";
+        return "spring.cloud.openfeign.client.config.my-client.retryer";
     }
 
     @Override
