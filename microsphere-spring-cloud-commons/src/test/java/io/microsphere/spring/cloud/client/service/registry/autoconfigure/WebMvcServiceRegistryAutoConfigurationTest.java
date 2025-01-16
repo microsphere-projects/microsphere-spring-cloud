@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(
         classes = {WebMvcServiceRegistryAutoConfigurationTest.class},
         properties = {
-                "microsphere.spring.cloud.simple.enabled=true",
+                "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true",
                 "spring.cloud.service-registry.auto-registration.enabled=true",
                 "spring.cloud.kubernetes.enabled=false",
                 "kubernetes.informer.enabled=false",
