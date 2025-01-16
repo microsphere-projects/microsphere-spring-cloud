@@ -16,24 +16,19 @@
  */
 package io.microsphere.spring.cloud.client.event;
 
-/**
- * TODO Comment
- *
- * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @since TODO
- */
-
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
+import static org.springframework.util.Assert.notEmpty;
 
 /**
- * An event raised after the {@link ServiceInstance instances} of one service has been
+ * An event raised when the {@link ServiceInstance instances} of one service has been
  * changed.
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
@@ -58,6 +53,7 @@ public class ServiceInstancesChangedEvent extends ApplicationEvent {
     public ServiceInstancesChangedEvent(String serviceName,
                                         List<ServiceInstance> serviceInstances) {
         super(serviceName);
+        notEmpty(serviceInstances, () -> "The arguments 'serviceInstances' must not be empty!");
         this.serviceInstances = unmodifiableList(serviceInstances);
     }
 
