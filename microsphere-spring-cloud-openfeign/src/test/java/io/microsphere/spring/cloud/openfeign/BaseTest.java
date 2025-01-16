@@ -30,10 +30,10 @@ import java.util.Set;
  */
 @TestPropertySource(properties = {
         "spring.main.allow-bean-definition-overriding=true",
-        "feign.client.config.default.encoder=io.microsphere.spring.cloud.openfeign.encoder.AEncoder",
-        "feign.client.config.default.request-interceptors[0]=io.microsphere.spring.cloud.openfeign.requestInterceptor.ARequestInterceptor",
-        "feign.client.config.default.default-request-headers.app=my-app",
-        "feign.client.config.default.default-query-parameters.sign=my-sign",
+        "spring.cloud.openfeign.client.config.default.encoder=io.microsphere.spring.cloud.openfeign.encoder.AEncoder",
+        "spring.cloud.openfeign.client.config.default.request-interceptors[0]=io.microsphere.spring.cloud.openfeign.requestInterceptor.ARequestInterceptor",
+        "spring.cloud.openfeign.client.config.default.default-request-headers.app=my-app",
+        "spring.cloud.openfeign.client.config.default.default-query-parameters.sign=my-sign",
 })
 @ComponentScan(basePackages = "io.microsphere.spring.cloud.openfeign")
 @EnableFeignClients(clients = BaseClient.class)
