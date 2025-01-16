@@ -18,7 +18,7 @@ public class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> 
 
     @Override
     protected String afterTestComponentConfigKey() {
-        return "feign.client.config.my-client.request-interceptors[0]";
+        return "spring.cloud.openfeign.client.config.my-client.request-interceptors[0]";
     }
 
     @Override

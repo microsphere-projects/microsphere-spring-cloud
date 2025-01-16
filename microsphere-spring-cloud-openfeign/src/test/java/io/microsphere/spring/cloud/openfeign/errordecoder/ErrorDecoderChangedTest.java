@@ -15,7 +15,7 @@ public class ErrorDecoderChangedTest extends BaseTest<ErrorDecoder> {
 
     @Override
     protected String afterTestComponentConfigKey() {
-        return "feign.client.config.my-client.error-decoder";
+        return "spring.cloud.openfeign.client.config.my-client.error-decoder";
     }
 
     @Override

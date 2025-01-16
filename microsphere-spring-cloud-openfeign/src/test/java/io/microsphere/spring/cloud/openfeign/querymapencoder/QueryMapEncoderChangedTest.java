@@ -15,7 +15,7 @@ public class QueryMapEncoderChangedTest extends BaseTest<QueryMapEncoder> {
 
     @Override
     protected String afterTestComponentConfigKey() {
-        return "feign.client.config.my-client.query-map-encoder";
+        return "spring.cloud.openfeign.client.config.my-client.query-map-encoder";
     }
 
     @Override

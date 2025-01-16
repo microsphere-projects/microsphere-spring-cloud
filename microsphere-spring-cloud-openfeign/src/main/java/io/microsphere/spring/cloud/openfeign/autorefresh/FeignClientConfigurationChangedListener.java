@@ -19,13 +19,12 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
         this.registry = registry;
     }
 
-    private final String PREFIX = "feign.client.config.";
+    private final String PREFIX = "spring.cloud.openfeign.client.config.";
 
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
         Map<String, Set<String>> effectiveClients = resolveChangedClient(event);
         effectiveClients.forEach(registry::refresh);
-
     }
 
     protected Map<String, Set<String>> resolveChangedClient(EnvironmentChangeEvent event) {

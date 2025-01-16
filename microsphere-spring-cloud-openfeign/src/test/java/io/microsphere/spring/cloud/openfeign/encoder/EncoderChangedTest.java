@@ -15,7 +15,7 @@ public class EncoderChangedTest extends BaseTest<Encoder> {
 
     @Override
     protected String afterTestComponentConfigKey() {
-        return "feign.client.config.my-client.encoder";
+        return "spring.cloud.openfeign.client.config.my-client.encoder";
     }
 
     @Override

@@ -33,7 +33,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     private String contextId;
 
-    private static final String CONTEXT_ID_PROPERTY_NAME = "feign.client.name";
+    private static final String CONTEXT_ID_PROPERTY_NAME = "spring.cloud.openfeign.client.name";
 
     public AutoRefreshCapability(FeignClientProperties clientProperties, FeignClientFactory feignClientFactory, FeignComponentRegistry componentRegistry) {
         this.clientProperties = clientProperties;
