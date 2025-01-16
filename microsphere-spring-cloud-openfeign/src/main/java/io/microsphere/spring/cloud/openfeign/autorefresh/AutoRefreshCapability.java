@@ -24,6 +24,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     private String contextId;
 
+
     public AutoRefreshCapability(FeignClientProperties clientProperties, FeignComponentProvider componentProvider, FeignComponentRegistry componentRegistry) {
         this.clientProperties = clientProperties;
         this.componentProvider = componentProvider;
