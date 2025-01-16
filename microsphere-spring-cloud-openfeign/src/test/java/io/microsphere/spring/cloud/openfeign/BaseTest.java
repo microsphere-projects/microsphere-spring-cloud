@@ -38,7 +38,6 @@ import java.util.Set;
 @ComponentScan(basePackages = "io.microsphere.spring.cloud.openfeign")
 @EnableFeignClients(clients = BaseClient.class)
 @EnableFeignAutoRefresh
-@AutoConfigureAfter(ConfigurationPropertiesRebinderAutoConfiguration.class)
 public abstract class BaseTest<T> {
 
     private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
