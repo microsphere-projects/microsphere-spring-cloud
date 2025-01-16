@@ -9,7 +9,6 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.UUID;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;

@@ -20,7 +20,6 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
-import org.springframework.util.Assert;
 
 import java.util.List;
 

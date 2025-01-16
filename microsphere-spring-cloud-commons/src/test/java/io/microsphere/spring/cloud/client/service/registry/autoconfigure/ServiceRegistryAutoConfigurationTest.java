@@ -9,7 +9,6 @@ import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPre
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationRegisteredEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.serviceregistry.Registration;
