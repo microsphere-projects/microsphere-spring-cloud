@@ -2,8 +2,9 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.Response;
 import feign.codec.ErrorDecoder;
-import io.microsphere.spring.cloud.openfeign.FeignComponentProvider;
+import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientSpecification;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -11,8 +12,8 @@ import org.springframework.cloud.openfeign.FeignClientProperties;
  */
 public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder> implements ErrorDecoder {
 
-    public DecoratedErrorDecoder(String contextId, FeignComponentProvider feignComponentProvider, FeignClientProperties clientProperties, ErrorDecoder delegate) {
-        super(contextId, feignComponentProvider, clientProperties, delegate);
+    public DecoratedErrorDecoder(String contextId, NamedContextFactory<FeignClientSpecification> contextFactory, FeignClientProperties clientProperties, ErrorDecoder delegate) {
+        super(contextId, contextFactory, clientProperties, delegate);
     }
 
     @Override

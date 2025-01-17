@@ -18,7 +18,6 @@ public class BQueryMapEncoder implements QueryMapEncoder {
 
     @Override
     public Map<String, Object> encode(Object object) {
-        log.trace("AQueryMapEncoder.encode({})", object);
         return new HashMap<>();
     }
 }
