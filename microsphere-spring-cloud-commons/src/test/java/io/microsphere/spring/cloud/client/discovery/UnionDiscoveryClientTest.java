@@ -16,7 +16,6 @@
  */
 package io.microsphere.spring.cloud.client.discovery;
 
-import io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
