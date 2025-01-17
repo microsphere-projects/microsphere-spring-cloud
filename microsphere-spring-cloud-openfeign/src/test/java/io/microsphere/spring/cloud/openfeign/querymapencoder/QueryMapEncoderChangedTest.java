@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.querymapencoder;
 
 import feign.QueryMapEncoder;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
+import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,6 +13,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = QueryMapEncoderChangedTest.class)
 @EnableAutoConfiguration
 public class QueryMapEncoderChangedTest extends BaseTest<QueryMapEncoder> {
+
+    @Override
+    protected Class<? extends QueryMapEncoder> beforeTestComponentClass() {
+        return AQueryMapEncoder.class;
+    }
+
+    @Override
+    protected FeignComponentAssert<QueryMapEncoder> loadFeignComponentAssert() {
+        return new QueryMapEncoderComponentAssert();
+    }
 
     @Override
     protected String afterTestComponentConfigKey() {
