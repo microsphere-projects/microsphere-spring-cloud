@@ -29,12 +29,12 @@ import org.springframework.context.ApplicationContextAware;
 public class AutoRefreshCapability implements Capability, ApplicationContextAware {
 
     private final FeignComponentRegistry componentRegistry;
-    //private final FeignClientFactory feignClientFactory;
+
     private final NamedContextFactory<FeignClientSpecification> contextFactory;
+
     private final FeignClientProperties clientProperties;
 
     private String contextId;
-
 
     public AutoRefreshCapability(FeignClientProperties clientProperties, NamedContextFactory<FeignClientSpecification> contextFactory, FeignComponentRegistry componentRegistry) {
         this.clientProperties = clientProperties;
