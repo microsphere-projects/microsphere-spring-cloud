@@ -14,18 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.discovery;
+package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
+import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
+import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClientTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClientAutoConfiguration;
 import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClient;
 import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClientAutoConfiguration;
 import org.springframework.cloud.commons.util.UtilAutoConfiguration;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -35,21 +37,23 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * {@link UnionDiscoveryClient} Test
+ * {@link DiscoveryClientAutoConfiguration} Test
  *
- * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
+ * @see DiscoveryClientAutoConfiguration
  * @since 1.0.0
  */
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
+@SpringBootTest(classes = {
         UtilAutoConfiguration.class,
         SimpleDiscoveryClientAutoConfiguration.class,
         CompositeDiscoveryClientAutoConfiguration.class,
-        UnionDiscoveryClient.class,
+        DiscoveryClientAutoConfiguration.class,
         UnionDiscoveryClientTest.class
 })
 @TestPropertySource(
         properties = {
+                "microsphere.spring.cloud.client.discovery.mode=union",
                 "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
                 "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
                 "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
@@ -57,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
                 "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
         }
 )
-public class UnionDiscoveryClientTest {
+public class DiscoveryClientAutoConfigurationTest {
 
     @Autowired
     private DiscoveryClient discoveryClient;
