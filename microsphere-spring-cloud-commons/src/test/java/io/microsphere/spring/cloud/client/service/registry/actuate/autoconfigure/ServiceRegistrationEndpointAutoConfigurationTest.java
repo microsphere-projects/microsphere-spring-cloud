@@ -7,7 +7,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -22,9 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         classes = {
                 ServiceRegistrationEndpointAutoConfigurationTest.class
         },
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-@TestPropertySource(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {
                 "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true",
                 "management.endpoint.serviceRegistration.enabled=true",
