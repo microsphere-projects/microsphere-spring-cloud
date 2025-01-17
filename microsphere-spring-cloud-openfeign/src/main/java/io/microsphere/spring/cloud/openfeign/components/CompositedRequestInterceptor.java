@@ -7,7 +7,12 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>

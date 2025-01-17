@@ -6,7 +6,6 @@ import io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.context.ConfigurableApplicationContext;
