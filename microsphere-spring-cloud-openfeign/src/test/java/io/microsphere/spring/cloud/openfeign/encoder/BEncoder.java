@@ -14,7 +14,6 @@ public class BEncoder implements Encoder {
 
     @Override
     public void encode(Object object, Type bodyType, RequestTemplate template) throws EncodeException {
-        System.out.println("BEncoder is working...");
         template.body(object.toString());
     }
 }

@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.encoder;
 
 import feign.codec.Encoder;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
+import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,6 +13,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = EncoderChangedTest.class)
 @EnableAutoConfiguration
 public class EncoderChangedTest extends BaseTest<Encoder> {
+
+
+    @Override
+    protected Class<? extends Encoder> beforeTestComponentClass() {
+        return AEncoder.class;
+    }
+
+    @Override
+    protected FeignComponentAssert<Encoder> loadFeignComponentAssert() {
+        return EncoderComponentAssert.INSTANCE;
+    }
 
     @Override
     protected String afterTestComponentConfigKey() {

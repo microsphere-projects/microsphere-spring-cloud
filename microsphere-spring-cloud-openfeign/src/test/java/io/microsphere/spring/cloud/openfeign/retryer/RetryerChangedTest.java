@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.retryer;
 
 import feign.Retryer;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
+import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,12 +15,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class RetryerChangedTest extends BaseTest<Retryer> {
 
     @Override
+    protected Class<? extends Retryer> beforeTestComponentClass() {
+        return ARetry.class;
+    }
+
+    @Override
+    protected FeignComponentAssert<Retryer> loadFeignComponentAssert() {
+        return new RetryerComponentAssert();
+    }
+
+    @Override
     protected String afterTestComponentConfigKey() {
         return "spring.cloud.openfeign.client.config.my-client.retryer";
     }
 
     @Override
     protected Class<? extends Retryer> afterTestComponent() {
-        return ARetry.class;
+        return BRetry.class;
     }
 }

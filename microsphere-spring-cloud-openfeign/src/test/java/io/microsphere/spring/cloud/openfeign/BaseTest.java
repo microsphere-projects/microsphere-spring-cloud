@@ -1,6 +1,8 @@
 package io.microsphere.spring.cloud.openfeign;
 
 import io.microsphere.spring.cloud.openfeign.autoconfigure.EnableFeignAutoRefresh;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,10 @@ import java.util.Set;
 @TestPropertySource(properties = {
         "spring.main.allow-bean-definition-overriding=true",
         "spring.cloud.openfeign.client.config.default.encoder=io.microsphere.spring.cloud.openfeign.encoder.AEncoder",
+        "spring.cloud.openfeign.client.config.default.error-decoder=io.microsphere.spring.cloud.openfeign.errordecoder.AErrorDecoder",
+        "spring.cloud.openfeign.client.config.default.query-map-encoder=io.microsphere.spring.cloud.openfeign.querymapencoder.AQueryMapEncoder",
+        "spring.cloud.openfeign.client.config.default.retryer=io.microsphere.spring.cloud.openfeign.retryer.ARetry",
+        "spring.cloud.openfeign.client.config.default.decoder=io.microsphere.spring.cloud.openfeign.decoder.ADecoder",
         "spring.cloud.openfeign.client.config.default.request-interceptors[0]=io.microsphere.spring.cloud.openfeign.requestInterceptor.ARequestInterceptor",
         "spring.cloud.openfeign.client.config.default.default-request-headers.app=my-app",
         "spring.cloud.openfeign.client.config.default.default-query-parameters.sign=my-sign",
@@ -46,7 +52,9 @@ public abstract class BaseTest<T> {
     private BaseClient client;
 
     protected abstract String afterTestComponentConfigKey();
+    protected abstract Class<? extends T> beforeTestComponentClass();
     protected abstract Class<? extends T> afterTestComponent();
+    protected abstract FeignComponentAssert<T> loadFeignComponentAssert();
 
     public void replaceConfig() {
         final String key = afterTestComponentConfigKey();
@@ -67,19 +75,21 @@ public abstract class BaseTest<T> {
 
     @Test
     public void testInternal() {
+        ObservableFeignInvocationHandler.componentAssert = loadFeignComponentAssert();
+
+        ObservableFeignInvocationHandler.expectComponentClass = beforeTestComponentClass();
         try {
             this.client.echo("hello", "1.0");
         } catch (Exception ignored) {
-
         }
         replaceConfig();
+
+        ObservableFeignInvocationHandler.expectComponentClass = afterTestComponent();
         try {
             this.client.echo("world", "1.0");
         } catch (Exception ignored) {
 
         }
-
-
     }
 
     protected void triggerRefreshEvent() {

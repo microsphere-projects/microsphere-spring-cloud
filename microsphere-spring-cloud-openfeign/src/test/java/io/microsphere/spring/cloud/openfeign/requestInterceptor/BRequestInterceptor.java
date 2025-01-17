@@ -11,6 +11,5 @@ public class BRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate template) {
-        System.out.println(getClass() + "B is working...");
     }
 }

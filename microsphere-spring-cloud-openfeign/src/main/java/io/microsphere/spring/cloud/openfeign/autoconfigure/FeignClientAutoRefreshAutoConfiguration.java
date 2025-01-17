@@ -1,6 +1,5 @@
 package io.microsphere.spring.cloud.openfeign.autoconfigure;
 
-import io.microsphere.spring.cloud.openfeign.FeignComponentProvider;
 import io.microsphere.spring.cloud.openfeign.autorefresh.FeignClientConfigurationChangedListener;
 import io.microsphere.spring.cloud.openfeign.autorefresh.FeignComponentRegistry;
 import io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor;
@@ -10,7 +9,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.cloud.openfeign.FeignClientProperties;
-import org.springframework.cloud.openfeign.FeignClientSpecification;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
@@ -51,11 +49,6 @@ public class FeignClientAutoRefreshAutoConfiguration {
         return new FeignClientSpecificationPostProcessor();
     }
 
-    @Bean
-    public FeignComponentProvider feignComponentProvider(NamedContextFactory<FeignClientSpecification> contextFactory) {
-        return new FeignComponentProvider(contextFactory);
-    }
-    
     private void registerFeignClientConfigurationChangedListener(ApplicationReadyEvent event) {
         ConfigurableApplicationContext context = event.getApplicationContext();
         FeignComponentRegistry feignComponentRegistry = context.getBean(FeignComponentRegistry.class);

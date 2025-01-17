@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.errordecoder;
 
 import feign.codec.ErrorDecoder;
 import io.microsphere.spring.cloud.openfeign.BaseTest;
+import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,12 +15,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ErrorDecoderChangedTest extends BaseTest<ErrorDecoder> {
 
     @Override
+    protected Class<? extends ErrorDecoder> beforeTestComponentClass() {
+        return AErrorDecoder.class;
+    }
+
+    @Override
+    protected FeignComponentAssert<ErrorDecoder> loadFeignComponentAssert() {
+        return new ErrorDecoderComponentAssert();
+    }
+
+    @Override
     protected String afterTestComponentConfigKey() {
         return "spring.cloud.openfeign.client.config.my-client.error-decoder";
     }
 
     @Override
     protected Class<? extends ErrorDecoder> afterTestComponent() {
-        return AErrorDecoder.class;
+        return BErrorEncoder.class;
     }
 }
