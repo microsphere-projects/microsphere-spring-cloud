@@ -1,12 +1,12 @@
 package io.microsphere.spring.cloud.openfeign;
 
 import feign.InvocationHandlerFactory;
-import feign.MethodHandlerConfiguration;
 import feign.ResponseHandler;
 import feign.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -55,18 +55,22 @@ public class ObservableFeignInvocationHandler implements InvocationHandler {
         }
 
         InvocationHandlerFactory.MethodHandler methodHandler = dispatch.get(method);
-        MethodHandlerConfiguration methodHandlerConfiguration = loadMethodHandlerConfiguration(methodHandler);
+        Object methodHandlerConfiguration = loadMethodHandlerConfiguration(methodHandler);
         ResponseHandler responseHandler = loadResponseHandler(methodHandler);
         Assert.isTrue(componentAssert.expect(methodHandlerConfiguration, responseHandler, expectComponentClass), "unexpected component");
-        log.trace("component validation is True");
+        log.info("component validation is True");
         return dispatch.get(method).invoke(args);
     }
 
-    protected MethodHandlerConfiguration loadMethodHandlerConfiguration(InvocationHandlerFactory.MethodHandler methodHandler) throws Exception {
-        Class<?> configurationType = methodHandler.getClass();
-        Field field = configurationType.getDeclaredField("methodHandlerConfiguration");
-        field.setAccessible(true);
-        return (MethodHandlerConfiguration) field.get(methodHandler);
+    protected Object loadMethodHandlerConfiguration(InvocationHandlerFactory.MethodHandler methodHandler) throws Exception {
+        if (ClassUtils.isPresent("feign.MethodHandlerConfiguration", ObservableFeignInvocationHandler.class.getClassLoader())) {
+            Class<?> configurationType = methodHandler.getClass();
+            Field field = configurationType.getDeclaredField("methodHandlerConfiguration");
+            field.setAccessible(true);
+            return field.get(methodHandler);
+        }
+        return methodHandler;
+
     }
 
     protected ResponseHandler loadResponseHandler(InvocationHandlerFactory.MethodHandler methodHandler) throws Exception {

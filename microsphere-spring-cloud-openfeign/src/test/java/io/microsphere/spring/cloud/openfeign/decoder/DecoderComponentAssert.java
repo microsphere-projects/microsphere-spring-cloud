@@ -1,6 +1,5 @@
 package io.microsphere.spring.cloud.openfeign.decoder;
 
-import feign.MethodHandlerConfiguration;
 import feign.ResponseHandler;
 import feign.codec.Decoder;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
@@ -15,7 +14,7 @@ import java.lang.reflect.Field;
 public class DecoderComponentAssert extends FeignComponentAssert<Decoder> {
 
     @Override
-    protected Decoder loadCurrentComponent(MethodHandlerConfiguration configuration, ResponseHandler responseHandler) throws Exception {
+    protected Decoder loadCurrentComponent(Object configuration, ResponseHandler responseHandler) throws Exception {
         Class<ResponseHandler> responseHandlerClass = ResponseHandler.class;
         Field decoderField = responseHandlerClass.getDeclaredField("decoder");
         decoderField.setAccessible(true);

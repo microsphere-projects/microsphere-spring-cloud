@@ -1,6 +1,5 @@
 package io.microsphere.spring.cloud.openfeign.errordecoder;
 
-import feign.MethodHandlerConfiguration;
 import feign.ResponseHandler;
 import feign.codec.ErrorDecoder;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
@@ -15,7 +14,7 @@ import java.lang.reflect.Field;
 public class ErrorDecoderComponentAssert extends FeignComponentAssert<ErrorDecoder> {
 
     @Override
-    protected ErrorDecoder loadCurrentComponent(MethodHandlerConfiguration configuration, ResponseHandler responseHandler) throws Exception {
+    protected ErrorDecoder loadCurrentComponent(Object configuration, ResponseHandler responseHandler) throws Exception {
         Class<ResponseHandler> responseHandlerClass = ResponseHandler.class;
         Field errorDecoderField = responseHandlerClass.getDeclaredField("errorDecoder");
         errorDecoderField.setAccessible(true);

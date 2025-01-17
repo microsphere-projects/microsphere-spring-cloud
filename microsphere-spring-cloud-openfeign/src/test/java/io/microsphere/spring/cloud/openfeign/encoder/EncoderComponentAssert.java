@@ -1,6 +1,5 @@
 package io.microsphere.spring.cloud.openfeign.encoder;
 
-import feign.MethodHandlerConfiguration;
 import feign.ResponseHandler;
 import feign.codec.Encoder;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
@@ -21,9 +20,9 @@ public class EncoderComponentAssert extends FeignComponentAssert<Encoder> {
     }
 
     @Override
-    protected Encoder loadCurrentComponent(MethodHandlerConfiguration configuration, ResponseHandler responseHandler) throws Exception {
-        Class<MethodHandlerConfiguration> methodHandlerConfigurationClass = MethodHandlerConfiguration.class;
-        Field buildTemplateFromArgs = methodHandlerConfigurationClass.getDeclaredField("buildTemplateFromArgs");
+    protected Encoder loadCurrentComponent(Object configuration, ResponseHandler responseHandler) throws Exception {
+        Class<?> configurationClass = configuration.getClass();
+        Field buildTemplateFromArgs = configurationClass.getDeclaredField("buildTemplateFromArgs");
         buildTemplateFromArgs.setAccessible(true);
         Object buildTemplateFromArgsValue = buildTemplateFromArgs.get(configuration);
         Class<?> buildTemplateFromArgsType = buildTemplateFromArgsValue.getClass();

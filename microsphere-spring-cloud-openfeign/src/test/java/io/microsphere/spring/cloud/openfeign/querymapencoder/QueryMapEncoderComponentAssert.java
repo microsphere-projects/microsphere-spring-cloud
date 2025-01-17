@@ -1,6 +1,5 @@
 package io.microsphere.spring.cloud.openfeign.querymapencoder;
 
-import feign.MethodHandlerConfiguration;
 import feign.QueryMapEncoder;
 import feign.ResponseHandler;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
@@ -15,9 +14,9 @@ import java.lang.reflect.Field;
 public class QueryMapEncoderComponentAssert extends FeignComponentAssert<QueryMapEncoder> {
 
     @Override
-    protected QueryMapEncoder loadCurrentComponent(MethodHandlerConfiguration configuration, ResponseHandler responseHandler) throws Exception {
-        Class<MethodHandlerConfiguration> methodHandlerConfigurationClass = MethodHandlerConfiguration.class;
-        Field buildTemplateFromArgs = methodHandlerConfigurationClass.getDeclaredField("buildTemplateFromArgs");
+    protected QueryMapEncoder loadCurrentComponent(Object configuration, ResponseHandler responseHandler) throws Exception {
+        Class<?> configurationClass = configuration.getClass();
+        Field buildTemplateFromArgs = configurationClass.getDeclaredField("buildTemplateFromArgs");
         buildTemplateFromArgs.setAccessible(true);
         Object buildTemplateFromArgsValue = buildTemplateFromArgs.get(configuration);
         Class<?> buildTemplateFromArgsType = buildTemplateFromArgsValue.getClass().getSuperclass();

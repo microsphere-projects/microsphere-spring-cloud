@@ -1,11 +1,9 @@
 package io.microsphere.spring.cloud.openfeign.requestInterceptor;
 
-import feign.MethodHandlerConfiguration;
 import feign.RequestInterceptor;
 import feign.ResponseHandler;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import io.microsphere.spring.cloud.openfeign.components.CompositedRequestInterceptor;
-import io.microsphere.spring.cloud.openfeign.components.DecoratedRetryer;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -17,9 +15,9 @@ import java.util.List;
 public class RequestInterceptorComponentAssert extends FeignComponentAssert<RequestInterceptor> {
 
     @Override
-    protected CompositedRequestInterceptor loadCurrentComponent(MethodHandlerConfiguration configuration, ResponseHandler responseHandler) throws Exception {
-        Class<MethodHandlerConfiguration> methodHandlerConfigurationClass = MethodHandlerConfiguration.class;
-        Field retryField = methodHandlerConfigurationClass.getDeclaredField("requestInterceptors");
+    protected CompositedRequestInterceptor loadCurrentComponent(Object configuration, ResponseHandler responseHandler) throws Exception {
+        Class<?> configurationClass = configuration.getClass();
+        Field retryField = configurationClass.getDeclaredField("requestInterceptors");
         retryField.setAccessible(true);
         List<RequestInterceptor> retryer = (List<RequestInterceptor>) retryField.get(configuration);
         for (RequestInterceptor interceptor : retryer) {
@@ -31,7 +29,7 @@ public class RequestInterceptorComponentAssert extends FeignComponentAssert<Requ
     }
 
     @Override
-    public boolean expect(MethodHandlerConfiguration configuration, ResponseHandler responseHandler, Class<RequestInterceptor> expectedClass) throws Exception {
+    public boolean expect(Object configuration, ResponseHandler responseHandler, Class<RequestInterceptor> expectedClass) throws Exception {
         CompositedRequestInterceptor requestInterceptor = loadCurrentComponent(configuration, responseHandler);
         for(RequestInterceptor interceptor : requestInterceptor.getRequestInterceptors()) {
             if (expectedClass.equals(interceptor.getClass()))

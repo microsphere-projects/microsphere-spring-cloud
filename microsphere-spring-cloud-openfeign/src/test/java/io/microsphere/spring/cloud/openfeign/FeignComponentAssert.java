@@ -1,6 +1,5 @@
 package io.microsphere.spring.cloud.openfeign;
 
-import feign.MethodHandlerConfiguration;
 import feign.ResponseHandler;
 
 /**
@@ -10,9 +9,9 @@ import feign.ResponseHandler;
 public abstract class FeignComponentAssert<T> {
 
 
-    protected abstract T loadCurrentComponent(MethodHandlerConfiguration configuration, ResponseHandler responseHandler) throws Exception;
+    protected abstract T loadCurrentComponent(Object configuration, ResponseHandler responseHandler) throws Exception;
 
-    public boolean expect(MethodHandlerConfiguration configuration, ResponseHandler responseHandler, Class<T> expectedClass) throws Exception {
+    public boolean expect(Object configuration, ResponseHandler responseHandler, Class<T> expectedClass) throws Exception {
         T component = loadCurrentComponent(configuration, responseHandler);
         return expectedClass.equals(component.getClass());
     }

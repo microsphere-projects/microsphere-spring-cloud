@@ -1,6 +1,5 @@
 package io.microsphere.spring.cloud.openfeign.retryer;
 
-import feign.MethodHandlerConfiguration;
 import feign.ResponseHandler;
 import feign.Retryer;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
@@ -15,9 +14,9 @@ import java.lang.reflect.Field;
 public class RetryerComponentAssert extends FeignComponentAssert<Retryer> {
 
     @Override
-    protected Retryer loadCurrentComponent(MethodHandlerConfiguration configuration, ResponseHandler responseHandler) throws Exception {
-        Class<MethodHandlerConfiguration> methodHandlerConfigurationClass = MethodHandlerConfiguration.class;
-        Field retryField = methodHandlerConfigurationClass.getDeclaredField("retryer");
+    protected Retryer loadCurrentComponent(Object configuration, ResponseHandler responseHandler) throws Exception {
+        Class<?> configurationClass = configuration.getClass();
+        Field retryField = configurationClass.getDeclaredField("retryer");
         retryField.setAccessible(true);
         DecoratedRetryer retryer = (DecoratedRetryer) retryField.get(configuration);
         return retryer.delegate();
