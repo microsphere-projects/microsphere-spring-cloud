@@ -63,9 +63,9 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
 public class SimpleAutoServiceRegistrationAutoConfiguration {
 
     /**
-     * The property name prefix
+     * The property name prefix : "microsphere.spring.cloud.service-registry.auto-registration.simple."
      */
-    public static final String PROPERTY_NAME_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "simple.";
+    public static final String PROPERTY_NAME_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "service-registry.auto-registration.simple.";
 
     @Bean
     public Registration registration(
@@ -84,7 +84,6 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
         registration.setPort(serverProperties.getPort());
         return registration;
     }
-
 
     @Bean
     @ConditionalOnMissingBean

@@ -1,10 +1,20 @@
 package io.microsphere.spring.cloud.openfeign.autorefresh;
 
-import feign.*;
+import feign.Capability;
+import feign.Contract;
+import feign.QueryMapEncoder;
+import feign.RequestInterceptor;
+import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
-import io.microsphere.spring.cloud.openfeign.components.*;
+import io.microsphere.spring.cloud.openfeign.components.DecoratedContract;
+import io.microsphere.spring.cloud.openfeign.components.DecoratedDecoder;
+import io.microsphere.spring.cloud.openfeign.components.DecoratedEncoder;
+import io.microsphere.spring.cloud.openfeign.components.DecoratedErrorDecoder;
+import io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent;
+import io.microsphere.spring.cloud.openfeign.components.DecoratedQueryMapEncoder;
+import io.microsphere.spring.cloud.openfeign.components.DecoratedRetryer;
 import org.springframework.beans.BeansException;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
@@ -19,12 +29,12 @@ import org.springframework.context.ApplicationContextAware;
 public class AutoRefreshCapability implements Capability, ApplicationContextAware {
 
     private final FeignComponentRegistry componentRegistry;
-    //private final FeignClientFactory feignClientFactory;
+
     private final NamedContextFactory<FeignClientSpecification> contextFactory;
+
     private final FeignClientProperties clientProperties;
 
     private String contextId;
-
 
     public AutoRefreshCapability(FeignClientProperties clientProperties, NamedContextFactory<FeignClientSpecification> contextFactory, FeignComponentRegistry componentRegistry) {
         this.clientProperties = clientProperties;
