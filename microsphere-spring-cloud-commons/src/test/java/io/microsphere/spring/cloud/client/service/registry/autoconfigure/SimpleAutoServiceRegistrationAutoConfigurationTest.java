@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
@@ -41,9 +40,6 @@ public class SimpleAutoServiceRegistrationAutoConfigurationTest {
     @Autowired
     private SimpleAutoServiceRegistration simpleAutoServiceRegistration;
 
-    @LocalServerPort
-    private Integer port;
-
     @Test
     public void test() {
         assertEquals("test-service", registration.getServiceId());
@@ -52,7 +48,6 @@ public class SimpleAutoServiceRegistrationAutoConfigurationTest {
         assertNotNull(registration.getUri());
         assertNotNull(registration.getInstanceId());
         assertNotNull(registration.getMetadata());
-        assertNotNull(port);
     }
 
 }

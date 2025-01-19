@@ -24,8 +24,9 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
         Map<String, Set<String>> effectiveClients = resolveChangedClient(event);
-        effectiveClients.forEach(registry::refresh);
-
+        if (!effectiveClients.isEmpty()) {
+            effectiveClients.forEach(registry::refresh);
+        }
     }
 
     protected Map<String, Set<String>> resolveChangedClient(EnvironmentChangeEvent event) {
