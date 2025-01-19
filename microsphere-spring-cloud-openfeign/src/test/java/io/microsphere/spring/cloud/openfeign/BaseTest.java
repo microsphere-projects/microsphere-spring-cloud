@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -31,6 +28,10 @@ import java.util.Set;
 @TestPropertySource(properties = {
         "spring.main.allow-bean-definition-overriding=true",
         "feign.client.config.default.encoder=io.microsphere.spring.cloud.openfeign.encoder.AEncoder",
+        "feign.client.config.default.error-decoder=io.microsphere.spring.cloud.openfeign.errordecoder.AErrorDecoder",
+        "feign.client.config.default.query-map-encoder=io.microsphere.spring.cloud.openfeign.querymapencoder.AQueryMapEncoder",
+        "feign.client.config.default.retryer=io.microsphere.spring.cloud.openfeign.retryer.ARetry",
+        "feign.client.config.default.decoder=io.microsphere.spring.cloud.openfeign.decoder.ADecoder",
         "feign.client.config.default.request-interceptors[0]=io.microsphere.spring.cloud.openfeign.requestInterceptor.ARequestInterceptor",
         "feign.client.config.default.default-request-headers.app=my-app",
         "feign.client.config.default.default-query-parameters.sign=my-sign",
@@ -38,7 +39,6 @@ import java.util.Set;
 @ComponentScan(basePackages = "io.microsphere.spring.cloud.openfeign")
 @EnableFeignClients(clients = BaseClient.class)
 @EnableFeignAutoRefresh
-@AutoConfigureAfter(ConfigurationPropertiesRebinderAutoConfiguration.class)
 public abstract class BaseTest<T> {
 
     private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
@@ -50,7 +50,9 @@ public abstract class BaseTest<T> {
     private BaseClient client;
 
     protected abstract String afterTestComponentConfigKey();
+    protected abstract Class<? extends T> beforeTestComponentClass();
     protected abstract Class<? extends T> afterTestComponent();
+    protected abstract FeignComponentAssert<T> loadFeignComponentAssert();
 
     public void replaceConfig() {
         final String key = afterTestComponentConfigKey();
@@ -71,20 +73,21 @@ public abstract class BaseTest<T> {
 
     @Test
     public void testInternal() {
+        ObservableFeignInvocationHandler.componentAssert = loadFeignComponentAssert();
+
+        ObservableFeignInvocationHandler.expectComponentClass = beforeTestComponentClass();
         try {
             this.client.echo("hello", "1.0");
-
         } catch (Exception ignored) {
-
         }
         replaceConfig();
+
+        ObservableFeignInvocationHandler.expectComponentClass = afterTestComponent();
         try {
             this.client.echo("world", "1.0");
         } catch (Exception ignored) {
 
         }
-
-
     }
 
     protected void triggerRefreshEvent() {

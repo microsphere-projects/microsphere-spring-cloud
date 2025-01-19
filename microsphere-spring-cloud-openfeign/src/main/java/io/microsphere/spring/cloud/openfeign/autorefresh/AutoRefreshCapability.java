@@ -28,7 +28,9 @@ import org.springframework.context.ApplicationContextAware;
 public class AutoRefreshCapability implements Capability, ApplicationContextAware {
 
     private final FeignComponentRegistry componentRegistry;
+
     private final FeignContext feignContext;
+
     private final FeignClientProperties clientProperties;
 
     private String contextId;
