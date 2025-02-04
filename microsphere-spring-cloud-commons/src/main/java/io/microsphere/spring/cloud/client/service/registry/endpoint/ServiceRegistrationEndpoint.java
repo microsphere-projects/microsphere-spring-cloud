@@ -1,7 +1,7 @@
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.microsphere.logging.Logger;
+import io.microsphere.logging.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
@@ -55,9 +55,13 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
         if (!isRunning) {
             serviceRegistry.register(registration);
             setRunning(true);
-            logger.debug("Service[name : '{}'] is registered!", applicationName);
+            if(logger.isTraceEnabled()) {
+                logger.trace("Service[name : '{}'] is registered!", applicationName);
+            }
         } else {
-            logger.warn("Service[name : '{}'] was registered!", applicationName);
+            if(logger.isWarnEnabled()) {
+                logger.warn("Service[name : '{}'] was registered!", applicationName);
+            }
         }
         return isRunning;
     }

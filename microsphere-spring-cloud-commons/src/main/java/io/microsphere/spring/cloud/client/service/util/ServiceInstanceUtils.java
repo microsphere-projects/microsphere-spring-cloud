@@ -18,10 +18,10 @@ package io.microsphere.spring.cloud.client.service.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.microsphere.logging.Logger;
+import io.microsphere.logging.LoggerFactory;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import io.microsphere.util.BaseUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
 
 import java.util.Collection;

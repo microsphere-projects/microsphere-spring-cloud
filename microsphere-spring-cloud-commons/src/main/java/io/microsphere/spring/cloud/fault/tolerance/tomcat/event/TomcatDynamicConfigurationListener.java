@@ -16,13 +16,13 @@
  */
 package io.microsphere.spring.cloud.fault.tolerance.tomcat.event;
 
-import io.microsphere.spring.util.PropertySourcesUtils;
+
+import io.microsphere.logging.Logger;
+import io.microsphere.logging.LoggerFactory;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
@@ -38,7 +38,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.microsphere.spring.boot.context.properties.bind.util.BindUtils.bind;
-import static io.microsphere.spring.util.EnvironmentUtils.getProperties;
+import static io.microsphere.spring.core.env.EnvironmentUtils.getProperties;
+import static io.microsphere.spring.core.env.PropertySourcesUtils.getSubProperties;
 import static io.microsphere.util.Configurer.configure;
 
 /**
@@ -84,19 +85,23 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
     }
 
     private boolean isBeanPresent(Class<?> beanType) {
-        return context.getBeanProvider(ConfigurationPropertiesRebinder.class).getIfAvailable() != null;
+        return context.getBeanProvider(beanType).getIfAvailable() != null;
     }
 
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
         if (!isSourceFrom(event)) {
-            logger.debug("Current context[id : '{}'] receives the other changed property names : {}", context.getId(), event.getKeys());
+            if(logger.isTraceEnabled()) {
+                logger.trace("Current context[id : '{}'] receives the other changed property names : {}", context.getId(), event.getKeys());
+            }
             return;
         }
 
         Set<String> serverPropertyNames = filterServerPropertyNames(event);
         if (serverPropertyNames.isEmpty()) {
-            logger.debug("Current context[id : '{}'] does not receive the property change of ServerProperties, keys : {}", context.getId(), event.getKeys());
+            if(logger.isTraceEnabled()) {
+                logger.trace("Current context[id : '{}'] does not receive the property change of ServerProperties, keys : {}", context.getId(), event.getKeys());
+            }
             return;
         }
 
@@ -104,7 +109,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
     }
 
     private ServerProperties getCurrentServerProperties(ConfigurableEnvironment environment) {
-        Map<String, Object> properties = PropertySourcesUtils.getSubProperties(environment, SERVER_PROPERTIES_PREFIX);
+        Map<String, Object> properties = getSubProperties(environment, SERVER_PROPERTIES_PREFIX);
         return bind(properties, "", ServerProperties.class);
     }
 
@@ -122,7 +127,9 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
     private void configureTomcatIfChanged(Set<String> serverPropertyNames) {
         ServerProperties refreshableServerProperties = getRefreshableServerProperties(serverPropertyNames);
-        logger.debug("The ServerProperties property is changed to: {}", getProperties(environment, serverPropertyNames));
+        if(logger.isTraceEnabled()) {
+            logger.debug("The ServerProperties property is changed to: {}", getProperties(environment, serverPropertyNames));
+        }
         configureConnector(refreshableServerProperties);
         // Reset current ServerProperties
         initCurrentServerProperties();
@@ -206,8 +213,8 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
             // Max HTTP Header Size
             configure("Tomcat HTTP Headers' max size(bytes)")
-                    .value(refreshableServerProperties::getMaxHttpHeaderSize)
-                    .compare(currentServerProperties::getMaxHttpHeaderSize)
+                    .value(refreshableServerProperties::getMaxHttpRequestHeaderSize)
+                    .compare(currentServerProperties::getMaxHttpRequestHeaderSize)
                     .as(this::toIntBytes)
                     .on(this::isPositive)
                     .apply(protocol::setMaxHttpHeaderSize);

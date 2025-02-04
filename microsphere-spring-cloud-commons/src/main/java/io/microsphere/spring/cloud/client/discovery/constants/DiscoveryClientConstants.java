@@ -32,17 +32,17 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
 public interface DiscoveryClientConstants {
 
     /**
-     * The property prefix of {@link DiscoveryClient}
+     * The property prefix of {@link DiscoveryClient} : "microsphere.spring.cloud.client.discovery."
      */
-    String DISCOVERY_CLIENT_PROPERTY_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "client.discovery";
+    String DISCOVERY_CLIENT_PROPERTY_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "client.discovery.";
 
     /**
-     * The property name of "mode"
+     * The property name of mode : "mode"
      */
     String MODE_PROPERTY_NAME = "mode";
 
     /**
-     * The {@link DiscoveryClient} "mode" for {@link UnionDiscoveryClient}
+     * The {@link DiscoveryClient} "mode" for {@link UnionDiscoveryClient} : "union"
      */
     String UNION_DISCOVERY_CLIENT_MODE = "union";
 
