@@ -8,6 +8,7 @@ import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -27,6 +28,10 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     public CompositedRequestInterceptor(String contextId, BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
         this.contextId = contextId;
+    }
+
+    public Set<RequestInterceptor> getRequestInterceptors() {
+        return Collections.unmodifiableSet(set);
     }
 
 

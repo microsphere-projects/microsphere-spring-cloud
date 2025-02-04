@@ -22,6 +22,11 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.DEREGISTERED;
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_DEREGISTERED;
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_REGISTERED;
+import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.REGISTERED;
+
 /**
  * The Spring event for {@link ServiceRegistry}
  *
@@ -80,7 +85,7 @@ public abstract class RegistrationEvent extends ApplicationEvent {
      * @return <code>true</code> if pre-registered
      */
     public final boolean isPreRegistered() {
-        return !isRegistered();
+        return getType() == PRE_REGISTERED;
     }
 
     /**
@@ -89,7 +94,9 @@ public abstract class RegistrationEvent extends ApplicationEvent {
      *
      * @return <code>true</code> if registered
      */
-    public abstract boolean isRegistered();
+    public final boolean isRegistered() {
+        return getType() == REGISTERED;
+    }
 
     /**
      * Current event is raised before the {@link #getRegistration() registration} is
@@ -98,7 +105,7 @@ public abstract class RegistrationEvent extends ApplicationEvent {
      * @return <code>true</code> if pre-deregistered
      */
     public final boolean isPreDeregistered() {
-        return !isDeregistered();
+        return getType() == PRE_DEREGISTERED;
     }
 
     /**
@@ -107,6 +114,40 @@ public abstract class RegistrationEvent extends ApplicationEvent {
      *
      * @return <code>true</code> if deregistered
      */
-    public abstract boolean isDeregistered();
+    public final boolean isDeregistered() {
+        return getType() == DEREGISTERED;
+    }
 
+    /**
+     * Get the {@link Type} of the {@link RegistrationEvent}
+     *
+     * @return non-null
+     */
+    public abstract Type getType();
+
+    /**
+     * The {@link Type} of the {@link RegistrationEvent}
+     */
+    public static enum Type {
+
+        /**
+         * The {@link RegistrationPreRegisteredEvent}
+         */
+        PRE_REGISTERED,
+
+        /**
+         * The {@link RegistrationRegisteredEvent}
+         */
+        REGISTERED,
+
+        /**
+         * The {@link RegistrationPreDeregisteredEvent}
+         */
+        PRE_DEREGISTERED,
+
+        /**
+         * The {@link RegistrationDeregisteredEvent}
+         */
+        DEREGISTERED
+    }
 }

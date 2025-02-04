@@ -40,7 +40,7 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
-@ConditionalOnProperty(name = SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME)
+@ConditionalOnProperty(name = SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME, matchIfMissing = true)
 public @interface ConditionalOnAutoServiceRegistrationEnabled {
 
     /**

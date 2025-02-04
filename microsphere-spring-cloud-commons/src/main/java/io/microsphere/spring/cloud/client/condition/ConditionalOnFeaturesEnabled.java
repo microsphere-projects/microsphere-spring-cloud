@@ -21,7 +21,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.CommonsClientAutoConfiguration;
 import org.springframework.cloud.client.actuator.FeaturesEndpoint;
 import org.springframework.cloud.client.actuator.HasFeatures;
-import org.springframework.cloud.client.serviceregistry.AutoServiceRegistration;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.Documented;

@@ -16,7 +16,6 @@
  */
 package io.microsphere.spring.cloud.client.discovery;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.SmartInitializingSingleton;
@@ -29,6 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import static io.microsphere.reflect.TypeUtils.getClassName;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME;
 
 /**
@@ -88,7 +88,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, SmartInitial
         discoveryClients = new LinkedList<>();
 
         for (DiscoveryClient discoveryClient : discoveryClientsProvider) {
-            String className = ClassUtils.getName(discoveryClient);
+            String className = getClassName(discoveryClient.getClass());
             if (COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME.equals(className) || this.equals(discoveryClient)) {
                 // excludes CompositeDiscoveryClient and self
                 continue;
