@@ -44,6 +44,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
+import static io.microsphere.util.ArrayUtils.EMPTY_STRING_ARRAY;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
@@ -157,7 +158,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
     }
 
     private boolean matchUrlPatterns(Collection<String> urlPatterns, String[] patterns) {
-        String[] urlPatternsArray = urlPatterns.isEmpty() ? DEFAULT_URL_MAPPINGS : urlPatterns.toArray(new String[0]);
+        String[] urlPatternsArray = urlPatterns.isEmpty() ? DEFAULT_URL_MAPPINGS : urlPatterns.toArray(EMPTY_STRING_ARRAY);
         return Arrays.equals(urlPatternsArray, patterns);
     }
 
