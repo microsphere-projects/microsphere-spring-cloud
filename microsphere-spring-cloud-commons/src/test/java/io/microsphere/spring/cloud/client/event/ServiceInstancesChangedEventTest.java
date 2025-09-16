@@ -30,7 +30,7 @@ public class ServiceInstancesChangedEventTest {
     private ServiceInstance instance;
 
     @BeforeEach
-    public void init() {
+    void setUp() {
         this.instance = createInstance(serviceName);
         this.event = new ServiceInstancesChangedEvent(serviceName, Arrays.asList(instance));
     }
