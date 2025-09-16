@@ -56,7 +56,7 @@ public class ServiceRegistryAutoConfigurationTest {
     private int count;
 
     @BeforeEach
-    public void init() {
+    void setUp() {
         DefaultRegistration registration = new DefaultRegistration();
         registration.setServiceId("test-service");
         registration.setInstanceId("127.0.0.1:8080");
