@@ -20,7 +20,7 @@
 
     <properties>
         <!-- BOM versions -->
-        <microsphere-spring-boot.version>0.1.1</microsphere-spring-boot.version>
+        <microsphere-spring-boot.version>0.1.2</microsphere-spring-boot.version>
         <testcontainers.version>1.20.1</testcontainers.version>
     </properties>
 
