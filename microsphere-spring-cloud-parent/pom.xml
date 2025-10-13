@@ -20,7 +20,7 @@
 
     <properties>
         <!-- BOM versions -->
-        <microsphere-spring-boot.version>0.2.1</microsphere-spring-boot.version>
+        <microsphere-spring-boot.version>0.2.2</microsphere-spring-boot.version>
         <testcontainers.version>1.20.4</testcontainers.version>
     </properties>
 
@@ -89,20 +89,29 @@
         <profile>
             <id>spring-cloud-2023</id>
             <properties>
-                <spring-boot.version>3.2.12</spring-boot.version>
-                <spring-cloud.version>2023.0.5</spring-cloud.version>
+                <spring-boot.version>3.3.13</spring-boot.version>
+                <spring-cloud.version>2023.0.6</spring-cloud.version>
                 <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
             </properties>
         </profile>
 
         <profile>
             <id>spring-cloud-2024</id>
+            <properties>
+                <spring-boot.version>3.4.7</spring-boot.version>
+                <spring-cloud.version>2024.0.2</spring-cloud.version>
+                <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>spring-cloud-2025</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spring-boot.version>3.4.0</spring-boot.version>
-                <spring-cloud.version>2024.0.0</spring-cloud.version>
+                <spring-boot.version>3.5.0</spring-boot.version>
+                <spring-cloud.version>2025.0.0</spring-cloud.version>
                 <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
             </properties>
         </profile>
