@@ -55,7 +55,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     private AbstractHttp11Protocol protocol;
 
     @BeforeEach
-    public void before() {
+    void before() {
         TomcatWebServer tomcatWebServer = (TomcatWebServer) context.getWebServer();
         this.tomcat = tomcatWebServer.getTomcat();
         this.connector = tomcat.getConnector();
