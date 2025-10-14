@@ -17,8 +17,6 @@
 package io.microsphere.spring.cloud.commons.constants;
 
 import io.microsphere.annotation.ConfigurationProperty;
-import org.springframework.cloud.client.CommonsClientAutoConfiguration;
-import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationAutoConfiguration;
 
 import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
@@ -30,42 +28,7 @@ import static io.microsphere.constants.PropertyConstants.MICROSPHERE_PROPERTY_NA
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-public interface CommonsPropertyConstants {
-
-    /**
-     * The property name prefix of Spring Cloud properties : "spring.cloud."
-     */
-    String SPRING_CLOUD_PROPERTY_PREFIX = "spring.cloud.";
-
-    /**
-     * The property name prefix of Spring Cloud Service Registry : "spring.cloud.service-registry."
-     */
-    String SERVICE_REGISTRY_PROPERTY_PREFIX = SPRING_CLOUD_PROPERTY_PREFIX + "service-registry.";
-
-    /**
-     * The property name for Spring Cloud Service Registry Auto-Registration Feature :
-     * "spring.cloud.service-registry.auto-registration.enabled"
-     *
-     * @see AutoServiceRegistrationAutoConfiguration
-     */
-    @ConfigurationProperty(
-            type = boolean.class,
-            defaultValue = "true",
-            source = APPLICATION_SOURCE
-    )
-    String SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME = SERVICE_REGISTRY_PROPERTY_PREFIX + "auto-registration." + ENABLED_PROPERTY_NAME;
-
-    /**
-     * The property name for enabling Spring Cloud Features : "spring.cloud.features.enabled"
-     *
-     * @see CommonsClientAutoConfiguration.ActuatorConfiguration
-     */
-    @ConfigurationProperty(
-            type = boolean.class,
-            defaultValue = "true",
-            source = APPLICATION_SOURCE
-    )
-    String FEATURES_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "features." + ENABLED_PROPERTY_NAME;
+public interface CommonsPropertyConstants extends SpringCloudPropertyConstants {
 
     /**
      * The property name prefix of Microsphere Cloud : "microsphere.spring.cloud."
