@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.microsphere.util.Assert.assertNotEmpty;
+
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 1.0.0
@@ -23,9 +25,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     private final Object lock = new Object();
 
     public RegistrationMetaData(Collection<Registration> registrations) {
-        if (CollectionUtils.isEmpty(registrations))
-            throw new IllegalArgumentException("registrations cannot be empty");
-
+        assertNotEmpty(registrations, () -> "registrations cannot be empty");
         this.registrations = registrations;
         this.applicationMetaData = new ConcurrentHashMap<>();
         for (Registration registration : registrations) {
