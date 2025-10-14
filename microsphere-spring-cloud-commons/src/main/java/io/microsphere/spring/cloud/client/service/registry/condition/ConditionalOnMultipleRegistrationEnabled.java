@@ -4,9 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Conditional;
 
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MULTIPLE_REGISTRATION_ENABLED_PROPERTY_NAME;
