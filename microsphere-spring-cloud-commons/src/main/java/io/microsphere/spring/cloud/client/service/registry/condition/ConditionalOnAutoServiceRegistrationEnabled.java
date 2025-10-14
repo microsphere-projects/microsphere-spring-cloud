@@ -27,6 +27,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * The conditional annotation meta-annotates {@link ConditionalOnProperty @ConditionalOnProperty} for
@@ -37,10 +40,10 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
  * @see ConditionalOnProperty
  * @since 1.0.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RUNTIME)
+@Target({TYPE, METHOD})
 @Documented
-@ConditionalOnProperty(name = SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME)
+@ConditionalOnProperty(name = SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME, matchIfMissing = true)
 public @interface ConditionalOnAutoServiceRegistrationEnabled {
 
     /**
