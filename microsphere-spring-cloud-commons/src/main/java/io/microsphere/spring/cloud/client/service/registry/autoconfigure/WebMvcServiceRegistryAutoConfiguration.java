@@ -75,6 +75,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
 
     @Value("${management.endpoints.web.base-path:/actuator}")
     private String actuatorBasePath;
+
     @Value("${server.servlet.context-path:}")
     private String contextPath;
 
