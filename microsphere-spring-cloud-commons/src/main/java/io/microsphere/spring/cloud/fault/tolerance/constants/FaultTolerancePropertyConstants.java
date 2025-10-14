@@ -26,16 +26,6 @@ public interface FaultTolerancePropertyConstants {
     String LOAD_BALANCER_PROPERTY_PREFIX = FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "load-balancer.";
 
     /**
-     * The metadata name of management
-     */
-    String MANAGEMENT_PORT_METADATA_NAME = "management-port";
-
-    /**
-     * The metadata name of start time
-     */
-    String START_TIME_METADATA_NAME = "start-time";
-
-    /**
      * The metadata name of warm-up time
      */
     @ConfigurationProperty(
