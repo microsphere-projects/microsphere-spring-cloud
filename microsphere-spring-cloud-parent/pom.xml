@@ -21,7 +21,7 @@
     <properties>
         <!-- BOM versions -->
         <microsphere-spring-boot.version>0.1.2</microsphere-spring-boot.version>
-        <testcontainers.version>1.20.1</testcontainers.version>
+        <testcontainers.version>1.20.4</testcontainers.version>
     </properties>
 
     <dependencyManagement>
