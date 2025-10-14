@@ -46,7 +46,7 @@ class MultipleRegistrationTest {
         this.registration = new MultipleRegistration(ofList(defaultRegistration));
     }
 
-    private DefaultRegistration createDefaultRegistration() {
+    static DefaultRegistration createDefaultRegistration() {
         DefaultRegistration defaultRegistration = new DefaultRegistration();
         defaultRegistration.setInstanceId("ServiceInstance-" + currentTimeMillis());
         defaultRegistration.setServiceId("test-service");
