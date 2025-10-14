@@ -1,7 +1,10 @@
 package io.microsphere.spring.cloud.fault.tolerance.constants;
 
+import io.microsphere.annotation.ConfigurationProperty;
+
 import java.util.concurrent.TimeUnit;
 
+import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
 
 /**
@@ -35,11 +38,21 @@ public interface FaultTolerancePropertyConstants {
     /**
      * The metadata name of warm-up time
      */
+    @ConfigurationProperty(
+            type = long.class,
+            defaultValue = "600000",
+            source = APPLICATION_SOURCE
+    )
     String WARMUP_TIME_PROPERTY_NAME = FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "warmup-time";
 
     /**
      * The property name of weight
      */
+    @ConfigurationProperty(
+            type = int.class,
+            defaultValue = "100",
+            source = APPLICATION_SOURCE
+    )
     String WEIGHT_PROPERTY_NAME = FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "weight";
 
     /**
