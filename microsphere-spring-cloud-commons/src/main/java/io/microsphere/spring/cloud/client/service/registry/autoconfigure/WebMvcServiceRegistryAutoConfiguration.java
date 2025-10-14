@@ -43,6 +43,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
+import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
 import static io.microsphere.util.ArrayUtils.EMPTY_STRING_ARRAY;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
@@ -66,7 +67,7 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 })
 public class WebMvcServiceRegistryAutoConfiguration {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebMvcServiceRegistryAutoConfiguration.class);
+    private static final Logger logger = getLogger(WebMvcServiceRegistryAutoConfiguration.class);
 
     private static final String[] DEFAULT_URL_MAPPINGS = {"/*"};
 
@@ -75,6 +76,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
 
     @Value("${management.endpoints.web.base-path:/actuator}")
     private String actuatorBasePath;
+
     @Value("${server.servlet.context-path:}")
     private String contextPath;
 

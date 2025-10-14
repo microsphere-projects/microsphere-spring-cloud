@@ -19,7 +19,6 @@ package io.microsphere.spring.cloud.client.service.util;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.microsphere.logging.Logger;
-import io.microsphere.logging.LoggerFactory;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import io.microsphere.util.BaseUtils;
 import org.springframework.cloud.client.ServiceInstance;
@@ -30,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
+import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.net.URLUtils.decode;
 import static io.microsphere.net.URLUtils.encode;
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_CONTEXT_PATH_METADATA_NAME;
@@ -43,7 +43,7 @@ import static io.microsphere.spring.cloud.client.service.registry.constants.Inst
  */
 public class ServiceInstanceUtils extends BaseUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServiceInstanceUtils.class);
+    private static final Logger logger = getLogger(ServiceInstanceUtils.class);
 
     public static void attachMetadata(String contextPath, ServiceInstance serviceInstance, Collection<WebEndpointMapping> webEndpointMappings) {
         Map<String, String> metadata = serviceInstance.getMetadata();

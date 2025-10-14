@@ -12,6 +12,8 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static io.microsphere.logging.LoggerFactory.getLogger;
+
 /**
  * The {@link Endpoint @Endpoint} for Service Registration
  *
@@ -23,7 +25,7 @@ import java.util.Map;
 @Endpoint(id = "serviceRegistration")
 public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndpoint {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = getLogger(getClass());
 
     @ReadOperation
     public Map<String, Object> metadata() {

@@ -6,6 +6,8 @@ import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 import org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration;
 
+import static io.microsphere.logging.LoggerFactory.getLogger;
+
 /**
  * The {@link Endpoint @Endpoint} for Service Deregistration
  *
@@ -17,7 +19,7 @@ import org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegis
 @Endpoint(id = "serviceDeregistration")
 public class ServiceDeregistrationEndpoint extends AbstractServiceRegistrationEndpoint {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = getLogger(getClass());
 
     @WriteOperation
     public boolean stop() {
