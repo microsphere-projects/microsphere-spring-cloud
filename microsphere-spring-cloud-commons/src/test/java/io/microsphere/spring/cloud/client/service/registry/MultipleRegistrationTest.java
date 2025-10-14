@@ -52,7 +52,6 @@ class MultipleRegistrationTest {
         defaultRegistration.setServiceId("test-service");
         defaultRegistration.setHost("localhost");
         defaultRegistration.setPort(8080);
-        defaultRegistration.setSecure(false);
         return defaultRegistration;
     }
 
