@@ -61,13 +61,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
                 "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
         }
 )
-public class DiscoveryClientAutoConfigurationTest {
+class DiscoveryClientAutoConfigurationTest {
 
     @Autowired
     private DiscoveryClient discoveryClient;
 
     @Test
-    public void test() {
+    void test() {
         assertEquals(CompositeDiscoveryClient.class, discoveryClient.getClass());
         CompositeDiscoveryClient compositeDiscoveryClient = CompositeDiscoveryClient.class.cast(discoveryClient);
         List<DiscoveryClient> discoveryClients = compositeDiscoveryClient.getDiscoveryClients();

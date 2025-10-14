@@ -48,13 +48,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 )
 @EnableAutoConfiguration
 @EnableWebMvcExtension
-public class WebMvcServiceRegistryAutoConfigurationTest {
+class WebMvcServiceRegistryAutoConfigurationTest {
 
     @Autowired
     private Registration registration;
 
     @Test
-    public void test() {
+    void test() {
         Map<String, String> metadata = registration.getMetadata();
         assertNotNull(metadata.get(WEB_MAPPINGS_METADATA_NAME));
     }
