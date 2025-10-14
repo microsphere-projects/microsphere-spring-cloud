@@ -43,7 +43,7 @@ import static org.springframework.aop.support.AopUtils.getTargetClass;
         }
 )
 @EnableAspectJAutoProxy
-public class ServiceRegistryAutoConfigurationTest {
+class ServiceRegistryAutoConfigurationTest {
 
     @Autowired
     private ConfigurableApplicationContext context;
@@ -64,7 +64,7 @@ public class ServiceRegistryAutoConfigurationTest {
     }
 
     @Test
-    public void testEventPublishingRegistrationAspect() {
+    void testEventPublishingRegistrationAspect() {
 
         context.addApplicationListener(this::onApplicationEvent);
 

@@ -88,7 +88,7 @@ class MultipleServiceRegistryTest implements ApplicationListener<RegistrationPre
     }
 
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
         assertNotNull(serviceRegistry);
         assertNotNull(registration);
         autoServiceRegistration.start();
@@ -98,7 +98,7 @@ class MultipleServiceRegistryTest implements ApplicationListener<RegistrationPre
     }
 
     @Test
-    public void testMetaData() throws Exception {
+    void testMetaData() throws Exception {
         assertNotNull(registration);
 
         autoServiceRegistration.start();

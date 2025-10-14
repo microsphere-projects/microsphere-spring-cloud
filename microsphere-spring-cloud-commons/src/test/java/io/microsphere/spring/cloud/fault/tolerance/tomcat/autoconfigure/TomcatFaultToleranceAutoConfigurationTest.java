@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         TomcatFaultToleranceAutoConfigurationTest.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
-public class TomcatFaultToleranceAutoConfigurationTest {
+class TomcatFaultToleranceAutoConfigurationTest {
 
     @Autowired
     private EnvironmentManager environmentManager;
@@ -63,7 +63,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMinSpareThreads() {
+    void testMinSpareThreads() {
         // default
         assertEquals(10, protocol.getMinSpareThreads());
         // changed

@@ -37,10 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @see CommonsPropertyConstants
  * @since 1.0.0
  */
-public class CommonsPropertyConstantsTest {
+class CommonsPropertyConstantsTest {
 
     @Test
-    public void testConstants() {
+    void testConstants() {
         assertEquals("spring.cloud.", SPRING_CLOUD_PROPERTY_PREFIX);
         assertEquals("spring.cloud.service-registry.", SERVICE_REGISTRY_PROPERTY_PREFIX);
         assertEquals("spring.cloud.service-registry.auto-registration.enabled", SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME);
