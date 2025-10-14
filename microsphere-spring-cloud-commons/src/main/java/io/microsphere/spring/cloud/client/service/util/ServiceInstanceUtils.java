@@ -152,4 +152,7 @@ public class ServiceInstanceUtils extends BaseUtils {
         Map<String, String> metadata = serviceInstance.getMetadata();
         return metadata.get(metadataName);
     }
+    
+    private ServiceInstanceUtils() {
+    }
 }
