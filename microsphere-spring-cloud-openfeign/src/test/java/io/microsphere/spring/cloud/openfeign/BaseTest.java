@@ -72,7 +72,7 @@ public abstract class BaseTest<T> {
     }
 
     @Test
-    public void testInternal() {
+    protected void testInternal() {
         ObservableFeignInvocationHandler.componentAssert = loadFeignComponentAssert();
 
         ObservableFeignInvocationHandler.expectComponentClass = beforeTestComponentClass();
