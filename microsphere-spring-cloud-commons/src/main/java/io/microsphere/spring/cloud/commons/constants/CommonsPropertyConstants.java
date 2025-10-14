@@ -48,6 +48,11 @@ public interface CommonsPropertyConstants {
      *
      * @see AutoServiceRegistrationAutoConfiguration
      */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "true",
+            source = APPLICATION_SOURCE
+    )
     String SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME = SERVICE_REGISTRY_PROPERTY_PREFIX + "auto-registration." + ENABLED_PROPERTY_NAME;
 
     /**
@@ -55,6 +60,11 @@ public interface CommonsPropertyConstants {
      *
      * @see CommonsClientAutoConfiguration.ActuatorConfiguration
      */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "true",
+            source = APPLICATION_SOURCE
+    )
     String FEATURES_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "features." + ENABLED_PROPERTY_NAME;
 
     /**
