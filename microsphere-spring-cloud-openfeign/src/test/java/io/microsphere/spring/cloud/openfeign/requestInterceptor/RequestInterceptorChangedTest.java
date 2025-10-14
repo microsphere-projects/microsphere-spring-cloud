@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest(classes = RequestInterceptorChangedTest.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @EnableAutoConfiguration
-public class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> {
+class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> {
 
     @Override
     protected Class<? extends RequestInterceptor> beforeTestComponentClass() {
