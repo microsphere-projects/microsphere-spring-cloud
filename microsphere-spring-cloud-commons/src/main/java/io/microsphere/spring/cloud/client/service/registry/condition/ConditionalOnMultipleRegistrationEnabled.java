@@ -10,6 +10,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MULTIPLE_REGISTRATION_ENABLED_PROPERTY_NAME;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * {@link Conditional @Conditional} that checks whether the multiple service registry enabled
@@ -18,8 +21,8 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RUNTIME)
+@Target({TYPE, METHOD})
 @Documented
 @ConditionalOnProperty(name = MULTIPLE_REGISTRATION_ENABLED_PROPERTY_NAME)
 public @interface ConditionalOnMultipleRegistrationEnabled {
