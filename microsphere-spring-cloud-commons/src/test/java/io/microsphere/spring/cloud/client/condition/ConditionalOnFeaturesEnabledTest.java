@@ -17,10 +17,10 @@
 package io.microsphere.spring.cloud.client.condition;
 
 /**
- * {@link ConditionalOnFeaturesEnabled} Test
+ * {@link io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesEnabled} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ConditionalOnFeaturesEnabled
+ * @see io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesEnabled
  * @since 1.0.0
  */
 
