@@ -18,6 +18,8 @@
 package io.microsphere.spring.cloud.client.service.registry;
 
 
+import com.alibaba.cloud.nacos.registry.NacosRegistration;
+import com.alibaba.cloud.nacos.registry.NacosServiceRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
@@ -25,6 +27,7 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import static io.microsphere.collection.Lists.ofList;
 import static io.microsphere.collection.Maps.ofMap;
 import static io.microsphere.spring.cloud.client.service.registry.MultipleRegistrationTest.createDefaultRegistration;
+import static io.microsphere.spring.cloud.client.service.registry.MultipleServiceRegistry.getRegistrationClass;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -76,5 +79,11 @@ class MultipleServiceRegistryTest {
         testDeregister();
         this.multipleServiceRegistry.setStatus(this.registration, "UP");
         assertNull(this.multipleServiceRegistry.getStatus(this.registration));
+    }
+
+    @Test
+    void testGetRegistrationClass() {
+        assertEquals(MultipleRegistration.class, getRegistrationClass(this.multipleServiceRegistry.getClass()));
+        assertEquals(NacosRegistration.class, getRegistrationClass(NacosServiceRegistry.class));
     }
 }
