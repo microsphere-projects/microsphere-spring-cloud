@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 
 import static io.microsphere.util.Assert.assertNotEmpty;
 import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass;
-import static org.springframework.aop.support.AopUtils.isAopProxy;
 import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.core.io.support.SpringFactoriesLoader.loadFactoryNames;
 import static org.springframework.util.ClassUtils.resolveClassName;
@@ -47,7 +46,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         for (Map.Entry<String, ServiceRegistry> entry : registriesMap.entrySet()) {
             String beanName = entry.getKey();
             ServiceRegistry serviceRegistry = entry.getValue();
-            Class<? extends Registration> registrationClass = getRegistrationClass(serviceRegistry.getClass(), entry.getValue());
+            Class<? extends Registration> registrationClass = getRegistrationClass(ultimateTargetClass(serviceRegistry));
             beanNameToRegistrationTypesMap.put(beanName, registrationClass);
             defaultServiceRegistry = serviceRegistry;
             defaultRegistrationBeanName = beanName;
@@ -95,7 +94,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         return (T) defaultServiceRegistry.getStatus(targetRegistration);
     }
 
-    private static Class<? extends Registration> getRegistrationClass(Class<? extends ServiceRegistry> serviceRegistryClass, ServiceRegistry serviceRegistry) {
+    static Class<? extends Registration> getRegistrationClass(Class<?> serviceRegistryClass) {
         Class<?> registrationClass = forClass(serviceRegistryClass)
                 .as(ServiceRegistry.class)
                 .getGeneric(0)
@@ -106,11 +105,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
             ClassLoader classLoader = serviceRegistryClass.getClassLoader();
             List<String> registrationClassNames;
 
-            if (isAopProxy(serviceRegistry)) {
-                registrationClassNames = loadFactoryNames(ultimateTargetClass(serviceRegistry), classLoader);
-            } else {
-                registrationClassNames = loadFactoryNames(serviceRegistryClass, classLoader);
-            }
+            registrationClassNames = loadFactoryNames(serviceRegistryClass, classLoader);
 
             for (String registrationClassName : registrationClassNames) {
                 registrationClass = resolveClassName(registrationClassName, classLoader);
