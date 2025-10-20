@@ -1,6 +1,7 @@
 package io.microsphere.spring.cloud.client.service.registry;
 
 import org.springframework.cloud.client.serviceregistry.Registration;
+import org.springframework.cloud.zookeeper.serviceregistry.ServiceInstanceRegistration;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -21,7 +22,9 @@ public final class RegistrationMetaData implements Map<String, String> {
      * MetaData information manually added by the application,usually specified by configuration
      */
     private final Map<String, String> applicationMetaData;
+
     private final Collection<Registration> registrations;
+
     private final Object lock = new Object();
 
     public RegistrationMetaData(Collection<Registration> registrations) {
@@ -29,6 +32,12 @@ public final class RegistrationMetaData implements Map<String, String> {
         this.registrations = registrations;
         this.applicationMetaData = new ConcurrentHashMap<>();
         for (Registration registration : registrations) {
+            if (registration instanceof ServiceInstanceRegistration) {
+                ServiceInstanceRegistration serviceInstanceRegistration = (ServiceInstanceRegistration) registration;
+                // init ServiceInstance<ZookeeperInstance>
+                serviceInstanceRegistration.getServiceInstance();
+            }
+
             Map<String, String> metaData = registration.getMetadata();
             if (!CollectionUtils.isEmpty(metaData)) {
                 //check key and value must not be null
