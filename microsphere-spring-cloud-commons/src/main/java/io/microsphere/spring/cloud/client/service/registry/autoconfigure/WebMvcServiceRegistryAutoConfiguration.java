@@ -21,7 +21,6 @@ import io.microsphere.spring.cloud.client.service.registry.condition.Conditional
 import io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import io.microsphere.util.ValueHolder;
-import jakarta.servlet.Filter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +35,7 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
+import javax.servlet.Filter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
