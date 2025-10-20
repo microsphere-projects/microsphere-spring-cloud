@@ -27,6 +27,7 @@ import java.util.Map;
 
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_MAPPINGS_METADATA_NAME;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * {@link WebMvcServiceRegistryAutoConfiguration} Test
@@ -44,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 "kubernetes.manifests.enabled=false",
                 "kubernetes.reconciler.enabled=false"
         },
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+        webEnvironment = RANDOM_PORT
 )
 @EnableAutoConfiguration
 @EnableWebMvcExtension
