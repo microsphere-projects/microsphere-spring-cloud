@@ -1,7 +1,6 @@
 package io.microsphere.spring.cloud.client.service.registry;
 
 import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.cloud.zookeeper.serviceregistry.ServiceInstanceRegistration;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -10,13 +9,25 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.microsphere.reflect.MethodUtils.invokeMethod;
 import static io.microsphere.util.Assert.assertNotEmpty;
+import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 1.0.0
  */
 public final class RegistrationMetaData implements Map<String, String> {
+
+    /**
+     * The class name of {@link org.springframework.cloud.zookeeper.serviceregistry.ServiceInstanceRegistration}
+     */
+    static final String ZOOKEEPER_REGISTRATION_CLASS_NAME = "org.springframework.cloud.zookeeper.serviceregistry.ServiceInstanceRegistration";
+
+    /**
+     * The method name of {@link org.springframework.cloud.zookeeper.serviceregistry.ServiceInstanceRegistration#getServiceInstance()}
+     */
+    static final String GET_SERVICE_INSTANCE_METHOD_NAME = "getServiceInstance";
 
     /**
      * MetaData information manually added by the application,usually specified by configuration
@@ -32,11 +43,7 @@ public final class RegistrationMetaData implements Map<String, String> {
         this.registrations = registrations;
         this.applicationMetaData = new ConcurrentHashMap<>();
         for (Registration registration : registrations) {
-            if (registration instanceof ServiceInstanceRegistration) {
-                ServiceInstanceRegistration serviceInstanceRegistration = (ServiceInstanceRegistration) registration;
-                // init ServiceInstance<ZookeeperInstance>
-                serviceInstanceRegistration.getServiceInstance();
-            }
+            initializeIfZookeeperRegistrationAvailable(registration);
 
             Map<String, String> metaData = registration.getMetadata();
             if (!CollectionUtils.isEmpty(metaData)) {
@@ -126,5 +133,13 @@ public final class RegistrationMetaData implements Map<String, String> {
     @Override
     public Set<Entry<String, String>> entrySet() {
         return this.applicationMetaData.entrySet();
+    }
+
+    private void initializeIfZookeeperRegistrationAvailable(Registration registration) {
+        Class<?> registrationClass = ultimateTargetClass(registration);
+        if (ZOOKEEPER_REGISTRATION_CLASS_NAME.equals(registrationClass.getName())) {
+            // init ServiceInstance<ZookeeperInstance>
+            invokeMethod(registration, GET_SERVICE_INSTANCE_METHOD_NAME);
+        }
     }
 }
