@@ -125,5 +125,19 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring Cloud Zookeeper -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring Cloud Consul -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
