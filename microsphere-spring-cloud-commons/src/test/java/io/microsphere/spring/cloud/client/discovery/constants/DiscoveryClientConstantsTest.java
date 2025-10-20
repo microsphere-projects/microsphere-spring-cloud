@@ -33,10 +33,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @see DiscoveryClientConstants
  * @since 1.0.0
  */
-public class DiscoveryClientConstantsTest {
+class DiscoveryClientConstantsTest {
 
     @Test
-    public void testConstants() {
+    void testConstants() {
         assertEquals("microsphere.spring.cloud.client.discovery.", DISCOVERY_CLIENT_PROPERTY_PREFIX);
         assertEquals("mode", MODE_PROPERTY_NAME);
         assertEquals("union", UNION_DISCOVERY_CLIENT_MODE);

@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         }
 )
 @EnableAutoConfiguration
-public class SimpleAutoServiceRegistrationAutoConfigurationTest {
+class SimpleAutoServiceRegistrationAutoConfigurationTest {
 
     @Autowired
     private Registration registration;
@@ -41,7 +41,7 @@ public class SimpleAutoServiceRegistrationAutoConfigurationTest {
     private SimpleAutoServiceRegistration simpleAutoServiceRegistration;
 
     @Test
-    public void test() {
+    void test() {
         assertEquals("test-service", registration.getServiceId());
         assertNotNull(registration.getHost());
         assertNotNull(registration.getPort());

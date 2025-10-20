@@ -63,7 +63,7 @@ public class UnionDiscoveryClientTest {
     private DiscoveryClient discoveryClient;
 
     @Test
-    public void test() {
+    void test() {
         assertEquals(CompositeDiscoveryClient.class, discoveryClient.getClass());
         CompositeDiscoveryClient compositeDiscoveryClient = CompositeDiscoveryClient.class.cast(discoveryClient);
         List<DiscoveryClient> discoveryClients = compositeDiscoveryClient.getDiscoveryClients();

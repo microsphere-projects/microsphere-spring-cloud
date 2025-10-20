@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         }
 )
 @EnableAutoConfiguration
-public class ServiceRegistrationEndpointAutoConfigurationTest {
+class ServiceRegistrationEndpointAutoConfigurationTest {
 
     @Autowired
     private ObjectProvider<ServiceRegistrationEndpoint> serviceRegistrationEndpoint;
@@ -38,7 +38,7 @@ public class ServiceRegistrationEndpointAutoConfigurationTest {
     private ObjectProvider<ServiceDeregistrationEndpoint> serviceDeregistrationEndpoint;
 
     @Test
-    public void testEndpoints() {
+    void testEndpoints() {
         assertNotNull(serviceRegistrationEndpoint);
     }
 

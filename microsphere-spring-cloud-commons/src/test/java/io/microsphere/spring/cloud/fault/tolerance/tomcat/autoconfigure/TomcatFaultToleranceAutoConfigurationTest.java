@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         TomcatFaultToleranceAutoConfigurationTest.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
-public class TomcatFaultToleranceAutoConfigurationTest {
+class TomcatFaultToleranceAutoConfigurationTest {
 
     @Autowired
     private EnvironmentManager environmentManager;
@@ -63,7 +63,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMinSpareThreads() {
+    void testMinSpareThreads() {
         // default
         assertEquals(10, protocol.getMinSpareThreads());
         // changed
@@ -72,7 +72,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxThreads() {
+    void testMaxThreads() {
         // default
         assertEquals(200, protocol.getMaxThreads());
         // changed
@@ -81,7 +81,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testAcceptCount() {
+    void testAcceptCount() {
         // default
         assertEquals(100, protocol.getAcceptCount());
         // changed
@@ -90,7 +90,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testConnectionTimeout() {
+    void testConnectionTimeout() {
         // default
         assertEquals(60000, protocol.getConnectionTimeout());
         // changed
@@ -99,7 +99,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxConnections() {
+    void testMaxConnections() {
         // default
         assertEquals(8192, protocol.getMaxConnections());
         // changed
@@ -108,7 +108,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxHttpHeaderSize() {
+    void testMaxHttpHeaderSize() {
         // default
         assertEquals(8192, protocol.getMaxHttpHeaderSize());
         // changed
@@ -117,7 +117,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxSwallowSize() {
+    void testMaxSwallowSize() {
         // default
         assertEquals(1024 * 1024 * 2, protocol.getMaxSwallowSize());
         // changed
@@ -126,7 +126,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxHttpFormPostSize() {
+    void testMaxHttpFormPostSize() {
         // default
         assertEquals(1024 * 1024 * 2, connector.getMaxPostSize());
         // changed

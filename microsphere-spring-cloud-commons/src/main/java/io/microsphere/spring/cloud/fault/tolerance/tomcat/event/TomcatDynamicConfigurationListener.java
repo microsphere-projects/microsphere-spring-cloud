@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.spring.boot.context.properties.bind.util.BindUtils.bind;
 import static io.microsphere.spring.core.env.EnvironmentUtils.getProperties;
 import static io.microsphere.spring.core.env.PropertySourcesUtils.getSubProperties;
@@ -51,7 +52,7 @@ import static io.microsphere.util.Configurer.configure;
  */
 public class TomcatDynamicConfigurationListener implements ApplicationListener<EnvironmentChangeEvent> {
 
-    private static final Logger logger = LoggerFactory.getLogger(TomcatDynamicConfigurationListener.class);
+    private static final Logger logger = getLogger(TomcatDynamicConfigurationListener.class);
 
     private static final String SERVER_PROPERTIES_PREFIX = "server";
 

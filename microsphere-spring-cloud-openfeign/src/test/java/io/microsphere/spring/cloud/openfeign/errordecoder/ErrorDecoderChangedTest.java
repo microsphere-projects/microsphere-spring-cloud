@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest(classes = ErrorDecoderChangedTest.class)
 @EnableAutoConfiguration
-public class ErrorDecoderChangedTest extends BaseTest<ErrorDecoder> {
+class ErrorDecoderChangedTest extends BaseTest<ErrorDecoder> {
 
     @Override
     protected Class<? extends ErrorDecoder> beforeTestComponentClass() {

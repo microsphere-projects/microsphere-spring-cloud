@@ -14,33 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.service.registry.constants;
+
+package io.microsphere.spring.cloud.fault.tolerance.loadbalancer.util;
+
+
+import org.junit.jupiter.api.Test;
+
+import static io.microsphere.spring.cloud.fault.tolerance.loadbalancer.util.LoadBalancerUtils.calculateWarmupWeight;
+import static java.lang.System.currentTimeMillis;
+import static java.lang.Thread.sleep;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * The constants for Service Instance
+ * {@link LoadBalancerUtils} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see LoadBalancerUtils
  * @since 1.0.0
  */
-public interface InstanceConstants {
+class LoadBalancerUtilsTest {
 
-    /**
-     * The meta-data name of Web Mappings
-     */
-    String WEB_MAPPINGS_METADATA_NAME = "web.mappings";
-
-    /**
-     * The meta-data name of Web Context Path
-     */
-    String WEB_CONTEXT_PATH_METADATA_NAME = "web.context-path";
-
-    /**
-     * The metadata name of management
-     */
-    String MANAGEMENT_PORT_METADATA_NAME = "management-port";
-
-    /**
-     * The metadata name of start time
-     */
-    String START_TIME_METADATA_NAME = "start-time";
+    @Test
+    void testCalculateWarmupWeight() throws InterruptedException {
+        long uptime = currentTimeMillis();
+        int weight = 10;
+        for (int i = 0; i < 10; i++) {
+            assertTrue(weight <= (weight = calculateWarmupWeight(uptime, uptime, weight)));
+            sleep(10);
+        }
+    }
 }

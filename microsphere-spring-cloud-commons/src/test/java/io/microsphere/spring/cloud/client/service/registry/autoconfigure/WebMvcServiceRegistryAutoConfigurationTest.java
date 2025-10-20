@@ -27,6 +27,7 @@ import java.util.Map;
 
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_MAPPINGS_METADATA_NAME;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * {@link WebMvcServiceRegistryAutoConfiguration} Test
@@ -35,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @since 1.0.0
  */
 @SpringBootTest(
-        classes = {WebMvcServiceRegistryAutoConfigurationTest.class},
+        classes = WebMvcServiceRegistryAutoConfigurationTest.class,
         properties = {
                 "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true",
                 "spring.cloud.service-registry.auto-registration.enabled=true",
@@ -44,17 +45,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 "kubernetes.manifests.enabled=false",
                 "kubernetes.reconciler.enabled=false"
         },
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+        webEnvironment = RANDOM_PORT
 )
 @EnableAutoConfiguration
 @EnableWebMvcExtension
-public class WebMvcServiceRegistryAutoConfigurationTest {
+class WebMvcServiceRegistryAutoConfigurationTest {
 
     @Autowired
     private Registration registration;
 
     @Test
-    public void test() {
+    void test() {
         Map<String, String> metadata = registration.getMetadata();
         assertNotNull(metadata.get(WEB_MAPPINGS_METADATA_NAME));
     }

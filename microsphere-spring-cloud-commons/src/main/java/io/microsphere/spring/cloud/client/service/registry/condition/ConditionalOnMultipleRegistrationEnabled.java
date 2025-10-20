@@ -24,5 +24,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @ConditionalOnProperty(name = MULTIPLE_REGISTRATION_ENABLED_PROPERTY_NAME)
 public @interface ConditionalOnMultipleRegistrationEnabled {
-
 }

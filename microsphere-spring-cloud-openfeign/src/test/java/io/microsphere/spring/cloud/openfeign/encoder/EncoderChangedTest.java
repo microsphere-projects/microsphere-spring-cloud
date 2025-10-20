@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest(classes = EncoderChangedTest.class)
 @EnableAutoConfiguration
-public class EncoderChangedTest extends BaseTest<Encoder> {
+class EncoderChangedTest extends BaseTest<Encoder> {
 
 
     @Override

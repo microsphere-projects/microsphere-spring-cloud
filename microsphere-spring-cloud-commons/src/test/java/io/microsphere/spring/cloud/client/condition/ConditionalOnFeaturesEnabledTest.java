@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 "spring.cloud.features.enabled=true"
         }
 )
-public class ConditionalOnFeaturesEnabledTest {
+class ConditionalOnFeaturesEnabledTest {
 
     @ConditionalOnFeaturesEnabled
     static class FeaturesConfiguration {
@@ -53,7 +53,7 @@ public class ConditionalOnFeaturesEnabledTest {
     private ObjectProvider<FeaturesConfiguration> featuresConfigurationProvider;
 
     @Test
-    public void test() {
+    void test() {
         assertNotNull(featuresConfigurationProvider.getIfAvailable());
     }
 }

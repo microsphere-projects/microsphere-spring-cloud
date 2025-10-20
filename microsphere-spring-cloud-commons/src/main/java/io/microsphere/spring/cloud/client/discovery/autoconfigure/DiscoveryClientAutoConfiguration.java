@@ -30,8 +30,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.DISCOVERY_CLIENT_CLASS_NAME;
-import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.DISCOVERY_CLIENT_PROPERTY_PREFIX;
-import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.MODE_PROPERTY_NAME;
+import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.DISCOVERY_CLIENT_MODE_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.UNION_DISCOVERY_CLIENT_MODE;
 
 /**
@@ -54,7 +53,7 @@ import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryCl
 public class DiscoveryClientAutoConfiguration {
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(prefix = DISCOVERY_CLIENT_PROPERTY_PREFIX, name = MODE_PROPERTY_NAME, havingValue = UNION_DISCOVERY_CLIENT_MODE)
+    @ConditionalOnProperty(name = DISCOVERY_CLIENT_MODE_PROPERTY_NAME, havingValue = UNION_DISCOVERY_CLIENT_MODE)
     public static class UnionConfiguration {
 
         @Bean

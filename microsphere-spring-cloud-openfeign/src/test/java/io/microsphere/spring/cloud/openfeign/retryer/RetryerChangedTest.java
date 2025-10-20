@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest(classes = RetryerChangedTest.class)
 @EnableAutoConfiguration
-public class RetryerChangedTest extends BaseTest<Retryer> {
+class RetryerChangedTest extends BaseTest<Retryer> {
 
     @Override
     protected Class<? extends Retryer> beforeTestComponentClass() {
