@@ -25,6 +25,11 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@v4
 
+      - name: Setup Testcontainers Cloud Client
+        uses: atomicjar/testcontainers-cloud-setup-action@v1
+        with:
+          token: ${{ secrets.TC_CLOUD_TOKEN }}
+
       - name: Setup JDK ${{ matrix.Java }}
         uses: actions/setup-java@v4
         with:
@@ -39,7 +44,7 @@ jobs:
           --file pom.xml
           -Drevision=0.0.1-SNAPSHOT
           test
-          --activate-profiles test,coverage,${{ matrix.maven-profile-spring-cloud }}
+          --activate-profiles test,coverage,testcontainers,${{ matrix.maven-profile-spring-cloud }}
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5

@@ -1,35 +1,36 @@
 package io.microsphere.spring.cloud.client.service.registry;
 
-import com.alibaba.cloud.nacos.NacosServiceAutoConfiguration;
-import com.alibaba.cloud.nacos.discovery.NacosDiscoveryAutoConfiguration;
-import com.alibaba.cloud.nacos.registry.NacosServiceRegistryAutoConfiguration;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
-import io.microsphere.spring.cloud.client.service.registry.autoconfigure.ServiceRegistryAutoConfiguration;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.client.CommonsClientAutoConfiguration;
-import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationAutoConfiguration;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
-import org.springframework.cloud.commons.util.UtilAutoConfiguration;
-import org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration;
-import org.springframework.cloud.netflix.eureka.config.DiscoveryClientOptionalArgsConfiguration;
 import org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.ComposeContainer;
+import org.testcontainers.junit.jupiter.EnabledIfDockerAvailable;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Map;
 
+import static io.microsphere.lang.function.ThrowableAction.execute;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.testcontainers.containers.wait.strategy.Wait.forLogMessage;
 
 /**
  * {@link MultipleServiceRegistry} Integration Test
@@ -39,34 +40,29 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @see MultipleServiceRegistry
  * @since 1.0.0
  */
-@Disabled
+@EnabledIfSystemProperty(named = "testcontainers.enabled", matches = "true")
+@EnabledIfDockerAvailable
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-        AutoServiceRegistrationAutoConfiguration.class,
-        CommonsClientAutoConfiguration.class,
-        EurekaClientAutoConfiguration.class,
-        DiscoveryClientOptionalArgsConfiguration.class,
-        NacosServiceRegistryAutoConfiguration.class,
-        NacosServiceAutoConfiguration.class,
-        NacosDiscoveryAutoConfiguration.class,
-        UtilAutoConfiguration.class,
         MultipleServiceRegistryIntegrationTest.class,
-        ServiceRegistryAutoConfiguration.class,
 })
 @TestPropertySource(
         properties = {
                 "spring.application.name=test",
-                "microsphere.spring.cloud.multiple-registration.enabled=true",
-                "microsphere.spring.cloud.default-registration.type=com.alibaba.cloud.nacos.registry.NacosRegistration",
-                "microsphere.spring.cloud.default-service-registry.type=com.alibaba.cloud.nacos.registry.NacosServiceRegistry",
+
                 "spring.cloud.service-registry.auto-registration.enabled=true",
                 "spring.cloud.nacos.discovery.namespace=f7ad23e0-f581-4516-9420-8c50aa6a7b89",
                 "spring.cloud.nacos.discovery.metadata.key=value",
-                "eureka.client.service-url.defaultZone=http://127.0.0.1:8080/eureka",
+
+                "microsphere.spring.cloud.multiple-registration.enabled=true",
+                "microsphere.spring.cloud.default-registration.type=com.alibaba.cloud.nacos.registry.NacosRegistration",
+                "microsphere.spring.cloud.default-service-registry.type=com.alibaba.cloud.nacos.registry.NacosServiceRegistry",
         }
 )
 @EnableAutoConfiguration
-class MultipleServiceRegistryIntegrationTest implements ApplicationListener<RegistrationPreRegisteredEvent> {
+public class MultipleServiceRegistryIntegrationTest implements ApplicationListener<RegistrationPreRegisteredEvent> {
+
+    private static ComposeContainer composeContainer;
 
     @Autowired
     private ServiceRegistry serviceRegistry;
@@ -80,11 +76,39 @@ class MultipleServiceRegistryIntegrationTest implements ApplicationListener<Regi
     @Autowired
     private MultipleAutoServiceRegistration autoServiceRegistration;
 
+    @Autowired
+    private ConfigurableApplicationContext context;
+
+    @BeforeAll
+    static void beforeAll() throws Exception {
+        ClassLoader classLoader = MultipleServiceRegistryIntegrationTest.class.getClassLoader();
+        URL resource = classLoader.getResource("META-INF/docker/service-registry-servers.yml");
+        File dockerComposeFile = new File(resource.toURI());
+        composeContainer = new ComposeContainer(dockerComposeFile);
+        composeContainer.waitingFor("nacos", forLogMessage(".*Nacos started successfully.*", 1))
+                .waitingFor("eureka", forLogMessage(".*Started EurekaServerApplication.*", 1))
+                .start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        composeContainer.stop();
+    }
+
+    @BeforeEach
+    void setUp() {
+        context.addApplicationListener(this);
+    }
+
     @Override
     public void onApplicationEvent(RegistrationPreRegisteredEvent event) {
+        onPreRegisteredEvent(event.getRegistration());
+    }
+
+    void onPreRegisteredEvent(Registration registration) {
         this.registration.getMetadata().put("my-key", "my-value");
-        if (event.getRegistration() instanceof EurekaRegistration) {
-            EurekaRegistration eurekaRegistration = (EurekaRegistration) event.getRegistration();
+        if (registration instanceof EurekaRegistration) {
+            EurekaRegistration eurekaRegistration = (EurekaRegistration) registration;
             ApplicationInfoManager applicationInfoManager = eurekaRegistration.getApplicationInfoManager();
             InstanceInfo instanceInfo = applicationInfoManager.getInfo();
             Map<String, String> metadata = registration.getMetadata();
@@ -95,25 +119,11 @@ class MultipleServiceRegistryIntegrationTest implements ApplicationListener<Regi
 
     @Test
     void test() throws Exception {
-        assertNotNull(serviceRegistry);
         assertNotNull(registration);
-        autoServiceRegistration.start();
-        Thread.sleep(60 * 1000);
+        execute(autoServiceRegistration::start, e -> {
 
-        autoServiceRegistration.stop();
-    }
-
-    @Test
-    void testMetaData() throws Exception {
-        assertNotNull(registration);
-
-        autoServiceRegistration.start();
-
+        });
         assertEquals(registration.getMetadata().get("my-key"), "my-value");
-        Thread.sleep(60 * 1000);
-
         autoServiceRegistration.stop();
     }
-
-
 }
