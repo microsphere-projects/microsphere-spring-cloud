@@ -17,7 +17,6 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import io.microsphere.logging.Logger;
-import io.microsphere.logging.LoggerFactory;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
@@ -107,9 +106,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
                     || isDispatcherServletMapping(mapping, patterns)
                     || isActuatorWebEndpointMapping(patterns)
             ) {
-                if (logger.isTraceEnabled()) {
-                    logger.trace("The '{}' was removed", mapping);
-                }
+                logger.trace("The '{}' was removed", mapping);
                 iterator.remove();
             }
 
