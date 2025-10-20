@@ -1,0 +1,25 @@
+services:
+  zookeeper:
+    image: zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+
+  consul:
+    image: hashicorp/consul
+    ports:
+      - "8500:8500"
+
+  nacos:
+    image: nacos/nacos-server:v2.5.1
+    ports:
+      - "8848:8848"
+    environment:
+      - MODE=standalone
+
+  eureka:
+    image: aliaksandrvoitko/eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SERVER_PORT=8761

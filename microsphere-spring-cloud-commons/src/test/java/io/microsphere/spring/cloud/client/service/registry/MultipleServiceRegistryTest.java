@@ -22,6 +22,7 @@ import com.alibaba.cloud.nacos.registry.NacosRegistration;
 import com.alibaba.cloud.nacos.registry.NacosServiceRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
 import static io.microsphere.collection.Lists.ofList;
@@ -85,5 +86,16 @@ class MultipleServiceRegistryTest {
     void testGetRegistrationClass() {
         assertEquals(MultipleRegistration.class, getRegistrationClass(this.multipleServiceRegistry.getClass()));
         assertEquals(NacosRegistration.class, getRegistrationClass(NacosServiceRegistry.class));
+    }
+
+    @Test
+    void testGetRegistrationClassWithNull() {
+        MultipleRegistration multipleRegistration = new MultipleRegistration(ofList(this.defaultRegistration)) {
+            @Override
+            public <T extends Registration> T special(Class<T> specialClass) {
+                return null;
+            }
+        };
+        this.multipleServiceRegistry.register(multipleRegistration);
     }
 }

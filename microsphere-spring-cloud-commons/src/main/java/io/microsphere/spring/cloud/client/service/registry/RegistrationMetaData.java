@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.microsphere.reflect.MethodUtils.invokeMethod;
 import static io.microsphere.util.Assert.assertNotEmpty;
+import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -18,10 +20,22 @@ import static io.microsphere.util.Assert.assertNotEmpty;
 public final class RegistrationMetaData implements Map<String, String> {
 
     /**
+     * The class name of {@link org.springframework.cloud.zookeeper.serviceregistry.ServiceInstanceRegistration}
+     */
+    static final String ZOOKEEPER_REGISTRATION_CLASS_NAME = "org.springframework.cloud.zookeeper.serviceregistry.ServiceInstanceRegistration";
+
+    /**
+     * The method name of {@link org.springframework.cloud.zookeeper.serviceregistry.ServiceInstanceRegistration#getServiceInstance()}
+     */
+    static final String GET_SERVICE_INSTANCE_METHOD_NAME = "getServiceInstance";
+
+    /**
      * MetaData information manually added by the application,usually specified by configuration
      */
     private final Map<String, String> applicationMetaData;
+
     private final Collection<Registration> registrations;
+
     private final Object lock = new Object();
 
     public RegistrationMetaData(Collection<Registration> registrations) {
@@ -29,6 +43,8 @@ public final class RegistrationMetaData implements Map<String, String> {
         this.registrations = registrations;
         this.applicationMetaData = new ConcurrentHashMap<>();
         for (Registration registration : registrations) {
+            initializeIfZookeeperRegistrationAvailable(registration);
+
             Map<String, String> metaData = registration.getMetadata();
             if (!CollectionUtils.isEmpty(metaData)) {
                 //check key and value must not be null
@@ -117,5 +133,13 @@ public final class RegistrationMetaData implements Map<String, String> {
     @Override
     public Set<Entry<String, String>> entrySet() {
         return this.applicationMetaData.entrySet();
+    }
+
+    private void initializeIfZookeeperRegistrationAvailable(Registration registration) {
+        Class<?> registrationClass = ultimateTargetClass(registration);
+        if (ZOOKEEPER_REGISTRATION_CLASS_NAME.equals(registrationClass.getName())) {
+            // init ServiceInstance<ZookeeperInstance>
+            invokeMethod(registration, GET_SERVICE_INSTANCE_METHOD_NAME);
+        }
     }
 }
