@@ -58,6 +58,16 @@ class RegistrationMetaDataTest {
     }
 
     @Test
+    void testConstructor() {
+        Map<String, String> metadata = this.defaultRegistration.getMetadata();
+        metadata.put(null, "null");
+        metadata.put("null", null);
+        this.metaData = new RegistrationMetaData(ofList(defaultRegistration));
+        testGet();
+        assertNull(this.metaData.get("null"));
+    }
+
+    @Test
     void testSize() {
         assertEquals(3, metaData.size());
     }
