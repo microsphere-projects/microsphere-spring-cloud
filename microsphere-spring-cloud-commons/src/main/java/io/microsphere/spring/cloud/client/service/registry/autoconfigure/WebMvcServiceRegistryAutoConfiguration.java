@@ -17,10 +17,11 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import io.microsphere.logging.Logger;
-import io.microsphere.logging.LoggerFactory;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
+import io.microsphere.util.ValueHolder;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,8 +36,6 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
-import javax.servlet.Filter;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,6 +45,8 @@ import java.util.Set;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
 import static io.microsphere.util.ArrayUtils.EMPTY_STRING_ARRAY;
+import static io.microsphere.util.ArrayUtils.arrayEquals;
+import static java.lang.Boolean.FALSE;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
@@ -130,16 +131,16 @@ public class WebMvcServiceRegistryAutoConfiguration {
     }
 
     private boolean isDispatcherServletMapping(WebEndpointMapping mapping, String[] patterns) {
-        DispatcherServletRegistrationBean registrationBean = dispatcherServletRegistrationBeanProvider.getIfAvailable();
-        if (registrationBean != null) {
+        ValueHolder<Boolean> found = new ValueHolder<>(FALSE);
+        this.dispatcherServletRegistrationBeanProvider.ifAvailable(registrationBean -> {
             Object source = mapping.getEndpoint();
             String servletName = registrationBean.getServletName();
             if (Objects.equals(source, servletName)) {
                 Collection<String> urlMappings = registrationBean.getUrlMappings();
-                return matchUrlPatterns(urlMappings, patterns);
+                found.setValue(matchUrlPatterns(urlMappings, patterns));
             }
-        }
-        return false;
+        });
+        return found.getValue();
     }
 
 
@@ -159,7 +160,7 @@ public class WebMvcServiceRegistryAutoConfiguration {
 
     private boolean matchUrlPatterns(Collection<String> urlPatterns, String[] patterns) {
         String[] urlPatternsArray = urlPatterns.isEmpty() ? DEFAULT_URL_MAPPINGS : urlPatterns.toArray(EMPTY_STRING_ARRAY);
-        return Arrays.equals(urlPatternsArray, patterns);
+        return arrayEquals(urlPatternsArray, patterns);
     }
 
 }
