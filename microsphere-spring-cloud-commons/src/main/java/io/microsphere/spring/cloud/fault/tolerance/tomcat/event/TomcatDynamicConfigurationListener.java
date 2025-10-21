@@ -18,7 +18,6 @@ package io.microsphere.spring.cloud.fault.tolerance.tomcat.event;
 
 
 import io.microsphere.logging.Logger;
-import io.microsphere.logging.LoggerFactory;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.ProtocolHandler;
@@ -38,6 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.spring.beans.BeanUtils.isBeanPresent;
 import static io.microsphere.spring.boot.context.properties.bind.util.BindUtils.bind;
 import static io.microsphere.spring.core.env.EnvironmentUtils.getProperties;
 import static io.microsphere.spring.core.env.PropertySourcesUtils.getSubProperties;
@@ -76,7 +76,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
         this.context = context;
         this.environment = environment;
-        this.configurationPropertiesRebinderPresent = isBeanPresent(ConfigurationPropertiesRebinder.class);
+        this.configurationPropertiesRebinderPresent = isBeanPresent(context, ConfigurationPropertiesRebinder.class);
 
         initCurrentServerProperties();
     }
@@ -85,24 +85,16 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
         this.currentServerProperties = getCurrentServerProperties(environment);
     }
 
-    private boolean isBeanPresent(Class<?> beanType) {
-        return context.getBeanProvider(beanType).getIfAvailable() != null;
-    }
-
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
         if (!isSourceFrom(event)) {
-            if(logger.isTraceEnabled()) {
-                logger.trace("Current context[id : '{}'] receives the other changed property names : {}", context.getId(), event.getKeys());
-            }
+            logger.trace("Current context[id : '{}'] receives the other changed property names : {}", context.getId(), event.getKeys());
             return;
         }
 
         Set<String> serverPropertyNames = filterServerPropertyNames(event);
         if (serverPropertyNames.isEmpty()) {
-            if(logger.isTraceEnabled()) {
-                logger.trace("Current context[id : '{}'] does not receive the property change of ServerProperties, keys : {}", context.getId(), event.getKeys());
-            }
+            logger.trace("Current context[id : '{}'] does not receive the property change of ServerProperties, keys : {}", context.getId(), event.getKeys());
             return;
         }
 
@@ -128,9 +120,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
     private void configureTomcatIfChanged(Set<String> serverPropertyNames) {
         ServerProperties refreshableServerProperties = getRefreshableServerProperties(serverPropertyNames);
-        if(logger.isTraceEnabled()) {
-            logger.debug("The ServerProperties property is changed to: {}", getProperties(environment, serverPropertyNames));
-        }
+        logger.trace("The ServerProperties property is changed to: {}", getProperties(environment, serverPropertyNames));
         configureConnector(refreshableServerProperties);
         // Reset current ServerProperties
         initCurrentServerProperties();
