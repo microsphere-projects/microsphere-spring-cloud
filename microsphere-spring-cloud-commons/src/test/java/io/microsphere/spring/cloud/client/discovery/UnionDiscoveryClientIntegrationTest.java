@@ -14,9 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.discovery.autoconfigure;
+package io.microsphere.spring.cloud.client.discovery;
 
-import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -52,19 +51,14 @@ import static org.testcontainers.containers.wait.strategy.Wait.forLogMessage;
 @ContextConfiguration(classes = {
         UnionDiscoveryClientIntegrationTest.class
 })
-@TestPropertySource(
-        properties = {
-                "spring.application.name=test",
-
-                "spring.cloud.service-registry.auto-registration.enabled=true",
-
-                "microsphere.spring.cloud.client.discovery.mode=union",
-
-                "microsphere.spring.cloud.multiple-registration.enabled=true"
-        }
-)
+@TestPropertySource(properties = {
+        "spring.application.name=test",
+        "spring.cloud.service-registry.auto-registration.enabled=true",
+        "microsphere.spring.cloud.client.discovery.mode=union",
+        "microsphere.spring.cloud.multiple-registration.enabled=true"
+})
 @EnableAutoConfiguration
-public class UnionDiscoveryClientIntegrationTest {
+class UnionDiscoveryClientIntegrationTest {
 
     private static ComposeContainer composeContainer;
 

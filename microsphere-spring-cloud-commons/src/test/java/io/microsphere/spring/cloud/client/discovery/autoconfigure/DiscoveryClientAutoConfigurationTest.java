@@ -17,7 +17,6 @@
 package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
 import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
-import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClientTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         UtilAutoConfiguration.class,
         SimpleDiscoveryClientAutoConfiguration.class,
         CompositeDiscoveryClientAutoConfiguration.class,
-        DiscoveryClientAutoConfiguration.class,
-        UnionDiscoveryClientTest.class
+        DiscoveryClientAutoConfiguration.class
 })
 @TestPropertySource(
         properties = {

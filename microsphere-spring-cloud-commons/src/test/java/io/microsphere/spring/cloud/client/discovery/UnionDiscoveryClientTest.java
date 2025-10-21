@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
                 "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
         }
 )
-public class UnionDiscoveryClientTest {
+class UnionDiscoveryClientTest {
 
     @Autowired
     private DiscoveryClient discoveryClient;

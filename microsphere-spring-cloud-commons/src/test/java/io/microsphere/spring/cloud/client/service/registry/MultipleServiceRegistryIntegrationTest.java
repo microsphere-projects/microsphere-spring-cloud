@@ -60,7 +60,7 @@ import static org.testcontainers.containers.wait.strategy.Wait.forLogMessage;
         }
 )
 @EnableAutoConfiguration
-public class MultipleServiceRegistryIntegrationTest implements ApplicationListener<RegistrationPreRegisteredEvent> {
+class MultipleServiceRegistryIntegrationTest implements ApplicationListener<RegistrationPreRegisteredEvent> {
 
     private static ComposeContainer composeContainer;
 
