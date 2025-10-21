@@ -49,7 +49,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         },
         webEnvironment = RANDOM_PORT
 )
-@EnableAutoConfiguration
 class AbstractServiceRegistrationEndpointTest {
 
     @Autowired
