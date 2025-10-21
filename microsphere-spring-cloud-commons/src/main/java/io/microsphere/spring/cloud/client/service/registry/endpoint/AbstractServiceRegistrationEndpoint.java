@@ -1,5 +1,6 @@
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
+import io.microsphere.logging.Logger;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.ApplicationListener;
 
+import static io.microsphere.logging.LoggerFactory.getLogger;
+
 /**
  * Abstract Endpoint for Service Registration
  *
@@ -18,6 +21,8 @@ import org.springframework.context.ApplicationListener;
  * @since 1.0.0
  */
 public class AbstractServiceRegistrationEndpoint implements SmartInitializingSingleton, ApplicationListener<WebServerInitializedEvent> {
+
+    protected final Logger logger = getLogger(getClass());
 
     @Value("${spring.application.name}")
     protected String applicationName;
