@@ -29,9 +29,7 @@ eureka:
 
 ---
 spring:
-  config:
-    activate:
-      on-profile: nacos
+  profiles: nacos
 
   cloud:
     nacos:
@@ -46,9 +44,7 @@ spring:
 
 ---
 spring:
-  config:
-    activate:
-      on-profile: eureka
+  profiles: eureka
 
 eureka:
   client:
@@ -59,9 +55,7 @@ eureka:
 
 ---
 spring:
-  config:
-    activate:
-      on-profile: zookeeper
+  profiles: zookeeper
   cloud:
     zookeeper:
       enabled: true
@@ -70,9 +64,7 @@ spring:
 
 ---
 spring:
-  config:
-    activate:
-      on-profile: consul
+  profiles: consul
 
   cloud:
     consul:
@@ -83,9 +75,7 @@ spring:
 
 ---
 spring:
-  config:
-    activate:
-      on-profile: kubernetes
+  profiles: kubernetes
 
   cloud:
     kubernetes:
