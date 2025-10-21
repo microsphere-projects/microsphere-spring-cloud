@@ -4,11 +4,12 @@ import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 import org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static io.microsphere.lang.function.ThrowableSupplier.execute;
+import static io.microsphere.reflect.MethodUtils.invokeMethod;
 
 /**
  * The {@link Endpoint @Endpoint} for Service Registration
@@ -29,17 +30,11 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
         metadata.put("port", port);
         metadata.put("status", serviceRegistry.getStatus(registration));
         metadata.put("running", isRunning());
-
-        if (serviceRegistration != null) {
-            metadata.put("enabled", invoke("isEnabled"));
-            metadata.put("phase", serviceRegistration.getPhase());
-            metadata.put("order", serviceRegistration.getOrder());
-            if (Boolean.TRUE.equals(invoke("shouldRegisterManagement"))) {
-                metadata.put("managementRegistration", invoke("getManagementRegistration"));
-            }
-            metadata.put("config", invoke("getConfiguration"));
-        }
-
+        metadata.put("enabled", invoke("isEnabled"));
+        metadata.put("phase", serviceRegistration.getPhase());
+        metadata.put("order", serviceRegistration.getOrder());
+        metadata.put("managementRegistration", invoke("getManagementRegistration"));
+        metadata.put("config", invoke("getConfiguration"));
         return metadata;
     }
 
@@ -57,15 +52,6 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
     }
 
     private Object invoke(String methodName) {
-        Object returnValue = null;
-        try {
-            Class<?> serviceRegistrationClass = AbstractAutoServiceRegistration.class;
-            Method method = serviceRegistrationClass.getDeclaredMethod(methodName);
-            ReflectionUtils.makeAccessible(method);
-            returnValue = method.invoke(serviceRegistration);
-        } catch (Throwable e) {
-            logger.error("Invocation on method ：" + methodName + "is failed", e);
-        }
-        return returnValue;
+        return execute(() -> invokeMethod(serviceRegistration, methodName), e -> null);
     }
 }
