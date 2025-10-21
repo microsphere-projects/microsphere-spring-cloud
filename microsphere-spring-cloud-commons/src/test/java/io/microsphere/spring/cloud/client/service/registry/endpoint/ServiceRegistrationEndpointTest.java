@@ -20,6 +20,7 @@ package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Map;
@@ -42,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ContextConfiguration(classes = {
         ServiceRegistrationEndpoint.class
 })
+@EnableAutoConfiguration
 public class ServiceRegistrationEndpointTest extends AbstractServiceRegistrationEndpointTest {
 
     @Autowired
