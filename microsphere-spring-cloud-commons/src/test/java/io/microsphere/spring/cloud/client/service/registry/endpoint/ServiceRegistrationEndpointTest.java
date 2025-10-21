@@ -18,15 +18,19 @@
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClientAutoConfiguration;
-import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClientAutoConfiguration;
-import org.springframework.cloud.commons.util.UtilAutoConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Map;
+
+import static java.lang.Boolean.TRUE;
+import static java.lang.Integer.valueOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link ServiceRegistrationEndpoint} Test
@@ -35,32 +39,31 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  * @see ServiceRegistrationEndpoint
  * @since 1.0.0
  */
-@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-        UtilAutoConfiguration.class,
-        SimpleDiscoveryClientAutoConfiguration.class,
-        CompositeDiscoveryClientAutoConfiguration.class
+        ServiceRegistrationEndpoint.class
 })
-@TestPropertySource(
-        properties = {
-                "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
-                "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
-                "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
-                "spring.cloud.discovery.client.simple.instances.test[0].port=8080",
-                "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
-        }
-)
-class ServiceRegistrationEndpointTest {
+public class ServiceRegistrationEndpointTest extends AbstractServiceRegistrationEndpointTest {
 
-    @BeforeEach
-    void setUp() {
-    }
+    @Autowired
+    private ServiceRegistrationEndpoint endpoint;
 
     @Test
     void testMetadata() {
+        Map<String, Object> metadata = this.endpoint.metadata();
+        assertEquals("test-app", metadata.get("application-name"));
+        assertSame(this.registration, metadata.get("registration"));
+        assertEquals(this.port, metadata.get("port"));
+        assertNull(metadata.get("status"));
+        assertEquals(TRUE, metadata.get("running"));
+        assertEquals(TRUE, metadata.get("enabled"));
+        assertEquals(valueOf(0), metadata.get("phase"));
+        assertEquals(valueOf(0), metadata.get("order"));
+        assertSame(autoServiceRegistrationProperties, metadata.get("config"));
     }
 
     @Test
     void testStart() {
+        assertFalse(this.endpoint.start());
+        assertTrue(this.endpoint.start());
     }
 }
