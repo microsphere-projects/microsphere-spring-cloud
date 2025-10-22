@@ -17,15 +17,23 @@
 
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
+import io.microsphere.spring.cloud.client.service.registry.InMemoryServiceRegistry;
+import io.microsphere.spring.cloud.client.service.registry.SimpleAutoServiceRegistration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
+import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
+import org.springframework.cloud.client.serviceregistry.Registration;
+import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
+import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
 import static io.microsphere.spring.cloud.client.service.registry.endpoint.AbstractServiceRegistrationEndpoint.isRunning;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -56,5 +64,15 @@ class AbstractServiceRegistrationEndpointTest extends BaseServiceRegistrationEnd
     @Test
     void testIsRunning() {
         assertFalse(isRunning(null));
+        ServiceRegistry<Registration> serviceRegistry = new InMemoryServiceRegistry();
+        AutoServiceRegistrationProperties properties = new AutoServiceRegistrationProperties();
+        Registration registration = createDefaultRegistration();
+        SimpleAutoServiceRegistration simpleAutoServiceRegistration = new SimpleAutoServiceRegistration(serviceRegistry, properties, registration);
+        GenericApplicationContext context = new GenericApplicationContext();
+        context.refresh();
+        simpleAutoServiceRegistration.setApplicationContext(context);
+        assertFalse(isRunning(simpleAutoServiceRegistration));
+        simpleAutoServiceRegistration.start();
+        assertTrue(isRunning(simpleAutoServiceRegistration));
     }
 }
