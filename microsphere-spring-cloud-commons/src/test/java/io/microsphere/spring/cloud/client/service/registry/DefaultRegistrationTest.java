@@ -26,9 +26,9 @@ import java.net.URI;
 import static java.lang.System.currentTimeMillis;
 import static java.net.URI.create;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link DefaultRegistration} Test
@@ -78,7 +78,7 @@ public class DefaultRegistrationTest {
 
     @Test
     void testIsSecure() {
-        assertFalse(this.registration.isSecure());
+        assertTrue(this.registration.isSecure());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class DefaultRegistrationTest {
 
     @Test
     void testSetUri() {
-        URI uri = create("http://localhost:9090");
+        URI uri = create("https://localhost:9090");
         this.registration.setUri(uri);
         assertEquals(uri, this.registration.getUri());
     }
