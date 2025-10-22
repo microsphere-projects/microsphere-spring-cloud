@@ -18,7 +18,6 @@ package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
 import io.microsphere.annotation.ConfigurationProperty;
 import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -82,8 +81,8 @@ public class DiscoveryClientAutoConfiguration {
     public static class UnionConfiguration {
 
         @Bean
-        public UnionDiscoveryClient unionDiscoveryClient(ObjectProvider<DiscoveryClient> discoveryClientsProvider) {
-            return new UnionDiscoveryClient(discoveryClientsProvider);
+        public UnionDiscoveryClient unionDiscoveryClient() {
+            return new UnionDiscoveryClient();
         }
     }
 }
