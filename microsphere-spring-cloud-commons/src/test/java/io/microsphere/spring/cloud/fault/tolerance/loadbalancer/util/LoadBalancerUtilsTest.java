@@ -37,7 +37,7 @@ class LoadBalancerUtilsTest {
     void testCalculateWarmupWeight() throws InterruptedException {
         long uptime = currentTimeMillis();
         int weight = 10;
-        assertTrue(calculateWarmupWeight(uptime, uptime, weight) >= 1);
+        assertTrue(calculateWarmupWeight(uptime, uptime, weight) > 1);
         assertTrue(calculateWarmupWeight(uptime, 1, weight) == 1);
     }
 }
