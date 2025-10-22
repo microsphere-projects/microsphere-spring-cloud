@@ -16,19 +16,23 @@
  */
 package io.microsphere.spring.cloud.client.discovery;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import static io.microsphere.collection.CollectionUtils.isNotEmpty;
 import static io.microsphere.reflect.TypeUtils.getClassName;
+import static io.microsphere.spring.beans.BeanUtils.getSortedBeans;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME;
 
 /**
@@ -38,15 +42,11 @@ import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryCl
  * @see CompositeDiscoveryClient
  * @since 1.0.0
  */
-public final class UnionDiscoveryClient implements DiscoveryClient, SmartInitializingSingleton, DisposableBean {
+public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationContextAware, SmartInitializingSingleton, DisposableBean {
 
-    private final ObjectProvider<DiscoveryClient> discoveryClientsProvider;
+    private ApplicationContext context;
 
     private List<DiscoveryClient> discoveryClients;
-
-    public UnionDiscoveryClient(ObjectProvider<DiscoveryClient> discoveryClientsProvider) {
-        this.discoveryClientsProvider = discoveryClientsProvider;
-    }
 
     @Override
     public String description() {
@@ -72,7 +72,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, SmartInitial
         List<DiscoveryClient> discoveryClients = getDiscoveryClients();
         for (DiscoveryClient discoveryClient : discoveryClients) {
             List<String> serviceForClient = discoveryClient.getServices();
-            if (serviceForClient != null) {
+            if (isNotEmpty(serviceForClient)) {
                 services.addAll(serviceForClient);
             }
         }
@@ -85,9 +85,8 @@ public final class UnionDiscoveryClient implements DiscoveryClient, SmartInitial
             return discoveryClients;
         }
 
-        discoveryClients = new LinkedList<>();
-
-        for (DiscoveryClient discoveryClient : discoveryClientsProvider) {
+        discoveryClients = new ArrayList<>();
+        for (DiscoveryClient discoveryClient : getSortedBeans(this.context, DiscoveryClient.class)) {
             String className = getClassName(discoveryClient.getClass());
             if (COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME.equals(className) || this.equals(discoveryClient)) {
                 // excludes CompositeDiscoveryClient and self
@@ -95,6 +94,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, SmartInitial
             }
             discoveryClients.add(discoveryClient);
         }
+        this.discoveryClients = discoveryClients;
         return discoveryClients;
     }
 
@@ -111,5 +111,10 @@ public final class UnionDiscoveryClient implements DiscoveryClient, SmartInitial
     @Override
     public void destroy() throws Exception {
         this.discoveryClients.clear();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
     }
 }
