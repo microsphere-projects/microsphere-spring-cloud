@@ -24,6 +24,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.test.context.ContextConfiguration;
 
+import static io.microsphere.spring.cloud.client.service.registry.endpoint.AbstractServiceRegistrationEndpoint.isRunning;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -50,5 +51,10 @@ class AbstractServiceRegistrationEndpointTest extends BaseServiceRegistrationEnd
         WebServerInitializedEvent event = new ServletWebServerInitializedEvent(webServer, null);
         endpoint.onApplicationEvent(event);
         assertFalse(endpoint.isRunning());
+    }
+
+    @Test
+    void testIsRunning() {
+        assertFalse(isRunning(null));
     }
 }
