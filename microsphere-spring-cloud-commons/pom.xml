@@ -110,6 +110,11 @@
 
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-boot-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-spring-webmvc</artifactId>
             <optional>true</optional>
         </dependency>
