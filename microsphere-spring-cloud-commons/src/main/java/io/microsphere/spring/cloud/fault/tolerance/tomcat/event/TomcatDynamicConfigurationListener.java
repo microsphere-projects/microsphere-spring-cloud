@@ -146,7 +146,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
         configureHttp11Protocol(refreshableServerProperties, connector, protocolHandler);
     }
 
-    private void configureProtocol(ServerProperties refreshableServerProperties, ProtocolHandler protocolHandler) {
+    void configureProtocol(ServerProperties refreshableServerProperties, ProtocolHandler protocolHandler) {
         if (protocolHandler instanceof AbstractProtocol) {
 
             ServerProperties.Tomcat refreshableTomcatProperties = refreshableServerProperties.getTomcat();
@@ -194,7 +194,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
         }
     }
 
-    private void configureHttp11Protocol(ServerProperties refreshableServerProperties, Connector connector, ProtocolHandler protocolHandler) {
+    void configureHttp11Protocol(ServerProperties refreshableServerProperties, Connector connector, ProtocolHandler protocolHandler) {
         if (protocolHandler instanceof AbstractHttp11Protocol) {
             AbstractHttp11Protocol protocol = (AbstractHttp11Protocol) protocolHandler;
 
@@ -236,9 +236,8 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
         return (int) dataSize.toBytes();
     }
 
-    private boolean isPositive(int value) {
+    boolean isPositive(int value) {
         return value > 0;
     }
-
 
 }

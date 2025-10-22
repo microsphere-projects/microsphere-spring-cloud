@@ -80,4 +80,18 @@ class TomcatDynamicConfigurationListenerTest {
         this.listener.onApplicationEvent(event);
     }
 
+    @Test
+    void testConfigureProtocolWithNull() {
+        this.listener.configureProtocol(this.serverProperties, null);
+    }
+
+    @Test
+    void testConfigureHttp11ProtocolWithNull() {
+        this.listener.configureHttp11Protocol(this.serverProperties, null, null);
+    }
+
+    @Test
+    void testIsPositiveWithNegative() {
+        this.listener.isPositive(-1);
+    }
 }
