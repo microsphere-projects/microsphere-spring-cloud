@@ -24,7 +24,7 @@ import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationP
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
 import static io.microsphere.collection.Lists.ofList;
-import static io.microsphere.spring.cloud.client.service.registry.MultipleRegistrationTest.createDefaultRegistration;
+import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;

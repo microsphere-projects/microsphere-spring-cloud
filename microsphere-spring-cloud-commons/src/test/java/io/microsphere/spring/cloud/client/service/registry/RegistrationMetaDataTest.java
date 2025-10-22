@@ -28,7 +28,7 @@ import java.util.Set;
 import static io.microsphere.collection.Lists.ofList;
 import static io.microsphere.collection.MapUtils.ofEntry;
 import static io.microsphere.collection.Maps.ofMap;
-import static io.microsphere.spring.cloud.client.service.registry.MultipleRegistrationTest.createDefaultRegistration;
+import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
