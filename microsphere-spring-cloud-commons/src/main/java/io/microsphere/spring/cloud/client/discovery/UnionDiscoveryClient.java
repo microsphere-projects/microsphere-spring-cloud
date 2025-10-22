@@ -59,7 +59,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         List<DiscoveryClient> discoveryClients = getDiscoveryClients();
         for (DiscoveryClient discoveryClient : discoveryClients) {
             List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
-            if (instances != null && !instances.isEmpty()) {
+            if (isNotEmpty(instances)) {
                 serviceInstances.addAll(instances);
             }
         }
