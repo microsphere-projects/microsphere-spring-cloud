@@ -20,6 +20,8 @@ package io.microsphere.spring.cloud.client.service.registry.aspect;
 
 import io.microsphere.spring.cloud.client.service.registry.DefaultRegistration;
 import io.microsphere.spring.cloud.client.service.registry.InMemoryServiceRegistry;
+import io.microsphere.spring.cloud.client.service.registry.MultipleRegistration;
+import io.microsphere.spring.cloud.client.service.registry.MultipleServiceRegistry;
 import io.microsphere.spring.cloud.client.service.registry.RegistrationCustomizer;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationDeregisteredEvent;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent;
@@ -34,11 +36,17 @@ import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Map;
+
+import static io.microsphere.collection.Lists.ofList;
 import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -51,13 +59,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-        InMemoryServiceRegistry.class,
         EventPublishingRegistrationAspect.class,
-        EventPublishingRegistrationAspectTest.RegistrationCustomizerImpl.class,
-        EventPublishingRegistrationAspectTest.class,
+        EventPublishingRegistrationAspectTest.Config.class
 })
 @DirtiesContext
-@EnableAspectJAutoProxy
 class EventPublishingRegistrationAspectTest {
 
     @Autowired
@@ -66,7 +71,7 @@ class EventPublishingRegistrationAspectTest {
     @Autowired
     private ConfigurableApplicationContext context;
 
-    private Registration registration;
+    private MultipleRegistration multipleRegistration;
 
     @BeforeEach
     void setUp() {
@@ -76,7 +81,7 @@ class EventPublishingRegistrationAspectTest {
         defaultRegistration.setHost("localhost");
         defaultRegistration.setPort(8080);
         defaultRegistration.setSecure(false);
-        this.registration = defaultRegistration;
+        this.multipleRegistration = new MultipleRegistration(ofList(defaultRegistration));
     }
 
     @Test
@@ -87,7 +92,7 @@ class EventPublishingRegistrationAspectTest {
         this.context.addApplicationListener((ApplicationListener<RegistrationRegisteredEvent>) event -> {
             assertRegistration(event);
         });
-        this.serviceRegistry.register(registration);
+        this.serviceRegistry.register(multipleRegistration);
     }
 
     @Test
@@ -98,18 +103,25 @@ class EventPublishingRegistrationAspectTest {
         this.context.addApplicationListener((ApplicationListener<RegistrationDeregisteredEvent>) event -> {
             assertRegistration(event);
         });
-        this.serviceRegistry.deregister(registration);
+        this.serviceRegistry.deregister(multipleRegistration);
     }
 
     void assertRegistration(RegistrationEvent event) {
-        assertSame(this.registration, event.getRegistration());
+        assertSame(this.multipleRegistration, event.getRegistration());
     }
 
-
-    static class RegistrationCustomizerImpl implements RegistrationCustomizer {
+    @Import(InMemoryServiceRegistry.class)
+    @EnableAspectJAutoProxy
+    static class Config implements RegistrationCustomizer {
 
         @Override
         public void customize(Registration registration) {
+        }
+
+        @Bean
+        @Primary
+        public MultipleServiceRegistry multipleServiceRegistry(Map<String, ServiceRegistry> registriesMap) {
+            return new MultipleServiceRegistry(registriesMap);
         }
     }
 }
