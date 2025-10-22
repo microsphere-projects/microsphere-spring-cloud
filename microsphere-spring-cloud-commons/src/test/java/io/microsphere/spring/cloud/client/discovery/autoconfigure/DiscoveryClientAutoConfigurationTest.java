@@ -33,6 +33,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.DISCOVERY_CLIENT_PROPERTY_PREFIX;
+import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.MODE_PROPERTY_NAME;
+import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.UNION_DISCOVERY_CLIENT_MODE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -63,6 +66,13 @@ class DiscoveryClientAutoConfigurationTest {
 
     @Autowired
     private DiscoveryClient discoveryClient;
+
+    @Test
+    void testConstants() {
+        assertEquals("microsphere.spring.cloud.client.discovery.", DISCOVERY_CLIENT_PROPERTY_PREFIX);
+        assertEquals("mode", MODE_PROPERTY_NAME);
+        assertEquals("union", UNION_DISCOVERY_CLIENT_MODE);
+    }
 
     @Test
     void test() {
