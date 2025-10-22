@@ -71,23 +71,30 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
 
     @Before(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeDeregister(ServiceRegistry registry, Registration registration) {
-        if (registry.getClass().isAssignableFrom(MultipleServiceRegistry.class))
-            return;//Remove redundant deregister
+        if (isIgnored(registry)) {
+            return; // Remove redundant deregister
+        }
         context.publishEvent(new RegistrationPreDeregisteredEvent(registry, registration));
     }
 
     @After(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterRegister(ServiceRegistry registry, Registration registration) {
-        if (registry.getClass().isAssignableFrom(MultipleServiceRegistry.class))
-            return;//Remove redundant register
+        if (isIgnored(registry)) {
+            return; // Remove redundant deregister
+        }
         context.publishEvent(new RegistrationRegisteredEvent(registry, registration));
     }
 
     @After(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterDeregister(ServiceRegistry registry, Registration registration) {
-        if (registry.getClass().isAssignableFrom(MultipleServiceRegistry.class))
-            return;//Remove redundant deregister
+        if (isIgnored(registry)) {
+            return; // Remove redundant deregister
+        }
         context.publishEvent(new RegistrationDeregisteredEvent(registry, registration));
+    }
+
+    boolean isIgnored(ServiceRegistry registry) {
+        return MultipleServiceRegistry.class.isAssignableFrom(registry.getClass());
     }
 
     @Override
