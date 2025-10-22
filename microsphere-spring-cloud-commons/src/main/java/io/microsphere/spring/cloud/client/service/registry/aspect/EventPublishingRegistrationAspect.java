@@ -61,8 +61,9 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
 
     @Before(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeRegister(ServiceRegistry registry, Registration registration) {
-        if (registry.getClass().isAssignableFrom(MultipleServiceRegistry.class))
-            return;//Remove redundant register
+        if (isIgnored(registry)) {
+            return; // Remove redundant deregister
+        }
         context.publishEvent(new RegistrationPreRegisteredEvent(registry, registration));
         registrationCustomizers.forEach(customizer -> {
             customizer.customize(registration);
