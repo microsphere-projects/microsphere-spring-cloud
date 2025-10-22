@@ -57,7 +57,11 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
     public void onApplicationEvent(WebServerInitializedEvent event) {
         WebServer webServer = event.getWebServer();
         this.port = webServer.getPort();
-        this.running = serviceRegistration == null ? false : serviceRegistration.isRunning();
+        this.running = isRunning(serviceRegistration);
+    }
+
+    static boolean isRunning(AbstractAutoServiceRegistration serviceRegistration) {
+        return serviceRegistration == null ? false : serviceRegistration.isRunning();
     }
 
     protected boolean isRunning() {
