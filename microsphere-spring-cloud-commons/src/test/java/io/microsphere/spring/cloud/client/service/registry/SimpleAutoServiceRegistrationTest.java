@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
 
+import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
@@ -45,7 +46,7 @@ class SimpleAutoServiceRegistrationTest {
     void setUp() {
         this.serviceRegistry = new InMemoryServiceRegistry();
         this.properties = new AutoServiceRegistrationProperties();
-        this.registration = new DefaultRegistration();
+        this.registration = createDefaultRegistration();
         this.autoServiceRegistration = new SimpleAutoServiceRegistration(serviceRegistry, properties, registration);
     }
 

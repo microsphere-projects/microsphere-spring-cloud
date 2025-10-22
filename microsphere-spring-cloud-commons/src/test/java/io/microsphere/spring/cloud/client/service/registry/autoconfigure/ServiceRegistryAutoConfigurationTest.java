@@ -1,6 +1,5 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.cloud.client.service.registry.DefaultRegistration;
 import io.microsphere.spring.cloud.client.service.registry.InMemoryServiceRegistry;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationDeregisteredEvent;
 import io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent;
@@ -17,6 +16,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
 import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.DEREGISTERED;
 import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_DEREGISTERED;
 import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_REGISTERED;
@@ -57,10 +57,7 @@ class ServiceRegistryAutoConfigurationTest {
 
     @BeforeEach
     void setUp() {
-        DefaultRegistration registration = new DefaultRegistration();
-        registration.setServiceId("test-service");
-        registration.setInstanceId("127.0.0.1:8080");
-        this.registration = registration;
+        this.registration = createDefaultRegistration();
     }
 
     @Test

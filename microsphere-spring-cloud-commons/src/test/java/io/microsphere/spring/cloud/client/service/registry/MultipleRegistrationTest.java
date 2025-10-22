@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.serviceregistry.Registration;
 
 import static io.microsphere.collection.Lists.ofList;
-import static java.lang.System.currentTimeMillis;
+import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -44,15 +44,6 @@ class MultipleRegistrationTest {
     void setUp() {
         this.defaultRegistration = createDefaultRegistration();
         this.registration = new MultipleRegistration(ofList(defaultRegistration));
-    }
-
-    static DefaultRegistration createDefaultRegistration() {
-        DefaultRegistration defaultRegistration = new DefaultRegistration();
-        defaultRegistration.setInstanceId("ServiceInstance-" + currentTimeMillis());
-        defaultRegistration.setServiceId("test-service");
-        defaultRegistration.setHost("localhost");
-        defaultRegistration.setPort(8080);
-        return defaultRegistration;
     }
 
     @Test
