@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         ServiceRegistrationEndpoint.class
 })
 @EnableAutoConfiguration
-public class ServiceRegistrationEndpointTest extends AbstractServiceRegistrationEndpointTest {
+class ServiceRegistrationEndpointTest extends BaseServiceRegistrationEndpointTest {
 
     @Autowired
     private ServiceRegistrationEndpoint endpoint;

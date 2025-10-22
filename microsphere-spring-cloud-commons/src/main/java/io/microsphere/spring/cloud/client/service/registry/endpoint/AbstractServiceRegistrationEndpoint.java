@@ -20,7 +20,7 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @since 1.0.0
  */
-public class AbstractServiceRegistrationEndpoint implements SmartInitializingSingleton, ApplicationListener<WebServerInitializedEvent> {
+public abstract class AbstractServiceRegistrationEndpoint implements SmartInitializingSingleton, ApplicationListener<WebServerInitializedEvent> {
 
     protected final Logger logger = getLogger(getClass());
 
@@ -57,7 +57,7 @@ public class AbstractServiceRegistrationEndpoint implements SmartInitializingSin
     public void onApplicationEvent(WebServerInitializedEvent event) {
         WebServer webServer = event.getWebServer();
         this.port = webServer.getPort();
-        this.running = serviceRegistration == null ? true : serviceRegistration.isRunning();
+        this.running = serviceRegistration == null ? false : serviceRegistration.isRunning();
     }
 
     protected boolean isRunning() {

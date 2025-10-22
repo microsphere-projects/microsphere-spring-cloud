@@ -17,45 +17,38 @@
 
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.boot.web.server.WebServer;
+import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
+import org.springframework.test.context.ContextConfiguration;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
-import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
- * {@link AbstractServiceRegistrationEndpoint} Base Test
+ * {@link AbstractServiceRegistrationEndpoint} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see AbstractServiceRegistrationEndpoint
+ * @see BaseServiceRegistrationEndpointTest
  * @since 1.0.0
  */
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(
-        properties = {
-                "spring.application.name=test-app",
-                "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
-                "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
-                "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
-                "spring.cloud.discovery.client.simple.instances.test[0].port=8080",
-                "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1",
-                "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true"
-        },
-        webEnvironment = RANDOM_PORT
-)
-class AbstractServiceRegistrationEndpointTest {
+@ContextConfiguration(classes = {
+        AbstractServiceRegistrationEndpointTest.class
+})
+@EnableAutoConfiguration
+class AbstractServiceRegistrationEndpointTest extends BaseServiceRegistrationEndpointTest {
 
-    @Autowired
-    protected Registration registration;
-
-    @LocalServerPort
-    protected Integer port;
-
-    @Autowired
-    protected AutoServiceRegistrationProperties autoServiceRegistrationProperties;
+    @Test
+    void testOnApplicationEvent() {
+        AbstractServiceRegistrationEndpoint endpoint = new AbstractServiceRegistrationEndpoint() {
+        };
+        WebServer webServer = mock(WebServer.class);
+        when(webServer.getPort()).thenReturn(this.port);
+        WebServerInitializedEvent event = new ServletWebServerInitializedEvent(webServer, null);
+        endpoint.onApplicationEvent(event);
+        assertFalse(endpoint.isRunning());
+    }
 }
