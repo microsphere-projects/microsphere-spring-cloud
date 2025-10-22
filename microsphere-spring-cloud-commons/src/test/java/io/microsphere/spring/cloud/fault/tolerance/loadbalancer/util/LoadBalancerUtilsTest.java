@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 
 import static io.microsphere.spring.cloud.fault.tolerance.loadbalancer.util.LoadBalancerUtils.calculateWarmupWeight;
 import static java.lang.System.currentTimeMillis;
-import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -38,9 +37,7 @@ class LoadBalancerUtilsTest {
     void testCalculateWarmupWeight() throws InterruptedException {
         long uptime = currentTimeMillis();
         int weight = 10;
-        for (int i = 0; i < 10; i++) {
-            assertTrue(weight <= (weight = calculateWarmupWeight(uptime, uptime, weight)));
-            sleep(10);
-        }
+        assertTrue(calculateWarmupWeight(uptime, uptime, weight) > 1);
+        assertTrue(calculateWarmupWeight(uptime, 1, weight) == 1);
     }
 }
