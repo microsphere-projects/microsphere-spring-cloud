@@ -122,7 +122,7 @@ class TomcatFaultToleranceAutoConfigurationTest {
         // default
         assertEquals(8192, protocol.getMaxHttpHeaderSize());
         // changed
-        environmentManager.setProperty("server.max-http-request-header-size", "5120");
+        environmentManager.setProperty("server.max-http-header-size", "5120");
         assertEquals(5120, protocol.getMaxHttpHeaderSize());
     }
 
