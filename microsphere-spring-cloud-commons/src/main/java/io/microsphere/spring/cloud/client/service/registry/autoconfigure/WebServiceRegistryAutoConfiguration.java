@@ -20,6 +20,7 @@ import io.microsphere.logging.Logger;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -36,7 +37,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
-import static io.microsphere.spring.beans.BeanUtils.getOptionalBean;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
 
 /**
@@ -65,11 +65,9 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
     @Override
     public final void onApplicationEvent(WebEndpointMappingsReadyEvent event) {
         ApplicationContext context = event.getApplicationContext();
-        Registration registration = getOptionalBean(context, Registration.class);
-        if (registration != null) {
-            Collection<WebEndpointMapping> webEndpointMappings = event.getMappings();
-            attachWebMappingsMetadata(registration, webEndpointMappings);
-        }
+        ObjectProvider<Registration> registrationProvider = context.getBeanProvider(Registration.class);
+        Collection<WebEndpointMapping> webEndpointMappings = event.getMappings();
+        registrationProvider.forEach(registration -> attachWebMappingsMetadata(registration, webEndpointMappings));
     }
 
     private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
