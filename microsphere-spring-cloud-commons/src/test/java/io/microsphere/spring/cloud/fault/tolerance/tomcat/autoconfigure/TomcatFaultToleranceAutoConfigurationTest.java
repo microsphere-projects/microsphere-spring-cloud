@@ -34,6 +34,7 @@ import org.springframework.cloud.context.environment.EnvironmentManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * {@link TomcatFaultToleranceAutoConfiguration} Test
@@ -41,9 +42,7 @@ import static org.mockito.Mockito.mock;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@SpringBootTest(classes = {
-        TomcatFaultToleranceAutoConfigurationTest.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = TomcatFaultToleranceAutoConfigurationTest.class, webEnvironment = RANDOM_PORT)
 @EnableAutoConfiguration
 class TomcatFaultToleranceAutoConfigurationTest {
 
