@@ -53,11 +53,6 @@ class AbstractServiceRegistrationEndpointTest extends BaseServiceRegistrationEnd
     @Test
     void testOnApplicationEvent() {
         AbstractServiceRegistrationEndpoint endpoint = new AbstractServiceRegistrationEndpoint() {
-
-            @Override
-            public void onApplicationEvent(WebServerInitializedEvent event) {
-                super.onApplicationEvent(event);
-            }
         };
         WebServer webServer = mock(WebServer.class);
         when(webServer.getPort()).thenReturn(this.port);

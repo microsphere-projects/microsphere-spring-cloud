@@ -48,7 +48,6 @@ import java.util.Map;
 
 import static io.microsphere.collection.Lists.ofList;
 import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
-import static java.lang.System.currentTimeMillis;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
@@ -77,10 +76,6 @@ class EventPublishingRegistrationAspectTest {
     @BeforeEach
     void setUp() {
         DefaultRegistration defaultRegistration = createDefaultRegistration();
-        defaultRegistration.setInstanceId("ServiceInstance-" + currentTimeMillis());
-        defaultRegistration.setServiceId("test-service");
-        defaultRegistration.setHost("localhost");
-        defaultRegistration.setPort(8080);
         this.multipleRegistration = new MultipleRegistration(ofList(defaultRegistration));
     }
 
