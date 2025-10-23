@@ -36,7 +36,9 @@ import static io.microsphere.constants.SeparatorConstants.LINE_SEPARATOR;
 import static io.microsphere.constants.SymbolConstants.COLON;
 import static io.microsphere.constants.SymbolConstants.COMMA;
 import static io.microsphere.constants.SymbolConstants.DOUBLE_QUOTE;
+import static io.microsphere.constants.SymbolConstants.LEFT_SQUARE_BRACKET;
 import static io.microsphere.constants.SymbolConstants.RIGHT_CURLY_BRACE;
+import static io.microsphere.constants.SymbolConstants.RIGHT_SQUARE_BRACKET;
 import static io.microsphere.json.JSONUtils.jsonArray;
 import static io.microsphere.json.JSONUtils.readArray;
 import static io.microsphere.logging.LoggerFactory.getLogger;
@@ -46,6 +48,7 @@ import static io.microsphere.spring.cloud.client.service.registry.constants.Inst
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_MAPPINGS_METADATA_NAME;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.Kind.valueOf;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.of;
+import static io.microsphere.util.StringUtils.EMPTY_STRING;
 import static io.microsphere.util.StringUtils.EMPTY_STRING_ARRAY;
 import static io.microsphere.util.StringUtils.isBlank;
 import static java.util.Collections.emptyList;
@@ -62,11 +65,13 @@ public class ServiceInstanceUtils extends BaseUtils {
 
     public static void attachMetadata(String contextPath, ServiceInstance serviceInstance, Collection<WebEndpointMapping> webEndpointMappings) {
         Map<String, String> metadata = serviceInstance.getMetadata();
-        StringJoiner jsonBuilder = new StringJoiner(",", "[", "]");
+        StringJoiner jsonBuilder = new StringJoiner(COMMA, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET);
         webEndpointMappings.stream().map(mapping -> toJSON(mapping)).forEach(jsonBuilder::add);
         String json = jsonBuilder.toString();
-        metadata.put(WEB_CONTEXT_PATH_METADATA_NAME, contextPath);
+        json = json.replace(LINE_SEPARATOR, EMPTY_STRING);
         String encodedJson = encode(json);
+
+        metadata.put(WEB_CONTEXT_PATH_METADATA_NAME, contextPath);
         metadata.put(WEB_MAPPINGS_METADATA_NAME, encodedJson);
     }
 
@@ -88,7 +93,7 @@ public class ServiceInstanceUtils extends BaseUtils {
         String json = webEndpointMapping.toJSON();
         StringBuilder jsonBuilder = new StringBuilder(json);
         int startIndex = jsonBuilder.lastIndexOf(LINE_SEPARATOR);
-        int endIndex = jsonBuilder.indexOf(RIGHT_CURLY_BRACE);
+        int endIndex = jsonBuilder.indexOf(RIGHT_CURLY_BRACE, startIndex);
         String kindItem = COMMA + LINE_SEPARATOR + DOUBLE_QUOTE + "kind" + DOUBLE_QUOTE + COLON +
                 DOUBLE_QUOTE + webEndpointMapping.getKind() + DOUBLE_QUOTE + LINE_SEPARATOR;
         jsonBuilder.replace(startIndex, endIndex, kindItem);
@@ -152,7 +157,7 @@ public class ServiceInstanceUtils extends BaseUtils {
         Map<String, String> metadata = serviceInstance.getMetadata();
         return metadata.get(metadataName);
     }
-    
+
     private ServiceInstanceUtils() {
     }
 }
