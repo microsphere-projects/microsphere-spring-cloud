@@ -16,6 +16,7 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
+import io.microsphere.spring.test.web.controller.TestController;
 import io.microsphere.spring.webmvc.annotation.EnableWebMvcExtension;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  * @since 1.0.0
  */
 @SpringBootTest(
-        classes = WebMvcServiceRegistryAutoConfigurationTest.class,
+        classes = TestController.class,
         properties = {
                 "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true",
                 "spring.cloud.service-registry.auto-registration.enabled=true",
