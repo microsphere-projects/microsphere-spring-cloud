@@ -20,13 +20,13 @@ import io.microsphere.logging.Logger;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.spring.beans.BeanUtils.getOptionalBean;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
 
 /**
@@ -58,16 +59,17 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
 
     protected final Logger logger = getLogger(getClass());
 
-    @Autowired
-    protected Registration registration;
-
     @Value("${management.endpoints.web.base-path:/actuator}")
     protected String actuatorBasePath;
 
     @Override
     public final void onApplicationEvent(WebEndpointMappingsReadyEvent event) {
-        Collection<WebEndpointMapping> webEndpointMappings = event.getMappings();
-        attachWebMappingsMetadata(registration, webEndpointMappings);
+        ApplicationContext context = event.getApplicationContext();
+        Registration registration = getOptionalBean(context, Registration.class);
+        if (registration != null) {
+            Collection<WebEndpointMapping> webEndpointMappings = event.getMappings();
+            attachWebMappingsMetadata(registration, webEndpointMappings);
+        }
     }
 
     private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
