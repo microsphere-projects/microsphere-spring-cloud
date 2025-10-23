@@ -31,7 +31,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
-import static io.microsphere.spring.cloud.client.service.registry.endpoint.AbstractServiceRegistrationEndpoint.isRunning;
+import static io.microsphere.spring.cloud.client.service.registry.endpoint.AbstractServiceRegistrationEndpoint.detectRunning;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -62,8 +62,8 @@ class AbstractServiceRegistrationEndpointTest extends BaseServiceRegistrationEnd
     }
 
     @Test
-    void testIsRunning() {
-        assertFalse(isRunning(null));
+    void testDetectRunning() {
+        assertFalse(detectRunning(null));
         ServiceRegistry<Registration> serviceRegistry = new InMemoryServiceRegistry();
         AutoServiceRegistrationProperties properties = new AutoServiceRegistrationProperties();
         Registration registration = createDefaultRegistration();
@@ -71,8 +71,8 @@ class AbstractServiceRegistrationEndpointTest extends BaseServiceRegistrationEnd
         GenericApplicationContext context = new GenericApplicationContext();
         context.refresh();
         simpleAutoServiceRegistration.setApplicationContext(context);
-        assertFalse(isRunning(simpleAutoServiceRegistration));
+        assertFalse(detectRunning(simpleAutoServiceRegistration));
         simpleAutoServiceRegistration.start();
-        assertTrue(isRunning(simpleAutoServiceRegistration));
+        assertTrue(detectRunning(simpleAutoServiceRegistration));
     }
 }
