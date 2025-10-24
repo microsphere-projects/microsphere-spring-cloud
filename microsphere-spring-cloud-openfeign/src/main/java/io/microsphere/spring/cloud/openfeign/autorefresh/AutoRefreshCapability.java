@@ -12,7 +12,6 @@ import io.microsphere.spring.cloud.openfeign.components.DecoratedContract;
 import io.microsphere.spring.cloud.openfeign.components.DecoratedDecoder;
 import io.microsphere.spring.cloud.openfeign.components.DecoratedEncoder;
 import io.microsphere.spring.cloud.openfeign.components.DecoratedErrorDecoder;
-import io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent;
 import io.microsphere.spring.cloud.openfeign.components.DecoratedQueryMapEncoder;
 import io.microsphere.spring.cloud.openfeign.components.DecoratedRetryer;
 import org.springframework.beans.BeansException;
@@ -21,6 +20,8 @@ import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -53,7 +54,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (retryer == null)
             return null;
 
-        DecoratedRetryer decoratedRetryer = DecoratedFeignComponent.instantiate(DecoratedRetryer.class, Retryer.class,
+        DecoratedRetryer decoratedRetryer = instantiate(DecoratedRetryer.class, Retryer.class,
                 contextId, contextFactory, clientProperties, retryer);
 
         this.componentRegistry.register(contextId, decoratedRetryer);
@@ -65,7 +66,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (contract == null)
             return null;
 
-        DecoratedContract decoratedContract = DecoratedFeignComponent.instantiate(DecoratedContract.class, Contract.class,
+        DecoratedContract decoratedContract = instantiate(DecoratedContract.class, Contract.class,
                 contextId, contextFactory, clientProperties, contract);
         this.componentRegistry.register(contextId, decoratedContract);
         return decoratedContract;
@@ -76,7 +77,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (decoder == null)
             return null;
 
-        DecoratedDecoder decoratedDecoder = DecoratedFeignComponent.instantiate(DecoratedDecoder.class, Decoder.class,
+        DecoratedDecoder decoratedDecoder = instantiate(DecoratedDecoder.class, Decoder.class,
                 contextId, contextFactory, clientProperties, decoder);
         this.componentRegistry.register(contextId, decoratedDecoder);
         return decoratedDecoder;
@@ -87,7 +88,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (encoder == null)
             return null;
 
-        DecoratedEncoder decoratedEncoder = DecoratedFeignComponent.instantiate(DecoratedEncoder.class, Encoder.class,
+        DecoratedEncoder decoratedEncoder = instantiate(DecoratedEncoder.class, Encoder.class,
                 contextId, contextFactory, clientProperties, encoder);
         this.componentRegistry.register(contextId, decoratedEncoder);
         return decoratedEncoder;
@@ -97,7 +98,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (decoder == null)
             return null;
 
-        DecoratedErrorDecoder decoratedErrorDecoder = DecoratedFeignComponent.instantiate(DecoratedErrorDecoder.class, ErrorDecoder.class,
+        DecoratedErrorDecoder decoratedErrorDecoder = instantiate(DecoratedErrorDecoder.class, ErrorDecoder.class,
                 contextId, contextFactory, clientProperties, decoder);
         this.componentRegistry.register(contextId, decoratedErrorDecoder);
         return decoratedErrorDecoder;
@@ -113,11 +114,10 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         if (queryMapEncoder == null)
             return null;
 
-        DecoratedQueryMapEncoder decoratedQueryMapEncoder = DecoratedFeignComponent.instantiate(DecoratedQueryMapEncoder.class, QueryMapEncoder.class,
+        DecoratedQueryMapEncoder decoratedQueryMapEncoder = instantiate(DecoratedQueryMapEncoder.class, QueryMapEncoder.class,
                 contextId, contextFactory, clientProperties, queryMapEncoder);
 
         this.componentRegistry.register(contextId, decoratedQueryMapEncoder);
         return decoratedQueryMapEncoder;
     }
-
 }
