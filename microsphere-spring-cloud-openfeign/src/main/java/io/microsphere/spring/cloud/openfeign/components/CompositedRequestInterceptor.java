@@ -2,9 +2,9 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -14,13 +14,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static org.springframework.beans.BeanUtils.instantiateClass;
+
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public class CompositedRequestInterceptor implements RequestInterceptor, Refreshable {
 
     private final BeanFactory beanFactory;
+
     private final String contextId;
 
     private final Set<RequestInterceptor> set = new HashSet<>();
@@ -33,7 +37,6 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     public Set<RequestInterceptor> getRequestInterceptors() {
         return Collections.unmodifiableSet(set);
     }
-
 
     @Override
     public void apply(RequestTemplate template) {
@@ -57,7 +60,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
         try {
             return this.beanFactory.getBean(clazz);
         } catch (Exception e) {
-            return BeanUtils.instantiateClass(clazz);
+            return instantiateClass(clazz);
         }
     }
 
@@ -69,8 +72,8 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
         Map<String, Collection<String>> headers = new HashMap<>();
         Map<String, Collection<String>> params = new HashMap<>();
         if (properties != null) {
-            FeignClientProperties.FeignClientConfiguration defaultConfiguration = properties.getConfig().get(properties.getDefaultConfig());
-            FeignClientProperties.FeignClientConfiguration current = properties.getConfig().get(contextId);
+            FeignClientConfiguration defaultConfiguration = properties.getConfig().get(properties.getDefaultConfig());
+            FeignClientConfiguration current = properties.getConfig().get(contextId);
             if (defaultConfiguration != null && defaultConfiguration.getRequestInterceptors() != null)
                 interceptors.addAll(defaultConfiguration.getRequestInterceptors());
             if (current != null && current.getRequestInterceptors() != null)
@@ -117,8 +120,5 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
                     });
                 });
         }
-
-
-
     }
 }
