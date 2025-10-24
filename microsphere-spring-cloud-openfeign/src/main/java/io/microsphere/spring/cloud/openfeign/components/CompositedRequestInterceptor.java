@@ -5,6 +5,7 @@ import feign.RequestTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -69,8 +70,8 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
         Map<String, Collection<String>> headers = new HashMap<>();
         Map<String, Collection<String>> params = new HashMap<>();
         if (properties != null) {
-            FeignClientProperties.FeignClientConfiguration defaultConfiguration = properties.getConfig().get(properties.getDefaultConfig());
-            FeignClientProperties.FeignClientConfiguration current = properties.getConfig().get(contextId);
+            FeignClientConfiguration defaultConfiguration = properties.getConfig().get(properties.getDefaultConfig());
+            FeignClientConfiguration current = properties.getConfig().get(contextId);
             if (defaultConfiguration != null && defaultConfiguration.getRequestInterceptors() != null)
                 interceptors.addAll(defaultConfiguration.getRequestInterceptors());
             if (current != null && current.getRequestInterceptors() != null)
