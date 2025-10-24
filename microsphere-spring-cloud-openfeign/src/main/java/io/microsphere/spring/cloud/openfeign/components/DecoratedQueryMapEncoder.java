@@ -11,6 +11,8 @@ import java.lang.invoke.MethodHandle;
 import java.util.Map;
 
 import static io.microsphere.invoke.MethodHandleUtils.findVirtual;
+import static io.microsphere.invoke.MethodHandleUtils.handleInvokeExactFailure;
+import static io.microsphere.invoke.MethodHandlesLookupUtils.NOT_FOUND_METHOD_HANDLE;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
@@ -23,7 +25,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
 
     private static final String getQueryMapEncoderMethodName = "getQueryMapEncoder";
 
-    private static final MethodHandle getQueryMapEncoderMethodHandle = findVirtual(FeignClientConfiguration.class, getQueryMapEncoderMethodName);
+    static final MethodHandle getQueryMapEncoderMethodHandle = findVirtual(FeignClientConfiguration.class, getQueryMapEncoderMethodName);
 
     public DecoratedQueryMapEncoder(String contextId, NamedContextFactory<FeignClientSpecification> contextFactory, FeignClientProperties clientProperties, QueryMapEncoder delegate) {
         super(contextId, contextFactory, clientProperties, delegate);
@@ -39,19 +41,22 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
     }
 
     private Class<QueryMapEncoder> getQueryMapEncoder(FeignClientConfiguration feignClientConfiguration) {
-        if (feignClientConfiguration == null || getQueryMapEncoderMethodHandle == null) {
+        return getQueryMapEncoder(getQueryMapEncoderMethodHandle, feignClientConfiguration);
+    }
+
+    static Class<QueryMapEncoder> getQueryMapEncoder(MethodHandle methodHandle, FeignClientConfiguration feignClientConfiguration) {
+        if (methodHandle == NOT_FOUND_METHOD_HANDLE) {
             return null;
         }
         Class<QueryMapEncoder> queryMapEncoderClass = null;
         try {
             queryMapEncoderClass = (Class<QueryMapEncoder>) getQueryMapEncoderMethodHandle.invokeExact(feignClientConfiguration);
         } catch (Throwable e) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("FeignClientProperties.FeignClientConfiguration#getQueryMapEncoder() method can't be invoked , instance : {}", feignClientConfiguration);
-            }
+            handleInvokeExactFailure(e, getQueryMapEncoderMethodHandle, feignClientConfiguration);
         }
         return queryMapEncoderClass;
     }
+
 
     @Override
     public Map<String, Object> encode(Object object) {
