@@ -26,7 +26,6 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
 
     protected final Logger logger = getLogger(getClass());
 
-    //private final FeignClientFactory feignClientFactory;
     private final NamedContextFactory<FeignClientSpecification> contextFactory;
 
     private final String contextId;
