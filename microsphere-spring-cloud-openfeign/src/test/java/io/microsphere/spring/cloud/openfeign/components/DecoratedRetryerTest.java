@@ -22,21 +22,15 @@ import feign.Request;
 import feign.RetryableException;
 import feign.Retryer;
 import feign.Retryer.Default;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 
 import java.util.Date;
-import java.util.Map;
 
-import static feign.Request.create;
-import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
+import static feign.Request.HttpMethod.GET;
 import static io.microsphere.spring.cloud.openfeign.components.DecoratedRetryer.continueOrPropagate;
-import static io.microsphere.util.ArrayUtils.EMPTY_BYTE_ARRAY;
-import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * {@link DecoratedRetryer} Test
@@ -45,59 +39,29 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  * @see DecoratedRetryer
  * @since 1.0.0
  */
-class DecoratedRetryerTest extends DecoratedFeignComponentTest {
+class DecoratedRetryerTest extends DecoratedFeignComponentTest<Retryer, DecoratedRetryer> {
 
-    private Retryer delegate;
-
-    private DecoratedRetryer decoratedRetryer;
-
-    @BeforeEach
-    void setUp() {
-        super.setUp();
-        this.delegate = new Default();
-        this.decoratedRetryer = instantiate(DecoratedRetryer.class, Retryer.class, this.contextId, this.contextFactory,
-                this.clientProperties, null);
+    @Override
+    protected Retryer createDelegate() {
+        return new Default();
     }
 
     @Override
-    protected Map<String, ApplicationContextInitializer<GenericApplicationContext>> applicationContextInitializers() {
-        Map<String, ApplicationContextInitializer<GenericApplicationContext>> initializers = super.applicationContextInitializers();
-        initializers.put(this.contextId, context -> {
-            context.registerBean(Retryer.class, () -> delegate);
-        });
-        return initializers;
-    }
-
-    @Test
-    void testComponentTypeFromDefaultConfiguration() {
-        initDefaultConfiguration();
-        this.decoratedRetryer.getDefaultConfiguration().setRetryer((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedRetryer.componentType());
-    }
-
-    @Test
-    void testComponentTypeFromCurrentConfiguration() {
-        initCurrentConfiguration();
-        this.decoratedRetryer.getCurrentConfiguration().setRetryer((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedRetryer.componentType());
-    }
-
-    @Test
-    void testComponentType() {
-        assertSame(Retryer.class, this.decoratedRetryer.componentType());
+    protected void configureDelegateClass(FeignClientConfiguration configuration, Class<Retryer> delegateClass) {
+        configuration.setRetryer(delegateClass);
     }
 
     @Test
     void testContinueOrPropagate() {
-        Request request = create(Request.HttpMethod.GET, "http://localhost", emptyMap(), EMPTY_BYTE_ARRAY,
-                null, null);
-        RetryableException e = new RetryableException(1, "error", Request.HttpMethod.GET, new Date(), request);
-        this.decoratedRetryer.continueOrPropagate(e);
+        this.decoratedComponent.refresh();
+        Request request = createTestRequest();
+        RetryableException e = new RetryableException(1, "error", GET, new Date(), request);
+        assertThrows(RetryableException.class, () -> this.decoratedComponent.continueOrPropagate(e));
         continueOrPropagate(null, e);
     }
 
     @Test
     void testClone() {
-        assertNotNull(this.decoratedRetryer.clone());
+        assertNotNull(this.decoratedComponent.clone());
     }
 }

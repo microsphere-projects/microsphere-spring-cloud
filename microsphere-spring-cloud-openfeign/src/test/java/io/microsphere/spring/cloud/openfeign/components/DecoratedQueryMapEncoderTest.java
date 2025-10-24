@@ -20,10 +20,9 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.QueryMapEncoder;
 import feign.querymap.BeanQueryMapEncoder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 
-import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
 import static io.microsphere.spring.cloud.openfeign.components.DecoratedQueryMapEncoder.getQueryMapEncoder;
 import static io.microsphere.spring.cloud.openfeign.components.DecoratedQueryMapEncoder.getQueryMapEncoderMethodHandle;
 import static java.util.Collections.emptyMap;
@@ -37,42 +36,21 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  * @see DecoratedQueryMapEncoder
  * @since 1.0.0
  */
-class DecoratedQueryMapEncoderTest extends DecoratedFeignComponentTest {
+class DecoratedQueryMapEncoderTest extends DecoratedFeignComponentTest<QueryMapEncoder, DecoratedQueryMapEncoder> {
 
-    private QueryMapEncoder delegate;
-
-    private DecoratedQueryMapEncoder decoratedQueryMapEncoder;
-
-    @BeforeEach
-    void setUp() {
-        super.setUp();
-        this.delegate = new BeanQueryMapEncoder();
-        this.decoratedQueryMapEncoder = instantiate(DecoratedQueryMapEncoder.class, QueryMapEncoder.class, this.contextId,
-                this.contextFactory, this.clientProperties, this.delegate);
+    @Override
+    protected QueryMapEncoder createDelegate() {
+        return new BeanQueryMapEncoder();
     }
 
-    @Test
-    void testComponentTypeFromDefaultConfiguration() {
-        initDefaultConfiguration();
-        this.decoratedQueryMapEncoder.getDefaultConfiguration().setQueryMapEncoder((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedQueryMapEncoder.componentType());
-    }
-
-    @Test
-    void testComponentTypeFromCurrentConfiguration() {
-        initCurrentConfiguration();
-        this.decoratedQueryMapEncoder.getCurrentConfiguration().setQueryMapEncoder((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedQueryMapEncoder.componentType());
-    }
-
-    @Test
-    void testComponentType() {
-        assertSame(QueryMapEncoder.class, this.decoratedQueryMapEncoder.componentType());
+    @Override
+    protected void configureDelegateClass(FeignClientConfiguration configuration, Class<QueryMapEncoder> delegateClass) {
+        configuration.setQueryMapEncoder(delegateClass);
     }
 
     @Test
     void testEncode() {
-        assertSame(emptyMap(), this.decoratedQueryMapEncoder.encode(null));
+        assertSame(emptyMap(), this.decoratedComponent.encode(null));
     }
 
     @Test

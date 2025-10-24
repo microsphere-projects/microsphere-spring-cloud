@@ -18,19 +18,12 @@
 package io.microsphere.spring.cloud.openfeign.components;
 
 
-import feign.Request;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import feign.codec.ErrorDecoder.Default;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 
-import static feign.Request.create;
-import static feign.Response.builder;
-import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
-import static io.microsphere.util.ArrayUtils.EMPTY_BYTE_ARRAY;
-import static java.util.Collections.emptyMap;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -40,50 +33,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @see DecoratedErrorDecoder
  * @since 1.0.0
  */
-class DecoratedErrorDecoderTest extends DecoratedFeignComponentTest {
-
-    private ErrorDecoder delegate;
-
-    private DecoratedErrorDecoder decoratedErrorDecoder;
-
-    @BeforeEach
-    void setUp() {
-        super.setUp();
-        this.delegate = new Default();
-        this.decoratedErrorDecoder = instantiate(DecoratedErrorDecoder.class, ErrorDecoder.class, contextId, contextFactory,
-                clientProperties, delegate);
+class DecoratedErrorDecoderTest extends DecoratedFeignComponentTest<ErrorDecoder, DecoratedErrorDecoder> {
+    @Override
+    protected ErrorDecoder createDelegate() {
+        return new Default();
     }
 
-    @Test
-    void testComponentTypeFromDefaultConfiguration() {
-        initDefaultConfiguration();
-        this.decoratedErrorDecoder.getDefaultConfiguration().setErrorDecoder((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedErrorDecoder.componentType());
-    }
-
-    @Test
-    void testComponentTypeFromCurrentConfiguration() {
-        initCurrentConfiguration();
-        this.decoratedErrorDecoder.getCurrentConfiguration().setErrorDecoder((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedErrorDecoder.componentType());
-    }
-
-    @Test
-    void testComponentType() {
-        assertSame(ErrorDecoder.class, this.decoratedErrorDecoder.componentType());
+    @Override
+    protected void configureDelegateClass(FeignClientConfiguration configuration, Class<ErrorDecoder> delegateClass) {
+        configuration.setErrorDecoder(delegateClass);
     }
 
     @Test
     void testDecode() {
-        Request request = create(Request.HttpMethod.GET, "http://localhost", emptyMap(), EMPTY_BYTE_ARRAY,
-                null, null);
-
-        Response response = builder()
-                .status(200)
-                .request(request)
-                .body(new byte[1024])
-                .build();
-
-        assertTrue(this.decoratedErrorDecoder.decode("echo", response) instanceof Exception);
+        Response response = createTestResponse();
+        assertTrue(this.decoratedComponent.decode("echo", response) instanceof Exception);
     }
 }

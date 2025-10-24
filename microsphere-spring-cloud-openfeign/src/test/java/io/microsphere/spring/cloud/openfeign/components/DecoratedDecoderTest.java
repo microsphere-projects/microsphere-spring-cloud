@@ -18,24 +18,17 @@
 package io.microsphere.spring.cloud.openfeign.components;
 
 
-import feign.Request;
 import feign.Response;
 import feign.codec.Decoder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.support.SpringDecoder;
 
 import java.io.IOException;
 
-import static feign.Request.create;
-import static feign.Response.builder;
-import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
-import static io.microsphere.util.ArrayUtils.EMPTY_BYTE_ARRAY;
-import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * {@link DecoratedDecoder} Test
@@ -44,52 +37,23 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  * @see DecoratedDecoder
  * @since 1.0.0
  */
-class DecoratedDecoderTest extends DecoratedFeignComponentTest {
+class DecoratedDecoderTest extends DecoratedFeignComponentTest<Decoder, DecoratedDecoder> {
 
-    private Decoder delegate;
-
-    private DecoratedDecoder decoratedDecoder;
-
-    @BeforeEach
-    void setUp() {
-        super.setUp();
+    @Override
+    protected Decoder createDelegate() {
         HttpMessageConverters httpMessageConverters = new HttpMessageConverters();
         ObjectFactory<HttpMessageConverters> messageConverters = () -> httpMessageConverters;
-        this.delegate = new SpringDecoder(messageConverters);
-        this.decoratedDecoder = instantiate(DecoratedDecoder.class, Decoder.class, contextId, contextFactory,
-                clientProperties, delegate);
+        return new SpringDecoder(messageConverters);
     }
 
-    @Test
-    void testComponentTypeFromDefaultConfiguration() {
-        initDefaultConfiguration();
-        this.decoratedDecoder.getDefaultConfiguration().setDecoder((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedDecoder.componentType());
-    }
-
-    @Test
-    void testComponentTypeFromCurrentConfiguration() {
-        initCurrentConfiguration();
-        this.decoratedDecoder.getCurrentConfiguration().setDecoder((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedDecoder.componentType());
-    }
-
-    @Test
-    void testComponentType() {
-        assertSame(Decoder.class, this.decoratedDecoder.componentType());
+    @Override
+    protected void configureDelegateClass(FeignClientConfiguration configuration, Class<Decoder> delegateClass) {
+        configuration.setDecoder(delegateClass);
     }
 
     @Test
     void testDecode() throws IOException {
-        Request request = create(Request.HttpMethod.GET, "http://localhost", emptyMap(), EMPTY_BYTE_ARRAY,
-                null, null);
-
-        Response response = builder()
-                .status(200)
-                .request(request)
-                .body(new byte[1024])
-                .build();
-
-        assertEquals(this.decoratedDecoder.decode(response, String.class), this.delegate.decode(response, String.class));
+        Response response = createTestResponse();
+        assertEquals(this.decoratedComponent.decode(response, String.class), this.delegate.decode(response, String.class));
     }
 }

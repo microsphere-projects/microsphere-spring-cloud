@@ -21,15 +21,13 @@ package io.microsphere.spring.cloud.openfeign.components;
 import feign.Contract;
 import feign.MethodMetadata;
 import io.microsphere.spring.cloud.openfeign.BaseClient;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 
 import java.util.List;
 
-import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * {@link DecoratedContract} Test
@@ -38,43 +36,21 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  * @see DecoratedContract
  * @since 1.0.0
  */
-class DecoratedContractTest extends DecoratedFeignComponentTest {
-
-    private Contract delegate;
-
-    private DecoratedContract decoratedContract;
-
-    @BeforeEach
-    void setUp() {
-        super.setUp();
-        this.delegate = new SpringMvcContract();
-        this.decoratedContract = instantiate(DecoratedContract.class, Contract.class, this.contextId,
-                this.contextFactory, this.clientProperties, this.delegate);
+class DecoratedContractTest extends DecoratedFeignComponentTest<Contract, DecoratedContract> {
+    @Override
+    protected Contract createDelegate() {
+        return new SpringMvcContract();
     }
 
-    @Test
-    void testComponentTypeFromDefaultConfiguration() {
-        initDefaultConfiguration();
-        this.decoratedContract.getDefaultConfiguration().setContract((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedContract.componentType());
-    }
-
-    @Test
-    void testComponentTypeFromCurrentConfiguration() {
-        initCurrentConfiguration();
-        this.decoratedContract.getCurrentConfiguration().setContract((Class) this.delegate.getClass());
-        assertSame(this.delegate.getClass(), this.decoratedContract.componentType());
-    }
-
-    @Test
-    void testComponentType() {
-        assertSame(Contract.class, this.decoratedContract.componentType());
+    @Override
+    protected void configureDelegateClass(FeignClientConfiguration configuration, Class<Contract> delegateClass) {
+        configuration.setContract(delegateClass);
     }
 
     @Test
     void testParseAndValidateMetadata() {
-        assertMethodMetadataList(delegate.parseAndValidateMetadata(BaseClient.class),
-                decoratedContract.parseAndValidateMetadata(BaseClient.class));
+        assertMethodMetadataList(this.delegate.parseAndValidateMetadata(BaseClient.class),
+                this.decoratedComponent.parseAndValidateMetadata(BaseClient.class));
     }
 
     void assertMethodMetadataList(List<MethodMetadata> one, List<MethodMetadata> another) {
