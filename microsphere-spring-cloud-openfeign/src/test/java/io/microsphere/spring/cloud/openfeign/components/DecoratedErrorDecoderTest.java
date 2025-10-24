@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 1.0.0
  */
 class DecoratedErrorDecoderTest extends DecoratedFeignComponentTest<ErrorDecoder, DecoratedErrorDecoder> {
+
     @Override
     protected ErrorDecoder createDelegate() {
         return new Default();

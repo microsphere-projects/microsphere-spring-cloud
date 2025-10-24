@@ -37,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since 1.0.0
  */
 class DecoratedContractTest extends DecoratedFeignComponentTest<Contract, DecoratedContract> {
+
     @Override
     protected Contract createDelegate() {
         return new SpringMvcContract();
