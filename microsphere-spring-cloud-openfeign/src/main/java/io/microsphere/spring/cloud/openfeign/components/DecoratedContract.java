@@ -4,6 +4,7 @@ import feign.Contract;
 import feign.MethodMetadata;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
 
 import java.util.List;
@@ -20,17 +21,10 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
 
     @Override
     protected Class<Contract> componentType() {
-        Class<Contract> contractClass = null;
-        if (getDefaultConfiguration() != null && getDefaultConfiguration().getContract() != null)
-            contractClass = getDefaultConfiguration().getContract();
-
-        if (getCurrentConfiguration() != null && getCurrentConfiguration().getContract() != null)
-            contractClass = getCurrentConfiguration().getContract();
-
-        if (contractClass != null)
-            return contractClass;
-        return Contract.class;
+        Class<Contract> contractClass = get(FeignClientConfiguration::getContract);
+        return contractClass == null ? Contract.class : contractClass;
     }
+
 
     @Override
     public List<MethodMetadata> parseAndValidateMetadata(Class<?> targetType) {

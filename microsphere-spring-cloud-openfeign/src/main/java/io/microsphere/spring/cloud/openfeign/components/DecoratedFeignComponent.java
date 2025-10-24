@@ -6,11 +6,13 @@ import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
 import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Constructor;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Function;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -75,12 +77,27 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
 
     protected abstract Class<T> componentType();
 
-    public FeignClientProperties.FeignClientConfiguration getDefaultConfiguration() {
+    public FeignClientConfiguration getDefaultConfiguration() {
         return this.clientProperties.getConfig().get(this.clientProperties.getDefaultConfig());
     }
 
-    public FeignClientProperties.FeignClientConfiguration getCurrentConfiguration() {
+    public FeignClientConfiguration getCurrentConfiguration() {
         return this.clientProperties.getConfig().get(contextId);
+    }
+
+    protected <T> T get(Function<FeignClientConfiguration, T> configurationFunction) {
+        FeignClientConfiguration config = getDefaultConfiguration();
+        T value = null;
+        if (config != null) {
+            value = configurationFunction.apply(config);
+        }
+        if (value == null) {
+            config = getCurrentConfiguration();
+            if (config != null) {
+                value = configurationFunction.apply(config);
+            }
+        }
+        return value;
     }
 
     protected T loadInstance() {
