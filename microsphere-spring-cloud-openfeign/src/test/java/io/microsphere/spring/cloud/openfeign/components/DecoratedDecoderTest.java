@@ -30,6 +30,7 @@ import org.springframework.cloud.openfeign.support.SpringDecoder;
 import java.io.IOException;
 
 import static feign.Request.create;
+import static feign.Response.builder;
 import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
 import static io.microsphere.util.ArrayUtils.EMPTY_BYTE_ARRAY;
 import static java.util.Collections.emptyMap;
@@ -82,10 +83,11 @@ class DecoratedDecoderTest extends DecoratedFeignComponentTest {
     void testDecode() throws IOException {
         Request request = create(Request.HttpMethod.GET, "http://localhost", emptyMap(), EMPTY_BYTE_ARRAY,
                 null, null);
-        Response response = Response.builder()
+
+        Response response = builder()
                 .status(200)
-                .reason("OK")
                 .request(request)
+                .body(new byte[1024])
                 .build();
 
         assertEquals(this.decoratedDecoder.decode(response, String.class), this.delegate.decode(response, String.class));
