@@ -17,6 +17,7 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEncoder> implements QueryMapEncoder {
@@ -56,7 +57,6 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
         }
         return queryMapEncoderClass;
     }
-
 
     @Override
     public Map<String, Object> encode(Object object) {

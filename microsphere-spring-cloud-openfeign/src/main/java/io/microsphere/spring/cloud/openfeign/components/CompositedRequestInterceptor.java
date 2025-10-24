@@ -17,11 +17,13 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public class CompositedRequestInterceptor implements RequestInterceptor, Refreshable {
 
     private final BeanFactory beanFactory;
+
     private final String contextId;
 
     private final Set<RequestInterceptor> set = new HashSet<>();
@@ -34,7 +36,6 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     public Set<RequestInterceptor> getRequestInterceptors() {
         return Collections.unmodifiableSet(set);
     }
-
 
     @Override
     public void apply(RequestTemplate template) {
@@ -118,8 +119,5 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
                     });
                 });
         }
-
-
-
     }
 }
