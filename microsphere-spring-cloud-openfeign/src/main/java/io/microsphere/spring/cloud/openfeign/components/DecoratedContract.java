@@ -25,7 +25,6 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
         return contractClass == null ? Contract.class : contractClass;
     }
 
-
     @Override
     public List<MethodMetadata> parseAndValidateMetadata(Class<?> targetType) {
         return delegate().parseAndValidateMetadata(targetType);
