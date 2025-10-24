@@ -2,7 +2,6 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
@@ -14,6 +13,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static org.springframework.beans.BeanUtils.instantiateClass;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -59,7 +60,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
         try {
             return this.beanFactory.getBean(clazz);
         } catch (Exception e) {
-            return BeanUtils.instantiateClass(clazz);
+            return instantiateClass(clazz);
         }
     }
 
