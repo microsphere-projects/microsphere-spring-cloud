@@ -21,7 +21,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
+
+import java.util.Map;
 
 /**
  * Abstract {@link DecoratedFeignComponent} Test
@@ -40,8 +43,22 @@ abstract class DecoratedFeignComponentTest {
 
     @BeforeEach
     void setUp() {
-        this.contextId = "default";
+        this.contextId = "test-context";
         this.contextFactory = new FeignClientFactory();
         this.clientProperties = new FeignClientProperties();
+    }
+
+    void initDefaultConfiguration() {
+        String defaultConfig = this.clientProperties.getDefaultConfig();
+        setConfiguration(defaultConfig, new FeignClientConfiguration());
+    }
+
+    void initCurrentConfiguration() {
+        setConfiguration(this.contextId, new FeignClientConfiguration());
+    }
+
+    void setConfiguration(String id, FeignClientConfiguration configuration) {
+        Map<String, FeignClientConfiguration> config = this.clientProperties.getConfig();
+        config.put(id, configuration);
     }
 }
