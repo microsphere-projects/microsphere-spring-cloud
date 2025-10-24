@@ -23,8 +23,12 @@ import org.springframework.cloud.openfeign.FeignClientFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.support.GenericApplicationContext;
 
 import java.util.Map;
+
+import static io.microsphere.collection.MapUtils.newHashMap;
 
 /**
  * Abstract {@link DecoratedFeignComponent} Test
@@ -44,8 +48,12 @@ abstract class DecoratedFeignComponentTest {
     @BeforeEach
     void setUp() {
         this.contextId = "test-context";
-        this.contextFactory = new FeignClientFactory();
+        this.contextFactory = new FeignClientFactory(applicationContextInitializers());
         this.clientProperties = new FeignClientProperties();
+    }
+
+    protected Map<String, ApplicationContextInitializer<GenericApplicationContext>> applicationContextInitializers() {
+        return newHashMap();
     }
 
     void initDefaultConfiguration() {

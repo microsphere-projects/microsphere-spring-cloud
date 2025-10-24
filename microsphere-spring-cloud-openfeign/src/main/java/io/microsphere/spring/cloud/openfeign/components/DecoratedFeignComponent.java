@@ -135,7 +135,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         return delegate().toString();
     }
 
-    public static <W extends DecoratedFeignComponent<T>, T> W instantiate(Class<W> decoratedClass, Class<T> componentClass,
+    public static <W extends DecoratedFeignComponent<T>, T> W instantiate(Class<W> decoratedClass, Class<? extends T> componentClass,
                                                                           String contextId, NamedContextFactory<FeignClientSpecification> contextFactory, FeignClientProperties clientProperties, T delegate) {
         try {
             Constructor<W> constructor = decoratedClass.getConstructor(String.class, NamedContextFactory.class, FeignClientProperties.class, componentClass);

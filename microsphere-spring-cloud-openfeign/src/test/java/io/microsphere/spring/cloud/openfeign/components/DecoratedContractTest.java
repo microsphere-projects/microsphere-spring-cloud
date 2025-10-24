@@ -29,6 +29,7 @@ import java.util.List;
 
 import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * {@link DecoratedContract} Test
@@ -52,8 +53,22 @@ class DecoratedContractTest extends DecoratedFeignComponentTest {
     }
 
     @Test
+    void testComponentTypeFromDefaultConfiguration() {
+        initDefaultConfiguration();
+        this.decoratedContract.getDefaultConfiguration().setContract((Class) this.delegate.getClass());
+        assertSame(this.delegate.getClass(), this.decoratedContract.componentType());
+    }
+
+    @Test
+    void testComponentTypeFromCurrentConfiguration() {
+        initCurrentConfiguration();
+        this.decoratedContract.getCurrentConfiguration().setContract((Class) this.delegate.getClass());
+        assertSame(this.delegate.getClass(), this.decoratedContract.componentType());
+    }
+
+    @Test
     void testComponentType() {
-        assertEquals(Contract.class, decoratedContract.componentType());
+        assertSame(Contract.class, this.decoratedContract.componentType());
     }
 
     @Test

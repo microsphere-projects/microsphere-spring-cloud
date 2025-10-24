@@ -25,9 +25,13 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
 
     @Override
     public void continueOrPropagate(RetryableException e) {
-        Retryer retryer = delegate();
-        if (retryer != null)
+        continueOrPropagate(delegate(), e);
+    }
+
+    static void continueOrPropagate(Retryer retryer, RetryableException e) {
+        if (retryer != null) {
             retryer.continueOrPropagate(e);
+        }
     }
 
     @Override
