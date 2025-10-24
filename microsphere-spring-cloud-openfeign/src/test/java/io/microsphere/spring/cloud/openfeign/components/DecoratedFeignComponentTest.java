@@ -27,8 +27,6 @@ import org.springframework.cloud.openfeign.FeignClientFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.ResolvableType;
 
 import java.util.Map;
@@ -36,7 +34,6 @@ import java.util.Map;
 import static feign.Request.HttpMethod.GET;
 import static feign.Request.create;
 import static feign.Response.builder;
-import static io.microsphere.collection.MapUtils.newHashMap;
 import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignComponent.instantiate;
 import static io.microsphere.util.ArrayUtils.EMPTY_BYTE_ARRAY;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -71,7 +68,7 @@ abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<
     @BeforeEach
     void setUp() {
         this.contextId = "test-context";
-        this.contextFactory = new FeignClientFactory(applicationContextInitializers());
+        this.contextFactory = new FeignClientFactory();
         this.clientProperties = new FeignClientProperties();
 
         ResolvableType resolvableType = forClass(this.getClass()).as(DecoratedFeignComponentTest.class);
@@ -124,10 +121,6 @@ abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<
 
     protected Class<T> getDelegateClass() {
         return (Class<T>) this.delegate.getClass();
-    }
-
-    protected Map<String, ApplicationContextInitializer<GenericApplicationContext>> applicationContextInitializers() {
-        return newHashMap();
     }
 
     protected Request createTestRequest() {
