@@ -19,7 +19,7 @@ import static io.microsphere.invoke.MethodHandlesLookupUtils.NOT_FOUND_METHOD_HA
  * @since 0.0.1
  */
 public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEncoder> implements QueryMapEncoder {
-    
+
     private static final String getQueryMapEncoderMethodName = "getQueryMapEncoder";
 
     static final MethodHandle getQueryMapEncoderMethodHandle = findVirtual(FeignClientConfiguration.class, getQueryMapEncoderMethodName);
