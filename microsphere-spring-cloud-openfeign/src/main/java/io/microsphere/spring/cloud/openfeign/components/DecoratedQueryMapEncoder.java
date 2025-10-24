@@ -1,7 +1,6 @@
 package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.QueryMapEncoder;
-import io.microsphere.logging.Logger;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
@@ -13,7 +12,6 @@ import java.util.Map;
 import static io.microsphere.invoke.MethodHandleUtils.findVirtual;
 import static io.microsphere.invoke.MethodHandleUtils.handleInvokeExactFailure;
 import static io.microsphere.invoke.MethodHandlesLookupUtils.NOT_FOUND_METHOD_HANDLE;
-import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -21,9 +19,7 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
  * @since 0.0.1
  */
 public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEncoder> implements QueryMapEncoder {
-
-    private static final Logger logger = getLogger(DecoratedQueryMapEncoder.class);
-
+    
     private static final String getQueryMapEncoderMethodName = "getQueryMapEncoder";
 
     static final MethodHandle getQueryMapEncoderMethodHandle = findVirtual(FeignClientConfiguration.class, getQueryMapEncoderMethodName);
