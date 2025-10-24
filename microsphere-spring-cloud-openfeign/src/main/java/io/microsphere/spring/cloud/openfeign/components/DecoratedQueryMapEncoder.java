@@ -4,6 +4,7 @@ import feign.QueryMapEncoder;
 import io.microsphere.logging.Logger;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
 
 import java.lang.invoke.MethodHandle;
@@ -22,7 +23,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
 
     private static final String getQueryMapEncoderMethodName = "getQueryMapEncoder";
 
-    private static final MethodHandle getQueryMapEncoderMethodHandle = findVirtual(FeignClientProperties.FeignClientConfiguration.class, getQueryMapEncoderMethodName);
+    private static final MethodHandle getQueryMapEncoderMethodHandle = findVirtual(FeignClientConfiguration.class, getQueryMapEncoderMethodName);
 
     public DecoratedQueryMapEncoder(String contextId, NamedContextFactory<FeignClientSpecification> contextFactory, FeignClientProperties clientProperties, QueryMapEncoder delegate) {
         super(contextId, contextFactory, clientProperties, delegate);
@@ -37,7 +38,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
         return queryMapEncoderClass == null ? QueryMapEncoder.class : queryMapEncoderClass;
     }
 
-    private Class<QueryMapEncoder> getQueryMapEncoder(FeignClientProperties.FeignClientConfiguration feignClientConfiguration) {
+    private Class<QueryMapEncoder> getQueryMapEncoder(FeignClientConfiguration feignClientConfiguration) {
         if (feignClientConfiguration == null || getQueryMapEncoderMethodHandle == null) {
             return null;
         }
