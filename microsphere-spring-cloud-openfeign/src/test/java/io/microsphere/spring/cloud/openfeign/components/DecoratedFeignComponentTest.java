@@ -113,6 +113,11 @@ abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<
         assertEquals(this.decoratedComponent.hashCode(), this.delegate.hashCode());
     }
 
+    @Test
+    void testToString() {
+        assertEquals(this.decoratedComponent.toString(), this.delegate.toString());
+    }
+
     protected abstract T createDelegate();
 
     protected abstract void configureDelegateClass(FeignClientConfiguration configuration, Class<T> delegateClass);
