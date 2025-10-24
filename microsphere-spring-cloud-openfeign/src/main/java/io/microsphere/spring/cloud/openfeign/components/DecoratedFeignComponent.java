@@ -2,7 +2,6 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import io.microsphere.logging.Logger;
 import org.springframework.beans.BeanInstantiationException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
@@ -16,6 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.function.Function;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static org.springframework.beans.BeanUtils.instantiateClass;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -114,7 +114,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
             this.delegate = component;
             return component;
         } catch (Throwable ex) {
-            this.delegate = BeanUtils.instantiateClass(componentType);
+            this.delegate = instantiateClass(componentType);
             return delegate;
         } finally {
             writeLock.unlock();
@@ -140,7 +140,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
                                                                           String contextId, NamedContextFactory<FeignClientSpecification> contextFactory, FeignClientProperties clientProperties, T delegate) {
         try {
             Constructor<W> constructor = decoratedClass.getConstructor(String.class, NamedContextFactory.class, FeignClientProperties.class, componentClass);
-            return BeanUtils.instantiateClass(constructor, contextId, contextFactory, clientProperties, delegate);
+            return instantiateClass(constructor, contextId, contextFactory, clientProperties, delegate);
         } catch (NoSuchMethodException noSuchMethodException) {
             throw new BeanInstantiationException(decoratedClass, noSuchMethodException.getLocalizedMessage());
         }
