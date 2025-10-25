@@ -9,9 +9,6 @@ import org.springframework.cloud.openfeign.FeignClientSpecification;
 import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Constructor;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.function.Function;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
@@ -35,12 +32,6 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
 
     protected volatile T delegate;
 
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-
-    private final ReadLock readLock = lock.readLock();
-
-    private final WriteLock writeLock = lock.writeLock();
-
     public DecoratedFeignComponent(String contextId, NamedContextFactory<FeignClientSpecification> contextFactory, FeignClientProperties clientProperties, T delegate) {
         this.contextId = contextId;
         this.contextFactory = contextFactory;
@@ -49,15 +40,13 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     public T delegate() {
-        readLock.lock();
+        T delegate = this.delegate;
         if (delegate == null) {
-            logger.trace("the component {} - Creating delegate instance for contextId: {}", componentType().getSimpleName(), contextId);
-            readLock.unlock();
-            return loadInstance();
+            delegate = loadInstance();
+            logger.trace("the component[{}] - Creating delegate instance[{}] for contextId: '{}'", componentType(), delegate, contextId);
+            this.delegate = delegate;
         }
-
-        readLock.unlock();
-        return this.delegate;
+        return delegate;
     }
 
     @NonNull
@@ -72,10 +61,8 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     public void refresh() {
-        writeLock.lock();
-        logger.debug("the component {} - Refreshing delegate instance for contextId: {}", componentType().getSimpleName(), contextId);
+        logger.trace("the component[{}] - Refreshing delegate instance[{}] for contextId : '{}'", componentType(), this.delegate, contextId);
         this.delegate = null;
-        writeLock.unlock();
     }
 
     protected abstract Class<? extends T> componentType();
@@ -106,15 +93,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     protected T loadInstance() {
         Class<? extends T> componentType = componentType();
         String contextId = contextId();
-        T bean = null;
-        writeLock.lock();
-        try {
-            bean = loadInstanceFromContextFactory(contextId, componentType);
-        } finally {
-            this.delegate = bean;
-            writeLock.unlock();
-        }
-        return bean;
+        return loadInstanceFromContextFactory(contextId, componentType);
     }
 
     @Override
