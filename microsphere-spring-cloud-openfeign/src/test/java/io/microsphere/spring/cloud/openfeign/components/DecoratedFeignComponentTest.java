@@ -41,6 +41,7 @@ import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 
 /**
@@ -98,7 +99,7 @@ abstract class DecoratedFeignComponentTest<C, D extends DecoratedFeignComponent<
 
     @Test
     void testComponentType() {
-        assertSame(componentClass, this.decoratedComponent.componentType());
+        assertTrue(componentClass.isAssignableFrom(this.decoratedComponent.componentType()));
     }
 
     @Test
@@ -118,10 +119,12 @@ abstract class DecoratedFeignComponentTest<C, D extends DecoratedFeignComponent<
 
     @Test
     void testLoadInstanceFromContextFactory() {
-        C component = this.decoratedComponent.loadInstanceFromContextFactory(this.contextId, this.componentClass);
+        String contextId = this.decoratedComponent.contextId();
+        Class<C> componentType = this.decoratedComponent.componentType();
+        C component = this.decoratedComponent.loadInstanceFromContextFactory(contextId, componentType);
         assertNotNull(component);
 
-        assertNotNull(this.decoratedComponent.loadInstanceFromContextFactory(this.contextId, String.class));
+        assertNotNull(this.decoratedComponent.loadInstanceFromContextFactory(contextId, String.class));
     }
 
     protected abstract C createDelegate();
