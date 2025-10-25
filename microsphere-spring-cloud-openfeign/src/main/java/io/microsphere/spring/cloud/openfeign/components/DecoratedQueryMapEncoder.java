@@ -5,6 +5,7 @@ import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
+import org.springframework.cloud.openfeign.support.PageableSpringQueryMapEncoder;
 
 import java.lang.invoke.MethodHandle;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
         if (queryMapEncoderClass == null) {
             queryMapEncoderClass = getQueryMapEncoder(getDefaultConfiguration());
         }
-        return queryMapEncoderClass == null ? QueryMapEncoder.class : queryMapEncoderClass;
+        return queryMapEncoderClass == null ? (Class) PageableSpringQueryMapEncoder.class : queryMapEncoderClass;
     }
 
     private Class<QueryMapEncoder> getQueryMapEncoder(FeignClientConfiguration feignClientConfiguration) {
