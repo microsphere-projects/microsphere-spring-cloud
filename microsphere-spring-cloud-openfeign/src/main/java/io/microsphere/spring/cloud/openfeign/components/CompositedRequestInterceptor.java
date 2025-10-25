@@ -118,7 +118,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     }
 
     <T> T getOrInstantiate(Class<T> clazz) {
-        ObjectProvider<T> beanProvider = beanFactory.getBeanProvider(clazz);
+        ObjectProvider<T> beanProvider = this.beanFactory.getBeanProvider(clazz);
         return beanProvider.getIfAvailable(() -> instantiateClass(clazz));
     }
 
