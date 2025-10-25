@@ -51,8 +51,9 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     @Override
     public Retryer enrich(Retryer retryer) {
-        if (retryer == null)
+        if (retryer == null) {
             return null;
+        }
 
         DecoratedRetryer decoratedRetryer = DecoratedFeignComponent.instantiate(DecoratedRetryer.class, Retryer.class,
                 contextId, feignContext, clientProperties, retryer);
@@ -63,8 +64,9 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     @Override
     public Contract enrich(Contract contract) {
-        if (contract == null)
+        if (contract == null) {
             return null;
+        }
 
         DecoratedContract decoratedContract = DecoratedFeignComponent.instantiate(DecoratedContract.class, Contract.class,
                 contextId, feignContext, clientProperties, contract);
@@ -74,8 +76,9 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     @Override
     public Decoder enrich(Decoder decoder) {
-        if (decoder == null)
+        if (decoder == null) {
             return null;
+        }
 
         DecoratedDecoder decoratedDecoder = DecoratedFeignComponent.instantiate(DecoratedDecoder.class, Decoder.class,
                 contextId, feignContext, clientProperties, decoder);
@@ -85,8 +88,9 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     @Override
     public Encoder enrich(Encoder encoder) {
-        if (encoder == null)
+        if (encoder == null) {
             return null;
+        }
 
         DecoratedEncoder decoratedEncoder = DecoratedFeignComponent.instantiate(DecoratedEncoder.class, Encoder.class,
                 contextId, feignContext, clientProperties, encoder);
@@ -95,8 +99,9 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
     }
 
     public ErrorDecoder enrich(ErrorDecoder decoder) {
-        if (decoder == null)
+        if (decoder == null) {
             return null;
+        }
 
         DecoratedErrorDecoder decoratedErrorDecoder = DecoratedFeignComponent.instantiate(DecoratedErrorDecoder.class, ErrorDecoder.class,
                 contextId, feignContext, clientProperties, decoder);
@@ -106,13 +111,17 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
     @Override
     public RequestInterceptor enrich(RequestInterceptor requestInterceptor) {
+        if (requestInterceptor == null) {
+            return null;
+        }
         return this.componentRegistry.registerRequestInterceptor(contextId, requestInterceptor);
     }
 
     @Override
     public QueryMapEncoder enrich(QueryMapEncoder queryMapEncoder) {
-        if (queryMapEncoder == null)
+        if (queryMapEncoder == null) {
             return null;
+        }
 
         DecoratedQueryMapEncoder decoratedQueryMapEncoder = DecoratedFeignComponent.instantiate(DecoratedQueryMapEncoder.class, QueryMapEncoder.class,
                 contextId, feignContext, clientProperties, queryMapEncoder);
@@ -120,5 +129,4 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         this.componentRegistry.register(contextId, decoratedQueryMapEncoder);
         return decoratedQueryMapEncoder;
     }
-
 }
