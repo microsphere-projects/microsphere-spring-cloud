@@ -3,6 +3,7 @@ package io.microsphere.spring.cloud.openfeign.components;
 import feign.QueryMapEncoder;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignContext;
+import org.springframework.cloud.openfeign.support.PageableSpringQueryMapEncoder;
 
 import java.util.Map;
 
@@ -18,8 +19,8 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
     }
 
     @Override
-    protected Class<QueryMapEncoder> componentType() {
-        return QueryMapEncoder.class;
+    protected Class<? extends QueryMapEncoder> componentType() {
+        return PageableSpringQueryMapEncoder.class;
     }
 
     @Override

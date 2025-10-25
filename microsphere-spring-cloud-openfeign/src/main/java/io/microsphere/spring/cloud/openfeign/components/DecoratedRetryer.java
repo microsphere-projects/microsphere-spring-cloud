@@ -18,9 +18,9 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
     }
 
     @Override
-    protected Class<Retryer> componentType() {
+    protected Class<? extends Retryer> componentType() {
         Class<Retryer> retryerClass = get(FeignClientConfiguration::getRetryer);
-        return retryerClass == null ? Retryer.class : retryerClass;
+        return retryerClass == null ? Default.class : retryerClass;
     }
 
     @Override
