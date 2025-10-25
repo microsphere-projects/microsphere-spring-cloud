@@ -1,7 +1,6 @@
 package io.microsphere.spring.cloud.openfeign.components;
 
 import io.microsphere.logging.Logger;
-import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
@@ -16,6 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.function.Function;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.reflect.ConstructorUtils.findConstructor;
 import static org.springframework.beans.BeanUtils.instantiateClass;
 
 /**
@@ -132,13 +132,13 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         return delegate().toString();
     }
 
-    public static <W extends DecoratedFeignComponent<T>, T> W instantiate(Class<W> decoratedClass, Class<? extends T> componentClass,
-                                                                          String contextId, NamedContextFactory<FeignClientSpecification> contextFactory, FeignClientProperties clientProperties, T delegate) {
-        try {
-            Constructor<W> constructor = decoratedClass.getConstructor(String.class, NamedContextFactory.class, FeignClientProperties.class, componentClass);
-            return instantiateClass(constructor, contextId, contextFactory, clientProperties, delegate);
-        } catch (NoSuchMethodException noSuchMethodException) {
-            throw new BeanInstantiationException(decoratedClass, noSuchMethodException.getLocalizedMessage());
-        }
+    public static <W extends DecoratedFeignComponent<T>, T> W instantiate(Class<W> decoratedClass,
+                                                                          Class<? extends T> componentClass,
+                                                                          String contextId,
+                                                                          NamedContextFactory<FeignClientSpecification> contextFactory,
+                                                                          FeignClientProperties clientProperties,
+                                                                          T delegate) {
+        Constructor<W> constructor = findConstructor(decoratedClass, String.class, NamedContextFactory.class, FeignClientProperties.class, componentClass);
+        return instantiateClass(constructor, contextId, contextFactory, clientProperties, delegate);
     }
 }
