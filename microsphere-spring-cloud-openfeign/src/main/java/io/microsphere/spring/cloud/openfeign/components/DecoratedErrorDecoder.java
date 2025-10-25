@@ -21,7 +21,7 @@ public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder>
     @Override
     protected Class<ErrorDecoder> componentType() {
         Class<ErrorDecoder> errorDecoderClass = get(FeignClientConfiguration::getErrorDecoder);
-        return errorDecoderClass == null ? ErrorDecoder.class : errorDecoderClass;
+        return errorDecoderClass == null ? (Class) Default.class : errorDecoderClass;
     }
 
     @Override
