@@ -34,7 +34,8 @@ public class FeignComponentRegistry {
 
     private final Map<String, CompositedRequestInterceptor> interceptorsMap = new ConcurrentHashMap<>(32);
 
-    private final String DEFAULT_CLIENT_NAME;
+    private final String defaultClientName;
+
     private final BeanFactory beanFactory;
 
     static {
@@ -73,7 +74,7 @@ public class FeignComponentRegistry {
     }
 
     public FeignComponentRegistry(String defaultClientName, BeanFactory beanFactory) {
-        this.DEFAULT_CLIENT_NAME = defaultClientName;
+        this.defaultClientName = defaultClientName;
         this.beanFactory = beanFactory;
     }
 
@@ -109,7 +110,7 @@ public class FeignComponentRegistry {
             }
         }
 
-        if (DEFAULT_CLIENT_NAME.equals(clientName)) {
+        if (defaultClientName.equals(clientName)) {
             //default configs changed, need refresh all
             refreshableComponents.values().stream()
                     .flatMap(List::stream)
