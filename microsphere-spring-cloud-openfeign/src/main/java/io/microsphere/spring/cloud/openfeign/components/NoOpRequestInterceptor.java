@@ -12,9 +12,6 @@ public class NoOpRequestInterceptor implements RequestInterceptor {
 
     public static final NoOpRequestInterceptor INSTANCE = new NoOpRequestInterceptor();
 
-    private NoOpRequestInterceptor() {
-    }
-
     @Override
     public void apply(RequestTemplate template) {
         //no op
