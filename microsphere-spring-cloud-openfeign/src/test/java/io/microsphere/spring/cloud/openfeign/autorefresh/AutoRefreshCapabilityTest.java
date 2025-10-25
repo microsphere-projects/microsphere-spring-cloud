@@ -27,8 +27,8 @@ import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.cloud.openfeign.FeignClientFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignContext;
 import org.springframework.context.support.GenericApplicationContext;
 
 import java.util.Map;
@@ -48,7 +48,7 @@ class AutoRefreshCapabilityTest {
 
     private FeignClientProperties feignClientProperties;
 
-    private FeignClientFactory feignClientFactory;
+    private FeignContext feignContext;
 
     private GenericApplicationContext context;
 
@@ -60,13 +60,13 @@ class AutoRefreshCapabilityTest {
     void setUp() {
         this.contextId = "test-context";
         this.feignClientProperties = new FeignClientProperties();
-        this.feignClientFactory = new FeignClientFactory();
+        this.feignContext = new FeignContext();
         this.context = new GenericApplicationContext();
         this.context.setId(contextId);
         this.context.registerBean(FeignClientProperties.class, () -> this.feignClientProperties);
         this.context.refresh();
         this.feignComponentRegistry = new FeignComponentRegistry(this.contextId, this.context);
-        this.capability = new AutoRefreshCapability(this.feignClientProperties, this.feignClientFactory, this.feignComponentRegistry);
+        this.capability = new AutoRefreshCapability(this.feignClientProperties, this.feignContext, this.feignComponentRegistry);
         initFeignClientProperties();
     }
 
