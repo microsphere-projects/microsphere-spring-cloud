@@ -120,7 +120,7 @@ abstract class DecoratedFeignComponentTest<C, D extends DecoratedFeignComponent<
     @Test
     void testLoadInstanceFromContextFactory() {
         String contextId = this.decoratedComponent.contextId();
-        Class<C> componentType = this.decoratedComponent.componentType();
+        Class<? extends C> componentType = this.decoratedComponent.componentType();
         C component = this.decoratedComponent.loadInstanceFromContextFactory(contextId, componentType);
         assertNotNull(component);
 
