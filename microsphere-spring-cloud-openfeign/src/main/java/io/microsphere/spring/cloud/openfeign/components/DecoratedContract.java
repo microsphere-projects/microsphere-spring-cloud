@@ -21,7 +21,7 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
     }
 
     @Override
-    protected Class<Contract> componentType() {
+    protected Class<? extends Contract> componentType() {
         Class<Contract> contractClass = get(FeignClientConfiguration::getContract);
         return contractClass == null ? Contract.class : contractClass;
     }

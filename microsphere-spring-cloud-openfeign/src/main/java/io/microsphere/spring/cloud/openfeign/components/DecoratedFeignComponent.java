@@ -78,7 +78,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         writeLock.unlock();
     }
 
-    protected abstract Class<T> componentType();
+    protected abstract Class<? extends T> componentType();
 
     public FeignClientConfiguration getDefaultConfiguration() {
         return this.clientProperties.getConfig().get(this.clientProperties.getDefaultConfig());

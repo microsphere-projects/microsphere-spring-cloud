@@ -24,7 +24,7 @@ public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implement
     }
 
     @Override
-    protected Class<Decoder> componentType() {
+    protected Class<? extends Decoder> componentType() {
         Class<Decoder> decoderClass = get(FeignClientConfiguration::getDecoder);
         return decoderClass == null ? Decoder.class : decoderClass;
     }

@@ -23,7 +23,7 @@ public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implement
     }
 
     @Override
-    protected Class<Encoder> componentType() {
+    protected Class<? extends Encoder> componentType() {
         Class<Encoder> encoderClass = get(FeignClientConfiguration::getEncoder);
         return encoderClass == null ? Encoder.class : encoderClass;
     }
