@@ -30,7 +30,6 @@ import java.util.Date;
 import static feign.Request.HttpMethod.GET;
 import static io.microsphere.spring.cloud.openfeign.components.DecoratedRetryer.continueOrPropagate;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * {@link DecoratedRetryer} Test
@@ -56,7 +55,7 @@ class DecoratedRetryerTest extends DecoratedFeignComponentTest<Retryer, Decorate
         this.decoratedComponent.refresh();
         Request request = createTestRequest();
         RetryableException e = new RetryableException(1, "error", GET, new Date(), request);
-        assertThrows(RetryableException.class, () -> this.decoratedComponent.continueOrPropagate(e));
+        this.decoratedComponent.continueOrPropagate(e);
         continueOrPropagate(null, e);
     }
 

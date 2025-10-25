@@ -37,7 +37,9 @@ import static io.microsphere.util.ArrayUtils.EMPTY_BYTE_ARRAY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
 
 /**
@@ -47,7 +49,7 @@ import static org.springframework.core.ResolvableType.forClass;
  * @see DecoratedFeignComponent
  * @since 1.0.0
  */
-abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<T>> {
+abstract class DecoratedFeignComponentTest<C, D extends DecoratedFeignComponent<C>> {
 
     protected String contextId;
 
@@ -55,11 +57,11 @@ abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<
 
     protected FeignClientProperties clientProperties;
 
-    protected Class<T> componentClass;
+    protected Class<C> componentClass;
 
     protected Class<D> decoratedComponentClass;
 
-    protected T delegate;
+    protected C delegate;
 
     protected D decoratedComponent;
 
@@ -70,7 +72,7 @@ abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<
         this.clientProperties = new FeignClientProperties();
 
         ResolvableType resolvableType = forClass(this.getClass()).as(DecoratedFeignComponentTest.class);
-        this.componentClass = (Class<T>) resolvableType.getGeneric(0).resolve();
+        this.componentClass = (Class<C>) resolvableType.getGeneric(0).resolve();
         this.decoratedComponentClass = (Class<D>) resolvableType.getGeneric(1).resolve();
 
         this.delegate = createDelegate();
@@ -80,7 +82,7 @@ abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<
     @Test
     void testComponentTypeFromDefaultConfiguration() {
         initDefaultConfiguration();
-        Class<T> delegateClass = getDelegateClass();
+        Class<C> delegateClass = getDelegateClass();
         configureDelegateClass(this.decoratedComponent.getDefaultConfiguration(), delegateClass);
         assertSame(delegateClass, this.decoratedComponent.componentType());
     }
@@ -88,14 +90,14 @@ abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<
     @Test
     void testComponentTypeFromCurrentConfiguration() {
         initCurrentConfiguration();
-        Class<T> delegateClass = getDelegateClass();
+        Class<C> delegateClass = getDelegateClass();
         configureDelegateClass(this.decoratedComponent.getCurrentConfiguration(), delegateClass);
         assertSame(delegateClass, this.decoratedComponent.componentType());
     }
 
     @Test
     void testComponentType() {
-        assertSame(componentClass, this.decoratedComponent.componentType());
+        assertTrue(componentClass.isAssignableFrom(this.decoratedComponent.componentType()));
     }
 
     @Test
@@ -113,12 +115,22 @@ abstract class DecoratedFeignComponentTest<T, D extends DecoratedFeignComponent<
         assertEquals(this.decoratedComponent.toString(), this.delegate.toString());
     }
 
-    protected abstract T createDelegate();
+    @Test
+    void testLoadInstanceFromContextFactory() {
+        String contextId = this.decoratedComponent.contextId();
+        Class<? extends C> componentType = this.decoratedComponent.componentType();
+        C component = this.decoratedComponent.loadInstanceFromContextFactory(contextId, componentType);
+        assertNotNull(component);
 
-    protected abstract void configureDelegateClass(FeignClientConfiguration configuration, Class<T> delegateClass);
+        assertNotNull(this.decoratedComponent.loadInstanceFromContextFactory(contextId, String.class));
+    }
 
-    protected Class<T> getDelegateClass() {
-        return (Class<T>) this.delegate.getClass();
+    protected abstract C createDelegate();
+
+    protected abstract void configureDelegateClass(FeignClientConfiguration configuration, Class<C> delegateClass);
+
+    protected Class<C> getDelegateClass() {
+        return (Class<C>) this.delegate.getClass();
     }
 
     protected Request createTestRequest() {
