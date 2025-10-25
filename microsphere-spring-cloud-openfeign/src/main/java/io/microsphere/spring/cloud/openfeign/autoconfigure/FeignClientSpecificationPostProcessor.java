@@ -12,6 +12,8 @@ import static io.microsphere.util.ArrayUtils.combine;
 import static org.springframework.aop.support.AopUtils.getTargetClass;
 
 /**
+ * {@link BeanPostProcessor} for {@link FeignClientSpecification}
+ *
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see org.springframework.cloud.openfeign.FeignClientSpecification
@@ -38,6 +40,7 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
         Class<?>[] originConfigurationClasses = specification.getConfiguration();
         Class<?>[] newConfigurationClasses = combine(AUTO_REFRESH_CAPABILITY_CLASS, originConfigurationClasses);
         specification.setConfiguration(newConfigurationClasses);
-        logger.trace("The Configuration classes: before - {} , after - {}", arrayToString(originConfigurationClasses), arrayToString(newConfigurationClasses));
+        logger.trace("The Configuration classes: before - {} , after - {}", arrayToString(originConfigurationClasses),
+                arrayToString(newConfigurationClasses));
     }
 }
