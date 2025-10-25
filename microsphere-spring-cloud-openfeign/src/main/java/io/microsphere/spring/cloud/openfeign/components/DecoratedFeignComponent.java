@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import io.microsphere.logging.Logger;
 import org.springframework.beans.BeanInstantiationException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
@@ -61,10 +62,8 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
 
     @NonNull
     public <T> T loadInstanceFromContextFactory(String contextId, Class<T> componentType) {
-        T component = this.contextFactory.getInstance(contextId, componentType);
-        if (component == null)
-            return this.contextFactory.getParent().getAutowireCapableBeanFactory().createBean(componentType);
-        return component;
+        ObjectProvider<T> beanProvider = this.contextFactory.getProvider(contextId, componentType);
+        return beanProvider.getIfAvailable(() -> instantiateClass(componentType));
     }
 
     @NonNull
@@ -107,17 +106,15 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     protected T loadInstance() {
         Class<T> componentType = componentType();
         String contextId = contextId();
+        T bean = null;
         writeLock.lock();
         try {
-            T component = loadInstanceFromContextFactory(contextId, componentType);
-            this.delegate = component;
-            return component;
-        } catch (Throwable ex) {
-            this.delegate = instantiateClass(componentType);
-            return delegate;
+            bean = loadInstanceFromContextFactory(contextId, componentType);
         } finally {
+            this.delegate = bean;
             writeLock.unlock();
         }
+        return bean;
     }
 
     @Override
@@ -143,6 +140,5 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         } catch (NoSuchMethodException noSuchMethodException) {
             throw new BeanInstantiationException(decoratedClass, noSuchMethodException.getLocalizedMessage());
         }
-
     }
 }
