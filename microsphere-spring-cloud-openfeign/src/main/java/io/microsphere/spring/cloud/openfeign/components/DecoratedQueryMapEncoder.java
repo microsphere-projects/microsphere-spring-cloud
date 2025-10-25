@@ -30,12 +30,12 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
     }
 
     @Override
-    protected Class<QueryMapEncoder> componentType() {
+    protected Class<? extends QueryMapEncoder> componentType() {
         Class<QueryMapEncoder> queryMapEncoderClass = getQueryMapEncoder(getCurrentConfiguration());
         if (queryMapEncoderClass == null) {
             queryMapEncoderClass = getQueryMapEncoder(getDefaultConfiguration());
         }
-        return queryMapEncoderClass == null ? (Class) PageableSpringQueryMapEncoder.class : queryMapEncoderClass;
+        return queryMapEncoderClass == null ? PageableSpringQueryMapEncoder.class : queryMapEncoderClass;
     }
 
     private Class<QueryMapEncoder> getQueryMapEncoder(FeignClientConfiguration feignClientConfiguration) {
