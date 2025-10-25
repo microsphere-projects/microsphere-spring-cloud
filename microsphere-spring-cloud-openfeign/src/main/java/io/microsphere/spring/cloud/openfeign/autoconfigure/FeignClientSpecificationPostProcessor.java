@@ -4,7 +4,7 @@ import io.microsphere.logging.Logger;
 import io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapability;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.cloud.context.named.NamedContextFactory;
+import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -37,12 +37,12 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class<?> beanType = getTargetClass(bean);
         if (FEIGN_CLIENT_SPECIFICATION_CLASS.isAssignableFrom(beanType) && beanName.startsWith("default")) {
-            injectAutoRefreshCapability((NamedContextFactory.Specification) bean);
+            injectAutoRefreshCapability((Specification) bean);
         }
         return bean;
     }
 
-    private void injectAutoRefreshCapability(NamedContextFactory.Specification defaultSpecification) {
+    private void injectAutoRefreshCapability(Specification defaultSpecification) {
         if (setConfigurationMethod != null) {
             Class<?>[] originConfigurationClasses = defaultSpecification.getConfiguration();
             Class<?>[] newConfigurationClasses = combine(AUTO_REFRESH_CAPABILITY_CLASS, originConfigurationClasses);
