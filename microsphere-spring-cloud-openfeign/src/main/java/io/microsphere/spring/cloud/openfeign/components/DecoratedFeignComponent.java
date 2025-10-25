@@ -2,6 +2,7 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import io.microsphere.logging.Logger;
 import org.springframework.beans.BeanInstantiationException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignContext;
@@ -59,6 +60,12 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     @NonNull
+    public <T> T loadInstanceFromContextFactory(String contextId, Class<T> componentType) {
+        ObjectProvider<T> beanProvider = this.feignContext.getProvider(contextId, componentType);
+        return beanProvider.getIfAvailable(() -> instantiateClass(componentType));
+    }
+
+    @NonNull
     public FeignContext getFeignContext() {
         return this.feignContext;
     }
@@ -103,19 +110,15 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     protected T loadInstance() {
         Class<T> componentType = componentType();
         String contextId = contextId();
+        T bean = null;
         writeLock.lock();
         try {
-            T component = getFeignContext().getInstance(contextId, componentType);
-            if (component == null)
-                component = instantiateClass(componentType);
-            this.delegate = component;
-            return component;
-        } catch (Throwable ex) {
-            this.delegate = instantiateClass(componentType);
-            return delegate;
+            bean = loadInstanceFromContextFactory(contextId, componentType);
         } finally {
+            this.delegate = bean;
             writeLock.unlock();
         }
+        return bean;
     }
 
     @Override
@@ -134,13 +137,12 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     public static <W extends DecoratedFeignComponent<T>, T> W instantiate(Class<W> decoratedClass, Class<T> componentClass,
-                                                             String contextId, FeignContext feignContext, FeignClientProperties clientProperties, T delegate) {
+                                                                          String contextId, FeignContext feignContext, FeignClientProperties clientProperties, T delegate) {
         try {
             Constructor<W> constructor = decoratedClass.getConstructor(String.class, FeignContext.class, FeignClientProperties.class, componentClass);
             return instantiateClass(constructor, contextId, feignContext, clientProperties, delegate);
         } catch (NoSuchMethodException noSuchMethodException) {
             throw new BeanInstantiationException(decoratedClass, noSuchMethodException.getLocalizedMessage());
         }
-
     }
 }
