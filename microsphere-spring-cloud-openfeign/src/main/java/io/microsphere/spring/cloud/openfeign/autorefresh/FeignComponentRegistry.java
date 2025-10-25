@@ -8,7 +8,6 @@ import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
 import io.microsphere.spring.cloud.openfeign.components.CompositedRequestInterceptor;
-import io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor;
 import io.microsphere.spring.cloud.openfeign.components.Refreshable;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.util.ObjectUtils;
@@ -21,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor.INSTANCE;
+
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
@@ -30,7 +31,8 @@ public class FeignComponentRegistry {
     private static final Map<String, Class<?>> configComponentMappings = new HashMap<>(16);
 
     private final Map<String, List<Refreshable>> refreshableComponents = new ConcurrentHashMap<>(32);
-    private final Map<String, CompositedRequestInterceptor> interceptorMap = new ConcurrentHashMap<>(32);
+
+    private final Map<String, CompositedRequestInterceptor> interceptorsMap = new ConcurrentHashMap<>(32);
 
     private final String DEFAULT_CLIENT_NAME;
     private final BeanFactory beanFactory;
@@ -86,10 +88,11 @@ public class FeignComponentRegistry {
     }
 
     public RequestInterceptor registerRequestInterceptor(String clientName, RequestInterceptor requestInterceptor) {
-        CompositedRequestInterceptor compositedRequestInterceptor = this.interceptorMap.computeIfAbsent(clientName, (name) -> new CompositedRequestInterceptor(clientName, beanFactory));
+        CompositedRequestInterceptor compositedRequestInterceptor = this.interceptorsMap.computeIfAbsent(clientName, (name) -> new CompositedRequestInterceptor(clientName, beanFactory));
         if (compositedRequestInterceptor.addRequestInterceptor(requestInterceptor)) {
             return compositedRequestInterceptor;
-        } else return NoOpRequestInterceptor.INSTANCE;
+        }
+        return INSTANCE;
     }
 
 
@@ -119,8 +122,8 @@ public class FeignComponentRegistry {
                     })
                     .forEach(Refreshable::refresh);
             if (hasInterceptor)
-                this.interceptorMap.values()
-                    .forEach(CompositedRequestInterceptor::refresh);
+                this.interceptorsMap.values()
+                        .forEach(CompositedRequestInterceptor::refresh);
             return;
         }
         List<Refreshable> components = this.refreshableComponents.get(clientName);
@@ -136,7 +139,7 @@ public class FeignComponentRegistry {
                     .forEach(Refreshable::refresh);
 
         if (hasInterceptor) {
-            CompositedRequestInterceptor requestInterceptor = this.interceptorMap.get(clientName);
+            CompositedRequestInterceptor requestInterceptor = this.interceptorsMap.get(clientName);
             if (requestInterceptor != null)
                 requestInterceptor.refresh();
         }
