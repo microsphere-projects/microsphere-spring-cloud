@@ -104,7 +104,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     protected T loadInstance() {
-        Class<T> componentType = componentType();
+        Class<? extends T> componentType = componentType();
         String contextId = contextId();
         T bean = null;
         writeLock.lock();
