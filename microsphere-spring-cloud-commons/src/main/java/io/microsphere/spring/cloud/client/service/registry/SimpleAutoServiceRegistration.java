@@ -34,7 +34,7 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
 
     private final Registration registration;
 
-    protected SimpleAutoServiceRegistration(ServiceRegistry<Registration> serviceRegistry,
+    public SimpleAutoServiceRegistration(ServiceRegistry<Registration> serviceRegistry,
                                             AutoServiceRegistrationProperties properties, Registration registration) {
         super(serviceRegistry, properties);
         this.properties = properties;

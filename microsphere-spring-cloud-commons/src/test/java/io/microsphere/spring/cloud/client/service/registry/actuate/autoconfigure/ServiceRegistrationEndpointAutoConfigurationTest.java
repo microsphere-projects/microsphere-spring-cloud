@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * {@link ServiceRegistrationEndpointAutoConfiguration} Test
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         classes = {
                 ServiceRegistrationEndpointAutoConfigurationTest.class
         },
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        webEnvironment = RANDOM_PORT,
         properties = {
                 "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true",
                 "management.endpoint.serviceRegistration.enabled=true",
@@ -39,7 +40,7 @@ class ServiceRegistrationEndpointAutoConfigurationTest {
 
     @Test
     void testEndpoints() {
-        assertNotNull(serviceRegistrationEndpoint);
+        assertNotNull(serviceRegistrationEndpoint.getIfAvailable());
+        assertNotNull(serviceDeregistrationEndpoint.getIfAvailable());
     }
-
 }

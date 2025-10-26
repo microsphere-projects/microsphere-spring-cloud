@@ -3,12 +3,14 @@ package io.microsphere.spring.cloud.openfeign.components;
 import feign.Contract;
 import feign.MethodMetadata;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignContext;
 
 import java.util.List;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public class DecoratedContract extends DecoratedFeignComponent<Contract> implements Contract {
@@ -18,17 +20,9 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
     }
 
     @Override
-    protected Class<Contract> componentType() {
-        Class<Contract> contractClass = null;
-        if (getDefaultConfiguration() != null && getDefaultConfiguration().getContract() != null)
-            contractClass = getDefaultConfiguration().getContract();
-
-        if (getCurrentConfiguration() != null && getCurrentConfiguration().getContract() != null)
-            contractClass = getCurrentConfiguration().getContract();
-
-        if (contractClass != null)
-            return contractClass;
-        return Contract.class;
+    protected Class<? extends Contract> componentType() {
+        Class<Contract> contractClass = get(FeignClientConfiguration::getContract);
+        return contractClass == null ? Contract.class : contractClass;
     }
 
     @Override

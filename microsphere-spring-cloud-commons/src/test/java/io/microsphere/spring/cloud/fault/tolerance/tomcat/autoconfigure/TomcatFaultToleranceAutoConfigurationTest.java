@@ -25,10 +25,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.context.WebServerApplicationContext;
+import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
+import org.springframework.boot.web.server.WebServer;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.cloud.context.environment.EnvironmentManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * {@link TomcatFaultToleranceAutoConfiguration} Test
@@ -36,9 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@SpringBootTest(classes = {
-        TomcatFaultToleranceAutoConfigurationTest.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = TomcatFaultToleranceAutoConfigurationTest.class, webEnvironment = RANDOM_PORT)
 @EnableAutoConfiguration
 class TomcatFaultToleranceAutoConfigurationTest {
 
@@ -48,6 +52,11 @@ class TomcatFaultToleranceAutoConfigurationTest {
     @Autowired
     private WebServerApplicationContext context;
 
+    @Autowired
+    private TomcatFaultToleranceAutoConfiguration configuration;
+
+    private TomcatWebServer tomcatWebServer;
+
     private Tomcat tomcat;
 
     private Connector connector;
@@ -56,8 +65,8 @@ class TomcatFaultToleranceAutoConfigurationTest {
 
     @BeforeEach
     void before() {
-        TomcatWebServer tomcatWebServer = (TomcatWebServer) context.getWebServer();
-        this.tomcat = tomcatWebServer.getTomcat();
+        this.tomcatWebServer = (TomcatWebServer) context.getWebServer();
+        this.tomcat = this.tomcatWebServer.getTomcat();
         this.connector = tomcat.getConnector();
         this.protocol = (AbstractHttp11Protocol) connector.getProtocolHandler();
     }
@@ -132,5 +141,24 @@ class TomcatFaultToleranceAutoConfigurationTest {
         // changed
         environmentManager.setProperty("server.tomcat.max-http-form-post-size", "10240");
         assertEquals(10240, connector.getMaxPostSize());
+    }
+
+    @Test
+    void testOnWebServerInitializedEventWithWebServerInitializedEvent() {
+        WebServerInitializedEvent event = new WebServerInitializedEvent(this.tomcatWebServer) {
+            @Override
+            public WebServerApplicationContext getApplicationContext() {
+                return null;
+            }
+        };
+        configuration.onWebServerInitializedEvent(event);
+    }
+
+    @Test
+    void testOnWebServerInitializedEventWithNonTomcatWebServer() {
+        ServletWebServerApplicationContext context = (ServletWebServerApplicationContext) this.context;
+        WebServer webServer = mock(WebServer.class);
+        WebServerInitializedEvent event = new ServletWebServerInitializedEvent(webServer, context);
+        configuration.onWebServerInitializedEvent(event);
     }
 }

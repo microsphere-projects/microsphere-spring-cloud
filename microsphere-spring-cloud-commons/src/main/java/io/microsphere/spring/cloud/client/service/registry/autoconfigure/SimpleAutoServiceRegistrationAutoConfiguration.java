@@ -16,6 +16,8 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
+import io.microsphere.annotation.ConfigurationProperty;
+import io.microsphere.constants.PropertyConstants;
 import io.microsphere.spring.cloud.client.service.registry.DefaultRegistration;
 import io.microsphere.spring.cloud.client.service.registry.InMemoryServiceRegistry;
 import io.microsphere.spring.cloud.client.service.registry.SimpleAutoServiceRegistration;
@@ -36,8 +38,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.spring.cloud.client.service.registry.autoconfigure.SimpleAutoServiceRegistrationAutoConfiguration.PROPERTY_NAME_PREFIX;
+import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
+import static io.microsphere.spring.cloud.client.service.registry.autoconfigure.SimpleAutoServiceRegistrationAutoConfiguration.ENABLED_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
 
 /**
@@ -48,7 +50,7 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(prefix = PROPERTY_NAME_PREFIX, name = ENABLED_PROPERTY_NAME)
+@ConditionalOnProperty(name = ENABLED_PROPERTY_NAME)
 @ConditionalOnAutoServiceRegistrationEnabled
 @AutoConfigureBefore(value = {
         AutoServiceRegistrationAutoConfiguration.class
@@ -66,6 +68,15 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
      * The property name prefix : "microsphere.spring.cloud.service-registry.auto-registration.simple."
      */
     public static final String PROPERTY_NAME_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "service-registry.auto-registration.simple.";
+
+    /**
+     * The property name : "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled"
+     */
+    @ConfigurationProperty(
+            type = boolean.class,
+            source = APPLICATION_SOURCE
+    )
+    public static final String ENABLED_PROPERTY_NAME = PROPERTY_NAME_PREFIX + PropertyConstants.ENABLED_PROPERTY_NAME;
 
     @Bean
     public Registration registration(

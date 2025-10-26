@@ -1,36 +1,35 @@
 package io.microsphere.spring.cloud.openfeign.components;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanInstantiationException;
-import org.springframework.beans.BeanUtils;
+import io.microsphere.logging.Logger;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignContext;
 import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Constructor;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Function;
+
+import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.reflect.ConstructorUtils.findConstructor;
+import static org.springframework.beans.BeanUtils.instantiateClass;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public abstract class DecoratedFeignComponent<T> implements Refreshable {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    protected final Logger logger = getLogger(getClass());
 
     private final FeignContext feignContext;
+
     private final String contextId;
 
     private final FeignClientProperties clientProperties;
 
-
     protected volatile T delegate;
-
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-
-    private final ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-    private final ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
 
     public DecoratedFeignComponent(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, T delegate) {
         this.contextId = contextId;
@@ -40,20 +39,19 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     public T delegate() {
-        readLock.lock();
+        T delegate = this.delegate;
         if (delegate == null) {
-            log.trace("the component {} - Creating delegate instance for contextId: {}", componentType().getSimpleName(), contextId);
-            readLock.unlock();
-            return loadInstance();
+            delegate = loadInstance();
+            logger.trace("the component[{}] - Creating delegate instance[{}] for contextId: '{}'", componentType(), delegate, contextId);
+            this.delegate = delegate;
         }
-
-        readLock.unlock();
-        return this.delegate;
+        return delegate;
     }
 
     @NonNull
-    public FeignContext getFeignContext() {
-        return this.feignContext;
+    public <T> T loadInstanceFromContextFactory(String contextId, Class<T> componentType) {
+        ObjectProvider<T> beanProvider = this.feignContext.getProvider(contextId, componentType);
+        return beanProvider.getIfAvailable(() -> instantiateClass(componentType));
     }
 
     @NonNull
@@ -62,38 +60,39 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     public void refresh() {
-        writeLock.lock();
-        log.debug("the component {} - Refreshing delegate instance for contextId: {}", componentType().getSimpleName(), contextId);
+        logger.trace("the component[{}] - Refreshing delegate instance[{}] for contextId : '{}'", componentType(), this.delegate, contextId);
         this.delegate = null;
-        writeLock.unlock();
     }
 
-    protected abstract Class<T> componentType();
+    protected abstract Class<? extends T> componentType();
 
-    public FeignClientProperties.FeignClientConfiguration getDefaultConfiguration() {
+    public FeignClientConfiguration getDefaultConfiguration() {
         return this.clientProperties.getConfig().get(this.clientProperties.getDefaultConfig());
     }
 
-    public FeignClientProperties.FeignClientConfiguration getCurrentConfiguration() {
+    public FeignClientConfiguration getCurrentConfiguration() {
         return this.clientProperties.getConfig().get(contextId);
     }
 
-    protected T loadInstance() {
-        Class<T> componentType = componentType();
-        String contextId = contextId();
-        writeLock.lock();
-        try {
-            T component = getFeignContext().getInstance(contextId, componentType);
-            if (component == null)
-                component = BeanUtils.instantiateClass(componentType);
-            this.delegate = component;
-            return component;
-        } catch (Throwable ex) {
-            this.delegate = BeanUtils.instantiateClass(componentType);
-            return delegate;
-        } finally {
-            writeLock.unlock();
+    protected <T> T get(Function<FeignClientConfiguration, T> configurationFunction) {
+        FeignClientConfiguration config = getDefaultConfiguration();
+        T value = null;
+        if (config != null) {
+            value = configurationFunction.apply(config);
         }
+        if (value == null) {
+            config = getCurrentConfiguration();
+            if (config != null) {
+                value = configurationFunction.apply(config);
+            }
+        }
+        return value;
+    }
+
+    protected T loadInstance() {
+        Class<? extends T> componentType = componentType();
+        String contextId = contextId();
+        return loadInstanceFromContextFactory(contextId, componentType);
     }
 
     @Override
@@ -112,13 +111,8 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     public static <W extends DecoratedFeignComponent<T>, T> W instantiate(Class<W> decoratedClass, Class<T> componentClass,
-                                                             String contextId, FeignContext feignContext, FeignClientProperties clientProperties, T delegate) {
-        try {
-            Constructor<W> constructor = decoratedClass.getConstructor(String.class, FeignContext.class, FeignClientProperties.class, componentClass);
-            return BeanUtils.instantiateClass(constructor, contextId, feignContext, clientProperties, delegate);
-        } catch (NoSuchMethodException noSuchMethodException) {
-            throw new BeanInstantiationException(decoratedClass, noSuchMethodException.getLocalizedMessage());
-        }
-
+                                                                          String contextId, FeignContext feignContext, FeignClientProperties clientProperties, T delegate) {
+        Constructor<W> constructor = findConstructor(decoratedClass, String.class, FeignContext.class, FeignClientProperties.class, componentClass);
+        return instantiateClass(constructor, contextId, feignContext, clientProperties, delegate);
     }
 }

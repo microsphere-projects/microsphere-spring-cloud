@@ -1,12 +1,8 @@
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
-import io.microsphere.logging.Logger;
-import io.microsphere.logging.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 import org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration;
-
-import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * The {@link Endpoint @Endpoint} for Service Deregistration
@@ -19,21 +15,15 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
 @Endpoint(id = "serviceDeregistration")
 public class ServiceDeregistrationEndpoint extends AbstractServiceRegistrationEndpoint {
 
-    private final Logger logger = getLogger(getClass());
-
     @WriteOperation
     public boolean stop() {
         boolean isRunning = isRunning();
         if (isRunning) {
             serviceRegistry.deregister(registration);
-            if(logger.isInfoEnabled()) {
-                logger.info("Service[name : '{}'] is deregistered!", applicationName);
-            }
+            logger.info("Service[name : '{}'] is deregistered!", applicationName);
             setRunning(false);
         } else {
-            if (logger.isWarnEnabled()) {
-                logger.warn("Service[name : '{}'] is not registered, deregistration can't be executed!", applicationName);
-            }
+            logger.warn("Service[name : '{}'] is not registered, deregistration can't be executed!", applicationName);
         }
         return isRunning;
     }

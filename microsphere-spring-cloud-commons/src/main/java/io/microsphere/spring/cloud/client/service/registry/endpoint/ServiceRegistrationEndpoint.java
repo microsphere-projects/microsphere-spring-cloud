@@ -1,18 +1,15 @@
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
-import io.microsphere.logging.Logger;
-import io.microsphere.logging.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 import org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.lang.function.ThrowableSupplier.execute;
+import static io.microsphere.reflect.MethodUtils.invokeMethod;
 
 /**
  * The {@link Endpoint @Endpoint} for Service Registration
@@ -25,29 +22,19 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
 @Endpoint(id = "serviceRegistration")
 public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndpoint {
 
-    private final Logger logger = getLogger(getClass());
-
     @ReadOperation
     public Map<String, Object> metadata() {
-
-        Map<String, Object> metadata = new LinkedHashMap<>();
-
+        Map<String, Object> metadata = new LinkedHashMap<>(16);
         metadata.put("application-name", applicationName);
         metadata.put("registration", registration);
         metadata.put("port", port);
         metadata.put("status", serviceRegistry.getStatus(registration));
         metadata.put("running", isRunning());
-
-        if (serviceRegistration != null) {
-            metadata.put("enabled", invoke("isEnabled"));
-            metadata.put("phase", serviceRegistration.getPhase());
-            metadata.put("order", serviceRegistration.getOrder());
-            if (Boolean.TRUE.equals(invoke("shouldRegisterManagement"))) {
-                metadata.put("managementRegistration", invoke("getManagementRegistration"));
-            }
-            metadata.put("config", invoke("getConfiguration"));
-        }
-
+        metadata.put("enabled", invoke("isEnabled"));
+        metadata.put("phase", serviceRegistration.getPhase());
+        metadata.put("order", serviceRegistration.getOrder());
+        metadata.put("managementRegistration", invoke("getManagementRegistration"));
+        metadata.put("config", invoke("getConfiguration"));
         return metadata;
     }
 
@@ -57,27 +44,14 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
         if (!isRunning) {
             serviceRegistry.register(registration);
             setRunning(true);
-            if(logger.isTraceEnabled()) {
-                logger.trace("Service[name : '{}'] is registered!", applicationName);
-            }
+            logger.info("Service[name : '{}'] is registered!", applicationName);
         } else {
-            if(logger.isWarnEnabled()) {
-                logger.warn("Service[name : '{}'] was registered!", applicationName);
-            }
+            logger.warn("Service[name : '{}'] was registered!", applicationName);
         }
         return isRunning;
     }
 
     private Object invoke(String methodName) {
-        Object returnValue = null;
-        try {
-            Class<?> serviceRegistrationClass = AbstractAutoServiceRegistration.class;
-            Method method = serviceRegistrationClass.getDeclaredMethod(methodName);
-            ReflectionUtils.makeAccessible(method);
-            returnValue = method.invoke(serviceRegistration);
-        } catch (Throwable e) {
-            logger.error("Invocation on method ：" + methodName + "is failed", e);
-        }
-        return returnValue;
+        return execute(() -> invokeMethod(serviceRegistration, methodName), e -> null);
     }
 }

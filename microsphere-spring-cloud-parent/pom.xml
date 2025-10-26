@@ -77,6 +77,7 @@
 
     <profiles>
 
+        <!-- Spring Cloud Profiles -->
         <profile>
             <id>spring-cloud-hoxton</id>
             <properties>
@@ -107,102 +108,7 @@
             </properties>
         </profile>
 
-        <!-- Spring Cloud Netflix Eureka -->
-        <profile>
-            <id>spring-cloud-netflix-eureka</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-netflix-eureka-client</artifactId>
-                    <scope>test</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>com.netflix.eureka</groupId>
-                    <artifactId>eureka-client</artifactId>
-                    <scope>test</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-netflix-eureka-server</artifactId>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <!-- Spring Cloud Nacos -->
-        <profile>
-            <id>spring-cloud-alibaba-nacos</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.alibaba.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-                    <scope>test</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>com.alibaba.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <!-- Spring Cloud Zookeeper -->
-        <profile>
-            <id>spring-cloud-zookeeper</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-                    <scope>test</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-zookeeper-config</artifactId>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <!-- Spring Cloud Consul -->
-        <profile>
-            <id>spring-cloud-consul</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
-                    <scope>test</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-consul-config</artifactId>
-                    <scope>test</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.testcontainers</groupId>
-                    <artifactId>consul</artifactId>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <!-- Spring Cloud Kubernetes -->
-        <profile>
-            <id>spring-cloud-kubernetes</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-kubernetes-client-all</artifactId>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-
+        <!-- Testcontainers -->
         <profile>
             <id>testcontainers</id>
             <build>
