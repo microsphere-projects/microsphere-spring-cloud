@@ -155,8 +155,13 @@ class FeignComponentRegistryTest {
     }
 
     void testRefresh(String clientName) {
+        this.registry.refresh(clientName, "unknown");
         this.registry.refresh(clientName, "retryer");
         this.registry.refresh(clientName, "error-decoder", "decoder", "encoder");
         this.registry.refresh(clientName, "request-interceptors", "default-request-headers", "default-query-parameters");
+
+        this.registry.refresh(clientName, "retryer[0]");
+        this.registry.refresh(clientName, "error-decoder[0]", "decoder[0]", "encoder[0]");
+        this.registry.refresh(clientName, "request-interceptors[0]", "default-request-headers[0]", "default-query-parameters[0]");
     }
 }
