@@ -25,6 +25,7 @@ import static io.microsphere.spring.cloud.openfeign.components.DecoratedFeignCom
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public class AutoRefreshCapability implements Capability, ApplicationContextAware {
