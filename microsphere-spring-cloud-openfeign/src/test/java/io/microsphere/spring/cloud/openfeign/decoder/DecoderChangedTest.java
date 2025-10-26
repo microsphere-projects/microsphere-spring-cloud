@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest(classes = DecoderChangedTest.class)
 @EnableAutoConfiguration
-public class DecoderChangedTest extends BaseTest<Decoder> {
+class DecoderChangedTest extends BaseTest<Decoder> {
 
     @Override
     protected String afterTestComponentConfigKey() {

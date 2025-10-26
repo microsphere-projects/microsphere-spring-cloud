@@ -25,10 +25,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.context.WebServerApplicationContext;
+import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
+import org.springframework.boot.web.server.WebServer;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.cloud.context.environment.EnvironmentManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * {@link TomcatFaultToleranceAutoConfiguration} Test
@@ -36,17 +42,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@SpringBootTest(classes = {
-        TomcatFaultToleranceAutoConfigurationTest.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = TomcatFaultToleranceAutoConfigurationTest.class, webEnvironment = RANDOM_PORT)
 @EnableAutoConfiguration
-public class TomcatFaultToleranceAutoConfigurationTest {
+class TomcatFaultToleranceAutoConfigurationTest {
 
     @Autowired
     private EnvironmentManager environmentManager;
 
     @Autowired
     private WebServerApplicationContext context;
+
+    @Autowired
+    private TomcatFaultToleranceAutoConfiguration configuration;
+
+    private TomcatWebServer tomcatWebServer;
 
     private Tomcat tomcat;
 
@@ -55,15 +64,15 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     private AbstractHttp11Protocol protocol;
 
     @BeforeEach
-    public void before() {
-        TomcatWebServer tomcatWebServer = (TomcatWebServer) context.getWebServer();
-        this.tomcat = tomcatWebServer.getTomcat();
+    void before() {
+        this.tomcatWebServer = (TomcatWebServer) context.getWebServer();
+        this.tomcat = this.tomcatWebServer.getTomcat();
         this.connector = tomcat.getConnector();
         this.protocol = (AbstractHttp11Protocol) connector.getProtocolHandler();
     }
 
     @Test
-    public void testMinSpareThreads() {
+    void testMinSpareThreads() {
         // default
         assertEquals(10, protocol.getMinSpareThreads());
         // changed
@@ -72,7 +81,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxThreads() {
+    void testMaxThreads() {
         // default
         assertEquals(200, protocol.getMaxThreads());
         // changed
@@ -81,7 +90,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testAcceptCount() {
+    void testAcceptCount() {
         // default
         assertEquals(100, protocol.getAcceptCount());
         // changed
@@ -90,7 +99,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testConnectionTimeout() {
+    void testConnectionTimeout() {
         // default
         assertEquals(60000, protocol.getConnectionTimeout());
         // changed
@@ -99,7 +108,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxConnections() {
+    void testMaxConnections() {
         // default
         assertEquals(8192, protocol.getMaxConnections());
         // changed
@@ -108,7 +117,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxHttpHeaderSize() {
+    void testMaxHttpHeaderSize() {
         // default
         assertEquals(8192, protocol.getMaxHttpHeaderSize());
         // changed
@@ -117,7 +126,7 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxSwallowSize() {
+    void testMaxSwallowSize() {
         // default
         assertEquals(1024 * 1024 * 2, protocol.getMaxSwallowSize());
         // changed
@@ -126,11 +135,30 @@ public class TomcatFaultToleranceAutoConfigurationTest {
     }
 
     @Test
-    public void testMaxHttpFormPostSize() {
+    void testMaxHttpFormPostSize() {
         // default
         assertEquals(1024 * 1024 * 2, connector.getMaxPostSize());
         // changed
         environmentManager.setProperty("server.tomcat.max-http-form-post-size", "10240");
         assertEquals(10240, connector.getMaxPostSize());
+    }
+
+    @Test
+    void testOnWebServerInitializedEventWithWebServerInitializedEvent() {
+        WebServerInitializedEvent event = new WebServerInitializedEvent(this.tomcatWebServer) {
+            @Override
+            public WebServerApplicationContext getApplicationContext() {
+                return null;
+            }
+        };
+        configuration.onWebServerInitializedEvent(event);
+    }
+
+    @Test
+    void testOnWebServerInitializedEventWithNonTomcatWebServer() {
+        ServletWebServerApplicationContext context = (ServletWebServerApplicationContext) this.context;
+        WebServer webServer = mock(WebServer.class);
+        WebServerInitializedEvent event = new ServletWebServerInitializedEvent(webServer, context);
+        configuration.onWebServerInitializedEvent(event);
     }
 }

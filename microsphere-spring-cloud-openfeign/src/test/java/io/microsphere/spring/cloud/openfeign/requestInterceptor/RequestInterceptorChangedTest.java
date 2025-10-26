@@ -6,13 +6,15 @@ import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
+
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 0.0.1
  */
-@SpringBootTest(classes = RequestInterceptorChangedTest.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = RequestInterceptorChangedTest.class, webEnvironment = NONE)
 @EnableAutoConfiguration
-public class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> {
+class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> {
 
     @Override
     protected Class<? extends RequestInterceptor> beforeTestComponentClass() {

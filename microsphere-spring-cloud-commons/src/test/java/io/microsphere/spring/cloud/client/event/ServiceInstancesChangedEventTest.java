@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @see ServiceInstancesChangedEvent
  * @since 1.0.0
  */
-public class ServiceInstancesChangedEventTest {
+class ServiceInstancesChangedEventTest {
 
     private String serviceName = "testService";
 
@@ -30,7 +30,7 @@ public class ServiceInstancesChangedEventTest {
     private ServiceInstance instance;
 
     @BeforeEach
-    public void init() {
+    void setUp() {
         this.instance = createInstance(serviceName);
         this.event = new ServiceInstancesChangedEvent(serviceName, Arrays.asList(instance));
     }
@@ -46,20 +46,20 @@ public class ServiceInstancesChangedEventTest {
     }
 
     @Test
-    public void testGetServiceName() {
+    void testGetServiceName() {
         assertEquals(this.serviceName, this.event.getServiceName());
         assertEquals(this.serviceName, this.event.getSource());
     }
 
     @Test
-    public void testGetServiceInstances() {
+    void testGetServiceInstances() {
         assertEquals(Arrays.asList(this.instance), this.event.getServiceInstances());
         assertEquals(this.instance, this.event.getServiceInstances().get(0));
         assertSame(this.instance, this.event.getServiceInstances().get(0));
     }
 
     @Test
-    public void testProcessed() {
+    void testProcessed() {
         assertFalse(this.event.isProcessed());
         this.event.processed();
         assertTrue(this.event.isProcessed());

@@ -17,10 +17,10 @@
 package io.microsphere.spring.cloud.client.condition;
 
 /**
- * {@link ConditionalOnFeaturesEnabled} Test
+ * {@link io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesEnabled} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ConditionalOnFeaturesEnabled
+ * @see io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesEnabled
  * @since 1.0.0
  */
 
@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
                 "spring.cloud.features.enabled=true"
         }
 )
-public class ConditionalOnFeaturesEnabledTest {
+class ConditionalOnFeaturesEnabledTest {
 
     @ConditionalOnFeaturesEnabled
     static class FeaturesConfiguration {
@@ -53,7 +53,7 @@ public class ConditionalOnFeaturesEnabledTest {
     private ObjectProvider<FeaturesConfiguration> featuresConfigurationProvider;
 
     @Test
-    public void test() {
+    void test() {
         assertNotNull(featuresConfigurationProvider.getIfAvailable());
     }
 }

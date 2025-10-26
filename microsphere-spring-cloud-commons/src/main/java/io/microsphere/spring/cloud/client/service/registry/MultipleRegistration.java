@@ -1,12 +1,17 @@
 package io.microsphere.spring.cloud.client.service.registry;
 
 import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.util.CollectionUtils;
 
 import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static io.microsphere.util.Assert.assertNotEmpty;
+import static io.microsphere.util.ClassUtils.findAllClasses;
+import static io.microsphere.util.ClassUtils.isAssignableFrom;
+import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass;
 
 /**
  * The Delegating {@link Registration} for the multiple service registration
@@ -25,15 +30,20 @@ public class MultipleRegistration implements Registration {
     private final RegistrationMetaData metaData;
 
     public MultipleRegistration(Collection<Registration> registrations) {
-        if (CollectionUtils.isEmpty(registrations))
-            throw new IllegalArgumentException("registrations cannot be empty");
+        assertNotEmpty(registrations, () -> "registrations cannot be empty");
         //init map
         for (Registration registration : registrations) {
-            Class<? extends Registration> clazz = registration.getClass();
-            this.registrationMap.put(clazz, registration);
+            Class<? extends Registration> clazz = (Class) ultimateTargetClass(registration);
+            List<Class<? extends Registration>> classes = (List) findAllClasses(clazz, type -> isAssignableFrom(Registration.class, type) && !Registration.class.equals(type));
+            classes.forEach(type -> registrationMap.put(type, registration));
             this.defaultRegistration = registration;
         }
         this.metaData = new RegistrationMetaData(registrations);
+    }
+
+    @Override
+    public String getInstanceId() {
+        return getDefaultRegistration().getInstanceId();
     }
 
     @Override
@@ -71,7 +81,7 @@ public class MultipleRegistration implements Registration {
     }
 
     public <T extends Registration> T special(Class<T> specialClass) {
-        if (specialClass.equals(Registration.class))
+        if (Registration.class.equals(specialClass))
             return (T) this;
         return (T) this.registrationMap.getOrDefault(specialClass, null);
     }

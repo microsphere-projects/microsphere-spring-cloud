@@ -72,7 +72,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
     protected Map<String, String> getMetadata(Registration registration) {
         String id = registration.getInstanceId();
         Registration instance = storage.get(id);
-        if (storage != null) {
+        if (instance != null) {
             return instance.getMetadata();
         }
         return null;

@@ -10,6 +10,7 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * {@link SimpleAutoServiceRegistrationAutoConfiguration} Test
@@ -22,14 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         classes = {
                 SimpleAutoServiceRegistrationAutoConfigurationTest.class
         },
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        webEnvironment = RANDOM_PORT,
         properties = {
                 "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true",
                 "spring.application.name=test-service"
         }
 )
 @EnableAutoConfiguration
-public class SimpleAutoServiceRegistrationAutoConfigurationTest {
+class SimpleAutoServiceRegistrationAutoConfigurationTest {
 
     @Autowired
     private Registration registration;
@@ -41,7 +42,7 @@ public class SimpleAutoServiceRegistrationAutoConfigurationTest {
     private SimpleAutoServiceRegistration simpleAutoServiceRegistration;
 
     @Test
-    public void test() {
+    void test() {
         assertEquals("test-service", registration.getServiceId());
         assertNotNull(registration.getHost());
         assertNotNull(registration.getPort());

@@ -16,7 +16,8 @@
  */
 package io.microsphere.spring.cloud.fault.tolerance.tomcat.autoconfigure;
 
-import io.microsphere.spring.cloud.fault.tolerance.constants.FaultTolerancePropertyConstants;
+import io.microsphere.annotation.ConfigurationProperty;
+import io.microsphere.constants.PropertyConstants;
 import io.microsphere.spring.cloud.fault.tolerance.tomcat.event.TomcatDynamicConfigurationListener;
 import org.apache.catalina.startup.Tomcat;
 import org.springframework.beans.factory.ObjectProvider;
@@ -35,8 +36,9 @@ import org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAu
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
 import org.springframework.context.event.EventListener;
 
-import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.spring.cloud.fault.tolerance.tomcat.autoconfigure.TomcatFaultToleranceAutoConfiguration.TOMCAT_PROPERTY_PREFIX;
+import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
+import static io.microsphere.spring.cloud.fault.tolerance.constants.FaultTolerancePropertyConstants.FAULT_TOLERANCE_PROPERTY_NAME_PREFIX;
+import static io.microsphere.spring.cloud.fault.tolerance.tomcat.autoconfigure.TomcatFaultToleranceAutoConfiguration.ENABLED_PROPERTY_NAME;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
@@ -44,7 +46,6 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  * @since 1.0.0
  */
 @ConditionalOnProperty(
-        prefix = TOMCAT_PROPERTY_PREFIX,
         name = ENABLED_PROPERTY_NAME,
         matchIfMissing = true
 )
@@ -59,7 +60,17 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 })
 public class TomcatFaultToleranceAutoConfiguration {
 
-    public static final String TOMCAT_PROPERTY_PREFIX = FaultTolerancePropertyConstants.FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "tomcat";
+    public static final String TOMCAT_PROPERTY_PREFIX = FAULT_TOLERANCE_PROPERTY_NAME_PREFIX + "tomcat";
+
+    /**
+     * The property name to Tomcat's fault-tolerance enabled or not: "microsphere.spring.cloud.fault-tolerance.tomcat.enabled"
+     */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "true",
+            source = APPLICATION_SOURCE
+    )
+    public static final String ENABLED_PROPERTY_NAME = TOMCAT_PROPERTY_PREFIX + "." + PropertyConstants.ENABLED_PROPERTY_NAME;
 
     @EventListener(WebServerInitializedEvent.class)
     public void onWebServerInitializedEvent(WebServerInitializedEvent event) {
