@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static io.microsphere.collection.Lists.ofList;
 import static io.microsphere.collection.Maps.ofMap;
 import static io.microsphere.collection.Sets.ofSet;
+import static io.microsphere.constants.SymbolConstants.LEFT_SQUARE_BRACKET;
 import static io.microsphere.spring.boot.context.properties.source.util.ConfigurationPropertyUtils.toDashedForm;
 import static io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor.INSTANCE;
 import static io.microsphere.util.Assert.assertNoNullElements;
@@ -28,6 +29,7 @@ import static io.microsphere.util.Assert.assertNotBlank;
 import static io.microsphere.util.Assert.assertNotEmpty;
 import static io.microsphere.util.Assert.assertNotNull;
 import static io.microsphere.util.StringUtils.isBlank;
+import static io.microsphere.util.StringUtils.substringBefore;
 
 /**
  * Feign Component Registry
@@ -62,16 +64,13 @@ public class FeignComponentRegistry {
         if (isBlank(config)) {
             return null;
         }
-        String normalizedConfig = toDashedForm(config);
-        // Composite
-        if (normalizedConfig.endsWith("]")) {
-            for (Map.Entry<String, Class<?>> next : configComponentMappings.entrySet()) {
-                if (normalizedConfig.startsWith(next.getKey())) {
-                    return next.getValue();
-                }
-            }
-        }
+        String normalizedConfig = normalizeConfig(config);
         return configComponentMappings.get(normalizedConfig);
+    }
+
+    static String normalizeConfig(String config) {
+        String normalizedConfig = substringBefore(config, LEFT_SQUARE_BRACKET);
+        return toDashedForm(normalizedConfig);
     }
 
     public FeignComponentRegistry(String defaultClientName, BeanFactory beanFactory) {
