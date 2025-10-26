@@ -17,6 +17,7 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 public class MultipleAutoServiceRegistration extends AbstractAutoServiceRegistration<MultipleRegistration> {
 
     private final AutoServiceRegistrationProperties autoServiceRegistrationProperties;
+
     private final MultipleRegistration multipleRegistration;
 
     public MultipleAutoServiceRegistration(MultipleRegistration multipleRegistration,

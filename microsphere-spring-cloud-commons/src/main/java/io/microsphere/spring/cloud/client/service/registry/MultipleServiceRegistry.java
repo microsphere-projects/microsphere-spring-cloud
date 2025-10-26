@@ -1,11 +1,7 @@
 package io.microsphere.spring.cloud.client.service.registry;
 
-import org.springframework.aop.framework.AopProxyUtils;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
-import org.springframework.core.ResolvableType;
-import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +9,9 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static io.microsphere.util.Assert.assertNotEmpty;
+import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass;
+import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.core.io.support.SpringFactoriesLoader.loadFactoryNames;
 import static org.springframework.util.ClassUtils.resolveClassName;
 
@@ -35,12 +34,11 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
     private final Map<String, Class<? extends Registration>> beanNameToRegistrationTypesMap;
 
     private ServiceRegistry defaultServiceRegistry;
+
     private String defaultRegistrationBeanName;
 
     public MultipleServiceRegistry(Map<String, ServiceRegistry> registriesMap) {
-        if (CollectionUtils.isEmpty(registriesMap)) {
-            throw new IllegalArgumentException("service registry cannot be empty");
-        }
+        assertNotEmpty(registriesMap, () -> "registrations cannot be empty");
 
         this.registriesMap = registriesMap;
         this.beanNameToRegistrationTypesMap = new HashMap<>(registriesMap.size());
@@ -48,7 +46,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         for (Map.Entry<String, ServiceRegistry> entry : registriesMap.entrySet()) {
             String beanName = entry.getKey();
             ServiceRegistry serviceRegistry = entry.getValue();
-            Class<? extends Registration> registrationClass = getRegistrationClass(serviceRegistry.getClass(), entry.getValue());
+            Class<? extends Registration> registrationClass = getRegistrationClass(ultimateTargetClass(serviceRegistry));
             beanNameToRegistrationTypesMap.put(beanName, registrationClass);
             defaultServiceRegistry = serviceRegistry;
             defaultRegistrationBeanName = beanName;
@@ -96,8 +94,8 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         return (T) defaultServiceRegistry.getStatus(targetRegistration);
     }
 
-    private static Class<? extends Registration> getRegistrationClass(Class<? extends ServiceRegistry> serviceRegistryClass, ServiceRegistry serviceRegistry) {
-        Class<?> registrationClass = ResolvableType.forClass(serviceRegistryClass)
+    static Class<? extends Registration> getRegistrationClass(Class<?> serviceRegistryClass) {
+        Class<?> registrationClass = forClass(serviceRegistryClass)
                 .as(ServiceRegistry.class)
                 .getGeneric(0)
                 .resolve();
@@ -107,11 +105,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
             ClassLoader classLoader = serviceRegistryClass.getClassLoader();
             List<String> registrationClassNames;
 
-            if (AopUtils.isAopProxy(serviceRegistry)) {
-                registrationClassNames = loadFactoryNames(AopProxyUtils.ultimateTargetClass(serviceRegistry), classLoader);
-            } else {
-                registrationClassNames = loadFactoryNames(serviceRegistryClass, classLoader);
-            }
+            registrationClassNames = loadFactoryNames(serviceRegistryClass, classLoader);
 
             for (String registrationClassName : registrationClassNames) {
                 registrationClass = resolveClassName(registrationClassName, classLoader);

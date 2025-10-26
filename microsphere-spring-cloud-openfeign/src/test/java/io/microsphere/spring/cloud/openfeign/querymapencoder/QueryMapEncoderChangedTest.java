@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest(classes = QueryMapEncoderChangedTest.class)
 @EnableAutoConfiguration
-public class QueryMapEncoderChangedTest extends BaseTest<QueryMapEncoder> {
+class QueryMapEncoderChangedTest extends BaseTest<QueryMapEncoder> {
 
     @Override
     protected Class<? extends QueryMapEncoder> beforeTestComponentClass() {

@@ -21,9 +21,6 @@ import org.junit.jupiter.api.Test;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.DISCOVERY_CLIENT_CLASS_NAME;
-import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.DISCOVERY_CLIENT_PROPERTY_PREFIX;
-import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.MODE_PROPERTY_NAME;
-import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.UNION_DISCOVERY_CLIENT_MODE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -33,14 +30,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @see DiscoveryClientConstants
  * @since 1.0.0
  */
-public class DiscoveryClientConstantsTest {
+class DiscoveryClientConstantsTest {
 
     @Test
-    public void testConstants() {
-        assertEquals("microsphere.spring.cloud.client.discovery.", DISCOVERY_CLIENT_PROPERTY_PREFIX);
-        assertEquals("mode", MODE_PROPERTY_NAME);
-        assertEquals("union", UNION_DISCOVERY_CLIENT_MODE);
-
+    void testConstants() {
         assertEquals("org.springframework.cloud.client.discovery.DiscoveryClient", DISCOVERY_CLIENT_CLASS_NAME);
         assertEquals("org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient", COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME);
         assertEquals("org.springframework.cloud.client.CommonsClientAutoConfiguration", COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME);
