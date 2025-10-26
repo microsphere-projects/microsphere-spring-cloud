@@ -23,6 +23,7 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public class AutoRefreshCapability implements Capability, ApplicationContextAware {
@@ -48,7 +49,6 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
         this.contextId = applicationContext.getEnvironment().getProperty(CONTEXT_ID_PROPERTY_NAME);
     }
 
-
     @Override
     public Retryer enrich(Retryer retryer) {
         if (retryer == null) {
@@ -57,7 +57,6 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
 
         DecoratedRetryer decoratedRetryer = DecoratedFeignComponent.instantiate(DecoratedRetryer.class, Retryer.class,
                 contextId, feignContext, clientProperties, retryer);
-
         this.componentRegistry.register(contextId, decoratedRetryer);
         return decoratedRetryer;
     }
