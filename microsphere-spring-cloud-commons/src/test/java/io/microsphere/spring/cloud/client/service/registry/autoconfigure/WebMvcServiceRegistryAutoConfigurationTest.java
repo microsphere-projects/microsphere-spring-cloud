@@ -17,16 +17,7 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import io.microsphere.spring.webmvc.annotation.EnableWebMvcExtension;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.client.serviceregistry.Registration;
-
-import java.util.Map;
-
-import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_MAPPINGS_METADATA_NAME;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * {@link WebMvcServiceRegistryAutoConfiguration} Test
@@ -34,28 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@SpringBootTest(
-        classes = {WebMvcServiceRegistryAutoConfigurationTest.class},
-        properties = {
-                "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true",
-                "spring.cloud.service-registry.auto-registration.enabled=true",
-                "spring.cloud.kubernetes.enabled=false",
-                "kubernetes.informer.enabled=false",
-                "kubernetes.manifests.enabled=false",
-                "kubernetes.reconciler.enabled=false"
-        },
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-@EnableAutoConfiguration
 @EnableWebMvcExtension
-public class WebMvcServiceRegistryAutoConfigurationTest {
-
-    @Autowired
-    private Registration registration;
-
-    @Test
-    public void test() {
-        Map<String, String> metadata = registration.getMetadata();
-        assertNotNull(metadata.get(WEB_MAPPINGS_METADATA_NAME));
-    }
+@EnableAutoConfiguration
+class WebMvcServiceRegistryAutoConfigurationTest extends WebServiceRegistryAutoConfigurationTest {
 }

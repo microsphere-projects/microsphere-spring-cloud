@@ -16,12 +16,9 @@
  */
 package io.microsphere.spring.cloud.client.discovery.constants;
 
-import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
 import org.springframework.cloud.client.CommonsClientAutoConfiguration;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
-
-import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
 
 /**
  * The constants for {@link DiscoveryClient}
@@ -30,21 +27,6 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
  * @since 1.0.0
  */
 public interface DiscoveryClientConstants {
-
-    /**
-     * The property prefix of {@link DiscoveryClient} : "microsphere.spring.cloud.client.discovery."
-     */
-    String DISCOVERY_CLIENT_PROPERTY_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "client.discovery.";
-
-    /**
-     * The property name of mode : "mode"
-     */
-    String MODE_PROPERTY_NAME = "mode";
-
-    /**
-     * The {@link DiscoveryClient} "mode" for {@link UnionDiscoveryClient} : "union"
-     */
-    String UNION_DISCOVERY_CLIENT_MODE = "union";
 
     /**
      * The class name of {@link DiscoveryClient}

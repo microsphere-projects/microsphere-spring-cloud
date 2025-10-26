@@ -3,10 +3,12 @@ package io.microsphere.spring.cloud.openfeign.components;
 import feign.RetryableException;
 import feign.Retryer;
 import org.springframework.cloud.openfeign.FeignClientProperties;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignContext;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implements Retryer  {
@@ -16,24 +18,20 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
     }
 
     @Override
-    protected Class<Retryer> componentType() {
-        Class<Retryer> retryerClass = null;
-        if (getDefaultConfiguration() != null && getDefaultConfiguration().getRetryer() != null)
-            retryerClass = getDefaultConfiguration().getRetryer();
-
-        if (getCurrentConfiguration() != null && getCurrentConfiguration().getRetryer() != null)
-            retryerClass = getCurrentConfiguration().getRetryer();
-
-        if (retryerClass != null)
-            return retryerClass;
-        return Retryer.class;
+    protected Class<? extends Retryer> componentType() {
+        Class<Retryer> retryerClass = get(FeignClientConfiguration::getRetryer);
+        return retryerClass == null ? Default.class : retryerClass;
     }
 
     @Override
     public void continueOrPropagate(RetryableException e) {
-        Retryer retryer = delegate();
-        if (retryer != null)
+        continueOrPropagate(delegate(), e);
+    }
+
+    static void continueOrPropagate(Retryer retryer, RetryableException e) {
+        if (retryer != null) {
             retryer.continueOrPropagate(e);
+        }
     }
 
     @Override

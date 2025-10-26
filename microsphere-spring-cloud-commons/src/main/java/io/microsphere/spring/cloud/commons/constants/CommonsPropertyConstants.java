@@ -16,9 +16,9 @@
  */
 package io.microsphere.spring.cloud.commons.constants;
 
-import org.springframework.cloud.client.CommonsClientAutoConfiguration;
-import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationAutoConfiguration;
+import io.microsphere.annotation.ConfigurationProperty;
 
+import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
 import static io.microsphere.constants.PropertyConstants.MICROSPHERE_PROPERTY_NAME_PREFIX;
 
@@ -28,32 +28,7 @@ import static io.microsphere.constants.PropertyConstants.MICROSPHERE_PROPERTY_NA
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-public interface CommonsPropertyConstants {
-
-    /**
-     * The property name prefix of Spring Cloud properties : "spring.cloud."
-     */
-    String SPRING_CLOUD_PROPERTY_PREFIX = "spring.cloud.";
-
-    /**
-     * The property name prefix of Spring Cloud Service Registry : "spring.cloud.service-registry."
-     */
-    String SERVICE_REGISTRY_PROPERTY_PREFIX = SPRING_CLOUD_PROPERTY_PREFIX + "service-registry.";
-
-    /**
-     * The property name for Spring Cloud Service Registry Auto-Registration Feature :
-     * "spring.cloud.service-registry.auto-registration.enabled"
-     *
-     * @see AutoServiceRegistrationAutoConfiguration
-     */
-    String SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME = SERVICE_REGISTRY_PROPERTY_PREFIX + "auto-registration." + ENABLED_PROPERTY_NAME;
-
-    /**
-     * The property name for enabling Spring Cloud Features : "spring.cloud.features.enabled"
-     *
-     * @see CommonsClientAutoConfiguration.ActuatorConfiguration
-     */
-    String FEATURES_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "features." + ENABLED_PROPERTY_NAME;
+public interface CommonsPropertyConstants extends SpringCloudPropertyConstants {
 
     /**
      * The property name prefix of Microsphere Cloud : "microsphere.spring.cloud."
@@ -68,21 +43,39 @@ public interface CommonsPropertyConstants {
     /**
      * The property name for Multiple Service Registry Enabled Feature : "microsphere.spring.cloud.multiple-registration.enabled"
      */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "false",
+            source = APPLICATION_SOURCE
+    )
     String MULTIPLE_REGISTRATION_ENABLED_PROPERTY_NAME = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "multiple-registration." + ENABLED_PROPERTY_NAME;
 
     /**
      * The property name for Default Service Registry Type : "microsphere.spring.cloud.default-registration.type"
      */
+    @ConfigurationProperty(
+            type = Class.class,
+            source = APPLICATION_SOURCE
+    )
     String MULTIPLE_REGISTRATION_DEFAULT_REGISTRATION_PROPERTY_NAME = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "default-registration.type";
 
     /**
      * The property name for Default Service Registry Type : "microsphere.spring.cloud.default-service-registry.type"
      */
+    @ConfigurationProperty(
+            type = Class.class,
+            source = APPLICATION_SOURCE
+    )
     String MULTIPLE_REGISTRATION_DEFAULT_REGISTRY_PROPERTY_NAME = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "default-service-registry.type";
 
     /**
      * The property name for Composite Service Registry Enabled Feature : "microsphere.spring.cloud.composite-registration.enabled"
      */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "false",
+            source = APPLICATION_SOURCE
+    )
     String COMPOSITE_REGISTRATION_ENABLED_PROPERTY_NAME = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "composite-registration." + ENABLED_PROPERTY_NAME;
 
 }

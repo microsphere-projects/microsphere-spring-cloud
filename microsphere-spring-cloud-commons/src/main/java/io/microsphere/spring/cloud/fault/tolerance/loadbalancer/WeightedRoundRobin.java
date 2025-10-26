@@ -15,7 +15,7 @@ public class WeightedRoundRobin {
 
     private volatile int weight;
 
-    private LongAdder current = new LongAdder();
+    LongAdder current = new LongAdder();
 
     private volatile long lastUpdate;
 

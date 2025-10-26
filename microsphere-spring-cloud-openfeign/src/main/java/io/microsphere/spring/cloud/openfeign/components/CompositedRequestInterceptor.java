@@ -2,28 +2,36 @@ package io.microsphere.spring.cloud.openfeign.components;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.openfeign.FeignClientProperties;
-import org.springframework.util.CollectionUtils;
+import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
+
+import static io.microsphere.collection.CollectionUtils.isNotEmpty;
+import static io.microsphere.collection.MapUtils.isNotEmpty;
+import static java.util.Collections.unmodifiableSet;
+import static org.springframework.beans.BeanUtils.instantiateClass;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
 public class CompositedRequestInterceptor implements RequestInterceptor, Refreshable {
 
     private final BeanFactory beanFactory;
+
     private final String contextId;
 
-    private final Set<RequestInterceptor> set = new HashSet<>();
+    private final Set<RequestInterceptor> set = new LinkedHashSet<>();
 
     public CompositedRequestInterceptor(String contextId, BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
@@ -31,17 +39,14 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     }
 
     public Set<RequestInterceptor> getRequestInterceptors() {
-        return Collections.unmodifiableSet(set);
+        return unmodifiableSet(set);
     }
-
 
     @Override
     public void apply(RequestTemplate template) {
         synchronized (this.set) {
-            if (!this.set.isEmpty())
-                set.forEach(requestInterceptor -> requestInterceptor.apply(template));
+            set.forEach(requestInterceptor -> requestInterceptor.apply(template));
         }
-
     }
 
     public boolean addRequestInterceptor(RequestInterceptor requestInterceptor) {
@@ -50,54 +55,40 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
             this.set.add(requestInterceptor);
             return isFirst;
         }
-
     }
 
     private RequestInterceptor getInterceptorOrInstantiate(Class<? extends RequestInterceptor> clazz) {
-        try {
-            return this.beanFactory.getBean(clazz);
-        } catch (Exception e) {
-            return BeanUtils.instantiateClass(clazz);
-        }
+        return getOrInstantiate(clazz);
     }
 
     @Override
     public void refresh() {
-        FeignClientProperties properties = this.beanFactory.getBean(FeignClientProperties.class);
+        FeignClientProperties properties = getOrInstantiate(FeignClientProperties.class);
         Set<Class<RequestInterceptor>> interceptors = new HashSet<>();
         //headers
         Map<String, Collection<String>> headers = new HashMap<>();
         Map<String, Collection<String>> params = new HashMap<>();
-        if (properties != null) {
-            FeignClientProperties.FeignClientConfiguration defaultConfiguration = properties.getConfig().get(properties.getDefaultConfig());
-            FeignClientProperties.FeignClientConfiguration current = properties.getConfig().get(contextId);
-            if (defaultConfiguration != null && defaultConfiguration.getRequestInterceptors() != null)
-                interceptors.addAll(defaultConfiguration.getRequestInterceptors());
-            if (current != null && current.getRequestInterceptors() != null)
-                interceptors.addAll(current.getRequestInterceptors());
 
-            if (defaultConfiguration != null && defaultConfiguration.getDefaultRequestHeaders() != null)
-                headers.putAll(defaultConfiguration.getDefaultRequestHeaders());
+        Map<String, FeignClientConfiguration> config = properties.getConfig();
+        FeignClientConfiguration defaultConfiguration = config.get(properties.getDefaultConfig());
+        FeignClientConfiguration currentConfiguration = config.get(contextId);
 
-            if (current != null && current.getDefaultRequestHeaders() != null) {
-                current.getDefaultRequestHeaders().forEach(headers::putIfAbsent);
-            }
+        addAll(defaultConfiguration::getRequestInterceptors, interceptors);
+        addAll(currentConfiguration::getRequestInterceptors, interceptors);
 
-            if (defaultConfiguration != null && defaultConfiguration.getDefaultQueryParameters() != null)
-                params.putAll(defaultConfiguration.getDefaultRequestHeaders());
+        putIfAbsent(defaultConfiguration::getDefaultRequestHeaders, headers);
+        putIfAbsent(currentConfiguration::getDefaultRequestHeaders, headers);
 
-            if (current != null && current.getDefaultQueryParameters() != null) {
-                current.getDefaultQueryParameters().forEach(params::putIfAbsent);
-            }
-
-        }
+        putIfAbsent(defaultConfiguration::getDefaultQueryParameters, params);
+        putIfAbsent(currentConfiguration::getDefaultQueryParameters, params);
 
         synchronized (this.set) {
             this.set.clear();
-            for (Class<RequestInterceptor> interceptorClass : interceptors)
+            for (Class<RequestInterceptor> interceptorClass : interceptors) {
                 set.add(getInterceptorOrInstantiate(interceptorClass));
+            }
 
-            if (!CollectionUtils.isEmpty(headers))
+            if (isNotEmpty(headers))
                 set.add(requestTemplate -> {
                     Map<String, Collection<String>> requestHeader = requestTemplate.headers();
                     headers.keySet().forEach(key -> {
@@ -107,7 +98,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
                     });
                 });
 
-            if (!CollectionUtils.isEmpty(params))
+            if (isNotEmpty(params))
                 set.add(requestTemplate -> {
                     Map<String, Collection<String>> requestQueries = requestTemplate.queries();
                     params.keySet().forEach(key -> {
@@ -117,8 +108,24 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
                     });
                 });
         }
+    }
 
+    static <E> void addAll(Supplier<Collection<E>> sourceSupplier, Collection<E> target) {
+        Collection<E> source = sourceSupplier.get();
+        if (isNotEmpty(source)) {
+            source.forEach(target::add);
+        }
+    }
 
+    <T> T getOrInstantiate(Class<T> clazz) {
+        ObjectProvider<T> beanProvider = this.beanFactory.getBeanProvider(clazz);
+        return beanProvider.getIfAvailable(() -> instantiateClass(clazz));
+    }
 
+    static <K, V> void putIfAbsent(Supplier<Map<K, V>> sourceSupplier, Map<K, V> target) {
+        Map<K, V> source = sourceSupplier.get();
+        if (isNotEmpty(source)) {
+            source.forEach(target::putIfAbsent);
+        }
     }
 }

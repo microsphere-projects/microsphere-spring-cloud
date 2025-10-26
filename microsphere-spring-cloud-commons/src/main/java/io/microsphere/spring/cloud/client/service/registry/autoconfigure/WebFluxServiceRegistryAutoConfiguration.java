@@ -16,12 +16,9 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
-import org.springframework.context.annotation.Configuration;
 
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
 
@@ -31,15 +28,16 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(name = {
-        "io.microsphere.spring.web.metadata.WebEndpointMapping",
-        "io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent"
-})
 @ConditionalOnWebApplication(type = REACTIVE)
-@ConditionalOnAutoServiceRegistrationEnabled
-@AutoConfigureAfter(value = {
-        ServiceRegistryAutoConfiguration.class
-})
-public class WebFluxServiceRegistryAutoConfiguration {
+public class WebFluxServiceRegistryAutoConfiguration extends WebServiceRegistryAutoConfiguration {
+
+    @Override
+    protected String getContextPath() {
+        return "";
+    }
+
+    @Override
+    protected boolean isExcludedMapping(WebEndpointMapping mapping, String[] patterns) {
+        return false;
+    }
 }

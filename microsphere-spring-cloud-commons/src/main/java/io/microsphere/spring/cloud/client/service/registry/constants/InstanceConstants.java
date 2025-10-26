@@ -33,4 +33,14 @@ public interface InstanceConstants {
      * The meta-data name of Web Context Path
      */
     String WEB_CONTEXT_PATH_METADATA_NAME = "web.context-path";
+
+    /**
+     * The metadata name of management
+     */
+    String MANAGEMENT_PORT_METADATA_NAME = "management-port";
+
+    /**
+     * The metadata name of start time
+     */
+    String START_TIME_METADATA_NAME = "start-time";
 }

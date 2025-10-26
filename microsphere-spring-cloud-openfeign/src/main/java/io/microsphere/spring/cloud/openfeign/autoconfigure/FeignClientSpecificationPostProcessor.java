@@ -4,18 +4,21 @@ import io.microsphere.logging.Logger;
 import io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapability;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.cloud.context.named.NamedContextFactory;
+import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.reflect.MethodUtils.findMethod;
+import static io.microsphere.reflect.MethodUtils.invokeMethod;
+import static io.microsphere.util.ArrayUtils.arrayToString;
 import static io.microsphere.util.ArrayUtils.combine;
 import static org.springframework.aop.support.AopUtils.getTargetClass;
 import static org.springframework.util.ClassUtils.resolveClassName;
 
 /**
+ * {@link BeanPostProcessor} for {@link Specification}
+ *
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see org.springframework.cloud.openfeign.FeignClientSpecification
@@ -37,25 +40,23 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class<?> beanType = getTargetClass(bean);
         if (FEIGN_CLIENT_SPECIFICATION_CLASS.isAssignableFrom(beanType) && beanName.startsWith("default")) {
-            injectAutoRefreshCapability((NamedContextFactory.Specification) bean);
+            injectAutoRefreshCapability((Specification) bean);
         }
         return bean;
     }
 
-    private void injectAutoRefreshCapability(NamedContextFactory.Specification defaultSpecification) {
-        if (setConfigurationMethod != null) {
-            Class<?>[] originConfigurationClasses = defaultSpecification.getConfiguration();
+    private void injectAutoRefreshCapability(Specification defaultSpecification) {
+        invokeSetConfigurationMethod(setConfigurationMethod, defaultSpecification);
+    }
+
+    static void invokeSetConfigurationMethod(Method method, Specification specification) {
+        if (method != null) {
+            Class<?>[] originConfigurationClasses = specification.getConfiguration();
             Class<?>[] newConfigurationClasses = combine(AUTO_REFRESH_CAPABILITY_CLASS, originConfigurationClasses);
             Object arg = newConfigurationClasses;
-            try {
-                setConfigurationMethod.setAccessible(true);
-                setConfigurationMethod.invoke(defaultSpecification, arg);
-            } catch (Throwable e) {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("FeignClientSpecification#setConfiguration(Class[]) can't be invoked , instance : {} , args : {}",
-                            defaultSpecification, Arrays.toString(newConfigurationClasses));
-                }
-            }
+            invokeMethod(specification, setConfigurationMethod, arg);
+            logger.trace("The Configuration classes: before - {} , after - {}", arrayToString(originConfigurationClasses),
+                    arrayToString(newConfigurationClasses));
         }
     }
 }
