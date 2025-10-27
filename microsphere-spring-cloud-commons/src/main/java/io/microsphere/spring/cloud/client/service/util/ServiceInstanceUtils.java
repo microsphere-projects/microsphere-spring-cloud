@@ -33,11 +33,8 @@ import java.util.StringJoiner;
 
 import static io.microsphere.collection.ListUtils.newArrayList;
 import static io.microsphere.constants.SeparatorConstants.LINE_SEPARATOR;
-import static io.microsphere.constants.SymbolConstants.COLON;
 import static io.microsphere.constants.SymbolConstants.COMMA;
-import static io.microsphere.constants.SymbolConstants.DOUBLE_QUOTE;
 import static io.microsphere.constants.SymbolConstants.LEFT_SQUARE_BRACKET;
-import static io.microsphere.constants.SymbolConstants.RIGHT_CURLY_BRACE;
 import static io.microsphere.constants.SymbolConstants.RIGHT_SQUARE_BRACKET;
 import static io.microsphere.json.JSONUtils.jsonArray;
 import static io.microsphere.json.JSONUtils.readArray;
@@ -66,7 +63,7 @@ public class ServiceInstanceUtils extends BaseUtils {
     public static void attachMetadata(String contextPath, ServiceInstance serviceInstance, Collection<WebEndpointMapping> webEndpointMappings) {
         Map<String, String> metadata = serviceInstance.getMetadata();
         StringJoiner jsonBuilder = new StringJoiner(COMMA + LINE_SEPARATOR, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET);
-        webEndpointMappings.stream().map(mapping -> toJSON(mapping)).forEach(jsonBuilder::add);
+        webEndpointMappings.stream().map(WebEndpointMapping::toJSON).forEach(jsonBuilder::add);
         String json = jsonBuilder.toString();
         logger.trace("Web Endpoint Mappings JSON: \n{}", json);
         json = json.replace(LINE_SEPARATOR, EMPTY_STRING);
@@ -89,18 +86,6 @@ public class ServiceInstanceUtils extends BaseUtils {
         Map<String, String> metadata = serviceInstance.getMetadata();
         String encodedJSON = metadata.get(WEB_MAPPINGS_METADATA_NAME);
         return parseWebEndpointMappings(encodedJSON);
-    }
-
-    static String toJSON(WebEndpointMapping webEndpointMapping) {
-        // FIXME : Issue on WebEndpointMapping.toJSON()
-        String json = webEndpointMapping.toJSON();
-        StringBuilder jsonBuilder = new StringBuilder(json);
-        int startIndex = jsonBuilder.lastIndexOf(LINE_SEPARATOR);
-        int endIndex = jsonBuilder.indexOf(RIGHT_CURLY_BRACE, startIndex);
-        String kindItem = COMMA + LINE_SEPARATOR + DOUBLE_QUOTE + "kind" + DOUBLE_QUOTE + COLON +
-                DOUBLE_QUOTE + webEndpointMapping.getKind() + DOUBLE_QUOTE + LINE_SEPARATOR;
-        jsonBuilder.replace(startIndex, endIndex, kindItem);
-        return jsonBuilder.toString();
     }
 
     static List<WebEndpointMapping> parseWebEndpointMappings(String encodedJSON) {
