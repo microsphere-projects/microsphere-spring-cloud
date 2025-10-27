@@ -18,7 +18,6 @@
 package io.microsphere.spring.cloud.client.service.util;
 
 
-import io.microsphere.json.JSONObject;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import io.microsphere.spring.web.metadata.WebEndpointMapping.Builder;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,14 +28,11 @@ import org.springframework.cloud.client.ServiceInstance;
 import java.util.Collection;
 
 import static io.microsphere.collection.Lists.ofList;
-import static io.microsphere.json.JSONUtils.jsonObject;
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_CONTEXT_PATH_METADATA_NAME;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getMetadata;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getWebEndpointMappings;
-import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMapping;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMappings;
-import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.toJSON;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.Kind.SERVLET;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.servlet;
 import static io.microsphere.util.StringUtils.EMPTY_STRING_ARRAY;
@@ -102,15 +98,6 @@ class ServiceInstanceUtilsTest {
         assertSame(emptyList(), parseWebEndpointMappings(null));
         assertSame(emptyList(), parseWebEndpointMappings(""));
         assertSame(emptyList(), parseWebEndpointMappings(" "));
-    }
-
-    @Test
-    void testParseWebEndpointMapping() {
-        WebEndpointMapping webEndpointMapping = buildWebEndpointMapping(false);
-        String json = toJSON(webEndpointMapping);
-        JSONObject jsonObject = jsonObject(json);
-        WebEndpointMapping webEndpointMapping1 = parseWebEndpointMapping(jsonObject);
-        assertEquals(webEndpointMapping, webEndpointMapping1);
     }
 
     private Collection<WebEndpointMapping> createWebEndpointMappings() {
