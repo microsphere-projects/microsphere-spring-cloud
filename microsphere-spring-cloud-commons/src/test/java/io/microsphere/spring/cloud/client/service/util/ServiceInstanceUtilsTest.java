@@ -36,7 +36,6 @@ import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUti
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getWebEndpointMappings;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMapping;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMappings;
-import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.toJSON;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.Kind.SERVLET;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.servlet;
 import static io.microsphere.util.StringUtils.EMPTY_STRING_ARRAY;
@@ -107,7 +106,7 @@ class ServiceInstanceUtilsTest {
     @Test
     void testParseWebEndpointMapping() {
         WebEndpointMapping webEndpointMapping = buildWebEndpointMapping(false);
-        String json = toJSON(webEndpointMapping);
+        String json = webEndpointMapping.toJSON();
         JSONObject jsonObject = jsonObject(json);
         WebEndpointMapping webEndpointMapping1 = parseWebEndpointMapping(jsonObject);
         assertEquals(webEndpointMapping, webEndpointMapping1);
