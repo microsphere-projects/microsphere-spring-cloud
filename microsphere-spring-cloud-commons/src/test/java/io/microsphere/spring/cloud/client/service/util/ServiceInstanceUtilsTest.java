@@ -24,7 +24,6 @@ import io.microsphere.spring.web.metadata.WebEndpointMapping.Builder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.DefaultServiceInstance;
-import org.springframework.cloud.client.ServiceInstance;
 
 import java.util.Collection;
 
@@ -33,16 +32,23 @@ import static io.microsphere.json.JSONUtils.jsonObject;
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_CONTEXT_PATH_METADATA_NAME;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getMetadata;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getUri;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getUriString;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getWebEndpointMappings;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMapping;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMappings;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.removeMetadata;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.Kind.SERVLET;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.servlet;
+import static io.microsphere.util.StringUtils.EMPTY_STRING;
 import static io.microsphere.util.StringUtils.EMPTY_STRING_ARRAY;
 import static java.lang.System.currentTimeMillis;
+import static java.net.URI.create;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @see ServiceInstanceUtils
  * @since 1.0.0
  */
-class ServiceInstanceUtilsTest {
+public class ServiceInstanceUtilsTest {
 
     private static final Integer WEB_ENDPOINT_MAPPING_ID = Integer.valueOf(12345);
 
@@ -63,7 +69,7 @@ class ServiceInstanceUtilsTest {
 
     private String context = "/";
 
-    private ServiceInstance serviceInstance;
+    private DefaultServiceInstance serviceInstance;
 
     private Collection<WebEndpointMapping> webEndpointMappings;
 
@@ -97,19 +103,45 @@ class ServiceInstanceUtilsTest {
     }
 
     @Test
-    void testParseWebEndpointMappings() {
-        assertSame(emptyList(), parseWebEndpointMappings(null));
-        assertSame(emptyList(), parseWebEndpointMappings(""));
-        assertSame(emptyList(), parseWebEndpointMappings(" "));
-    }
-
-    @Test
     void testParseWebEndpointMapping() {
         WebEndpointMapping webEndpointMapping = buildWebEndpointMapping(false);
         String json = webEndpointMapping.toJSON();
         JSONObject jsonObject = jsonObject(json);
         WebEndpointMapping webEndpointMapping1 = parseWebEndpointMapping(jsonObject);
         assertEquals(webEndpointMapping, webEndpointMapping1);
+    }
+
+    @Test
+    void testParseWebEndpointMappings() {
+        assertSame(emptyList(), parseWebEndpointMappings(null));
+        assertSame(emptyList(), parseWebEndpointMappings(EMPTY_STRING));
+        assertSame(emptyList(), parseWebEndpointMappings(" "));
+    }
+
+    @Test
+    void testGetUriString() {
+        assertEquals("http://localhost:8080", getUriString(this.serviceInstance));
+
+        String uriString = "https://localhost:8080";
+        this.serviceInstance.setUri(create(uriString));
+        assertEquals(uriString, getUriString(this.serviceInstance));
+    }
+
+    @Test
+    void testGetUri() {
+        assertEquals(create("http://localhost:8080"), getUri(this.serviceInstance));
+    }
+
+    @Test
+    void testMetadataOps() {
+        assertNull(getMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
+        assertNull(setMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME, this.context));
+        assertEquals(this.context, getMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
+        assertEquals(this.context, setMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME, EMPTY_STRING));
+        assertEquals(EMPTY_STRING, getMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
+
+        assertEquals(EMPTY_STRING, removeMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
+        assertNull(getMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
     }
 
     private Collection<WebEndpointMapping> createWebEndpointMappings() {

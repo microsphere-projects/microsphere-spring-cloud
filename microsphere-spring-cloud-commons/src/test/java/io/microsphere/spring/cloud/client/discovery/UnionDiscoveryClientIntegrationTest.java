@@ -86,7 +86,7 @@ class UnionDiscoveryClientIntegrationTest {
         assertEquals(CompositeDiscoveryClient.class, discoveryClient.getClass());
         CompositeDiscoveryClient compositeDiscoveryClient = CompositeDiscoveryClient.class.cast(discoveryClient);
         List<DiscoveryClient> discoveryClients = compositeDiscoveryClient.getDiscoveryClients();
-        assertEquals(6, discoveryClients.size());
+        assertEquals(7, discoveryClients.size());
         assertEquals(UnionDiscoveryClient.class, discoveryClients.get(0).getClass());
         List<String> services = compositeDiscoveryClient.getServices();
         assertTrue(services.size() > 1);
