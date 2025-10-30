@@ -19,12 +19,14 @@ package io.microsphere.spring.cloud.client.service.registry;
 
 import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryProperties;
-import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getMetadata;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
 
 /**
  * Simple {@link ServiceRegistry} class that is based on {@link SimpleDiscoveryProperties} to register
@@ -64,14 +66,12 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
 
     @Override
     public void setStatus(DefaultRegistration registration, String status) {
-        Map<String, String> metadata = getMetadata(registration);
-        metadata.put(STATUS_KEY, status);
+        setMetadata(registration, STATUS_KEY, status);
     }
 
     @Override
-    public <T> T getStatus(DefaultRegistration registration) {
-        Map<String, String> metadata = getMetadata(registration);
-        return (T) metadata.get(STATUS_KEY);
+    public String getStatus(DefaultRegistration registration) {
+        return getMetadata(registration, STATUS_KEY);
     }
 
     List<DefaultServiceInstance> getInstances(DefaultRegistration registration) {
@@ -80,9 +80,5 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
 
     List<DefaultServiceInstance> getInstances(String serviceId) {
         return this.instancesMap.computeIfAbsent(serviceId, k -> new ArrayList<>());
-    }
-
-    Map<String, String> getMetadata(Registration registration) {
-        return registration.getMetadata();
     }
 }
