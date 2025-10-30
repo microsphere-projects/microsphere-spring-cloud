@@ -36,6 +36,7 @@ import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUti
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getWebEndpointMappings;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMapping;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMappings;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.Kind.SERVLET;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.servlet;
 import static io.microsphere.util.StringUtils.EMPTY_STRING_ARRAY;
@@ -43,6 +44,7 @@ import static java.lang.System.currentTimeMillis;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -110,6 +112,13 @@ public class ServiceInstanceUtilsTest {
         assertSame(emptyList(), parseWebEndpointMappings(null));
         assertSame(emptyList(), parseWebEndpointMappings(""));
         assertSame(emptyList(), parseWebEndpointMappings(" "));
+    }
+
+    @Test
+    void testGetAndSetMetadata() {
+        assertNull(getMetadata(serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
+        setMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME, this.context);
+        assertEquals(this.context, getMetadata(serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
     }
 
     private Collection<WebEndpointMapping> createWebEndpointMappings() {
