@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.microsphere.reflect.MethodUtils.invokeMethod;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.removeMetadata;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
 import static io.microsphere.util.Assert.assertNotEmpty;
 import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass;
 
@@ -86,7 +88,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     public String put(String key, String value) {
         synchronized (lock) {
             this.registrations.forEach(registration -> {
-                registration.getMetadata().put(key, value);
+                setMetadata(registration, key, value);
             });
         }
         return this.applicationMetaData.put(key, value);
@@ -96,7 +98,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     public String remove(Object key) {
         synchronized (lock) {
             this.registrations.forEach(registration -> {
-                registration.getMetadata().remove(key);
+                removeMetadata(registration, (String) key);
             });
         }
         return this.applicationMetaData.remove(key);
