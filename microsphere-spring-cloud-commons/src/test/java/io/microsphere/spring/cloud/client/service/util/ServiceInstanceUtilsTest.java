@@ -39,6 +39,7 @@ import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUti
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.Kind.SERVLET;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.servlet;
+import static io.microsphere.util.StringUtils.EMPTY_STRING;
 import static io.microsphere.util.StringUtils.EMPTY_STRING_ARRAY;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Collections.emptyList;
@@ -110,15 +111,17 @@ public class ServiceInstanceUtilsTest {
     @Test
     void testParseWebEndpointMappings() {
         assertSame(emptyList(), parseWebEndpointMappings(null));
-        assertSame(emptyList(), parseWebEndpointMappings(""));
+        assertSame(emptyList(), parseWebEndpointMappings(EMPTY_STRING));
         assertSame(emptyList(), parseWebEndpointMappings(" "));
     }
 
     @Test
     void testGetAndSetMetadata() {
         assertNull(getMetadata(serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
-        setMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME, this.context);
+        assertNull(setMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME, this.context));
         assertEquals(this.context, getMetadata(serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
+        assertEquals(this.context, setMetadata(serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME, EMPTY_STRING));
+        assertEquals(EMPTY_STRING, getMetadata(serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
     }
 
     private Collection<WebEndpointMapping> createWebEndpointMappings() {
