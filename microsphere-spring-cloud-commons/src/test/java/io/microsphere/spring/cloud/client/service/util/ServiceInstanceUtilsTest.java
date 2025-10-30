@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @see ServiceInstanceUtils
  * @since 1.0.0
  */
-class ServiceInstanceUtilsTest {
+public class ServiceInstanceUtilsTest {
 
     private static final Integer WEB_ENDPOINT_MAPPING_ID = Integer.valueOf(12345);
 
@@ -97,19 +97,19 @@ class ServiceInstanceUtilsTest {
     }
 
     @Test
-    void testParseWebEndpointMappings() {
-        assertSame(emptyList(), parseWebEndpointMappings(null));
-        assertSame(emptyList(), parseWebEndpointMappings(""));
-        assertSame(emptyList(), parseWebEndpointMappings(" "));
-    }
-
-    @Test
     void testParseWebEndpointMapping() {
         WebEndpointMapping webEndpointMapping = buildWebEndpointMapping(false);
         String json = webEndpointMapping.toJSON();
         JSONObject jsonObject = jsonObject(json);
         WebEndpointMapping webEndpointMapping1 = parseWebEndpointMapping(jsonObject);
         assertEquals(webEndpointMapping, webEndpointMapping1);
+    }
+
+    @Test
+    void testParseWebEndpointMappings() {
+        assertSame(emptyList(), parseWebEndpointMappings(null));
+        assertSame(emptyList(), parseWebEndpointMappings(""));
+        assertSame(emptyList(), parseWebEndpointMappings(" "));
     }
 
     private Collection<WebEndpointMapping> createWebEndpointMappings() {
