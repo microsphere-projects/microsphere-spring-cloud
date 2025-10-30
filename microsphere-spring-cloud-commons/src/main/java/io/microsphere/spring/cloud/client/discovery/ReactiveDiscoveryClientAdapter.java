@@ -47,13 +47,13 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
         Flux<ServiceInstance> flux = this.reactiveDiscoveryClient.getInstances(serviceId);
-        return flux.collectList().block();
+        return toList(flux);
     }
 
     @Override
     public List<String> getServices() {
         Flux<String> flux = this.reactiveDiscoveryClient.getServices();
-        return flux.collectList().block();
+        return toList(flux);
     }
 
     @Override
@@ -64,5 +64,9 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     @Override
     public int getOrder() {
         return this.reactiveDiscoveryClient.getOrder();
+    }
+
+    static <T> List<T> toList(Flux<T> flux) {
+        return flux.collectList().block();
     }
 }
