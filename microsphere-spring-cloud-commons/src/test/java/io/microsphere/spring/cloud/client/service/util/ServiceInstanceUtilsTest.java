@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @see ServiceInstanceUtils
  * @since 1.0.0
  */
-class ServiceInstanceUtilsTest {
+public class ServiceInstanceUtilsTest {
 
     private static final Integer WEB_ENDPOINT_MAPPING_ID = Integer.valueOf(12345);
 
