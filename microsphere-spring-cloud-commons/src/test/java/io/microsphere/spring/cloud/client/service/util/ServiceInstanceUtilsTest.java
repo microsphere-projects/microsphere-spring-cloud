@@ -24,7 +24,6 @@ import io.microsphere.spring.web.metadata.WebEndpointMapping.Builder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.DefaultServiceInstance;
-import org.springframework.cloud.client.ServiceInstance;
 
 import java.util.Collection;
 
@@ -70,7 +69,7 @@ public class ServiceInstanceUtilsTest {
 
     private String context = "/";
 
-    private ServiceInstance serviceInstance;
+    private DefaultServiceInstance serviceInstance;
 
     private Collection<WebEndpointMapping> webEndpointMappings;
 
@@ -122,6 +121,10 @@ public class ServiceInstanceUtilsTest {
     @Test
     void testGetUriString() {
         assertEquals("http://localhost:8080", getUriString(this.serviceInstance));
+
+        String uriString = "https://localhost:8080";
+        this.serviceInstance.setUri(create(uriString));
+        assertEquals(uriString, getUriString(this.serviceInstance));
     }
 
     @Test
