@@ -158,6 +158,18 @@ public class ServiceInstanceUtils extends BaseUtils {
         return metadata.put(metadataName, metadataValue);
     }
 
+    /**
+     * Remove metadata by metadataName
+     *
+     * @param serviceInstance {@link ServiceInstance}
+     * @param metadataName    metadataName
+     * @return the value associated with <code>metadataName</code> if found, <code>null</code> otherwise
+     */
+    public static String removeMetadata(ServiceInstance serviceInstance, String metadataName) {
+        Map<String, String> metadata = serviceInstance.getMetadata();
+        return metadata.remove(metadataName);
+    }
+
     private ServiceInstanceUtils() {
     }
 }
