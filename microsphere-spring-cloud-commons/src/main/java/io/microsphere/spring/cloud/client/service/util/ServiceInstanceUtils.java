@@ -83,8 +83,7 @@ public class ServiceInstanceUtils extends BaseUtils {
      */
     @Nonnull
     public static Collection<WebEndpointMapping> getWebEndpointMappings(ServiceInstance serviceInstance) {
-        Map<String, String> metadata = serviceInstance.getMetadata();
-        String encodedJSON = metadata.get(WEB_MAPPINGS_METADATA_NAME);
+        String encodedJSON = getMetadata(serviceInstance, WEB_MAPPINGS_METADATA_NAME);
         return parseWebEndpointMappings(encodedJSON);
     }
 
@@ -144,6 +143,19 @@ public class ServiceInstanceUtils extends BaseUtils {
     public static String getMetadata(ServiceInstance serviceInstance, String metadataName) {
         Map<String, String> metadata = serviceInstance.getMetadata();
         return metadata.get(metadataName);
+    }
+
+    /**
+     * Set metadata by metadataName
+     *
+     * @param serviceInstance {@link ServiceInstance}
+     * @param metadataName    metadataName
+     * @param metadataValue   metadata value
+     * @return the previous value associated with <code>metadataName</code> if found, <code>null</code> otherwise
+     */
+    public static String setMetadata(ServiceInstance serviceInstance, String metadataName, String metadataValue) {
+        Map<String, String> metadata = serviceInstance.getMetadata();
+        return metadata.put(metadataName, metadataValue);
     }
 
     private ServiceInstanceUtils() {
