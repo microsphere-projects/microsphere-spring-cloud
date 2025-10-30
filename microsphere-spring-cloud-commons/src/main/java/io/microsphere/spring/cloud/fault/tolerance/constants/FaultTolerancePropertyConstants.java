@@ -54,5 +54,4 @@ public interface FaultTolerancePropertyConstants {
      * The default property value of weight : 100
      */
     int DEFAULT_WEIGHT_PROPERTY_VALUE = 100;
-
 }
