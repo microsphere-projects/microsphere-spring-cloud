@@ -24,8 +24,10 @@ import io.microsphere.logging.Logger;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import io.microsphere.spring.web.metadata.WebEndpointMapping.Builder;
 import io.microsphere.util.BaseUtils;
+import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.client.ServiceInstance;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,7 @@ import java.util.StringJoiner;
 
 import static io.microsphere.collection.ListUtils.newArrayList;
 import static io.microsphere.constants.SeparatorConstants.LINE_SEPARATOR;
+import static io.microsphere.constants.SymbolConstants.COLON_CHAR;
 import static io.microsphere.constants.SymbolConstants.COMMA;
 import static io.microsphere.constants.SymbolConstants.LEFT_SQUARE_BRACKET;
 import static io.microsphere.constants.SymbolConstants.RIGHT_SQUARE_BRACKET;
@@ -48,6 +51,7 @@ import static io.microsphere.spring.web.metadata.WebEndpointMapping.of;
 import static io.microsphere.util.StringUtils.EMPTY_STRING;
 import static io.microsphere.util.StringUtils.EMPTY_STRING_ARRAY;
 import static io.microsphere.util.StringUtils.isBlank;
+import static java.net.URI.create;
 import static java.util.Collections.emptyList;
 
 /**
@@ -83,9 +87,79 @@ public class ServiceInstanceUtils extends BaseUtils {
      */
     @Nonnull
     public static Collection<WebEndpointMapping> getWebEndpointMappings(ServiceInstance serviceInstance) {
-        Map<String, String> metadata = serviceInstance.getMetadata();
-        String encodedJSON = metadata.get(WEB_MAPPINGS_METADATA_NAME);
+        String encodedJSON = getMetadata(serviceInstance, WEB_MAPPINGS_METADATA_NAME);
         return parseWebEndpointMappings(encodedJSON);
+    }
+
+    /**
+     * Get the String representation of {@link ServiceInstance#getUri()}
+     *
+     * @param instance {@link ServiceInstance}
+     * @return the String representation of {@link ServiceInstance#getUri()}
+     */
+    @Nonnull
+    public static String getUriString(ServiceInstance instance) {
+        boolean isSecure = instance.isSecure();
+        String prefix = isSecure ? "https://" : "http://";
+        String host = instance.getHost();
+        String port = String.valueOf(instance.getPort());
+        StringBuilder urlStringBuilder = new StringBuilder((isSecure ? 9 : 8) + host.length() + port.length());
+        urlStringBuilder.append(prefix)
+                .append(host)
+                .append(COLON_CHAR)
+                .append(port);
+        return urlStringBuilder.toString();
+    }
+
+    /**
+     * Alternative method of {@link ServiceInstance#getUri()} with the better performance
+     *
+     * @param serviceInstance {@link ServiceInstance}
+     * @return {@link URI} instance
+     * @see DefaultServiceInstance#getUri(ServiceInstance)
+     */
+    @Nonnull
+    public static URI getUri(ServiceInstance serviceInstance) {
+        String uriString = getUriString(serviceInstance);
+        return create(uriString);
+    }
+
+    /**
+     * Get metadata by metadataName
+     *
+     * @param serviceInstance {@link ServiceInstance}
+     * @param metadataName    metadataName
+     * @return metadata value
+     */
+    @Nullable
+    public static String getMetadata(ServiceInstance serviceInstance, String metadataName) {
+        Map<String, String> metadata = serviceInstance.getMetadata();
+        return metadata.get(metadataName);
+    }
+
+    /**
+     * Set metadata by metadataName
+     *
+     * @param serviceInstance {@link ServiceInstance}
+     * @param metadataName    metadataName
+     * @param metadataValue   metadata value
+     * @return the previous value associated with <code>metadataName</code> if found, <code>null</code> otherwise
+     */
+    public static String setMetadata(ServiceInstance serviceInstance, String metadataName, String metadataValue) {
+        Map<String, String> metadata = serviceInstance.getMetadata();
+        return metadata.put(metadataName, metadataValue);
+    }
+
+    /**
+     * Remove metadata by metadataName
+     *
+     * @param serviceInstance {@link ServiceInstance}
+     * @param metadataName    metadataName
+     * @return the value associated with <code>metadataName</code> if found, <code>null</code> otherwise
+     */
+    public static String removeMetadata(ServiceInstance serviceInstance, String metadataName) {
+        Map<String, String> metadata = serviceInstance.getMetadata();
+        return metadata.remove(metadataName);
     }
 
     static List<WebEndpointMapping> parseWebEndpointMappings(String encodedJSON) {
@@ -131,19 +205,6 @@ public class ServiceInstanceUtils extends BaseUtils {
     static String[] getArray(JSONObject jsonObject, String name) {
         JSONArray jsonArray = jsonObject.optJSONArray(name);
         return jsonArray == null ? EMPTY_STRING_ARRAY : readArray(jsonArray, String.class);
-    }
-
-    /**
-     * Get metadata by metadataName
-     *
-     * @param serviceInstance {@link ServiceInstance}
-     * @param metadataName    metadataName
-     * @return metadata value
-     */
-    @Nullable
-    public static String getMetadata(ServiceInstance serviceInstance, String metadataName) {
-        Map<String, String> metadata = serviceInstance.getMetadata();
-        return metadata.get(metadataName);
     }
 
     private ServiceInstanceUtils() {
