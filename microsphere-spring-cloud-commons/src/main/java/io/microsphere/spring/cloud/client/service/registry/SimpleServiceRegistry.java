@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistration> {
 
-    private static final String STATUS_KEY = "_status_";
+    public static final String STATUS_KEY = "_status_";
 
     private final Map<String, List<DefaultServiceInstance>> instancesMap;
 
