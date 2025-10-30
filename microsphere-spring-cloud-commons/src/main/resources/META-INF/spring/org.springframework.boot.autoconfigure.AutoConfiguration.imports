@@ -1,4 +1,5 @@
 io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration
+io.microsphere.spring.cloud.client.discovery.autoconfigure.ReactiveDiscoveryClientAutoConfiguration
 io.microsphere.spring.cloud.client.service.registry.autoconfigure.ServiceRegistryAutoConfiguration
 io.microsphere.spring.cloud.client.service.registry.autoconfigure.WebMvcServiceRegistryAutoConfiguration
 io.microsphere.spring.cloud.client.service.registry.autoconfigure.WebFluxServiceRegistryAutoConfiguration
