@@ -28,6 +28,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClientAutoConfiguration;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationAutoConfiguration;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationConfiguration;
 import org.springframework.cloud.client.serviceregistry.Registration;
@@ -57,7 +58,8 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
 })
 @AutoConfigureAfter(value = {
         UtilAutoConfiguration.class,
-        AutoServiceRegistrationConfiguration.class
+        AutoServiceRegistrationConfiguration.class,
+        SimpleDiscoveryClientAutoConfiguration.class
 })
 @Import(value = {
         SimpleAutoServiceRegistration.class
