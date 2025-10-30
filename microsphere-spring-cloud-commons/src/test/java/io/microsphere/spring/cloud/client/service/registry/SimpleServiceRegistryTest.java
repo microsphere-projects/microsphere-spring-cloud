@@ -18,7 +18,20 @@
 package io.microsphere.spring.cloud.client.service.registry;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.cloud.client.DefaultServiceInstance;
+import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryProperties;
+
+import java.util.List;
+import java.util.Map;
+
+import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
+import static io.microsphere.spring.cloud.client.service.registry.SimpleServiceRegistry.STATUS_KEY;
+import static java.util.Collections.emptyList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link SimpleServiceRegistry} Test
@@ -29,23 +42,72 @@ import org.junit.jupiter.api.Test;
  */
 class SimpleServiceRegistryTest {
 
+    private DefaultRegistration registration;
+
+    private SimpleDiscoveryProperties properties;
+
+    private SimpleServiceRegistry registry;
+
+    @BeforeEach
+    void setUp() {
+        this.registration = createDefaultRegistration();
+        this.properties = new SimpleDiscoveryProperties();
+        this.registry = new SimpleServiceRegistry(this.properties);
+    }
+
     @Test
     void testRegister() {
+        Map<String, List<DefaultServiceInstance>> instancesMap = this.properties.getInstances();
+        assertTrue(instancesMap.isEmpty());
+        this.registry.register(this.registration);
+
+        List<DefaultServiceInstance> instances = instancesMap.get(this.registration.getServiceId());
+        assertEquals(1, instances.size());
+        DefaultServiceInstance instance = instances.get(0);
+        assertSame(instance, this.registration);
     }
 
     @Test
     void testDeregister() {
+        testRegister();
+        this.registry.deregister(this.registration);
+        List<DefaultServiceInstance> instances = getInstances(this.registration.getServiceId());
+        assertTrue(instances.isEmpty());
     }
 
     @Test
     void testClose() {
+        Map<String, List<DefaultServiceInstance>> instancesMap = this.properties.getInstances();
+        assertTrue(instancesMap.isEmpty());
+        this.registry.close();
+        assertTrue(instancesMap.isEmpty());
     }
 
     @Test
     void testSetStatus() {
+        testRegister();
+        DefaultServiceInstance instance = getInstance(this.registration.getServiceId(), this.registration.getInstanceId());
+        String status = "UP";
+        this.registry.setStatus(this.registration, status);
+        assertEquals(status, instance.getMetadata().get(STATUS_KEY));
     }
 
     @Test
     void testGetStatus() {
+        testRegister();
+        String status = "UP";
+        this.registry.setStatus(this.registration, status);
+        assertEquals(status, this.registry.getStatus(this.registration));
+    }
+
+    List<DefaultServiceInstance> getInstances(String serviceId) {
+        return this.properties.getInstances().getOrDefault(serviceId, emptyList());
+    }
+
+    DefaultServiceInstance getInstance(String serviceId, String instanceId) {
+        List<DefaultServiceInstance> instances = getInstances(serviceId);
+        return instances.stream()
+                .filter(instance -> instance.getInstanceId().equals(instanceId))
+                .findFirst().orElse(null);
     }
 }
