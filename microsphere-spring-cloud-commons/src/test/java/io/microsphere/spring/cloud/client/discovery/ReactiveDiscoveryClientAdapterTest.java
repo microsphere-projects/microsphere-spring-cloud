@@ -20,8 +20,21 @@ package io.microsphere.spring.cloud.client.discovery;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.cloud.client.DefaultServiceInstance;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
+import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClient;
+import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryProperties;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static io.microsphere.collection.Lists.ofList;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtilsTest.createDefaultServiceInstance;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * {@link ReactiveDiscoveryClientAdapter}
@@ -34,27 +47,54 @@ import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
  */
 class ReactiveDiscoveryClientAdapterTest {
 
+    private DefaultServiceInstance serviceInstance;
+
+    private String appName = "test-service";
+
+    private SimpleReactiveDiscoveryProperties properties;
+
+    private ReactiveDiscoveryClient client;
+
+    private ReactiveDiscoveryClientAdapter adapter;
+
     @BeforeEach
     void setUp() {
+        Map<String, List<DefaultServiceInstance>> instances = new HashMap<>();
+        this.serviceInstance = createDefaultServiceInstance();
+        this.appName = this.serviceInstance.getServiceId();
+        instances.put(appName, ofList(this.serviceInstance));
+        this.properties = new SimpleReactiveDiscoveryProperties();
+        this.properties.setInstances(instances);
+        this.client = new SimpleReactiveDiscoveryClient(properties);
+        this.adapter = new ReactiveDiscoveryClientAdapter(client);
     }
 
     @Test
     void testDescription() {
+        assertEquals("Simple Reactive Discovery Client", this.adapter.description());
     }
 
     @Test
     void testGetInstances() {
+        List<ServiceInstance> serviceInstances = this.adapter.getInstances(this.appName);
+        assertEquals(1, serviceInstances.size());
+        assertSame(this.serviceInstance, serviceInstances.get(0));
     }
 
     @Test
     void testGetServices() {
+        List<String> services = this.adapter.getServices();
+        assertEquals(1, services.size());
+        assertSame(appName, services.get(0));
     }
 
     @Test
     void testProbe() {
+        this.adapter.probe();
     }
 
     @Test
     void testGetOrder() {
+        assertEquals(this.client.getOrder(), this.adapter.getOrder());
     }
 }
