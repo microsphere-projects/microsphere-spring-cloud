@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.DefaultServiceInstance;
 
+import java.net.URI;
 import java.util.Collection;
 
 import static io.microsphere.collection.Lists.ofList;
@@ -39,6 +40,7 @@ import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUti
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMappings;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.removeMetadata;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setProperties;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.Kind.SERVLET;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.servlet;
 import static io.microsphere.util.StringUtils.EMPTY_STRING;
@@ -128,8 +130,26 @@ public class ServiceInstanceUtilsTest {
     }
 
     @Test
+    void testGetUriStringWithoutPort() {
+        String uriString = "http://localhost";
+        this.serviceInstance.setUri(create(uriString));
+        assertEquals(uriString + ":80", getUriString(this.serviceInstance));
+
+        uriString = "https://localhost";
+        this.serviceInstance.setUri(create(uriString));
+        assertEquals(uriString + ":443", getUriString(this.serviceInstance));
+    }
+
+    @Test
     void testGetUri() {
-        assertEquals(create("http://localhost:8080"), getUri(this.serviceInstance));
+        URI uri = getUri(this.serviceInstance);
+        assertEquals(create("http://localhost:8080"), uri);
+        assertEquals(DefaultServiceInstance.getUri(this.serviceInstance), uri);
+
+        uri = create("https://localhost");
+        this.serviceInstance.setUri(uri);
+        uri = getUri(this.serviceInstance);
+        assertEquals(create("https://localhost:443"), uri);
     }
 
     @Test
@@ -142,6 +162,13 @@ public class ServiceInstanceUtilsTest {
 
         assertEquals(EMPTY_STRING, removeMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
         assertNull(getMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
+    }
+
+    @Test
+    void testSetProperties() {
+        DefaultServiceInstance target = new DefaultServiceInstance();
+        setProperties(this.serviceInstance, target);
+        assertEquals(this.serviceInstance, target);
     }
 
     private Collection<WebEndpointMapping> createWebEndpointMappings() {

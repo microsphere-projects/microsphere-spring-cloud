@@ -20,6 +20,7 @@ package io.microsphere.spring.cloud.commons.constants;
 import io.microsphere.annotation.ConfigurationProperty;
 import org.springframework.cloud.client.CommonsClientAutoConfiguration;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationAutoConfiguration;
+import org.springframework.cloud.commons.util.UtilAutoConfiguration;
 
 import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
@@ -68,4 +69,29 @@ public interface SpringCloudPropertyConstants {
             source = APPLICATION_SOURCE
     )
     String FEATURES_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "features." + ENABLED_PROPERTY_NAME;
+
+    /**
+     * The property name for enabling Spring Cloud Load-Balancer : "spring.cloud.loadbalancer.enabled"
+     *
+     * @see org.springframework.cloud.loadbalancer.config.LoadBalancerAutoConfiguration
+     */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "true",
+            source = APPLICATION_SOURCE
+    )
+    String LOAD_BALANCER_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "loadbalancer." + ENABLED_PROPERTY_NAME;
+
+
+    /**
+     * The property name for enabling Spring Cloud Util : "spring.cloud.util.enabled"
+     *
+     * @see UtilAutoConfiguration
+     */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "true",
+            source = APPLICATION_SOURCE
+    )
+    String UTIL_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "util." + ENABLED_PROPERTY_NAME;
 }

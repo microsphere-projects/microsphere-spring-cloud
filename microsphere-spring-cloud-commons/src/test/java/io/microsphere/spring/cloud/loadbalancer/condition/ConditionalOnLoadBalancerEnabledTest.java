@@ -14,18 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.condition;
 
-/**
- * {@link io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesEnabled} Test
- *
- * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesEnabled
- * @since 1.0.0
- */
+package io.microsphere.spring.cloud.loadbalancer.condition;
 
 import io.microsphere.spring.cloud.test.ConditionalOnPropertyEnabledTest;
 
-@ConditionalOnFeaturesEnabled
-class ConditionalOnFeaturesEnabledTest extends ConditionalOnPropertyEnabledTest {
+/**
+ * {@link ConditionalOnLoadBalancerEnabled @ConditionalOnLoadBalancerEnabled} Test
+ *
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see ConditionalOnLoadBalancerEnabled
+ * @since 1.0.0
+ */
+@ConditionalOnLoadBalancerEnabled
+public class ConditionalOnLoadBalancerEnabledTest extends ConditionalOnPropertyEnabledTest {
 }
