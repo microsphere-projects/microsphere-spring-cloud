@@ -22,10 +22,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryProperties;
+import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryProperties;
 
 import java.util.List;
 import java.util.Map;
 
+import static io.microsphere.spring.cloud.client.discovery.util.DiscoveryUtils.simpleReactiveDiscoveryProperties;
 import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
 import static io.microsphere.spring.cloud.client.service.registry.SimpleServiceRegistry.STATUS_KEY;
 import static java.util.Collections.emptyList;
@@ -53,6 +55,13 @@ class SimpleServiceRegistryTest {
         this.registration = createDefaultRegistration();
         this.properties = new SimpleDiscoveryProperties();
         this.registry = new SimpleServiceRegistry(this.properties);
+    }
+
+    @Test
+    void testConstructor() {
+        SimpleReactiveDiscoveryProperties properties = simpleReactiveDiscoveryProperties(this.properties);
+        this.registry = new SimpleServiceRegistry(properties);
+        testDeregister();
     }
 
     @Test
@@ -94,10 +103,8 @@ class SimpleServiceRegistryTest {
 
     @Test
     void testGetStatus() {
-        testRegister();
-        String status = "UP";
-        this.registry.setStatus(this.registration, status);
-        assertEquals(status, this.registry.getStatus(this.registration));
+        testSetStatus();
+        assertEquals(this.registration.getMetadata().get(STATUS_KEY), this.registry.getStatus(this.registration));
     }
 
     List<DefaultServiceInstance> getInstances(String serviceId) {
