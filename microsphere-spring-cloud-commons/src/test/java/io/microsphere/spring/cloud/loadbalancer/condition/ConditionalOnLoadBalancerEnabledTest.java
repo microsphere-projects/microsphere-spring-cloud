@@ -54,7 +54,7 @@ public class ConditionalOnLoadBalancerEnabledTest {
 
     void testConfigBean(boolean present) {
         testInSpringContainer(context -> {
-            assertEquals(present, isBeanPresent(context, getClass()));
-        }, getClass());
+            assertEquals(present, isBeanPresent(context, ConditionalOnLoadBalancerEnabledTest.class));
+        }, ConditionalOnLoadBalancerEnabledTest.class);
     }
 }

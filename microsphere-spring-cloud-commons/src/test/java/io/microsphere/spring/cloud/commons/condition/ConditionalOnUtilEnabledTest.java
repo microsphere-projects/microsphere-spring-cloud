@@ -54,7 +54,7 @@ public class ConditionalOnUtilEnabledTest {
 
     void testConfigBean(boolean present) {
         testInSpringContainer(context -> {
-            assertEquals(present, isBeanPresent(context, getClass()));
-        }, getClass());
+            assertEquals(present, isBeanPresent(context, ConditionalOnUtilEnabledTest.class));
+        }, ConditionalOnUtilEnabledTest.class);
     }
 }
