@@ -26,15 +26,22 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClient;
 import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryProperties;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import static io.microsphere.collection.Lists.ofList;
+import static io.microsphere.spring.cloud.client.discovery.ReactiveDiscoveryClientAdapter.toList;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtilsTest.createDefaultServiceInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static reactor.core.scheduler.Schedulers.immediate;
+import static reactor.core.scheduler.Schedulers.newSingle;
 
 /**
  * {@link ReactiveDiscoveryClientAdapter}
@@ -96,5 +103,22 @@ class ReactiveDiscoveryClientAdapterTest {
     @Test
     void testGetOrder() {
         assertEquals(this.client.getOrder(), this.adapter.getOrder());
+    }
+
+    @Test
+    void testToList() throws Exception {
+        assertList(immediate(), "1,2,3");
+        assertList(newSingle("test"), "1,2,3");
+    }
+
+    <T> void assertList(Scheduler scheduler, T... values) throws Exception {
+        Flux<T> flux = Flux.just(values);
+        Disposable disposable = scheduler.schedule(() -> {
+            List<T> list = toList(flux);
+            assertEquals(ofList(values), list);
+        });
+        if (disposable instanceof Callable) {
+            ((Callable) disposable).call();
+        }
     }
 }
