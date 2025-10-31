@@ -24,36 +24,8 @@ package io.microsphere.spring.cloud.client.condition;
  * @since 1.0.0
  */
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import io.microsphere.spring.cloud.test.ConditionalOnPropertyEnabledTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
-        ConditionalOnFeaturesEnabledTest.FeaturesConfiguration.class
-})
-@TestPropertySource(
-        properties = {
-                "spring.cloud.features.enabled=true"
-        }
-)
-class ConditionalOnFeaturesEnabledTest {
-
-    @ConditionalOnFeaturesEnabled
-    static class FeaturesConfiguration {
-    }
-
-    @Autowired
-    private ObjectProvider<FeaturesConfiguration> featuresConfigurationProvider;
-
-    @Test
-    void test() {
-        assertNotNull(featuresConfigurationProvider.getIfAvailable());
-    }
+@ConditionalOnFeaturesEnabled
+class ConditionalOnFeaturesEnabledTest extends ConditionalOnPropertyEnabledTest {
 }

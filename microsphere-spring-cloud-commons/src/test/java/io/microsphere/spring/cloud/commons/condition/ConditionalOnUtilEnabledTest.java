@@ -17,14 +17,7 @@
 
 package io.microsphere.spring.cloud.commons.condition;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.Properties;
-
-import static io.microsphere.spring.beans.BeanUtils.isBeanPresent;
-import static io.microsphere.spring.test.util.SpringTestUtils.testInSpringContainer;
-import static java.lang.System.getProperties;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import io.microsphere.spring.cloud.test.ConditionalOnPropertyEnabledTest;
 
 /**
  * {@link ConditionalOnUtilEnabled} Test
@@ -34,27 +27,5 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since 1.0.0
  */
 @ConditionalOnUtilEnabled
-public class ConditionalOnUtilEnabledTest {
-
-    @Test
-    void testConfigBeanPresent() {
-        testConfigBean(true);
-    }
-
-    @Test
-    void testConfigBeanAbsent() {
-        Properties properties = getProperties();
-        try {
-            properties.setProperty("spring.cloud.util.enabled", "false");
-            testConfigBean(false);
-        } finally {
-            properties.remove("spring.cloud.util.enabled");
-        }
-    }
-
-    void testConfigBean(boolean present) {
-        testInSpringContainer(context -> {
-            assertEquals(present, isBeanPresent(context, ConditionalOnUtilEnabledTest.class));
-        }, ConditionalOnUtilEnabledTest.class);
-    }
+public class ConditionalOnUtilEnabledTest extends ConditionalOnPropertyEnabledTest {
 }
