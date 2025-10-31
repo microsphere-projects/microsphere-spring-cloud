@@ -51,6 +51,7 @@ import static io.microsphere.spring.web.metadata.WebEndpointMapping.of;
 import static io.microsphere.util.StringUtils.EMPTY_STRING;
 import static io.microsphere.util.StringUtils.EMPTY_STRING_ARRAY;
 import static io.microsphere.util.StringUtils.isBlank;
+import static java.lang.String.valueOf;
 import static java.net.URI.create;
 import static java.util.Collections.emptyList;
 
@@ -102,12 +103,16 @@ public class ServiceInstanceUtils extends BaseUtils {
         boolean isSecure = instance.isSecure();
         String prefix = isSecure ? "https://" : "http://";
         String host = instance.getHost();
-        String port = String.valueOf(instance.getPort());
-        StringBuilder urlStringBuilder = new StringBuilder((isSecure ? 9 : 8) + host.length() + port.length());
+        int port = instance.getPort();
+        if (port <= 0) {
+            port = isSecure ? 443 : 80;
+        }
+        String portString = valueOf(port);
+        StringBuilder urlStringBuilder = new StringBuilder((isSecure ? 9 : 8) + host.length() + portString.length());
         urlStringBuilder.append(prefix)
                 .append(host)
                 .append(COLON_CHAR)
-                .append(port);
+                .append(portString);
         return urlStringBuilder.toString();
     }
 
