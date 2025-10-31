@@ -47,7 +47,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
 @Documented
-@ConditionalOnProperty(name = FEATURES_ENABLED_PROPERTY_NAME)
+@ConditionalOnProperty(name = FEATURES_ENABLED_PROPERTY_NAME, matchIfMissing = true)
 public @interface ConditionalOnFeaturesEnabled {
 
     /**
