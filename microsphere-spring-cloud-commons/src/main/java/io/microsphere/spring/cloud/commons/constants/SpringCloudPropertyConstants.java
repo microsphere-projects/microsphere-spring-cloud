@@ -68,4 +68,17 @@ public interface SpringCloudPropertyConstants {
             source = APPLICATION_SOURCE
     )
     String FEATURES_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "features." + ENABLED_PROPERTY_NAME;
+
+
+    /**
+     * The property name for enabling Spring Cloud Load-Balancer : "spring.cloud.loadbalancer.enabled"
+     *
+     * @see org.springframework.cloud.loadbalancer.config.LoadBalancerAutoConfiguration
+     */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "true",
+            source = APPLICATION_SOURCE
+    )
+    String LOAD_BALANCER_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "loadbalancer." + ENABLED_PROPERTY_NAME;
 }
