@@ -21,8 +21,12 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
+
+import static io.microsphere.lang.function.ThrowableSupplier.execute;
+import static reactor.core.scheduler.Schedulers.isInNonBlockingThread;
 
 /**
  * An adapter {@link DiscoveryClient} class based on {@link ReactiveDiscoveryClient}
@@ -67,6 +71,10 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     }
 
     static <T> List<T> toList(Flux<T> flux) {
-        return flux.collectList().block();
+        Mono<List<T>> mono = flux.collectList();
+        if (isInNonBlockingThread()) {
+            return execute(() -> mono.toFuture().get());
+        }
+        return mono.block();
     }
 }
