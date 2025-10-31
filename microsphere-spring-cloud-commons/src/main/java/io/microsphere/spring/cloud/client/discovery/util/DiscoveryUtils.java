@@ -45,7 +45,7 @@ public abstract class DiscoveryUtils implements Utils {
      * @return the instances map
      */
     @Nonnull
-    public static Map<String, List<DefaultServiceInstance>> getInstancesMap(SimpleDiscoveryProperties properties) {
+    public static Map<String, List<DefaultServiceInstance>> getInstancesMap(@Nonnull SimpleDiscoveryProperties properties) {
         return properties.getInstances();
     }
 
@@ -56,10 +56,17 @@ public abstract class DiscoveryUtils implements Utils {
      * @return the instances map
      */
     @Nonnull
-    public static Map<String, List<DefaultServiceInstance>> getInstancesMap(SimpleReactiveDiscoveryProperties properties) {
+    public static Map<String, List<DefaultServiceInstance>> getInstancesMap(@Nonnull SimpleReactiveDiscoveryProperties properties) {
         return invokeMethod(properties, "getInstances");
     }
 
+    /**
+     * Convert {@link SimpleDiscoveryProperties} to {@link SimpleReactiveDiscoveryProperties}
+     *
+     * @param properties {@link SimpleDiscoveryProperties}
+     * @return {@link SimpleReactiveDiscoveryProperties}
+     */
+    @Nonnull
     public static SimpleReactiveDiscoveryProperties simpleReactiveDiscoveryProperties(@Nonnull SimpleDiscoveryProperties properties) {
         SimpleReactiveDiscoveryProperties simpleReactiveDiscoveryProperties = new SimpleReactiveDiscoveryProperties();
         simpleReactiveDiscoveryProperties.setOrder(properties.getOrder());
