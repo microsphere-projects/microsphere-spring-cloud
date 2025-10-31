@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
-import static com.alibaba.spring.util.BeanUtils.isBeanPresent;
+import static io.microsphere.spring.beans.BeanUtils.isBeanPresent;
 import static io.microsphere.spring.test.util.SpringTestUtils.testInSpringContainer;
 import static java.lang.System.getProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
