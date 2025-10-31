@@ -19,23 +19,27 @@ package io.microsphere.spring.cloud.client.service.registry;
 
 import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryProperties;
+import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryProperties;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static io.microsphere.spring.cloud.client.discovery.util.DiscoveryUtils.getInstancesMap;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getMetadata;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
 
 /**
- * Simple {@link ServiceRegistry} class that is based on {@link SimpleDiscoveryProperties} to register
+ * Simple {@link ServiceRegistry} class that is based on {@link SimpleDiscoveryProperties}
+ * or {@link SimpleReactiveDiscoveryProperties} to register
  * {@link DefaultRegistration}.
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see ServiceRegistry
  * @see DefaultRegistration
  * @see SimpleDiscoveryProperties#getInstances()
+ * @see SimpleReactiveDiscoveryProperties#getInstances()
  * @since 1.0.0
  */
 public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistration> {
@@ -44,8 +48,16 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
 
     private final Map<String, List<DefaultServiceInstance>> instancesMap;
 
-    public SimpleServiceRegistry(SimpleDiscoveryProperties simpleDiscoveryProperties) {
-        this.instancesMap = simpleDiscoveryProperties.getInstances();
+    public SimpleServiceRegistry(SimpleDiscoveryProperties properties) {
+        this(getInstancesMap(properties));
+    }
+
+    public SimpleServiceRegistry(SimpleReactiveDiscoveryProperties properties) {
+        this(getInstancesMap(properties));
+    }
+
+    public SimpleServiceRegistry(Map<String, List<DefaultServiceInstance>> instancesMap) {
+        this.instancesMap = instancesMap;
     }
 
     @Override

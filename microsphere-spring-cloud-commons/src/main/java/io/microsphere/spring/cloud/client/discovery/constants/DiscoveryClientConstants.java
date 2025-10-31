@@ -20,6 +20,8 @@ import org.springframework.cloud.client.CommonsClientAutoConfiguration;
 import org.springframework.cloud.client.ReactiveCommonsClientAutoConfiguration;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
+import org.springframework.cloud.client.discovery.composite.reactive.ReactiveCompositeDiscoveryClientAutoConfiguration;
+import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClientAutoConfiguration;
 
 /**
  * The constants for {@link DiscoveryClient}
@@ -56,4 +58,18 @@ public interface DiscoveryClientConstants {
      * @see org.springframework.cloud.client.ReactiveCommonsClientAutoConfiguration
      */
     String REACTIVE_COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME = "org.springframework.cloud.client.ReactiveCommonsClientAutoConfiguration";
+
+    /**
+     * The class name of {@link SimpleReactiveDiscoveryClientAutoConfiguration}
+     *
+     * @see org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClientAutoConfiguration
+     */
+    String SIMPLE_REACTIVE_DISCOVERY_CLIENT_AUTO_CONFIGURATION_CLASS_NAME = "org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClientAutoConfiguration";
+
+    /**
+     * The class name of {@link ReactiveCompositeDiscoveryClientAutoConfiguration}
+     *
+     * @see org.springframework.cloud.client.discovery.composite.reactive.ReactiveCompositeDiscoveryClientAutoConfiguration
+     */
+    String REACTIVE_COMPOSITE_DISCOVERY_CLIENT_AUTO_CONFIGURATION_CLASS_NAME = "org.springframework.cloud.client.discovery.composite.reactive.ReactiveCompositeDiscoveryClientAutoConfiguration";
 }

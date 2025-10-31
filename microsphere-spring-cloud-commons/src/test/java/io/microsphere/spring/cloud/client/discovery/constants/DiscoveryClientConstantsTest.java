@@ -22,6 +22,8 @@ import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryCl
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.DISCOVERY_CLIENT_CLASS_NAME;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.REACTIVE_COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME;
+import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.REACTIVE_COMPOSITE_DISCOVERY_CLIENT_AUTO_CONFIGURATION_CLASS_NAME;
+import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.SIMPLE_REACTIVE_DISCOVERY_CLIENT_AUTO_CONFIGURATION_CLASS_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -39,5 +41,7 @@ class DiscoveryClientConstantsTest {
         assertEquals("org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient", COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME);
         assertEquals("org.springframework.cloud.client.CommonsClientAutoConfiguration", COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME);
         assertEquals("org.springframework.cloud.client.ReactiveCommonsClientAutoConfiguration", REACTIVE_COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME);
+        assertEquals("org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClientAutoConfiguration", SIMPLE_REACTIVE_DISCOVERY_CLIENT_AUTO_CONFIGURATION_CLASS_NAME);
+        assertEquals("org.springframework.cloud.client.discovery.composite.reactive.ReactiveCompositeDiscoveryClientAutoConfiguration", REACTIVE_COMPOSITE_DISCOVERY_CLIENT_AUTO_CONFIGURATION_CLASS_NAME);
     }
 }
