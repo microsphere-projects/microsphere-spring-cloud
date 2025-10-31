@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.DefaultServiceInstance;
 
+import java.net.URI;
 import java.util.Collection;
 
 import static io.microsphere.collection.Lists.ofList;
@@ -129,8 +130,26 @@ public class ServiceInstanceUtilsTest {
     }
 
     @Test
+    void testGetUriStringWithoutPort() {
+        String uriString = "http://localhost";
+        this.serviceInstance.setUri(create(uriString));
+        assertEquals(uriString + ":80", getUriString(this.serviceInstance));
+
+        uriString = "https://localhost";
+        this.serviceInstance.setUri(create(uriString));
+        assertEquals(uriString + ":443", getUriString(this.serviceInstance));
+    }
+
+    @Test
     void testGetUri() {
-        assertEquals(create("http://localhost:8080"), getUri(this.serviceInstance));
+        URI uri = getUri(this.serviceInstance);
+        assertEquals(create("http://localhost:8080"), uri);
+        assertEquals(DefaultServiceInstance.getUri(this.serviceInstance), uri);
+
+        uri = create("https://localhost");
+        this.serviceInstance.setUri(uri);
+        uri = getUri(this.serviceInstance);
+        assertEquals(create("https://localhost:443"), uri);
     }
 
     @Test
