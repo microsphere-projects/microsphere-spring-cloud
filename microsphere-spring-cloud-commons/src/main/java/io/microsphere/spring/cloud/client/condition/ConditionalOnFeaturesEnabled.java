@@ -21,7 +21,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.CommonsClientAutoConfiguration;
 import org.springframework.cloud.client.actuator.FeaturesEndpoint;
 import org.springframework.cloud.client.actuator.HasFeatures;
-import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -49,13 +48,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @ConditionalOnProperty(name = FEATURES_ENABLED_PROPERTY_NAME, matchIfMissing = true)
 public @interface ConditionalOnFeaturesEnabled {
-
-    /**
-     * Specify if the condition should match if the property is not set. Defaults to
-     * {@code true}.
-     *
-     * @return if the condition should match if the property is missing
-     */
-    @AliasFor(annotation = ConditionalOnProperty.class, attribute = "matchIfMissing")
-    boolean matchIfMissing() default true;
 }
