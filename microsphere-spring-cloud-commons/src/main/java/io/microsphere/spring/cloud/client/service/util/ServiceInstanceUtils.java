@@ -176,8 +176,9 @@ public class ServiceInstanceUtils extends BaseUtils {
     public static void setProperties(ServiceInstance source, DefaultServiceInstance target) {
         target.setInstanceId(source.getInstanceId());
         target.setServiceId(source.getServiceId());
-        URI uri = getUri(source);
-        target.setUri(uri);
+        target.setSecure(source.isSecure());
+        target.setHost(source.getHost());
+        target.setPort(source.getPort());
         Map<String, String> metadata = source.getMetadata();
         metadata.clear();
         metadata.putAll(source.getMetadata());
