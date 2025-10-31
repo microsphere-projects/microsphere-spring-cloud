@@ -39,6 +39,7 @@ import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUti
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.parseWebEndpointMappings;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.removeMetadata;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setProperties;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.Kind.SERVLET;
 import static io.microsphere.spring.web.metadata.WebEndpointMapping.servlet;
 import static io.microsphere.util.StringUtils.EMPTY_STRING;
@@ -142,6 +143,13 @@ public class ServiceInstanceUtilsTest {
 
         assertEquals(EMPTY_STRING, removeMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
         assertNull(getMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));
+    }
+
+    @Test
+    void testSetProperties() {
+        DefaultServiceInstance target = new DefaultServiceInstance();
+        setProperties(this.serviceInstance, target);
+        assertEquals(this.serviceInstance, target);
     }
 
     private Collection<WebEndpointMapping> createWebEndpointMappings() {

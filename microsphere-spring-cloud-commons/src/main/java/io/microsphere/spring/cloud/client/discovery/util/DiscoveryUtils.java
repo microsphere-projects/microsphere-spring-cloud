@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static io.microsphere.reflect.MethodUtils.invokeMethod;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setProperties;
 
 /**
  * The utilities class for Spring Cloud Discovery
@@ -65,10 +66,10 @@ public abstract class DiscoveryUtils implements Utils {
 
         DefaultServiceInstance local = properties.getLocal();
         DefaultServiceInstance targetLocal = simpleReactiveDiscoveryProperties.getLocal();
+        setProperties(targetLocal, local);
 
-        simpleReactiveDiscoveryProperties.setInstances(getInstancesMap(properties));
-
-        simpleReactiveDiscoveryProperties.afterPropertiesSet();
+        Map<String, List<DefaultServiceInstance>> instances = getInstancesMap(properties);
+        simpleReactiveDiscoveryProperties.setInstances(instances);
 
         return simpleReactiveDiscoveryProperties;
     }
@@ -89,8 +90,6 @@ public abstract class DiscoveryUtils implements Utils {
 
         Map<String, List<DefaultServiceInstance>> instances = invokeMethod(properties, "getInstances");
         simpleDiscoveryProperties.setInstances(instances);
-
-        simpleDiscoveryProperties.afterPropertiesSet();
 
         return simpleDiscoveryProperties;
     }
