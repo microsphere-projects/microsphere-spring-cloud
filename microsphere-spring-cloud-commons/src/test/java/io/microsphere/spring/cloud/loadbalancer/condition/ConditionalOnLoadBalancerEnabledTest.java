@@ -14,30 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.web.metadata.WebEndpointMapping;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
+package io.microsphere.spring.cloud.loadbalancer.condition;
 
-import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
+import io.microsphere.spring.cloud.test.ConditionalOnPropertyEnabledTest;
 
 /**
- * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry} on the Spring WebFlux Application
+ * {@link ConditionalOnLoadBalancerEnabled @ConditionalOnLoadBalancerEnabled} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see ConditionalOnLoadBalancerEnabled
  * @since 1.0.0
  */
-@ConditionalOnWebApplication(type = REACTIVE)
-public class WebFluxServiceRegistryAutoConfiguration extends WebServiceRegistryAutoConfiguration {
-
-    @Override
-    protected String getContextPath() {
-        return "";
-    }
-
-    @Override
-    protected boolean isExcludedMapping(WebEndpointMapping mapping, String[] patterns) {
-        return false;
-    }
+@ConditionalOnLoadBalancerEnabled
+public class ConditionalOnLoadBalancerEnabledTest extends ConditionalOnPropertyEnabledTest {
 }
