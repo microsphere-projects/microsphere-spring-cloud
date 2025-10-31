@@ -33,11 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @see ConditionalOnLoadBalancerEnabled
  * @since 1.0.0
  */
+@ConditionalOnLoadBalancerEnabled
 public class ConditionalOnLoadBalancerEnabledTest {
-
-    @ConditionalOnLoadBalancerEnabled
-    static class Config {
-    }
 
     @Test
     void testConfigBeanPresent() {
@@ -57,7 +54,7 @@ public class ConditionalOnLoadBalancerEnabledTest {
 
     void testConfigBean(boolean present) {
         testInSpringContainer(context -> {
-            assertEquals(present, isBeanPresent(context, Config.class));
-        }, Config.class);
+            assertEquals(present, isBeanPresent(context, getClass()));
+        }, getClass());
     }
 }
