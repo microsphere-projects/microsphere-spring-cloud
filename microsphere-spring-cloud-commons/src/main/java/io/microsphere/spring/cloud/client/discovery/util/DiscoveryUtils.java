@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static io.microsphere.reflect.MethodUtils.invokeMethod;
+import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setProperties;
 
 /**
  * The utilities class for Spring Cloud Discovery
@@ -44,7 +45,7 @@ public abstract class DiscoveryUtils implements Utils {
      * @return the instances map
      */
     @Nonnull
-    public static Map<String, List<DefaultServiceInstance>> getInstancesMap(SimpleDiscoveryProperties properties) {
+    public static Map<String, List<DefaultServiceInstance>> getInstancesMap(@Nonnull SimpleDiscoveryProperties properties) {
         return properties.getInstances();
     }
 
@@ -55,20 +56,27 @@ public abstract class DiscoveryUtils implements Utils {
      * @return the instances map
      */
     @Nonnull
-    public static Map<String, List<DefaultServiceInstance>> getInstancesMap(SimpleReactiveDiscoveryProperties properties) {
+    public static Map<String, List<DefaultServiceInstance>> getInstancesMap(@Nonnull SimpleReactiveDiscoveryProperties properties) {
         return invokeMethod(properties, "getInstances");
     }
 
+    /**
+     * Convert {@link SimpleDiscoveryProperties} to {@link SimpleReactiveDiscoveryProperties}
+     *
+     * @param properties {@link SimpleDiscoveryProperties}
+     * @return {@link SimpleReactiveDiscoveryProperties}
+     */
+    @Nonnull
     public static SimpleReactiveDiscoveryProperties simpleReactiveDiscoveryProperties(@Nonnull SimpleDiscoveryProperties properties) {
         SimpleReactiveDiscoveryProperties simpleReactiveDiscoveryProperties = new SimpleReactiveDiscoveryProperties();
         simpleReactiveDiscoveryProperties.setOrder(properties.getOrder());
 
         DefaultServiceInstance local = properties.getLocal();
         DefaultServiceInstance targetLocal = simpleReactiveDiscoveryProperties.getLocal();
+        setProperties(targetLocal, local);
 
-        simpleReactiveDiscoveryProperties.setInstances(getInstancesMap(properties));
-
-        simpleReactiveDiscoveryProperties.afterPropertiesSet();
+        Map<String, List<DefaultServiceInstance>> instances = getInstancesMap(properties);
+        simpleReactiveDiscoveryProperties.setInstances(instances);
 
         return simpleReactiveDiscoveryProperties;
     }
@@ -89,8 +97,6 @@ public abstract class DiscoveryUtils implements Utils {
 
         Map<String, List<DefaultServiceInstance>> instances = invokeMethod(properties, "getInstances");
         simpleDiscoveryProperties.setInstances(instances);
-
-        simpleDiscoveryProperties.afterPropertiesSet();
 
         return simpleDiscoveryProperties;
     }
