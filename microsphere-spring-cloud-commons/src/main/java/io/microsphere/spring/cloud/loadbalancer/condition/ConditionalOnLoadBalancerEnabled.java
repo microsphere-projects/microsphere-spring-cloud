@@ -14,38 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.spring.cloud.client.condition;
+package io.microsphere.spring.cloud.loadbalancer.condition;
 
-import io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cloud.client.CommonsClientAutoConfiguration;
-import org.springframework.cloud.client.actuator.FeaturesEndpoint;
-import org.springframework.cloud.client.actuator.HasFeatures;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.FEATURES_ENABLED_PROPERTY_NAME;
+import static io.microsphere.spring.cloud.commons.constants.SpringCloudPropertyConstants.LOAD_BALANCER_ENABLED_PROPERTY_NAME;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * The conditional annotation meta-annotates {@link ConditionalOnProperty @ConditionalOnProperty} for
- * {@link FeaturesEndpoint @FeaturesEndpoint} enabled.
+ * LoadBalancer enabled.
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see CommonsClientAutoConfiguration.ActuatorConfiguration
- * @see FeaturesEndpoint
- * @see HasFeatures
- * @see CommonsPropertyConstants#FEATURES_ENABLED_PROPERTY_NAME
+ * @see org.springframework.cloud.loadbalancer.config.LoadBalancerAutoConfiguration
  * @see ConditionalOnProperty
  * @since 1.0.0
  */
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
 @Documented
-@ConditionalOnProperty(name = FEATURES_ENABLED_PROPERTY_NAME, matchIfMissing = true)
-public @interface ConditionalOnFeaturesEnabled {
+@ConditionalOnProperty(name = LOAD_BALANCER_ENABLED_PROPERTY_NAME, havingValue = "true", matchIfMissing = true)
+public @interface ConditionalOnLoadBalancerEnabled {
 }
