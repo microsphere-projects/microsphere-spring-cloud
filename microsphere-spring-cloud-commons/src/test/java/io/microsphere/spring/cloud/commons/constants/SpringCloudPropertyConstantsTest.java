@@ -25,6 +25,7 @@ import static io.microsphere.spring.cloud.commons.constants.SpringCloudPropertyC
 import static io.microsphere.spring.cloud.commons.constants.SpringCloudPropertyConstants.SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.commons.constants.SpringCloudPropertyConstants.SERVICE_REGISTRY_PROPERTY_PREFIX;
 import static io.microsphere.spring.cloud.commons.constants.SpringCloudPropertyConstants.SPRING_CLOUD_PROPERTY_PREFIX;
+import static io.microsphere.spring.cloud.commons.constants.SpringCloudPropertyConstants.UTIL_ENABLED_PROPERTY_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -43,5 +44,6 @@ class SpringCloudPropertyConstantsTest {
         assertEquals("spring.cloud.service-registry.auto-registration.enabled", SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME);
         assertEquals("spring.cloud.features.enabled", FEATURES_ENABLED_PROPERTY_NAME);
         assertEquals("spring.cloud.loadbalancer.enabled", LOAD_BALANCER_ENABLED_PROPERTY_NAME);
+        assertEquals("spring.cloud.util.enabled", UTIL_ENABLED_PROPERTY_NAME);
     }
 }
