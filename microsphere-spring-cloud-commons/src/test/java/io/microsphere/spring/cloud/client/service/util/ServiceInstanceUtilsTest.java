@@ -127,7 +127,6 @@ public class ServiceInstanceUtilsTest {
         String uriString = "https://localhost:8080";
         this.serviceInstance.setUri(create(uriString));
         assertEquals(uriString, getUriString(this.serviceInstance));
-
     }
 
     @Test
