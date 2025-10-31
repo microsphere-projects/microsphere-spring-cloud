@@ -162,6 +162,23 @@ public class ServiceInstanceUtils extends BaseUtils {
         return metadata.remove(metadataName);
     }
 
+    /**
+     * Set properties from source to target
+     *
+     * @param source source {@link ServiceInstance}
+     * @param target target {@link DefaultServiceInstance}
+     */
+    public static void setProperties(ServiceInstance source, DefaultServiceInstance target) {
+        target.setInstanceId(source.getInstanceId());
+        target.setServiceId(source.getServiceId());
+        target.setHost(source.getHost());
+        target.setPort(source.getPort());
+        target.setSecure(source.isSecure());
+        Map<String, String> metadata = source.getMetadata();
+        metadata.clear();
+        metadata.putAll(source.getMetadata());
+    }
+
     static List<WebEndpointMapping> parseWebEndpointMappings(String encodedJSON) {
         if (isBlank(encodedJSON)) {
             return emptyList();
