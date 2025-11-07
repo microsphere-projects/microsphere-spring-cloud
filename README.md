@@ -8,8 +8,7 @@
 [![Codecov](https://codecov.io/gh/microsphere-projects/microsphere-spring-cloud/branch/main/graph/badge.svg)](https://app.codecov.io/gh/microsphere-projects/microsphere-spring-cloud)
 ![Maven](https://img.shields.io/maven-central/v/io.github.microsphere-projects/microsphere-spring-cloud.svg)
 ![License](https://img.shields.io/github/license/microsphere-projects/microsphere-spring-cloud.svg)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/microsphere-projects/microsphere-spring-cloud.svg)](http://isitmaintained.com/project/microsphere-projects/microsphere-spring-cloud "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/microsphere-projects/microsphere-spring-cloud.svg)](http://isitmaintained.com/project/microsphere-projects/microsphere-spring-cloud "Percentage of issues still open")
+
 
 Microsphere Spring Cloud is an extension library for Spring Cloud that enhances and optimizes its capabilities,
 particularly focused on providing dynamic runtime configuration changes without application restarts. It's designed to
@@ -62,8 +61,8 @@ pom.xml:
 
 | **Branches** | **Purpose**                                      | **Latest Version** |
 |--------------|--------------------------------------------------|--------------------|
-| **0.2.x**    | Compatible with Spring Cloud 2022.0.x - 2025.0.x | 0.2.4              |
-| **0.1.x**    | Compatible with Spring Cloud Hoxton - 2021.0.x   | 0.1.4              |
+| **0.2.x**    | Compatible with Spring Cloud 2022.0.x - 2025.0.x | 0.2.5              |
+| **0.1.x**    | Compatible with Spring Cloud Hoxton - 2021.0.x   | 0.1.5              |
 
 Then add the specific modules you need:
 
