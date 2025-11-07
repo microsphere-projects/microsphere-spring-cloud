@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.test;
 
-import io.microsphere.util.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
