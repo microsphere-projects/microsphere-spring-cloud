@@ -17,6 +17,7 @@
 
 package io.microsphere.spring.cloud.test;
 
+import io.microsphere.util.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,9 +33,9 @@ import static io.microsphere.spring.beans.BeanUtils.isBeanPresent;
 import static io.microsphere.spring.core.annotation.AnnotationUtils.getAnnotationAttributes;
 import static io.microsphere.spring.test.util.SpringTestUtils.testInSpringContainer;
 import static io.microsphere.util.ArrayUtils.isEmpty;
+import static io.microsphere.util.ArrayUtils.length;
 import static java.lang.String.valueOf;
 import static java.lang.System.getProperties;
-import static org.apache.commons.io.IOUtils.length;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.core.type.AnnotationMetadata.introspect;
 import static org.springframework.util.StringUtils.hasText;
