@@ -2,8 +2,8 @@ package io.microsphere.spring.cloud.openfeign.retryer;
 
 import feign.RetryableException;
 import feign.Retryer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.microsphere.logging.Logger;
+import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ARetry implements Retryer {
 
-    private static final Logger log = LoggerFactory.getLogger(ARetry.class);
+    private static final Logger log = getLogger(ARetry.class);
 
     @Override
     public void continueOrPropagate(RetryableException e) {

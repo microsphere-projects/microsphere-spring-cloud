@@ -1,8 +1,8 @@
 package io.microsphere.spring.cloud.openfeign.querymapencoder;
 
 import feign.QueryMapEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.microsphere.logging.Logger;
+import static io.microsphere.logging.LoggerFactory.getLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 public class BQueryMapEncoder implements QueryMapEncoder {
 
 
-    private static final Logger log = LoggerFactory.getLogger(BQueryMapEncoder.class);
+    private static final Logger log = getLogger(BQueryMapEncoder.class);
 
     @Override
     public Map<String, Object> encode(Object object) {

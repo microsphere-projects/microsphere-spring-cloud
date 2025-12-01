@@ -2,8 +2,8 @@ package io.microsphere.spring.cloud.openfeign.errordecoder;
 
 import feign.Response;
 import feign.codec.ErrorDecoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.microsphere.logging.Logger;
+import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public class AErrorDecoder implements ErrorDecoder {
 
-    private static final Logger log = LoggerFactory.getLogger(AErrorDecoder.class);
+    private static final Logger log = getLogger(AErrorDecoder.class);
 
     @Override
     public Exception decode(String methodKey, Response response) {
