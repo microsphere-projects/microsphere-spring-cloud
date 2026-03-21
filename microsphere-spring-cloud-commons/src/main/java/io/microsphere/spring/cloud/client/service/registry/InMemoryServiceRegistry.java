@@ -35,23 +35,73 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
 
     private final ConcurrentMap<String, Registration> storage = new ConcurrentHashMap<>(1);
 
+    /**
+     * Registers the given {@link Registration} instance in the in-memory storage,
+     * keyed by its instance ID.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
+     * Registration registration = createRegistration();
+     * registry.register(registration);
+     * }</pre>
+     *
+     * @param registration the {@link Registration} to store
+     */
     @Override
     public void register(Registration registration) {
         String id = registration.getInstanceId();
         storage.put(id, registration);
     }
 
+    /**
+     * Removes the given {@link Registration} instance from the in-memory storage.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
+     * Registration registration = createRegistration();
+     * registry.register(registration);
+     * registry.deregister(registration);
+     * }</pre>
+     *
+     * @param registration the {@link Registration} to remove
+     */
     @Override
     public void deregister(Registration registration) {
         String id = registration.getInstanceId();
         storage.remove(id, registration);
     }
 
+    /**
+     * Closes this registry by clearing all stored {@link Registration} instances.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
+     * registry.register(registration);
+     * registry.close();
+     * }</pre>
+     */
     @Override
     public void close() {
         storage.clear();
     }
 
+    /**
+     * Sets the status of the given {@link Registration} by storing it in
+     * the registration's metadata under the {@code _status_} key.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
+     * registry.register(registration);
+     * registry.setStatus(registration, "UP");
+     * }</pre>
+     *
+     * @param registration the {@link Registration} whose status is to be set
+     * @param status       the status value to set
+     */
     @Override
     public void setStatus(Registration registration, String status) {
         Map<String, String> metadata = getMetadata(registration);
@@ -60,6 +110,20 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
         }
     }
 
+    /**
+     * Retrieves the status of the given {@link Registration} from its metadata.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
+     * registry.register(registration);
+     * registry.setStatus(registration, "UP");
+     * Object status = registry.getStatus(registration); // "UP"
+     * }</pre>
+     *
+     * @param registration the {@link Registration} whose status is to be retrieved
+     * @return the status value, or {@code null} if not set or registration not found
+     */
     @Override
     public Object getStatus(Registration registration) {
         Map<String, String> metadata = getMetadata(registration);
@@ -69,6 +133,20 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
         return null;
     }
 
+    /**
+     * Retrieves the metadata {@link Map} for the given {@link Registration}
+     * from the in-memory storage.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
+     * registry.register(registration);
+     * Map<String, String> metadata = registry.getMetadata(registration);
+     * }</pre>
+     *
+     * @param registration the {@link Registration} whose metadata is to be retrieved
+     * @return the metadata map, or {@code null} if the registration is not found
+     */
     protected Map<String, String> getMetadata(Registration registration) {
         String id = registration.getInstanceId();
         Registration instance = storage.get(id);
