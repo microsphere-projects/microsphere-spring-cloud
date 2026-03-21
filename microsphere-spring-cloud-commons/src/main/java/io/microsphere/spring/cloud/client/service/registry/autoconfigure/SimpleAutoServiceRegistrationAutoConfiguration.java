@@ -80,6 +80,22 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
     )
     public static final String ENABLED_PROPERTY_NAME = PROPERTY_NAME_PREFIX + PropertyConstants.ENABLED_PROPERTY_NAME;
 
+    /**
+     * Creates a {@link Registration} bean from the application name, server properties, and network info.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Auto-configured via Spring Boot; the bean is available for injection:
+     * @Autowired
+     * Registration registration;
+     * String serviceId = registration.getServiceId();
+     * }</pre>
+     *
+     * @param applicationName the Spring application name resolved from {@code spring.application.name}
+     * @param serverProperties the {@link ServerProperties} providing the server port
+     * @param inetUtils the {@link InetUtils} for resolving the host address
+     * @return a new {@link DefaultRegistration} instance
+     */
     @Bean
     public Registration registration(
             @Value("${spring.application.name:default}") String applicationName,
@@ -98,6 +114,19 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
         return registration;
     }
 
+    /**
+     * Creates an {@link InMemoryServiceRegistry} bean as the default {@link ServiceRegistry} implementation.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Auto-configured when no other ServiceRegistry bean is present:
+     * @Autowired
+     * ServiceRegistry<Registration> serviceRegistry;
+     * serviceRegistry.register(registration);
+     * }</pre>
+     *
+     * @return a new {@link InMemoryServiceRegistry} instance
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceRegistry<Registration> serviceRegistry() {
