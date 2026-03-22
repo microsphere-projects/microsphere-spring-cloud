@@ -23,6 +23,19 @@ import org.springframework.context.event.EventListener;
 @ConditionalOnBean(EnableFeignAutoRefresh.Marker.class)
 public class FeignClientAutoRefreshAutoConfiguration {
 
+    /**
+     * Creates a {@link FeignBuilderCustomizer} that adds a {@link NoOpRequestInterceptor}
+     * as the default request interceptor for all Feign clients. This ensures that the
+     * auto-refresh mechanism has an interceptor entry point to work with.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * FeignBuilderCustomizer customizer = addDefaultRequestInterceptorCustomizer();
+     * // customizer is applied automatically by Spring to each Feign builder
+     * }</pre>
+     *
+     * @return a {@link FeignBuilderCustomizer} that registers the no-op request interceptor
+     */
     @Bean
     public FeignBuilderCustomizer addDefaultRequestInterceptorCustomizer() {
         return builder -> {
@@ -30,6 +43,20 @@ public class FeignClientAutoRefreshAutoConfiguration {
         };
     }
 
+    /**
+     * Handles the {@link ApplicationReadyEvent} to register a
+     * {@link FeignClientConfigurationChangedListener} after the application context
+     * is fully initialized. This ensures that the listener is registered after the
+     * {@code ConfigurationPropertiesRebinder}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Automatically invoked by Spring when the application is ready:
+     * // context.publishEvent(new ApplicationReadyEvent(...));
+     * }</pre>
+     *
+     * @param event the {@link ApplicationReadyEvent} indicating the application is ready
+     */
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReadyEvent(ApplicationReadyEvent event) {
         /**
@@ -43,6 +70,19 @@ public class FeignClientAutoRefreshAutoConfiguration {
         return new FeignComponentRegistry(clientProperties.getDefaultConfig(), beanFactory);
     }
 
+    /**
+     * Creates a {@link FeignClientSpecificationPostProcessor} bean that injects the
+     * {@link io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapability}
+     * into default Feign client specifications.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * FeignClientSpecificationPostProcessor processor = feignClientSpecificationPostProcessor();
+     * // processor is registered as a BeanPostProcessor by Spring automatically
+     * }</pre>
+     *
+     * @return a new {@link FeignClientSpecificationPostProcessor} instance
+     */
     @Bean
     public FeignClientSpecificationPostProcessor feignClientSpecificationPostProcessor() {
         return new FeignClientSpecificationPostProcessor();

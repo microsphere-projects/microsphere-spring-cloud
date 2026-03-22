@@ -22,6 +22,20 @@ import static io.microsphere.reflect.MethodUtils.invokeMethod;
 @Endpoint(id = "serviceRegistration")
 public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndpoint {
 
+    /**
+     * Returns a map of service registration metadata including the application name,
+     * registration details, port, status, running state, and configuration.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Via actuator endpoint: GET /actuator/serviceRegistration
+     * Map<String, Object> metadata = endpoint.metadata();
+     * String appName = (String) metadata.get("application-name");
+     * boolean running = (boolean) metadata.get("running");
+     * }</pre>
+     *
+     * @return a {@link Map} containing service registration metadata
+     */
     @ReadOperation
     public Map<String, Object> metadata() {
         Map<String, Object> metadata = new LinkedHashMap<>(16);
@@ -38,6 +52,20 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
         return metadata;
     }
 
+    /**
+     * Registers the service with the {@link ServiceRegistry} and returns whether
+     * the service was already running. If the service is already running, the
+     * registration is skipped and a warning is logged.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Via actuator endpoint: POST /actuator/serviceRegistration
+     * boolean wasAlreadyRunning = endpoint.start();
+     * }</pre>
+     *
+     * @return {@code true} if the service was already running,
+     *         {@code false} if it was newly registered
+     */
     @WriteOperation
     public boolean start() {
         boolean isRunning = isRunning();

@@ -33,15 +33,48 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
 
     private final Set<RequestInterceptor> set = new LinkedHashSet<>();
 
+    /**
+     * Constructs a new {@link CompositedRequestInterceptor} for the given Feign client context.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * CompositedRequestInterceptor interceptor =
+     *     new CompositedRequestInterceptor("my-client", beanFactory);
+     * }</pre>
+     *
+     * @param contextId the Feign client context identifier
+     * @param beanFactory the {@link BeanFactory} used to resolve interceptor beans during refresh
+     */
     public CompositedRequestInterceptor(String contextId, BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
         this.contextId = contextId;
     }
 
+    /**
+     * Returns an unmodifiable view of the currently registered {@link RequestInterceptor} instances.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Set<RequestInterceptor> interceptors = compositedInterceptor.getRequestInterceptors();
+     * }</pre>
+     *
+     * @return an unmodifiable {@link java.util.Set} of request interceptors
+     */
     public Set<RequestInterceptor> getRequestInterceptors() {
         return unmodifiableSet(set);
     }
 
+    /**
+     * Applies all registered {@link RequestInterceptor} instances to the given
+     * {@link RequestTemplate} in order. This method is thread-safe.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * compositedInterceptor.apply(requestTemplate);
+     * }</pre>
+     *
+     * @param template the {@link RequestTemplate} to apply interceptors to
+     */
     @Override
     public void apply(RequestTemplate template) {
         synchronized (this.set) {
@@ -49,6 +82,19 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
         }
     }
 
+    /**
+     * Adds a {@link RequestInterceptor} to this composite. Returns {@code true} if this
+     * is the first interceptor added (i.e., the set was previously empty), {@code false} otherwise.
+     * This method is thread-safe.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * boolean isFirst = compositedInterceptor.addRequestInterceptor(myInterceptor);
+     * }</pre>
+     *
+     * @param requestInterceptor the {@link RequestInterceptor} to add
+     * @return {@code true} if this was the first interceptor added, {@code false} otherwise
+     */
     public boolean addRequestInterceptor(RequestInterceptor requestInterceptor) {
         synchronized (this.set) {
             boolean isFirst = this.set.isEmpty();
@@ -61,6 +107,16 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
         return getOrInstantiate(clazz);
     }
 
+    /**
+     * Refreshes the set of {@link RequestInterceptor} instances by reloading them from
+     * the current {@link FeignClientProperties} configuration. This includes request
+     * interceptors, default request headers, and default query parameters.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * compositedInterceptor.refresh();
+     * }</pre>
+     */
     @Override
     public void refresh() {
         FeignClientProperties properties = getOrInstantiate(FeignClientProperties.class);

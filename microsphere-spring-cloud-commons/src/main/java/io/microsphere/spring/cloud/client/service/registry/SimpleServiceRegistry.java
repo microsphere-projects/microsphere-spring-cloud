@@ -48,39 +48,123 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
 
     private final Map<String, List<DefaultServiceInstance>> instancesMap;
 
+    /**
+     * Constructs a new {@link SimpleServiceRegistry} backed by the given
+     * {@link SimpleDiscoveryProperties}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(simpleDiscoveryProperties);
+     * }</pre>
+     *
+     * @param properties the {@link SimpleDiscoveryProperties} to obtain instances from
+     */
     public SimpleServiceRegistry(SimpleDiscoveryProperties properties) {
         this(getInstancesMap(properties));
     }
 
+    /**
+     * Constructs a new {@link SimpleServiceRegistry} backed by the given
+     * {@link SimpleReactiveDiscoveryProperties}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(simpleReactiveDiscoveryProperties);
+     * }</pre>
+     *
+     * @param properties the {@link SimpleReactiveDiscoveryProperties} to obtain instances from
+     */
     public SimpleServiceRegistry(SimpleReactiveDiscoveryProperties properties) {
         this(getInstancesMap(properties));
     }
 
+    /**
+     * Constructs a new {@link SimpleServiceRegistry} backed by the given instances map.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(instancesMap);
+     * }</pre>
+     *
+     * @param instancesMap the map of service IDs to their {@link DefaultServiceInstance} lists
+     */
     public SimpleServiceRegistry(Map<String, List<DefaultServiceInstance>> instancesMap) {
         this.instancesMap = instancesMap;
     }
 
+    /**
+     * Registers the given {@link DefaultRegistration} by adding it to the instances list
+     * for its service ID.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * registry.register(registration);
+     * }</pre>
+     *
+     * @param registration the {@link DefaultRegistration} to register
+     */
     @Override
     public void register(DefaultRegistration registration) {
         List<DefaultServiceInstance> instances = getInstances(registration);
         instances.add(registration);
     }
 
+    /**
+     * Deregisters the given {@link DefaultRegistration} by removing it from the instances list
+     * for its service ID.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * registry.deregister(registration);
+     * }</pre>
+     *
+     * @param registration the {@link DefaultRegistration} to deregister
+     */
     @Override
     public void deregister(DefaultRegistration registration) {
         List<DefaultServiceInstance> instances = getInstances(registration);
         instances.remove(registration);
     }
 
+    /**
+     * Closes this registry. This implementation is a no-op.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * registry.close();
+     * }</pre>
+     */
     @Override
     public void close() {
     }
 
+    /**
+     * Sets the status of the given {@link DefaultRegistration} by storing it in its metadata.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * registry.setStatus(registration, "UP");
+     * }</pre>
+     *
+     * @param registration the {@link DefaultRegistration} whose status is to be set
+     * @param status       the status value to set
+     */
     @Override
     public void setStatus(DefaultRegistration registration, String status) {
         setMetadata(registration, STATUS_KEY, status);
     }
 
+    /**
+     * Returns the status of the given {@link DefaultRegistration} from its metadata.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * String status = registry.getStatus(registration);
+     * }</pre>
+     *
+     * @param registration the {@link DefaultRegistration} whose status is to be retrieved
+     * @return the status value, or {@code null} if not set
+     */
     @Override
     public String getStatus(DefaultRegistration registration) {
         return getMetadata(registration, STATUS_KEY);

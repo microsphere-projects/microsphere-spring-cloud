@@ -68,6 +68,22 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
     private volatile ServerProperties currentServerProperties;
 
+    /**
+     * Constructs a new {@link TomcatDynamicConfigurationListener} that monitors
+     * {@link EnvironmentChangeEvent} instances to dynamically reconfigure the given
+     * {@link TomcatWebServer} at runtime.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * TomcatDynamicConfigurationListener listener =
+     *     new TomcatDynamicConfigurationListener(tomcatWebServer, serverProperties, applicationContext);
+     * applicationContext.addApplicationListener(listener);
+     * }</pre>
+     *
+     * @param tomcatWebServer the embedded Tomcat web server to configure
+     * @param serverProperties the current {@link ServerProperties} bound from configuration
+     * @param context the {@link ConfigurableApplicationContext} used to resolve environment and beans
+     */
     public TomcatDynamicConfigurationListener(TomcatWebServer tomcatWebServer, ServerProperties serverProperties,
                                               ConfigurableApplicationContext context) {
         this.tomcatWebServer = tomcatWebServer;
@@ -85,6 +101,19 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
         this.currentServerProperties = getCurrentServerProperties(environment);
     }
 
+    /**
+     * Handles an {@link EnvironmentChangeEvent} by checking whether any server-related
+     * properties have changed, and if so, reconfigures the embedded Tomcat connector
+     * accordingly (e.g., thread pool sizes, connection timeouts, max connections).
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Triggered automatically when environment properties change:
+     * // context.publishEvent(new EnvironmentChangeEvent(context, changedKeys));
+     * }</pre>
+     *
+     * @param event the {@link EnvironmentChangeEvent} containing the set of changed property keys
+     */
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
         if (!isSourceFrom(event)) {

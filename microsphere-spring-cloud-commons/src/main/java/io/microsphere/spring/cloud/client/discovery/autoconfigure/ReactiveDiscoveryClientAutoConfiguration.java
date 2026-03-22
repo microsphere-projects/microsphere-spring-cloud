@@ -61,6 +61,18 @@ public class ReactiveDiscoveryClientAutoConfiguration {
     @ConditionalOnBlockingDiscoveryEnabled
     public static class BlockingConfiguration {
 
+        /**
+         * Creates a {@link ReactiveDiscoveryClientAdapter} bean that adapts the given
+         * {@link ReactiveDiscoveryClient} into a blocking {@link org.springframework.cloud.client.discovery.DiscoveryClient}.
+         *
+         * <p>Example Usage:
+         * <pre>{@code
+         * ReactiveDiscoveryClientAdapter adapter = reactiveDiscoveryClientAdapter(reactiveDiscoveryClient);
+         * }</pre>
+         *
+         * @param reactiveDiscoveryClient the {@link ReactiveDiscoveryClient} to adapt
+         * @return a new {@link ReactiveDiscoveryClientAdapter} instance
+         */
         @Bean
         @ConditionalOnBean(ReactiveDiscoveryClient.class)
         public ReactiveDiscoveryClientAdapter reactiveDiscoveryClientAdapter(ReactiveDiscoveryClient reactiveDiscoveryClient) {

@@ -53,21 +53,63 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         }
     }
 
+    /**
+     * Registers all underlying service instances by delegating to each corresponding
+     * {@link ServiceRegistry}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * multipleServiceRegistry.register(multipleRegistration);
+     * }</pre>
+     *
+     * @param registration the {@link MultipleRegistration} containing all registrations
+     */
     @Override
     public void register(MultipleRegistration registration) {
         iterate(registration, (reg, registry) -> registry.register(reg));
     }
 
+    /**
+     * Deregisters all underlying service instances by delegating to each corresponding
+     * {@link ServiceRegistry}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * multipleServiceRegistry.deregister(multipleRegistration);
+     * }</pre>
+     *
+     * @param registration the {@link MultipleRegistration} containing all registrations
+     */
     @Override
     public void deregister(MultipleRegistration registration) {
         iterate(registration, (reg, registry) -> registry.deregister(reg));
     }
 
+    /**
+     * Closes all underlying {@link ServiceRegistry} instances.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * multipleServiceRegistry.close();
+     * }</pre>
+     */
     @Override
     public void close() {
         iterate(ServiceRegistry::close);
     }
 
+    /**
+     * Sets the status of the given {@link MultipleRegistration} by delegating to each
+     * corresponding {@link ServiceRegistry}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * multipleServiceRegistry.setStatus(multipleRegistration, "UP");
+     * }</pre>
+     *
+     * @param registration the {@link MultipleRegistration} whose status is to be set
+     * @param status       the status value to set
+     */
     @Override
     public void setStatus(MultipleRegistration registration, String status) {
         iterate(registration, (reg, registry) -> registry.setStatus(reg, status));
