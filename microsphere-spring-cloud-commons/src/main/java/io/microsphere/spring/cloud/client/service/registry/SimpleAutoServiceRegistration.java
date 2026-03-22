@@ -34,6 +34,20 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
 
     private final Registration registration;
 
+    /**
+     * Constructs a new {@link SimpleAutoServiceRegistration} with the given service registry,
+     * properties, and registration.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * SimpleAutoServiceRegistration autoReg = new SimpleAutoServiceRegistration(
+     *     serviceRegistry, properties, registration);
+     * }</pre>
+     *
+     * @param serviceRegistry the {@link ServiceRegistry} to register with
+     * @param properties      the {@link AutoServiceRegistrationProperties} configuration
+     * @param registration    the {@link Registration} to auto-register
+     */
     public SimpleAutoServiceRegistration(ServiceRegistry<Registration> serviceRegistry,
                                             AutoServiceRegistrationProperties properties, Registration registration) {
         super(serviceRegistry, properties);
@@ -41,21 +55,61 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
         this.registration = registration;
     }
 
+    /**
+     * Returns the configuration object for this auto-registration.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Object config = autoRegistration.getConfiguration();
+     * }</pre>
+     *
+     * @return the {@link AutoServiceRegistrationProperties} instance
+     */
     @Override
     protected Object getConfiguration() {
         return properties;
     }
 
+    /**
+     * Returns whether auto service registration is enabled.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * boolean enabled = autoRegistration.isEnabled();
+     * }</pre>
+     *
+     * @return {@code true} if auto service registration is enabled
+     */
     @Override
     protected boolean isEnabled() {
         return properties.isEnabled();
     }
 
+    /**
+     * Returns the {@link Registration} used for service registration.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Registration reg = autoRegistration.getRegistration();
+     * }</pre>
+     *
+     * @return the {@link Registration} instance
+     */
     @Override
     protected Registration getRegistration() {
         return registration;
     }
 
+    /**
+     * Returns the {@link Registration} used for management service registration.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Registration mgmtReg = autoRegistration.getManagementRegistration();
+     * }</pre>
+     *
+     * @return the {@link Registration} instance for management
+     */
     @Override
     protected Registration getManagementRegistration() {
         return registration;
