@@ -27,6 +27,21 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
 
     private static final Class<?> FEIGN_CLIENT_SPECIFICATION_CLASS = FeignClientSpecification.class;
 
+    /**
+     * Injects the {@link AutoRefreshCapability} into default {@link FeignClientSpecification}
+     * beans after initialization.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Invoked automatically by the Spring container during bean post-processing
+     * Object processed = postProcessAfterInitialization(bean, "default.my-client");
+     * }</pre>
+     *
+     * @param bean     the bean instance that has been initialized
+     * @param beanName the name of the bean in the Spring context
+     * @return the (possibly modified) bean instance
+     * @throws BeansException if post-processing fails
+     */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class<?> beanType = getTargetClass(bean);

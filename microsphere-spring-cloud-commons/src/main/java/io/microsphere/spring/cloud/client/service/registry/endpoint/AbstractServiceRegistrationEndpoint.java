@@ -46,6 +46,17 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
 
     protected static boolean running;
 
+    /**
+     * {@inheritDoc}
+     * <p>Initializes the {@link Registration}, {@link ServiceRegistry}, and
+     * {@link AbstractAutoServiceRegistration} from available bean providers.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Called automatically by the Spring container after all singletons are instantiated.
+     * // Ensures registration, serviceRegistry, and serviceRegistration fields are populated.
+     * }</pre>
+     */
     @Override
     public void afterSingletonsInstantiated() {
         this.registration = registrationProvider.getIfAvailable();
@@ -53,6 +64,19 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
         this.serviceRegistration = autoServiceRegistrationProvider.getIfAvailable();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Captures the web server port and detects the running state of the
+     * {@link AbstractAutoServiceRegistration}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Called automatically when the embedded web server has been initialized.
+     * // After this event, the port and running state are available.
+     * }</pre>
+     *
+     * @param event the {@link WebServerInitializedEvent} carrying the initialized web server
+     */
     @Override
     public void onApplicationEvent(WebServerInitializedEvent event) {
         WebServer webServer = event.getWebServer();
@@ -60,14 +84,48 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
         this.running = detectRunning(serviceRegistration);
     }
 
+    /**
+     * Detects whether the given {@link AbstractAutoServiceRegistration} is currently running.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * boolean running = AbstractServiceRegistrationEndpoint.detectRunning(serviceRegistration);
+     * }</pre>
+     *
+     * @param serviceRegistration the {@link AbstractAutoServiceRegistration} to check, may be {@code null}
+     * @return {@code true} if the service registration is running, {@code false} otherwise
+     */
     static boolean detectRunning(AbstractAutoServiceRegistration serviceRegistration) {
         return serviceRegistration == null ? false : serviceRegistration.isRunning();
     }
 
+    /**
+     * Returns whether the service registration is currently running.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * if (endpoint.isRunning()) {
+     *     // service is registered and running
+     * }
+     * }</pre>
+     *
+     * @return {@code true} if the service registration is running, {@code false} otherwise
+     */
     protected boolean isRunning() {
         return running;
     }
 
+    /**
+     * Sets the running state of the service registration.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * endpoint.setRunning(true);  // mark service as running
+     * endpoint.setRunning(false); // mark service as stopped
+     * }</pre>
+     *
+     * @param running {@code true} to mark the service as running, {@code false} otherwise
+     */
     public void setRunning(boolean running) {
         this.running = running;
     }

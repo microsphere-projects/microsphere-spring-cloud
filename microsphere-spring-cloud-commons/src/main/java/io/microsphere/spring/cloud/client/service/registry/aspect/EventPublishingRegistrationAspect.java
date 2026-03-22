@@ -59,6 +59,20 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
 
     private ObjectProvider<RegistrationCustomizer> registrationCustomizers;
 
+    /**
+     * AOP advice executed before {@link ServiceRegistry#register(Registration)}, publishing a
+     * {@link RegistrationPreRegisteredEvent} and applying {@link RegistrationCustomizer customizations}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // This advice is triggered automatically when ServiceRegistry.register() is called:
+     * serviceRegistry.register(registration);
+     * // A RegistrationPreRegisteredEvent is published before actual registration
+     * }</pre>
+     *
+     * @param registry     the target {@link ServiceRegistry}
+     * @param registration the {@link Registration} being registered
+     */
     @Before(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeRegister(ServiceRegistry registry, Registration registration) {
         if (isIgnored(registry)) {
@@ -70,6 +84,20 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
         });
     }
 
+    /**
+     * AOP advice executed before {@link ServiceRegistry#deregister(Registration)}, publishing a
+     * {@link RegistrationPreDeregisteredEvent}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // This advice is triggered automatically when ServiceRegistry.deregister() is called:
+     * serviceRegistry.deregister(registration);
+     * // A RegistrationPreDeregisteredEvent is published before actual deregistration
+     * }</pre>
+     *
+     * @param registry     the target {@link ServiceRegistry}
+     * @param registration the {@link Registration} being deregistered
+     */
     @Before(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeDeregister(ServiceRegistry registry, Registration registration) {
         if (isIgnored(registry)) {
@@ -78,6 +106,20 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
         context.publishEvent(new RegistrationPreDeregisteredEvent(registry, registration));
     }
 
+    /**
+     * AOP advice executed after {@link ServiceRegistry#register(Registration)}, publishing a
+     * {@link RegistrationRegisteredEvent}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // This advice is triggered automatically after ServiceRegistry.register() completes:
+     * serviceRegistry.register(registration);
+     * // A RegistrationRegisteredEvent is published after successful registration
+     * }</pre>
+     *
+     * @param registry     the target {@link ServiceRegistry}
+     * @param registration the {@link Registration} that was registered
+     */
     @After(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterRegister(ServiceRegistry registry, Registration registration) {
         if (isIgnored(registry)) {
@@ -86,6 +128,20 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
         context.publishEvent(new RegistrationRegisteredEvent(registry, registration));
     }
 
+    /**
+     * AOP advice executed after {@link ServiceRegistry#deregister(Registration)}, publishing a
+     * {@link RegistrationDeregisteredEvent}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // This advice is triggered automatically after ServiceRegistry.deregister() completes:
+     * serviceRegistry.deregister(registration);
+     * // A RegistrationDeregisteredEvent is published after successful deregistration
+     * }</pre>
+     *
+     * @param registry     the target {@link ServiceRegistry}
+     * @param registration the {@link Registration} that was deregistered
+     */
     @After(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterDeregister(ServiceRegistry registry, Registration registration) {
         if (isIgnored(registry)) {
@@ -98,6 +154,15 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
         return MultipleServiceRegistry.class.isAssignableFrom(registry.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * EventPublishingRegistrationAspect aspect = new EventPublishingRegistrationAspect();
+     * aspect.setApplicationContext(applicationContext);
+     * }</pre>
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;

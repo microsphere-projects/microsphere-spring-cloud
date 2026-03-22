@@ -25,10 +25,35 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
 
     static final MethodHandle getQueryMapEncoderMethodHandle = findVirtual(FeignClientConfiguration.class, getQueryMapEncoderMethodName);
 
+    /**
+     * Constructs a {@link DecoratedQueryMapEncoder} wrapping the given {@link QueryMapEncoder} delegate.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * DecoratedQueryMapEncoder encoder = new DecoratedQueryMapEncoder(
+     *     "my-client", contextFactory, clientProperties, new QueryMapEncoder.Default());
+     * }</pre>
+     *
+     * @param contextId        the Feign client context ID
+     * @param contextFactory   the {@link NamedContextFactory} for resolving per-client contexts
+     * @param clientProperties the {@link FeignClientProperties} for configuration lookup
+     * @param delegate         the original {@link QueryMapEncoder} to delegate to
+     */
     public DecoratedQueryMapEncoder(String contextId, NamedContextFactory<FeignClientSpecification> contextFactory, FeignClientProperties clientProperties, QueryMapEncoder delegate) {
         super(contextId, contextFactory, clientProperties, delegate);
     }
 
+    /**
+     * Returns the configured {@link QueryMapEncoder} class from {@link FeignClientConfiguration},
+     * falling back to {@link PageableSpringQueryMapEncoder} if not configured.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Class<? extends QueryMapEncoder> type = decoratedQueryMapEncoder.componentType();
+     * }</pre>
+     *
+     * @return the {@link QueryMapEncoder} component type class
+     */
     @Override
     protected Class<? extends QueryMapEncoder> componentType() {
         Class<QueryMapEncoder> queryMapEncoderClass = getQueryMapEncoder(getCurrentConfiguration());
@@ -42,6 +67,20 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
         return getQueryMapEncoder(getQueryMapEncoderMethodHandle, feignClientConfiguration);
     }
 
+    /**
+     * Retrieves the {@link QueryMapEncoder} class from a {@link FeignClientConfiguration}
+     * using a {@link MethodHandle} for compatibility across Spring Cloud versions.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Class<QueryMapEncoder> encoderClass = DecoratedQueryMapEncoder.getQueryMapEncoder(
+     *     getQueryMapEncoderMethodHandle, feignClientConfiguration);
+     * }</pre>
+     *
+     * @param methodHandle             the {@link MethodHandle} to invoke {@code getQueryMapEncoder}
+     * @param feignClientConfiguration the configuration to read from
+     * @return the configured {@link QueryMapEncoder} class, or {@code null} if unavailable
+     */
     static Class<QueryMapEncoder> getQueryMapEncoder(MethodHandle methodHandle, FeignClientConfiguration feignClientConfiguration) {
         if (methodHandle == NOT_FOUND_METHOD_HANDLE) {
             return null;
@@ -55,6 +94,18 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
         return queryMapEncoderClass;
     }
 
+    /**
+     * Encodes the given object into a query parameter map by delegating to the
+     * underlying {@link QueryMapEncoder}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Map<String, Object> queryParams = decoratedQueryMapEncoder.encode(myQueryObject);
+     * }</pre>
+     *
+     * @param object the object to encode as query parameters
+     * @return a map of query parameter names to values
+     */
     @Override
     public Map<String, Object> encode(Object object) {
         return delegate().encode(object);
