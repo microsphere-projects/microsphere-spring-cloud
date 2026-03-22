@@ -49,6 +49,20 @@ import org.springframework.context.annotation.Bean;
 })
 public class ServiceRegistrationEndpointAutoConfiguration {
 
+    /**
+     * Creates a {@link ServiceRegistrationEndpoint} bean that exposes service registration
+     * metadata and control operations via Spring Boot Actuator.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // The endpoint is auto-configured and accessible at /actuator/serviceRegistration
+     * ServiceRegistrationEndpoint endpoint = context.getBean(ServiceRegistrationEndpoint.class);
+     * Map<String, Object> metadata = endpoint.metadata();
+     * }</pre>
+     *
+     * @return a new {@link ServiceRegistrationEndpoint} instance
+     * @see ServiceRegistrationEndpoint
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnAvailableEndpoint
@@ -56,6 +70,20 @@ public class ServiceRegistrationEndpointAutoConfiguration {
         return new ServiceRegistrationEndpoint();
     }
 
+    /**
+     * Creates a {@link ServiceDeregistrationEndpoint} bean that exposes service deregistration
+     * control operations via Spring Boot Actuator.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // The endpoint is auto-configured and accessible at /actuator/serviceDeregistration
+     * ServiceDeregistrationEndpoint endpoint = context.getBean(ServiceDeregistrationEndpoint.class);
+     * boolean wasRunning = endpoint.stop();
+     * }</pre>
+     *
+     * @return a new {@link ServiceDeregistrationEndpoint} instance
+     * @see ServiceDeregistrationEndpoint
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnAvailableEndpoint

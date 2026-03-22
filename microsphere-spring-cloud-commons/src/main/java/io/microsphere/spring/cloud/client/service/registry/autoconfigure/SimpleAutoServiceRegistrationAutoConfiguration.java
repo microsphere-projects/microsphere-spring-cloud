@@ -98,6 +98,19 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
         return registration;
     }
 
+    /**
+     * Creates an {@link InMemoryServiceRegistry} bean as the default {@link ServiceRegistry}
+     * implementation when no other {@link ServiceRegistry} bean is present.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ServiceRegistry<Registration> registry = context.getBean(ServiceRegistry.class);
+     * registry.register(registration);
+     * }</pre>
+     *
+     * @return a new {@link InMemoryServiceRegistry} instance
+     * @see InMemoryServiceRegistry
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceRegistry<Registration> serviceRegistry() {

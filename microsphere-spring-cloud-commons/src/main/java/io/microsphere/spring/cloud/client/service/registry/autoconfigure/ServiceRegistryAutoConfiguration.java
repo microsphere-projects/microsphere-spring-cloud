@@ -62,6 +62,20 @@ public class ServiceRegistryAutoConfiguration {
             return new MultipleRegistration(registrations);
         }
 
+        /**
+         * Creates a {@link MultipleServiceRegistry} bean that delegates to all available
+         * {@link ServiceRegistry} instances in the application context.
+         *
+         * <p>Example Usage:
+         * <pre>{@code
+         * MultipleServiceRegistry registry = context.getBean(MultipleServiceRegistry.class);
+         * registry.register(registration);
+         * }</pre>
+         *
+         * @param registriesMap a map of bean names to {@link ServiceRegistry} instances
+         * @return a new {@link MultipleServiceRegistry} wrapping the provided registries
+         * @see MultipleServiceRegistry
+         */
         @Bean
         @Primary
         @ConditionalOnMissingBean
@@ -69,6 +83,23 @@ public class ServiceRegistryAutoConfiguration {
             return new MultipleServiceRegistry(registriesMap);
         }
 
+        /**
+         * Creates a {@link MultipleAutoServiceRegistration} bean that coordinates automatic
+         * service registration across multiple {@link ServiceRegistry} instances.
+         *
+         * <p>Example Usage:
+         * <pre>{@code
+         * MultipleAutoServiceRegistration autoReg =
+         *     context.getBean(MultipleAutoServiceRegistration.class);
+         * autoReg.start();
+         * }</pre>
+         *
+         * @param multipleRegistration    the {@link MultipleRegistration} aggregating all registrations
+         * @param multipleServiceRegistry the {@link MultipleServiceRegistry} aggregating all registries
+         * @param properties              the {@link AutoServiceRegistrationProperties} configuration
+         * @return a new {@link MultipleAutoServiceRegistration} instance
+         * @see MultipleAutoServiceRegistration
+         */
         @ConditionalOnBean(AutoServiceRegistrationProperties.class)
         @Primary
         @Bean
