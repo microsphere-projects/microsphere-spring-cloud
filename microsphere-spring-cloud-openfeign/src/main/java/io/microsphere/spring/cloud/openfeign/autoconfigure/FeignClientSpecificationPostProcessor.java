@@ -36,6 +36,22 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
 
     private static final Method setConfigurationMethod = findMethod(FEIGN_CLIENT_SPECIFICATION_CLASS, "setConfiguration", Class[].class);
 
+    /**
+     * Post-processes each bean after initialization to inject the
+     * {@link AutoRefreshCapability} into default {@code FeignClientSpecification} beans.
+     * Only specifications whose bean name starts with {@code "default"} are modified.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Invoked automatically by Spring for every bean:
+     * Object result = processor.postProcessAfterInitialization(bean, "default.MyClient");
+     * }</pre>
+     *
+     * @param bean the bean instance to inspect
+     * @param beanName the name of the bean
+     * @return the (potentially modified) bean instance
+     * @throws BeansException if post-processing fails
+     */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class<?> beanType = getTargetClass(bean);

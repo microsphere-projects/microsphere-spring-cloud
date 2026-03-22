@@ -72,6 +72,19 @@ public class TomcatFaultToleranceAutoConfiguration {
     )
     public static final String ENABLED_PROPERTY_NAME = TOMCAT_PROPERTY_PREFIX + "." + PropertyConstants.ENABLED_PROPERTY_NAME;
 
+    /**
+     * Handles the {@link WebServerInitializedEvent} by registering a
+     * {@link TomcatDynamicConfigurationListener} if the embedded web server is a
+     * {@link TomcatWebServer}. This enables dynamic Tomcat configuration changes at runtime.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Automatically invoked by Spring when the web server is initialized:
+     * // context.publishEvent(new WebServerInitializedEvent(webServer));
+     * }</pre>
+     *
+     * @param event the {@link WebServerInitializedEvent} triggered after the web server starts
+     */
     @EventListener(WebServerInitializedEvent.class)
     public void onWebServerInitializedEvent(WebServerInitializedEvent event) {
         WebServerApplicationContext webServerApplicationContext = event.getApplicationContext();
