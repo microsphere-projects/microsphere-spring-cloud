@@ -48,11 +48,20 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
 
     private List<DiscoveryClient> discoveryClients;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return the description "Union Discovery Client"
+     */
     @Override
     public String description() {
         return "Union Discovery Client";
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Aggregates service instances from all underlying {@link DiscoveryClient DiscoveryClients}.
+     */
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
         List<ServiceInstance> serviceInstances = new LinkedList<>();
@@ -66,6 +75,10 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         return serviceInstances;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Returns a deduplicated union of service names from all underlying {@link DiscoveryClient DiscoveryClients}.
+     */
     @Override
     public List<String> getServices() {
         LinkedHashSet<String> services = new LinkedHashSet<>();
@@ -79,6 +92,20 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         return new ArrayList<>(services);
     }
 
+    /**
+     * Returns the sorted list of underlying {@link DiscoveryClient DiscoveryClients}, excluding
+     * {@link CompositeDiscoveryClient} and this instance itself. The list is lazily initialized
+     * from the {@link ApplicationContext} on first access and cached for subsequent calls.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * UnionDiscoveryClient unionClient = applicationContext.getBean(UnionDiscoveryClient.class);
+     * List<DiscoveryClient> clients = unionClient.getDiscoveryClients();
+     * clients.forEach(c -> System.out.println(c.description()));
+     * }</pre>
+     *
+     * @return an unmodifiable list of {@link DiscoveryClient} instances
+     */
     public List<DiscoveryClient> getDiscoveryClients() {
         List<DiscoveryClient> discoveryClients = this.discoveryClients;
         if (discoveryClients != null) {
@@ -98,21 +125,38 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         return discoveryClients;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@link #HIGHEST_PRECEDENCE} to ensure this client takes priority
+     */
     @Override
     public int getOrder() {
         return HIGHEST_PRECEDENCE;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Eagerly initializes the list of {@link DiscoveryClient DiscoveryClients} after all singletons are instantiated.
+     */
     @Override
     public void afterSingletonsInstantiated() {
         this.discoveryClients = getDiscoveryClients();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Clears the cached list of {@link DiscoveryClient DiscoveryClients} on bean destruction.
+     */
     @Override
     public void destroy() throws Exception {
         this.discoveryClients.clear();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Stores the {@link ApplicationContext} used to look up {@link DiscoveryClient} beans.
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;

@@ -55,11 +55,37 @@ public class WebMvcServiceRegistryAutoConfiguration extends WebServiceRegistryAu
     @Autowired
     private ObjectProvider<DispatcherServletRegistrationBean> dispatcherServletRegistrationBeanProvider;
 
+    /**
+     * {@inheritDoc}
+     * <p>Returns the servlet context path configured via {@code server.servlet.context-path}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // With application property: server.servlet.context-path=/api
+     * String contextPath = config.getContextPath(); // returns "/api"
+     * }</pre>
+     *
+     * @return the servlet context path
+     */
     @Override
     protected String getContextPath() {
         return this.contextPath;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Excludes built-in Spring filter mappings and the default DispatcherServlet mapping.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * boolean excluded = config.isExcludedMapping(mapping, new String[]{"/*"});
+     * // returns true if the mapping matches a built-in filter or DispatcherServlet
+     * }</pre>
+     *
+     * @param mapping  the {@link WebEndpointMapping} to evaluate
+     * @param patterns the URL patterns associated with the mapping
+     * @return {@code true} if the mapping is a built-in filter or DispatcherServlet mapping
+     */
     @Override
     protected boolean isExcludedMapping(WebEndpointMapping mapping, String[] patterns) {
         return isBuiltInFilterMapping(patterns) || isDispatcherServletMapping(mapping, patterns);
