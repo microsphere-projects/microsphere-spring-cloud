@@ -39,32 +39,67 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
 
     private final ReactiveDiscoveryClient reactiveDiscoveryClient;
 
+    /**
+     * Create a new {@link ReactiveDiscoveryClientAdapter} that wraps the given
+     * {@link ReactiveDiscoveryClient} as a blocking {@link DiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ReactiveDiscoveryClient reactiveClient = new SimpleReactiveDiscoveryClient(properties);
+     * DiscoveryClient adapter = new ReactiveDiscoveryClientAdapter(reactiveClient);
+     * List<String> services = adapter.getServices();
+     * }</pre>
+     *
+     * @param reactiveDiscoveryClient the {@link ReactiveDiscoveryClient} to adapt, must not be {@code null}
+     */
     public ReactiveDiscoveryClientAdapter(ReactiveDiscoveryClient reactiveDiscoveryClient) {
         this.reactiveDiscoveryClient = reactiveDiscoveryClient;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Delegates to the underlying {@link ReactiveDiscoveryClient#description()}.
+     */
     @Override
     public String description() {
         return this.reactiveDiscoveryClient.description();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Delegates to {@link ReactiveDiscoveryClient#getInstances(String)} and collects the
+     * reactive {@link Flux} result into a blocking {@link List}.
+     */
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
         Flux<ServiceInstance> flux = this.reactiveDiscoveryClient.getInstances(serviceId);
         return toList(flux);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Delegates to {@link ReactiveDiscoveryClient#getServices()} and collects the
+     * reactive {@link Flux} result into a blocking {@link List}.
+     */
     @Override
     public List<String> getServices() {
         Flux<String> flux = this.reactiveDiscoveryClient.getServices();
         return toList(flux);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Delegates to {@link ReactiveDiscoveryClient#probe()}.
+     */
     @Override
     public void probe() {
         this.reactiveDiscoveryClient.probe();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Delegates to {@link ReactiveDiscoveryClient#getOrder()}.
+     */
     @Override
     public int getOrder() {
         return this.reactiveDiscoveryClient.getOrder();

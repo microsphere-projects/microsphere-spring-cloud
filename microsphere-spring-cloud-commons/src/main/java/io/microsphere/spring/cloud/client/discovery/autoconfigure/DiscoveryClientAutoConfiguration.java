@@ -80,6 +80,19 @@ public class DiscoveryClientAutoConfiguration {
     @ConditionalOnProperty(name = DISCOVERY_CLIENT_MODE_PROPERTY_NAME, havingValue = UNION_DISCOVERY_CLIENT_MODE)
     public static class UnionConfiguration {
 
+        /**
+         * Creates a {@link UnionDiscoveryClient} bean that aggregates all {@link DiscoveryClient}
+         * instances in the {@link org.springframework.context.ApplicationContext}.
+         *
+         * <p>Example Usage:
+         * <pre>{@code
+         * // Activated when microsphere.spring.cloud.client.discovery.mode=union
+         * UnionDiscoveryClient client = applicationContext.getBean(UnionDiscoveryClient.class);
+         * List<String> services = client.getServices();
+         * }</pre>
+         *
+         * @return a new {@link UnionDiscoveryClient} instance
+         */
         @Bean
         public UnionDiscoveryClient unionDiscoveryClient() {
             return new UnionDiscoveryClient();

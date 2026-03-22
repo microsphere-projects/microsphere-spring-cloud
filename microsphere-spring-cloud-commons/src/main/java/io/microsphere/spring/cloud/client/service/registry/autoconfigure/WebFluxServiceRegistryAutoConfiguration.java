@@ -31,11 +31,37 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 @ConditionalOnWebApplication(type = REACTIVE)
 public class WebFluxServiceRegistryAutoConfiguration extends WebServiceRegistryAutoConfiguration {
 
+    /**
+     * {@inheritDoc}
+     * <p>Returns an empty string as WebFlux applications do not use a servlet context path.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * WebFluxServiceRegistryAutoConfiguration config = new WebFluxServiceRegistryAutoConfiguration();
+     * String contextPath = config.getContextPath(); // returns ""
+     * }</pre>
+     *
+     * @return an empty string
+     */
     @Override
     protected String getContextPath() {
         return "";
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>Always returns {@code false} for WebFlux applications, as no mappings are excluded.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * WebFluxServiceRegistryAutoConfiguration config = new WebFluxServiceRegistryAutoConfiguration();
+     * boolean excluded = config.isExcludedMapping(mapping, patterns); // always false
+     * }</pre>
+     *
+     * @param mapping  the {@link WebEndpointMapping} to evaluate
+     * @param patterns the URL patterns associated with the mapping
+     * @return always {@code false}
+     */
     @Override
     protected boolean isExcludedMapping(WebEndpointMapping mapping, String[] patterns) {
         return false;

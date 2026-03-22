@@ -65,6 +65,22 @@ public class ServiceInstanceUtils extends BaseUtils {
 
     private static final Logger logger = getLogger(ServiceInstanceUtils.class);
 
+    /**
+     * Attach {@link WebEndpointMapping} metadata to the given {@link ServiceInstance}.
+     * The web endpoint mappings are serialized as JSON and stored in the service instance's
+     * metadata under the {@link io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants#WEB_MAPPINGS_METADATA_NAME} key.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ServiceInstance serviceInstance = new DefaultServiceInstance("id", "service", "localhost", 8080, false);
+     * Collection<WebEndpointMapping> mappings = new ArrayList<>();
+     * ServiceInstanceUtils.attachMetadata("/context", serviceInstance, mappings);
+     * }</pre>
+     *
+     * @param contextPath           the web application context path
+     * @param serviceInstance       the {@link ServiceInstance} to attach metadata to
+     * @param webEndpointMappings   the collection of {@link WebEndpointMapping}s to attach
+     */
     public static void attachMetadata(String contextPath, ServiceInstance serviceInstance, Collection<WebEndpointMapping> webEndpointMappings) {
         Map<String, String> metadata = serviceInstance.getMetadata();
         StringJoiner jsonBuilder = new StringJoiner(COMMA + LINE_SEPARATOR, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET);
