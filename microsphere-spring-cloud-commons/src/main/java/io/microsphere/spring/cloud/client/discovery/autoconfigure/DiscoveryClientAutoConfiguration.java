@@ -80,6 +80,17 @@ public class DiscoveryClientAutoConfiguration {
     @ConditionalOnProperty(name = DISCOVERY_CLIENT_MODE_PROPERTY_NAME, havingValue = UNION_DISCOVERY_CLIENT_MODE)
     public static class UnionConfiguration {
 
+        /**
+         * Creates a {@link UnionDiscoveryClient} bean that aggregates all registered
+         * {@link DiscoveryClient} instances into a single unified view.
+         *
+         * <p>Example Usage:
+         * <pre>{@code
+         * UnionDiscoveryClient client = unionDiscoveryClient();
+         * }</pre>
+         *
+         * @return a new {@link UnionDiscoveryClient} instance
+         */
         @Bean
         public UnionDiscoveryClient unionDiscoveryClient() {
             return new UnionDiscoveryClient();
