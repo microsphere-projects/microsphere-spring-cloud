@@ -10,8 +10,29 @@ import feign.RequestTemplate;
  */
 public class NoOpRequestInterceptor implements RequestInterceptor {
 
+    /**
+     * A no-operation {@link RequestInterceptor} that does nothing when applied.
+     * Used as a placeholder to ensure at least one interceptor is registered.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * RequestInterceptor noOp = NoOpRequestInterceptor.INSTANCE;
+     * noOp.apply(requestTemplate); // does nothing
+     * }</pre>
+     */
     public static final NoOpRequestInterceptor INSTANCE = new NoOpRequestInterceptor();
 
+    /**
+     * Applies this interceptor to the given {@link RequestTemplate}. This implementation
+     * intentionally performs no operation.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * NoOpRequestInterceptor.INSTANCE.apply(requestTemplate);
+     * }</pre>
+     *
+     * @param template the {@link RequestTemplate} (ignored)
+     */
     @Override
     public void apply(RequestTemplate template) {
         //no op

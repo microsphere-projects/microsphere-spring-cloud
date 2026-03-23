@@ -60,20 +60,18 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     private ObjectProvider<RegistrationCustomizer> registrationCustomizers;
 
     /**
-     * AOP Before advice for {@link ServiceRegistry#register(Registration)}.
-     * Publishes a {@link RegistrationPreRegisteredEvent} and applies any
-     * {@link RegistrationCustomizer} instances before the registration proceeds.
+     * AOP advice executed before {@link ServiceRegistry#register(Registration)}, publishing a
+     * {@link RegistrationPreRegisteredEvent} and applying {@link RegistrationCustomizer customizations}.
      *
      * <p>Example Usage:
      * <pre>{@code
      * // This advice is triggered automatically when ServiceRegistry.register() is called:
      * serviceRegistry.register(registration);
-     * // A RegistrationPreRegisteredEvent is published before the actual registration
+     * // A RegistrationPreRegisteredEvent is published before actual registration
      * }</pre>
      *
-     * @param registry     the {@link ServiceRegistry} performing the registration
+     * @param registry     the target {@link ServiceRegistry}
      * @param registration the {@link Registration} being registered
-     * @see RegistrationPreRegisteredEvent
      */
     @Before(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeRegister(ServiceRegistry registry, Registration registration) {
@@ -87,19 +85,18 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     }
 
     /**
-     * AOP Before advice for {@link ServiceRegistry#deregister(Registration)}.
-     * Publishes a {@link RegistrationPreDeregisteredEvent} before the deregistration proceeds.
+     * AOP advice executed before {@link ServiceRegistry#deregister(Registration)}, publishing a
+     * {@link RegistrationPreDeregisteredEvent}.
      *
      * <p>Example Usage:
      * <pre>{@code
      * // This advice is triggered automatically when ServiceRegistry.deregister() is called:
      * serviceRegistry.deregister(registration);
-     * // A RegistrationPreDeregisteredEvent is published before the actual deregistration
+     * // A RegistrationPreDeregisteredEvent is published before actual deregistration
      * }</pre>
      *
-     * @param registry     the {@link ServiceRegistry} performing the deregistration
+     * @param registry     the target {@link ServiceRegistry}
      * @param registration the {@link Registration} being deregistered
-     * @see RegistrationPreDeregisteredEvent
      */
     @Before(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeDeregister(ServiceRegistry registry, Registration registration) {
@@ -110,19 +107,18 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     }
 
     /**
-     * AOP After advice for {@link ServiceRegistry#register(Registration)}.
-     * Publishes a {@link RegistrationRegisteredEvent} after the registration completes.
+     * AOP advice executed after {@link ServiceRegistry#register(Registration)}, publishing a
+     * {@link RegistrationRegisteredEvent}.
      *
      * <p>Example Usage:
      * <pre>{@code
      * // This advice is triggered automatically after ServiceRegistry.register() completes:
      * serviceRegistry.register(registration);
-     * // A RegistrationRegisteredEvent is published after the actual registration
+     * // A RegistrationRegisteredEvent is published after successful registration
      * }</pre>
      *
-     * @param registry     the {@link ServiceRegistry} that performed the registration
+     * @param registry     the target {@link ServiceRegistry}
      * @param registration the {@link Registration} that was registered
-     * @see RegistrationRegisteredEvent
      */
     @After(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterRegister(ServiceRegistry registry, Registration registration) {
@@ -133,19 +129,18 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     }
 
     /**
-     * AOP After advice for {@link ServiceRegistry#deregister(Registration)}.
-     * Publishes a {@link RegistrationDeregisteredEvent} after the deregistration completes.
+     * AOP advice executed after {@link ServiceRegistry#deregister(Registration)}, publishing a
+     * {@link RegistrationDeregisteredEvent}.
      *
      * <p>Example Usage:
      * <pre>{@code
      * // This advice is triggered automatically after ServiceRegistry.deregister() completes:
      * serviceRegistry.deregister(registration);
-     * // A RegistrationDeregisteredEvent is published after the actual deregistration
+     * // A RegistrationDeregisteredEvent is published after successful deregistration
      * }</pre>
      *
-     * @param registry     the {@link ServiceRegistry} that performed the deregistration
+     * @param registry     the target {@link ServiceRegistry}
      * @param registration the {@link Registration} that was deregistered
-     * @see RegistrationDeregisteredEvent
      */
     @After(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterDeregister(ServiceRegistry registry, Registration registration) {
@@ -160,17 +155,13 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     }
 
     /**
-     * Sets the {@link ApplicationContext} used to publish registration events and
-     * to look up {@link RegistrationCustomizer} instances.
+     * {@inheritDoc}
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Called automatically by Spring's ApplicationContextAware callback:
+     * EventPublishingRegistrationAspect aspect = new EventPublishingRegistrationAspect();
      * aspect.setApplicationContext(applicationContext);
      * }</pre>
-     *
-     * @param applicationContext the {@link ApplicationContext} to set
-     * @throws BeansException if the context cannot be set
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

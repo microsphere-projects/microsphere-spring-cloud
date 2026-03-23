@@ -49,44 +49,47 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
     private final Map<String, List<DefaultServiceInstance>> instancesMap;
 
     /**
-     * Constructs a new {@link SimpleServiceRegistry} backed by the given
-     * {@link SimpleDiscoveryProperties}.
+     * Constructs a new {@link SimpleServiceRegistry} using the given
+     * {@link SimpleDiscoveryProperties} to obtain the instances map.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * SimpleServiceRegistry registry = new SimpleServiceRegistry(simpleDiscoveryProperties);
+     * SimpleDiscoveryProperties properties = new SimpleDiscoveryProperties();
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * }</pre>
      *
-     * @param properties the {@link SimpleDiscoveryProperties} to obtain instances from
+     * @param properties the {@link SimpleDiscoveryProperties} to use
      */
     public SimpleServiceRegistry(SimpleDiscoveryProperties properties) {
         this(getInstancesMap(properties));
     }
 
     /**
-     * Constructs a new {@link SimpleServiceRegistry} backed by the given
-     * {@link SimpleReactiveDiscoveryProperties}.
+     * Constructs a new {@link SimpleServiceRegistry} using the given
+     * {@link SimpleReactiveDiscoveryProperties} to obtain the instances map.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * SimpleServiceRegistry registry = new SimpleServiceRegistry(simpleReactiveDiscoveryProperties);
+     * SimpleReactiveDiscoveryProperties reactiveProperties = ...;
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(reactiveProperties);
      * }</pre>
      *
-     * @param properties the {@link SimpleReactiveDiscoveryProperties} to obtain instances from
+     * @param properties the {@link SimpleReactiveDiscoveryProperties} to use
      */
     public SimpleServiceRegistry(SimpleReactiveDiscoveryProperties properties) {
         this(getInstancesMap(properties));
     }
 
     /**
-     * Constructs a new {@link SimpleServiceRegistry} backed by the given instances map.
+     * Constructs a new {@link SimpleServiceRegistry} with the given instances map.
      *
      * <p>Example Usage:
      * <pre>{@code
+     * Map<String, List<DefaultServiceInstance>> instancesMap = new HashMap<>();
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(instancesMap);
      * }</pre>
      *
-     * @param instancesMap the map of service IDs to their {@link DefaultServiceInstance} lists
+     * @param instancesMap the map of service IDs to {@link DefaultServiceInstance} lists
      */
     public SimpleServiceRegistry(Map<String, List<DefaultServiceInstance>> instancesMap) {
         this.instancesMap = instancesMap;
@@ -98,6 +101,9 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      *
      * <p>Example Usage:
      * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
+     * DefaultRegistration registration = new DefaultRegistration();
+     * registration.setServiceId("test-service");
      * registry.register(registration);
      * }</pre>
      *
@@ -110,11 +116,13 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
     }
 
     /**
-     * Deregisters the given {@link DefaultRegistration} by removing it from the instances list
-     * for its service ID.
+     * Deregisters the given {@link DefaultRegistration} by removing it from the instances
+     * list for its service ID.
      *
      * <p>Example Usage:
      * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
+     * registry.register(registration);
      * registry.deregister(registration);
      * }</pre>
      *
@@ -131,6 +139,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      *
      * <p>Example Usage:
      * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * registry.close();
      * }</pre>
      */
@@ -139,10 +148,13 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
     }
 
     /**
-     * Sets the status of the given {@link DefaultRegistration} by storing it in its metadata.
+     * Sets the status of the given {@link DefaultRegistration} by storing it in the
+     * registration's metadata under the {@link #STATUS_KEY} key.
      *
      * <p>Example Usage:
      * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
+     * registry.register(registration);
      * registry.setStatus(registration, "UP");
      * }</pre>
      *
@@ -155,11 +167,14 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
     }
 
     /**
-     * Returns the status of the given {@link DefaultRegistration} from its metadata.
+     * Retrieves the status of the given {@link DefaultRegistration} from its metadata.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * String status = registry.getStatus(registration);
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
+     * registry.register(registration);
+     * registry.setStatus(registration, "UP");
+     * String status = registry.getStatus(registration); // "UP"
      * }</pre>
      *
      * @param registration the {@link DefaultRegistration} whose status is to be retrieved
@@ -170,10 +185,37 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
         return getMetadata(registration, STATUS_KEY);
     }
 
+    /**
+     * Returns the list of {@link DefaultServiceInstance} instances for the given
+     * {@link DefaultRegistration}'s service ID.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
+     * registry.register(registration);
+     * List<DefaultServiceInstance> instances = registry.getInstances(registration);
+     * }</pre>
+     *
+     * @param registration the {@link DefaultRegistration} to look up instances for
+     * @return the list of instances for the registration's service ID
+     */
     List<DefaultServiceInstance> getInstances(DefaultRegistration registration) {
         return getInstances(registration.getServiceId());
     }
 
+    /**
+     * Returns the list of {@link DefaultServiceInstance} instances for the given service ID,
+     * creating an empty list if none exists.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
+     * List<DefaultServiceInstance> instances = registry.getInstances("test-service");
+     * }</pre>
+     *
+     * @param serviceId the service ID to look up
+     * @return the list of instances for the service ID
+     */
     List<DefaultServiceInstance> getInstances(String serviceId) {
         return this.instancesMap.computeIfAbsent(serviceId, k -> new ArrayList<>());
     }

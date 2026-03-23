@@ -23,15 +23,16 @@ import static io.microsphere.reflect.MethodUtils.invokeMethod;
 public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndpoint {
 
     /**
-     * Returns a map of service registration metadata including the application name,
-     * registration details, port, status, running state, and configuration.
+     * Returns metadata about the current service registration, including application name,
+     * registration details, port, status, and running state.
+     * This is a read operation exposed via the {@code /actuator/serviceRegistration} endpoint.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Via actuator endpoint: GET /actuator/serviceRegistration
+     * // Via actuator HTTP GET to /actuator/serviceRegistration
+     * ServiceRegistrationEndpoint endpoint = context.getBean(ServiceRegistrationEndpoint.class);
      * Map<String, Object> metadata = endpoint.metadata();
      * String appName = (String) metadata.get("application-name");
-     * boolean running = (boolean) metadata.get("running");
      * }</pre>
      *
      * @return a {@link Map} containing service registration metadata
@@ -53,18 +54,17 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
     }
 
     /**
-     * Registers the service with the {@link ServiceRegistry} and returns whether
-     * the service was already running. If the service is already running, the
-     * registration is skipped and a warning is logged.
+     * Registers the service with the {@link ServiceRegistry} if it is not already running.
+     * This is a write operation exposed via the {@code /actuator/serviceRegistration} endpoint.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Via actuator endpoint: POST /actuator/serviceRegistration
+     * // Via actuator HTTP POST to /actuator/serviceRegistration
+     * ServiceRegistrationEndpoint endpoint = context.getBean(ServiceRegistrationEndpoint.class);
      * boolean wasAlreadyRunning = endpoint.start();
      * }</pre>
      *
-     * @return {@code true} if the service was already running,
-     *         {@code false} if it was newly registered
+     * @return {@code true} if the service was already running, {@code false} if it was newly registered
      */
     @WriteOperation
     public boolean start() {

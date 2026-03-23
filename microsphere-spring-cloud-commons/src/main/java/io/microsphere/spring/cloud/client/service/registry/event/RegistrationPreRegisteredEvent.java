@@ -31,28 +31,32 @@ import static io.microsphere.spring.cloud.client.service.registry.event.Registra
 public class RegistrationPreRegisteredEvent extends RegistrationEvent {
 
     /**
-     * Constructs a new {@link RegistrationPreRegisteredEvent} indicating that the given
+     * Create a new {@link RegistrationPreRegisteredEvent} indicating that a
      * {@link Registration} is about to be registered with the {@link ServiceRegistry}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * RegistrationPreRegisteredEvent event =
-     *     new RegistrationPreRegisteredEvent(registry, registration);
+     * ServiceRegistry<Registration> registry = ...;
+     * Registration registration = ...;
+     * RegistrationPreRegisteredEvent event = new RegistrationPreRegisteredEvent(registry, registration);
+     * applicationContext.publishEvent(event);
      * }</pre>
      *
-     * @param registry the {@link ServiceRegistry} with which the service will be registered
-     * @param source   the {@link Registration} about to be registered
+     * @param registry the {@link ServiceRegistry} that will perform the registration
+     * @param source   the {@link Registration} to be registered
      */
     public RegistrationPreRegisteredEvent(ServiceRegistry<Registration> registry, Registration source) {
         super(registry, source);
     }
 
     /**
-     * Returns the {@link Type} of this event, which is {@link Type#PRE_REGISTERED}.
+     * Returns the {@link Type} of this event, which is always {@link Type#PRE_REGISTERED}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * RegistrationEvent.Type type = event.getType(); // returns PRE_REGISTERED
+     * RegistrationPreRegisteredEvent event = ...;
+     * RegistrationEvent.Type type = event.getType();
+     * // type == RegistrationEvent.Type.PRE_REGISTERED
      * }</pre>
      *
      * @return {@link Type#PRE_REGISTERED}

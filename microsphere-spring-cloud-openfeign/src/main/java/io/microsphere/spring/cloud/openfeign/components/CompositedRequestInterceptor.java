@@ -34,7 +34,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     private final Set<RequestInterceptor> set = new LinkedHashSet<>();
 
     /**
-     * Constructs a new {@link CompositedRequestInterceptor} for the given Feign client context.
+     * Constructs a {@link CompositedRequestInterceptor} for the specified Feign client context.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -42,8 +42,8 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
      *     new CompositedRequestInterceptor("my-client", beanFactory);
      * }</pre>
      *
-     * @param contextId the Feign client context identifier
-     * @param beanFactory the {@link BeanFactory} used to resolve interceptor beans during refresh
+     * @param contextId   the Feign client context ID
+     * @param beanFactory the {@link BeanFactory} for resolving interceptor instances
      */
     public CompositedRequestInterceptor(String contextId, BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
@@ -51,14 +51,14 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     }
 
     /**
-     * Returns an unmodifiable view of the currently registered {@link RequestInterceptor} instances.
+     * Returns an unmodifiable view of the registered {@link RequestInterceptor} instances.
      *
      * <p>Example Usage:
      * <pre>{@code
      * Set<RequestInterceptor> interceptors = compositedInterceptor.getRequestInterceptors();
      * }</pre>
      *
-     * @return an unmodifiable {@link java.util.Set} of request interceptors
+     * @return an unmodifiable {@link Set} of registered request interceptors
      */
     public Set<RequestInterceptor> getRequestInterceptors() {
         return unmodifiableSet(set);
@@ -66,11 +66,12 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
 
     /**
      * Applies all registered {@link RequestInterceptor} instances to the given
-     * {@link RequestTemplate} in order. This method is thread-safe.
+     * {@link RequestTemplate} in order.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * compositedInterceptor.apply(requestTemplate);
+     * RequestTemplate template = new RequestTemplate();
+     * compositedInterceptor.apply(template);
      * }</pre>
      *
      * @param template the {@link RequestTemplate} to apply interceptors to
@@ -84,12 +85,12 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
 
     /**
      * Adds a {@link RequestInterceptor} to this composite. Returns {@code true} if this
-     * is the first interceptor added (i.e., the set was previously empty), {@code false} otherwise.
-     * This method is thread-safe.
+     * is the first interceptor added (i.e., the composite was previously empty).
      *
      * <p>Example Usage:
      * <pre>{@code
-     * boolean isFirst = compositedInterceptor.addRequestInterceptor(myInterceptor);
+     * boolean wasFirst = compositedInterceptor.addRequestInterceptor(
+     *     template -> template.header("Authorization", "Bearer token"));
      * }</pre>
      *
      * @param requestInterceptor the {@link RequestInterceptor} to add
@@ -108,9 +109,9 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     }
 
     /**
-     * Refreshes the set of {@link RequestInterceptor} instances by reloading them from
-     * the current {@link FeignClientProperties} configuration. This includes request
-     * interceptors, default request headers, and default query parameters.
+     * Refreshes the set of {@link RequestInterceptor} instances by re-reading the
+     * {@link FeignClientProperties} configuration for request interceptors, default
+     * headers, and default query parameters.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -166,6 +167,20 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
         }
     }
 
+    /**
+     * Adds all elements from the source collection (obtained via the supplier) into the
+     * target collection if the source is not empty.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Collection<String> target = new ArrayList<>();
+     * addAll(() -> List.of("a", "b"), target);
+     * }</pre>
+     *
+     * @param <E>            the element type
+     * @param sourceSupplier the supplier providing the source collection
+     * @param target         the target collection to add elements to
+     */
     static <E> void addAll(Supplier<Collection<E>> sourceSupplier, Collection<E> target) {
         Collection<E> source = sourceSupplier.get();
         if (isNotEmpty(source)) {
@@ -173,11 +188,39 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
         }
     }
 
+    /**
+     * Retrieves a bean of the given type from the {@link BeanFactory}, falling back to
+     * instantiation via the default constructor if the bean is not available.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * FeignClientProperties properties = getOrInstantiate(FeignClientProperties.class);
+     * }</pre>
+     *
+     * @param <T>   the type of the bean
+     * @param clazz the class of the bean to retrieve or instantiate
+     * @return an instance of the requested type
+     */
     <T> T getOrInstantiate(Class<T> clazz) {
         ObjectProvider<T> beanProvider = this.beanFactory.getBeanProvider(clazz);
         return beanProvider.getIfAvailable(() -> instantiateClass(clazz));
     }
 
+    /**
+     * Puts all entries from the source map (obtained via the supplier) into the target
+     * map if the source is not empty, without overwriting existing keys.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Map<String, String> target = new HashMap<>();
+     * putIfAbsent(() -> Map.of("key", "value"), target);
+     * }</pre>
+     *
+     * @param <K>            the key type
+     * @param <V>            the value type
+     * @param sourceSupplier the supplier providing the source map
+     * @param target         the target map to add entries to
+     */
     static <K, V> void putIfAbsent(Supplier<Map<K, V>> sourceSupplier, Map<K, V> target) {
         Map<K, V> source = sourceSupplier.get();
         if (isNotEmpty(source)) {

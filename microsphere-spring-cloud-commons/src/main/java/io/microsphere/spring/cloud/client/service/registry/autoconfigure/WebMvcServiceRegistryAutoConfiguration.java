@@ -56,16 +56,16 @@ public class WebMvcServiceRegistryAutoConfiguration extends WebServiceRegistryAu
     private ObjectProvider<DispatcherServletRegistrationBean> dispatcherServletRegistrationBeanProvider;
 
     /**
-     * Returns the servlet context path configured via the {@code server.servlet.context-path}
-     * property for Spring WebMVC applications.
+     * {@inheritDoc}
+     * <p>Returns the servlet context path configured via {@code server.servlet.context-path}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // With server.servlet.context-path=/api
+     * // With application property: server.servlet.context-path=/api
      * String contextPath = config.getContextPath(); // returns "/api"
      * }</pre>
      *
-     * @return the servlet context path, or an empty string if not configured
+     * @return the servlet context path
      */
     @Override
     protected String getContextPath() {
@@ -73,18 +73,18 @@ public class WebMvcServiceRegistryAutoConfiguration extends WebServiceRegistryAu
     }
 
     /**
-     * Checks whether the given {@link WebEndpointMapping} should be excluded from
-     * registration metadata. A mapping is excluded if it corresponds to a built-in
-     * Spring {@link Filter} registration or a {@link DispatcherServletRegistrationBean} mapping.
+     * {@inheritDoc}
+     * <p>Excludes built-in Spring filter mappings and the default DispatcherServlet mapping.
      *
      * <p>Example Usage:
      * <pre>{@code
      * boolean excluded = config.isExcludedMapping(mapping, new String[]{"/*"});
+     * // returns true if the mapping matches a built-in filter or DispatcherServlet
      * }</pre>
      *
      * @param mapping  the {@link WebEndpointMapping} to evaluate
      * @param patterns the URL patterns associated with the mapping
-     * @return {@code true} if the mapping is a built-in filter or dispatcher servlet mapping
+     * @return {@code true} if the mapping is a built-in filter or DispatcherServlet mapping
      */
     @Override
     protected boolean isExcludedMapping(WebEndpointMapping mapping, String[] patterns) {

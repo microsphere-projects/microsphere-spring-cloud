@@ -47,14 +47,14 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
     protected static boolean running;
 
     /**
-     * Initializes the {@link #registration}, {@link #serviceRegistry}, and
-     * {@link #serviceRegistration} fields from the application context after
-     * all singleton beans have been instantiated.
+     * {@inheritDoc}
+     * <p>Initializes the {@link Registration}, {@link ServiceRegistry}, and
+     * {@link AbstractAutoServiceRegistration} from available bean providers.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Called automatically by the Spring container:
-     * endpoint.afterSingletonsInstantiated();
+     * // Called automatically by the Spring container after all singletons are instantiated.
+     * // Ensures registration, serviceRegistry, and serviceRegistration fields are populated.
      * }</pre>
      */
     @Override
@@ -65,16 +65,17 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
     }
 
     /**
-     * Handles the {@link WebServerInitializedEvent} to record the web server port
-     * and detect whether the service registration is currently running.
+     * {@inheritDoc}
+     * <p>Captures the web server port and detects the running state of the
+     * {@link AbstractAutoServiceRegistration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Called automatically by Spring when the web server is initialized:
-     * endpoint.onApplicationEvent(event);
+     * // Called automatically when the embedded web server has been initialized.
+     * // After this event, the port and running state are available.
      * }</pre>
      *
-     * @param event the {@link WebServerInitializedEvent} containing the web server information
+     * @param event the {@link WebServerInitializedEvent} carrying the initialized web server
      */
     @Override
     public void onApplicationEvent(WebServerInitializedEvent event) {
@@ -83,6 +84,17 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
         this.running = detectRunning(serviceRegistration);
     }
 
+    /**
+     * Detects whether the given {@link AbstractAutoServiceRegistration} is currently running.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * boolean running = AbstractServiceRegistrationEndpoint.detectRunning(serviceRegistration);
+     * }</pre>
+     *
+     * @param serviceRegistration the {@link AbstractAutoServiceRegistration} to check, may be {@code null}
+     * @return {@code true} if the service registration is running, {@code false} otherwise
+     */
     static boolean detectRunning(AbstractAutoServiceRegistration serviceRegistration) {
         return serviceRegistration == null ? false : serviceRegistration.isRunning();
     }
@@ -93,7 +105,7 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
      * <p>Example Usage:
      * <pre>{@code
      * if (endpoint.isRunning()) {
-     *     // service is registered and active
+     *     // service is registered and running
      * }
      * }</pre>
      *
@@ -104,12 +116,12 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
     }
 
     /**
-     * Sets the running status flag for the service registration.
+     * Sets the running state of the service registration.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * endpoint.setRunning(true);  // mark as running after registration
-     * endpoint.setRunning(false); // mark as stopped after deregistration
+     * endpoint.setRunning(true);  // mark service as running
+     * endpoint.setRunning(false); // mark service as stopped
      * }</pre>
      *
      * @param running {@code true} to mark the service as running, {@code false} otherwise
