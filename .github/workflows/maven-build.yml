@@ -35,10 +35,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
-          cache: maven
 
       - name: Build with Maven
-        run: mvn
+        run: ./mvnw
           --batch-mode
           --update-snapshots
           --file pom.xml
