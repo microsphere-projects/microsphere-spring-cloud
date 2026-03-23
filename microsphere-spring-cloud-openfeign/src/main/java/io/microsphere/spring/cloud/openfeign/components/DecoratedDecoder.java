@@ -18,20 +18,34 @@ import java.lang.reflect.Type;
  */
 public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implements Decoder {
 
+    /**
+     * Constructs a {@link DecoratedDecoder} wrapping the given {@link Decoder} delegate.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * DecoratedDecoder decoder = new DecoratedDecoder(
+     *     "my-client", feignContext, clientProperties, new Decoder.Default());
+     * }</pre>
+     *
+     * @param contextId        the Feign client context ID
+     * @param feignContext     the {@link FeignContext} for resolving per-client contexts
+     * @param clientProperties the {@link FeignClientProperties} for configuration lookup
+     * @param delegate         the original {@link Decoder} to delegate to
+     */
     public DecoratedDecoder(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, Decoder delegate) {
         super(contextId, feignContext, clientProperties, delegate);
     }
 
     /**
-     * Returns the {@link Decoder} implementation class to use when reloading
-     * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
+     * Returns the configured {@link Decoder} class from {@link FeignClientConfiguration},
+     * falling back to {@link Decoder} if not configured.
      *
      * <p>Example Usage:
      * <pre>{@code
      * Class<? extends Decoder> type = decoratedDecoder.componentType();
      * }</pre>
      *
-     * @return the configured {@link Decoder} class, or {@link Decoder} if not configured
+     * @return the {@link Decoder} component type class
      */
     @Override
     protected Class<? extends Decoder> componentType() {
@@ -40,20 +54,20 @@ public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implement
     }
 
     /**
-     * Decodes the given {@link Response} into an object of the specified type by
-     * delegating to the underlying {@link Decoder} implementation.
+     * Decodes a Feign {@link Response} into an object of the given type by delegating
+     * to the underlying {@link Decoder}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * Object result = decoratedDecoder.decode(response, MyDto.class);
+     * Object result = decoratedDecoder.decode(response, String.class);
      * }</pre>
      *
-     * @param response the HTTP {@link Response} to decode
-     * @param type the target type to decode to
+     * @param response the Feign {@link Response} to decode
+     * @param type     the target type to decode into
      * @return the decoded object
-     * @throws IOException if an I/O error occurs during decoding
-     * @throws DecodeException if decoding fails
-     * @throws FeignException if a Feign-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     * @throws DecodeException  if decoding fails
+     * @throws FeignException   if a Feign-specific error occurs
      */
     @Override
     public Object decode(Response response, Type type) throws IOException, DecodeException, FeignException {

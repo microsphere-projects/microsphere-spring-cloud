@@ -16,21 +16,35 @@ import java.lang.reflect.Type;
  */
 public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implements Encoder {
 
+    /**
+     * Constructs a {@link DecoratedEncoder} wrapping the given {@link Encoder} delegate.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * DecoratedEncoder encoder = new DecoratedEncoder(
+     *     "my-client", feignContext, clientProperties, new Encoder.Default());
+     * }</pre>
+     *
+     * @param contextId        the Feign client context ID
+     * @param feignContext     the {@link FeignContext} for resolving per-client contexts
+     * @param clientProperties the {@link FeignClientProperties} for configuration lookup
+     * @param delegate         the original {@link Encoder} to delegate to
+     */
     public DecoratedEncoder(String contextId, FeignContext feignContext, FeignClientProperties clientProperties,
                             Encoder delegate) {
         super(contextId, feignContext, clientProperties, delegate);
     }
 
     /**
-     * Returns the {@link Encoder} implementation class to use when reloading
-     * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
+     * Returns the configured {@link Encoder} class from {@link FeignClientConfiguration},
+     * falling back to {@link Encoder} if not configured.
      *
      * <p>Example Usage:
      * <pre>{@code
      * Class<? extends Encoder> type = decoratedEncoder.componentType();
      * }</pre>
      *
-     * @return the configured {@link Encoder} class, or {@link Encoder} if not configured
+     * @return the {@link Encoder} component type class
      */
     @Override
     protected Class<? extends Encoder> componentType() {
@@ -39,17 +53,17 @@ public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implement
     }
 
     /**
-     * Encodes the given object into the {@link RequestTemplate} body by delegating
-     * to the underlying {@link Encoder} implementation.
+     * Encodes the given object into the {@link RequestTemplate} by delegating to the
+     * underlying {@link Encoder}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * decoratedEncoder.encode(myDto, MyDto.class, requestTemplate);
+     * decoratedEncoder.encode(myObject, MyObject.class, requestTemplate);
      * }</pre>
      *
-     * @param object the object to encode
-     * @param bodyType the type of the body
-     * @param template the {@link RequestTemplate} to write the encoded body into
+     * @param object   the object to encode
+     * @param bodyType the body type
+     * @param template the {@link RequestTemplate} to encode into
      * @throws EncodeException if encoding fails
      */
     @Override

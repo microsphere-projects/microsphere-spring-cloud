@@ -17,7 +17,7 @@ import static org.springframework.aop.support.AopUtils.getTargetClass;
 import static org.springframework.util.ClassUtils.resolveClassName;
 
 /**
- * {@link BeanPostProcessor} for {@link Specification}
+ * {@link BeanPostProcessor} for {@link FeignClientSpecification}
  *
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
@@ -37,19 +37,18 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
     private static final Method setConfigurationMethod = findMethod(FEIGN_CLIENT_SPECIFICATION_CLASS, "setConfiguration", Class[].class);
 
     /**
-     * Post-processes each bean after initialization to inject the
-     * {@link AutoRefreshCapability} into default {@code FeignClientSpecification} beans.
-     * Only specifications whose bean name starts with {@code "default"} are modified.
+     * Injects the {@link AutoRefreshCapability} into default {@link FeignClientSpecification}
+     * beans after initialization.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Invoked automatically by Spring for every bean:
-     * Object result = processor.postProcessAfterInitialization(bean, "default.MyClient");
+     * // Invoked automatically by the Spring container during bean post-processing
+     * Object processed = postProcessAfterInitialization(bean, "default.my-client");
      * }</pre>
      *
-     * @param bean the bean instance to inspect
-     * @param beanName the name of the bean
-     * @return the (potentially modified) bean instance
+     * @param bean     the bean instance that has been initialized
+     * @param beanName the name of the bean in the Spring context
+     * @return the (possibly modified) bean instance
      * @throws BeansException if post-processing fails
      */
     @Override

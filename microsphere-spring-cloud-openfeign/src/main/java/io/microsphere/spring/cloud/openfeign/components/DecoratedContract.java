@@ -15,20 +15,34 @@ import java.util.List;
  */
 public class DecoratedContract extends DecoratedFeignComponent<Contract> implements Contract {
 
+    /**
+     * Constructs a {@link DecoratedContract} wrapping the given {@link Contract} delegate.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * DecoratedContract contract = new DecoratedContract(
+     *     "my-client", feignContext, clientProperties, new Contract.Default());
+     * }</pre>
+     *
+     * @param contextId        the Feign client context ID
+     * @param feignContext     the {@link FeignContext} for resolving per-client contexts
+     * @param clientProperties the {@link FeignClientProperties} for configuration lookup
+     * @param delegate         the original {@link Contract} to delegate to
+     */
     public DecoratedContract(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, Contract delegate) {
         super(contextId, feignContext, clientProperties, delegate);
     }
 
     /**
-     * Returns the {@link Contract} implementation class to use when reloading
-     * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
+     * Returns the configured {@link Contract} class from {@link FeignClientConfiguration},
+     * falling back to {@link Contract} if not configured.
      *
      * <p>Example Usage:
      * <pre>{@code
      * Class<? extends Contract> type = decoratedContract.componentType();
      * }</pre>
      *
-     * @return the configured {@link Contract} class, or {@link Contract} if not configured
+     * @return the {@link Contract} component type class
      */
     @Override
     protected Class<? extends Contract> componentType() {
@@ -37,8 +51,8 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
     }
 
     /**
-     * Parses and validates the metadata for the given target type by delegating
-     * to the underlying {@link Contract} implementation.
+     * Parses and validates metadata for the given target type by delegating to the
+     * underlying {@link Contract}.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -46,7 +60,7 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
      * }</pre>
      *
      * @param targetType the Feign client interface class to parse
-     * @return the list of {@link MethodMetadata} for the target type
+     * @return the list of parsed {@link MethodMetadata}
      */
     @Override
     public List<MethodMetadata> parseAndValidateMetadata(Class<?> targetType) {

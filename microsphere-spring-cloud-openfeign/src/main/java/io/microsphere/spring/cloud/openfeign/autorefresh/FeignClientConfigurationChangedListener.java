@@ -15,6 +15,18 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
 
     private final FeignComponentRegistry registry;
 
+    /**
+     * Constructs a listener that refreshes Feign components when the environment changes.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * FeignComponentRegistry registry = ...;
+     * FeignClientConfigurationChangedListener listener =
+     *     new FeignClientConfigurationChangedListener(registry);
+     * }</pre>
+     *
+     * @param registry the {@link FeignComponentRegistry} used to refresh affected Feign components
+     */
     public FeignClientConfigurationChangedListener(FeignComponentRegistry registry) {
         this.registry = registry;
     }
@@ -22,17 +34,16 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
     private final String PREFIX = "feign.client.config.";
 
     /**
-     * Handles an {@link EnvironmentChangeEvent} by resolving which Feign client configurations
-     * have changed (based on property keys prefixed with {@code feign.client.config.}) and
-     * triggering a refresh on the corresponding clients via the {@link FeignComponentRegistry}.
+     * Handles an {@link EnvironmentChangeEvent} by resolving which Feign clients are affected
+     * and triggering a refresh on the corresponding components in the registry.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Triggered automatically when environment properties change:
-     * // context.publishEvent(new EnvironmentChangeEvent(context, changedKeys));
+     * // Invoked automatically by the Spring event system
+     * listener.onApplicationEvent(environmentChangeEvent);
      * }</pre>
      *
-     * @param event the {@link EnvironmentChangeEvent} containing the set of changed property keys
+     * @param event the {@link EnvironmentChangeEvent} containing the changed property keys
      */
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
@@ -42,6 +53,19 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
         }
     }
 
+    /**
+     * Resolves which Feign client names and their changed configuration keys are affected
+     * by the given {@link EnvironmentChangeEvent}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Map<String, Set<String>> changed = listener.resolveChangedClient(event);
+     * // e.g. {"my-client" -> {"retryer", "decoder"}}
+     * }</pre>
+     *
+     * @param event the {@link EnvironmentChangeEvent} containing the changed property keys
+     * @return a map of client names to their changed configuration sub-keys
+     */
     protected Map<String, Set<String>> resolveChangedClient(EnvironmentChangeEvent event) {
         Set<String> keys = event.getKeys();
         return keys.stream()

@@ -32,18 +32,18 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     protected volatile T delegate;
 
     /**
-     * Constructs a new {@link DecoratedFeignComponent} wrapping the given delegate.
+     * Constructs a {@link DecoratedFeignComponent} wrapping the given delegate.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Typically invoked via a subclass constructor:
-     * DecoratedDecoder decoder = new DecoratedDecoder(contextId, feignContext, clientProperties, originalDecoder);
+     * // Typically invoked via a subclass constructor
+     * super(contextId, feignContext, clientProperties, delegate);
      * }</pre>
      *
-     * @param contextId the Feign client context identifier
-     * @param feignContext the {@link FeignContext} for loading component instances
-     * @param clientProperties the {@link FeignClientProperties} containing configuration
-     * @param delegate the original Feign component to decorate
+     * @param contextId        the Feign client context ID
+     * @param feignContext     the {@link FeignContext} for resolving per-client contexts
+     * @param clientProperties the {@link FeignClientProperties} for configuration lookup
+     * @param delegate         the original component to delegate to
      */
     public DecoratedFeignComponent(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, T delegate) {
         this.contextId = contextId;
@@ -53,15 +53,15 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     /**
-     * Returns the current delegate instance. If the delegate has been cleared (e.g., after
-     * a refresh), a new instance is loaded from the {@link FeignContext}.
+     * Returns the current delegate instance, lazily loading it from the context factory
+     * if it was previously cleared by a {@link #refresh()} call.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * Decoder actual = decoratedDecoder.delegate();
+     * T component = decoratedFeignComponent.delegate();
      * }</pre>
      *
-     * @return the delegate Feign component instance, never {@code null}
+     * @return the current delegate instance
      */
     public T delegate() {
         T delegate = this.delegate;
@@ -73,6 +73,20 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         return delegate;
     }
 
+    /**
+     * Loads a component instance of the given type from the {@link FeignContext},
+     * falling back to direct instantiation if the bean is not available.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Decoder decoder = decoratedFeignComponent.loadInstanceFromContextFactory("my-client", Decoder.class);
+     * }</pre>
+     *
+     * @param <T>           the component type
+     * @param contextId     the Feign client context ID
+     * @param componentType the class of the component to load
+     * @return the loaded component instance
+     */
     @NonNull
     public <T> T loadInstanceFromContextFactory(String contextId, Class<T> componentType) {
         ObjectProvider<T> beanProvider = this.feignContext.getProvider(contextId, componentType);
@@ -80,14 +94,14 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     /**
-     * Returns the Feign client context identifier associated with this component.
+     * Returns the Feign client context ID associated with this decorated component.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * String id = decoratedComponent.contextId();
+     * String id = decoratedFeignComponent.contextId();
      * }</pre>
      *
-     * @return the context identifier, never {@code null}
+     * @return the context ID string
      */
     @NonNull
     public String contextId() {
@@ -95,12 +109,12 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     /**
-     * Refreshes this component by clearing the current delegate. The next call to
-     * {@link #delegate()} will reload a fresh instance from the {@link FeignContext}.
+     * Refreshes this component by clearing the delegate, causing the next call to
+     * {@link #delegate()} to reload the instance from the context factory.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * decoratedComponent.refresh();
+     * decoratedFeignComponent.refresh();
      * }</pre>
      */
     public void refresh() {
@@ -108,37 +122,61 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         this.delegate = null;
     }
 
-    protected abstract Class<? extends T> componentType();
-
     /**
-     * Returns the default {@link FeignClientConfiguration} for this Feign client,
-     * as specified by the default config name in {@link FeignClientProperties}.
+     * Returns the Feign component type class used to resolve the delegate implementation.
+     * Subclasses must implement this to return the appropriate configuration class.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * FeignClientConfiguration defaultConfig = decoratedComponent.getDefaultConfiguration();
+     * Class<? extends T> type = decoratedFeignComponent.componentType();
      * }</pre>
      *
-     * @return the default {@link FeignClientConfiguration}, or {@code null} if not configured
+     * @return the component type class
+     */
+    protected abstract Class<? extends T> componentType();
+
+    /**
+     * Returns the default {@link FeignClientConfiguration} as defined by the
+     * {@link FeignClientProperties#getDefaultConfig()} key.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * FeignClientConfiguration defaultConfig = decoratedFeignComponent.getDefaultConfiguration();
+     * }</pre>
+     *
+     * @return the default {@link FeignClientConfiguration}, or {@code null} if not present
      */
     public FeignClientConfiguration getDefaultConfiguration() {
         return this.clientProperties.getConfig().get(this.clientProperties.getDefaultConfig());
     }
 
     /**
-     * Returns the {@link FeignClientConfiguration} for the current Feign client context.
+     * Returns the {@link FeignClientConfiguration} for the current Feign client context ID.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * FeignClientConfiguration currentConfig = decoratedComponent.getCurrentConfiguration();
+     * FeignClientConfiguration currentConfig = decoratedFeignComponent.getCurrentConfiguration();
      * }</pre>
      *
-     * @return the current {@link FeignClientConfiguration}, or {@code null} if not configured
+     * @return the current {@link FeignClientConfiguration}, or {@code null} if not present
      */
     public FeignClientConfiguration getCurrentConfiguration() {
         return this.clientProperties.getConfig().get(contextId);
     }
 
+    /**
+     * Retrieves a value from the {@link FeignClientConfiguration} using the provided function,
+     * checking the default configuration first and then the current context configuration.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Class<Decoder> decoderClass = get(FeignClientConfiguration::getDecoder);
+     * }</pre>
+     *
+     * @param <T>                   the value type
+     * @param configurationFunction the function to extract a value from the configuration
+     * @return the extracted value, or {@code null} if not found in either configuration
+     */
     protected <T> T get(Function<FeignClientConfiguration, T> configurationFunction) {
         FeignClientConfiguration config = getDefaultConfiguration();
         T value = null;
@@ -155,15 +193,15 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     }
 
     /**
-     * Loads a fresh instance of the Feign component from the {@link FeignContext} using
-     * the {@link #componentType()} and {@link #contextId()}.
+     * Loads the delegate instance from the {@link FeignContext} using the
+     * component type returned by {@link #componentType()}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * T freshInstance = decoratedComponent.loadInstance();
+     * T instance = decoratedFeignComponent.loadInstance();
      * }</pre>
      *
-     * @return a new instance of the Feign component
+     * @return the loaded delegate instance
      */
     protected T loadInstance() {
         Class<? extends T> componentType = componentType();
@@ -171,37 +209,45 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         return loadInstanceFromContextFactory(contextId, componentType);
     }
 
-    /**
-     * Returns the hash code of the delegate component.
-     *
-     * @return the delegate's hash code
-     */
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         return delegate().hashCode();
     }
 
-    /**
-     * Delegates equality check to the underlying delegate component.
-     *
-     * @param obj the object to compare with
-     * @return {@code true} if the delegate considers the objects equal
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         return delegate().equals(obj);
     }
 
-    /**
-     * Returns the string representation of the delegate component.
-     *
-     * @return the delegate's string representation
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return delegate().toString();
     }
 
+    /**
+     * Factory method to instantiate a {@link DecoratedFeignComponent} subclass by locating
+     * the appropriate constructor via reflection.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * DecoratedContract contract = DecoratedFeignComponent.instantiate(
+     *     DecoratedContract.class, Contract.class,
+     *     "my-client", feignContext, clientProperties, originalContract);
+     * }</pre>
+     *
+     * @param <W>              the decorated component type
+     * @param <T>              the Feign component type
+     * @param decoratedClass   the {@link DecoratedFeignComponent} subclass to instantiate
+     * @param componentClass   the Feign component interface class
+     * @param contextId        the Feign client context ID
+     * @param feignContext     the {@link FeignContext} for context resolution
+     * @param clientProperties the {@link FeignClientProperties} for configuration
+     * @param delegate         the original delegate instance
+     * @return a new instance of the decorated component
+     */
     public static <W extends DecoratedFeignComponent<T>, T> W instantiate(Class<W> decoratedClass, Class<T> componentClass,
                                                                           String contextId, FeignContext feignContext, FeignClientProperties clientProperties, T delegate) {
         Constructor<W> constructor = findConstructor(decoratedClass, String.class, FeignContext.class, FeignClientProperties.class, componentClass);

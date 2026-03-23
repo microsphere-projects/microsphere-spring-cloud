@@ -13,20 +13,34 @@ import org.springframework.cloud.openfeign.FeignContext;
  */
 public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implements Retryer  {
 
+    /**
+     * Constructs a {@link DecoratedRetryer} wrapping the given {@link Retryer} delegate.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * DecoratedRetryer retryer = new DecoratedRetryer(
+     *     "my-client", feignContext, clientProperties, new Retryer.Default());
+     * }</pre>
+     *
+     * @param contextId        the Feign client context ID
+     * @param feignContext     the {@link FeignContext} for resolving per-client contexts
+     * @param clientProperties the {@link FeignClientProperties} for configuration lookup
+     * @param delegate         the original {@link Retryer} to delegate to
+     */
     public DecoratedRetryer(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, Retryer delegate) {
         super(contextId, feignContext, clientProperties, delegate);
     }
 
     /**
-     * Returns the {@link Retryer} implementation class to use when reloading
-     * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
+     * Returns the configured {@link Retryer} class from {@link FeignClientConfiguration},
+     * falling back to {@link Retryer.Default} if not configured.
      *
      * <p>Example Usage:
      * <pre>{@code
      * Class<? extends Retryer> type = decoratedRetryer.componentType();
      * }</pre>
      *
-     * @return the configured {@link Retryer} class, or {@link Retryer.Default} if not configured
+     * @return the {@link Retryer} component type class
      */
     @Override
     protected Class<? extends Retryer> componentType() {
@@ -35,25 +49,36 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
     }
 
     /**
-     * Continues or propagates the given {@link RetryableException} by delegating
-     * to the underlying {@link Retryer} implementation.
+     * Continues or propagates the retry by delegating to the underlying {@link Retryer}.
      *
      * <p>Example Usage:
      * <pre>{@code
      * try {
-     *     decoratedRetryer.continueOrPropagate(retryableException);
-     * } catch (RetryableException ex) {
-     *     // max retries exceeded
+     *     // Feign call
+     * } catch (RetryableException e) {
+     *     decoratedRetryer.continueOrPropagate(e);
      * }
      * }</pre>
      *
-     * @param e the {@link RetryableException} to handle
+     * @param e the {@link RetryableException} to evaluate for retry
      */
     @Override
     public void continueOrPropagate(RetryableException e) {
         continueOrPropagate(delegate(), e);
     }
 
+    /**
+     * Delegates the continue-or-propagate decision to the given {@link Retryer} if it
+     * is not {@code null}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * DecoratedRetryer.continueOrPropagate(retryerInstance, retryableException);
+     * }</pre>
+     *
+     * @param retryer the {@link Retryer} to delegate to, may be {@code null}
+     * @param e       the {@link RetryableException} to evaluate
+     */
     static void continueOrPropagate(Retryer retryer, RetryableException e) {
         if (retryer != null) {
             retryer.continueOrPropagate(e);
@@ -61,15 +86,14 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
     }
 
     /**
-     * Clones the underlying {@link Retryer} delegate to produce a fresh copy for
-     * each request invocation.
+     * Returns a clone of the delegate {@link Retryer}.
      *
      * <p>Example Usage:
      * <pre>{@code
      * Retryer cloned = decoratedRetryer.clone();
      * }</pre>
      *
-     * @return a cloned {@link Retryer} instance from the delegate
+     * @return a cloned {@link Retryer} instance
      */
     @Override
     public Retryer clone() {
