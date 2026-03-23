@@ -150,6 +150,7 @@ public class ServiceInstanceUtilsTest {
         this.serviceInstance.setUri(uri);
         uri = getUri(this.serviceInstance);
         assertEquals(create("https://localhost:443"), uri);
+        assertEquals(DefaultServiceInstance.getUri(this.serviceInstance), uri);
     }
 
     @Test
@@ -192,6 +193,7 @@ public class ServiceInstanceUtilsTest {
         serviceInstance.setServiceId("test-service");
         serviceInstance.setHost("localhost");
         serviceInstance.setPort(8080);
+        serviceInstance.setSecure(false);
         return serviceInstance;
     }
 }
