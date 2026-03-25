@@ -72,9 +72,13 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
         if (!isRunning) {
             serviceRegistry.register(registration);
             setRunning(true);
-            logger.info("Service[name : '{}'] is registered!", applicationName);
+            if (logger.isInfoEnabled()) {
+                logger.info("Service[name : '{}'] is registered!", applicationName);
+            }
         } else {
-            logger.warn("Service[name : '{}'] was registered!", applicationName);
+            if (logger.isWarnEnabled()) {
+                logger.warn("Service[name : '{}'] was registered!", applicationName);
+            }
         }
         return isRunning;
     }

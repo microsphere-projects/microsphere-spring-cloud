@@ -95,7 +95,9 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
             WebEndpointMapping mapping = iterator.next();
             String[] patterns = mapping.getPatterns();
             if (isExcludedMapping(mapping, patterns) || isActuatorWebEndpointMapping(mapping, patterns)) {
-                logger.trace("The '{}' was excluded", mapping);
+                if (logger.isTraceEnabled()) {
+                    logger.trace("The '{}' was excluded", mapping);
+                }
                 iterator.remove();
             }
         }

@@ -55,7 +55,9 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
         Class<?>[] originConfigurationClasses = specification.getConfiguration();
         Class<?>[] newConfigurationClasses = combine(AUTO_REFRESH_CAPABILITY_CLASS, originConfigurationClasses);
         specification.setConfiguration(newConfigurationClasses);
-        logger.trace("The Configuration classes: before - {} , after - {}", arrayToString(originConfigurationClasses),
-                arrayToString(newConfigurationClasses));
+        if (logger.isTraceEnabled()) {
+            logger.trace("The Configuration classes: before - {} , after - {}", arrayToString(originConfigurationClasses),
+                    arrayToString(newConfigurationClasses));
+        }
     }
 }
