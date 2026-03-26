@@ -18,6 +18,7 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 
+import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
 import io.microsphere.spring.test.web.controller.TestController;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         },
         webEnvironment = RANDOM_PORT
 )
+@SpringLoggingTest
 abstract class WebServiceRegistryAutoConfigurationTest {
 
     @Autowired

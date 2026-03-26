@@ -18,6 +18,7 @@
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
 
+import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,6 +49,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         },
         webEnvironment = RANDOM_PORT
 )
+@SpringLoggingTest
 class BaseServiceRegistrationEndpointTest {
 
     @Autowired

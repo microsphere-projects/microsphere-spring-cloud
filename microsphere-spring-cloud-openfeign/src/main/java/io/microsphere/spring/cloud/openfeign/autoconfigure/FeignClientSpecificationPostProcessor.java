@@ -23,9 +23,9 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
 
     private static final Logger logger = getLogger(FeignClientSpecificationPostProcessor.class);
 
-    private static final Class<?> AUTO_REFRESH_CAPABILITY_CLASS = AutoRefreshCapability.class;
+    static final Class<?> AUTO_REFRESH_CAPABILITY_CLASS = AutoRefreshCapability.class;
 
-    private static final Class<?> FEIGN_CLIENT_SPECIFICATION_CLASS = FeignClientSpecification.class;
+    static final Class<?> FEIGN_CLIENT_SPECIFICATION_CLASS = FeignClientSpecification.class;
 
     /**
      * Injects the {@link AutoRefreshCapability} into default {@link FeignClientSpecification}
@@ -51,7 +51,7 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
         return bean;
     }
 
-    private void injectAutoRefreshCapability(FeignClientSpecification specification) {
+    void injectAutoRefreshCapability(FeignClientSpecification specification) {
         Class<?>[] originConfigurationClasses = specification.getConfiguration();
         Class<?>[] newConfigurationClasses = combine(AUTO_REFRESH_CAPABILITY_CLASS, originConfigurationClasses);
         specification.setConfiguration(newConfigurationClasses);
