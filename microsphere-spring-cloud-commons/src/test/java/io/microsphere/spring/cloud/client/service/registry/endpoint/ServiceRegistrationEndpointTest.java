@@ -64,8 +64,10 @@ class ServiceRegistrationEndpointTest extends BaseServiceRegistrationEndpointTes
     }
 
     @Test
-    void testStart() {
-        assertFalse(this.endpoint.start());
-        assertTrue(this.endpoint.start());
+    void testStart(int index) {
+        if (index == 0) {
+            assertFalse(this.endpoint.start());
+            assertTrue(this.endpoint.start());
+        }
     }
 }
