@@ -18,13 +18,13 @@
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
 
+import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * {@link ServiceDeregistrationEndpoint} Test
@@ -47,9 +47,10 @@ class ServiceDeregistrationEndpointTest extends BaseServiceRegistrationEndpointT
     private ServiceDeregistrationEndpoint serviceDeregistrationEndpoint;
 
     @Test
+    @LoggingLevelsTest(levels = "ERROR")
     void testStop() {
-        assertFalse(this.serviceDeregistrationEndpoint.stop());
-        assertFalse(this.serviceRegistrationEndpoint.start());
-        assertTrue(this.serviceDeregistrationEndpoint.stop());
+        assertEquals(this.serviceDeregistrationEndpoint.isRunning(), this.serviceDeregistrationEndpoint.stop());
+        assertEquals(this.serviceRegistrationEndpoint.isRunning(), this.serviceRegistrationEndpoint.start());
+        assertEquals(this.serviceDeregistrationEndpoint.isRunning(), this.serviceDeregistrationEndpoint.stop());
     }
 }

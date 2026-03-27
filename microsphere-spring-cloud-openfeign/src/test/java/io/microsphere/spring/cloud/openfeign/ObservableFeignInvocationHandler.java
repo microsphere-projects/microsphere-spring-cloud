@@ -4,7 +4,6 @@ import feign.InvocationHandlerFactory;
 import feign.ResponseHandler;
 import feign.Target;
 import io.microsphere.logging.Logger;
-import static io.microsphere.logging.LoggerFactory.getLogger;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
@@ -15,6 +14,7 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 
 import static feign.Util.checkNotNull;
+import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>

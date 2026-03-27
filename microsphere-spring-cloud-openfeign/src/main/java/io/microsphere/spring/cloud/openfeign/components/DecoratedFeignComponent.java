@@ -68,7 +68,9 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         T delegate = this.delegate;
         if (delegate == null) {
             delegate = loadInstance();
-            logger.trace("the component[{}] - Creating delegate instance[{}] for contextId: '{}'", componentType(), delegate, contextId);
+            if (logger.isTraceEnabled()) {
+                logger.trace("the component[{}] - Creating delegate instance[{}] for contextId: '{}'", componentType(), delegate, contextId);
+            }
             this.delegate = delegate;
         }
         return delegate;
@@ -119,7 +121,9 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * }</pre>
      */
     public void refresh() {
-        logger.trace("the component[{}] - Refreshing delegate instance[{}] for contextId : '{}'", componentType(), this.delegate, contextId);
+        if (logger.isTraceEnabled()) {
+            logger.trace("the component[{}] - Refreshing delegate instance[{}] for contextId : '{}'", componentType(), this.delegate, contextId);
+        }
         this.delegate = null;
     }
 
