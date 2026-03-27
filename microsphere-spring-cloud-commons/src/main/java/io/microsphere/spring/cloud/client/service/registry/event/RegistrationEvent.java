@@ -42,6 +42,20 @@ public abstract class RegistrationEvent extends ApplicationEvent {
 
     private final ServiceRegistry<Registration> registry;
 
+    /**
+     * Create a new {@link RegistrationEvent} with the given {@link ServiceRegistry} and {@link Registration}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ServiceRegistry<Registration> registry = ...;
+     * Registration registration = ...;
+     * // Typically used through a subclass such as RegistrationRegisteredEvent
+     * RegistrationRegisteredEvent event = new RegistrationRegisteredEvent(registry, registration);
+     * }</pre>
+     *
+     * @param registry the {@link ServiceRegistry} that triggered the event
+     * @param source   the {@link Registration} associated with the event
+     */
     public RegistrationEvent(ServiceRegistry<Registration> registry, Registration source) {
         super(source);
         Assert.notNull(registry, "The 'registry' must not be null");

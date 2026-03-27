@@ -2,8 +2,7 @@ package io.microsphere.spring.cloud.openfeign;
 
 import feign.InvocationHandlerFactory;
 import feign.Target;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.microsphere.logging.Logger;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.InvocationHandler;
@@ -12,6 +11,7 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 
 import static feign.Util.checkNotNull;
+import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -20,7 +20,7 @@ import static feign.Util.checkNotNull;
 public class ObservableFeignInvocationHandler implements InvocationHandler {
 
 
-    private static final Logger log = LoggerFactory.getLogger(ObservableFeignInvocationHandler.class);
+    private static final Logger log = getLogger(ObservableFeignInvocationHandler.class);
     public static FeignComponentAssert<?> componentAssert;
     public static Class expectComponentClass;
 

@@ -15,15 +15,32 @@ import org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegis
 @Endpoint(id = "serviceDeregistration")
 public class ServiceDeregistrationEndpoint extends AbstractServiceRegistrationEndpoint {
 
+    /**
+     * Deregisters the service from the {@link ServiceRegistry} if it is currently running.
+     * This is a write operation exposed via the {@code /actuator/serviceDeregistration} endpoint.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Via actuator HTTP POST to /actuator/serviceDeregistration
+     * ServiceDeregistrationEndpoint endpoint = context.getBean(ServiceDeregistrationEndpoint.class);
+     * boolean wasRunning = endpoint.stop();
+     * }</pre>
+     *
+     * @return {@code true} if the service was running before deregistration, {@code false} otherwise
+     */
     @WriteOperation
     public boolean stop() {
         boolean isRunning = isRunning();
         if (isRunning) {
             serviceRegistry.deregister(registration);
-            logger.info("Service[name : '{}'] is deregistered!", applicationName);
+            if (logger.isInfoEnabled()) {
+                logger.info("Service[name : '{}'] is deregistered!", applicationName);
+            }
             setRunning(false);
         } else {
-            logger.warn("Service[name : '{}'] is not registered, deregistration can't be executed!", applicationName);
+            if (logger.isWarnEnabled()) {
+                logger.warn("Service[name : '{}'] is not registered, deregistration can't be executed!", applicationName);
+            }
         }
         return isRunning;
     }

@@ -38,6 +38,14 @@ import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryCl
 /**
  * The {@link DiscoveryClient} implementation for a union of the given {@link DiscoveryClient}
  *
+ * <p>Example Usage:
+ * <pre>{@code
+ * // Register UnionDiscoveryClient as a Spring bean, then retrieve merged service instances
+ * UnionDiscoveryClient unionDiscoveryClient = applicationContext.getBean(UnionDiscoveryClient.class);
+ * List<ServiceInstance> instances = unionDiscoveryClient.getInstances("test");
+ * List<String> services = unionDiscoveryClient.getServices();
+ * }</pre>
+ *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see CompositeDiscoveryClient
  * @since 1.0.0
@@ -48,11 +56,33 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
 
     private List<DiscoveryClient> discoveryClients;
 
+    /**
+     * Returns a human-readable description of this {@link DiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * String desc = unionDiscoveryClient.description();
+     * }</pre>
+     *
+     * @return the description string {@code "Union Discovery Client"}
+     */
     @Override
     public String description() {
         return "Union Discovery Client";
     }
 
+    /**
+     * Returns a merged list of {@link ServiceInstance} objects from all registered
+     * {@link DiscoveryClient} instances for the given service ID.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * List<ServiceInstance> instances = unionDiscoveryClient.getInstances("test");
+     * }</pre>
+     *
+     * @param serviceId the service ID to look up
+     * @return the aggregated list of {@link ServiceInstance} from all discovery clients
+     */
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
         List<ServiceInstance> serviceInstances = new LinkedList<>();
@@ -66,6 +96,17 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         return serviceInstances;
     }
 
+    /**
+     * Returns a deduplicated list of service names from all registered {@link DiscoveryClient}
+     * instances, preserving insertion order.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * List<String> services = unionDiscoveryClient.getServices();
+     * }</pre>
+     *
+     * @return the merged list of unique service names
+     */
     @Override
     public List<String> getServices() {
         LinkedHashSet<String> services = new LinkedHashSet<>();
@@ -79,6 +120,20 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         return new ArrayList<>(services);
     }
 
+    /**
+     * Returns the sorted list of underlying {@link DiscoveryClient DiscoveryClients}, excluding
+     * {@link CompositeDiscoveryClient} and this instance itself. The list is lazily initialized
+     * from the {@link ApplicationContext} on first access and cached for subsequent calls.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * UnionDiscoveryClient unionClient = applicationContext.getBean(UnionDiscoveryClient.class);
+     * List<DiscoveryClient> clients = unionClient.getDiscoveryClients();
+     * clients.forEach(c -> System.out.println(c.description()));
+     * }</pre>
+     *
+     * @return an unmodifiable list of {@link DiscoveryClient} instances
+     */
     public List<DiscoveryClient> getDiscoveryClients() {
         List<DiscoveryClient> discoveryClients = this.discoveryClients;
         if (discoveryClients != null) {
@@ -98,21 +153,65 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         return discoveryClients;
     }
 
+    /**
+     * Returns the order value of this client. This client uses {@code HIGHEST_PRECEDENCE}
+     * to ensure it takes priority over other {@link DiscoveryClient} implementations.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * int order = unionDiscoveryClient.getOrder();
+     * }</pre>
+     *
+     * @return {@link org.springframework.core.Ordered#HIGHEST_PRECEDENCE}
+     */
     @Override
     public int getOrder() {
         return HIGHEST_PRECEDENCE;
     }
 
+    /**
+     * Callback invoked after all singleton beans have been instantiated. Eagerly initializes
+     * the internal list of {@link DiscoveryClient} instances.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Automatically called by the Spring container after singleton initialization
+     * unionDiscoveryClient.afterSingletonsInstantiated();
+     * }</pre>
+     */
     @Override
     public void afterSingletonsInstantiated() {
         this.discoveryClients = getDiscoveryClients();
     }
 
+    /**
+     * Clears the cached list of {@link DiscoveryClient} instances when this bean is destroyed.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Automatically called by the Spring container on shutdown
+     * unionDiscoveryClient.destroy();
+     * }</pre>
+     *
+     * @throws Exception if an error occurs during cleanup
+     */
     @Override
     public void destroy() throws Exception {
         this.discoveryClients.clear();
     }
 
+    /**
+     * Sets the {@link ApplicationContext} used to look up {@link DiscoveryClient} beans.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Automatically called by the Spring container
+     * unionDiscoveryClient.setApplicationContext(applicationContext);
+     * }</pre>
+     *
+     * @param applicationContext the {@link ApplicationContext} to set
+     * @throws BeansException if an error occurs while setting the context
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;

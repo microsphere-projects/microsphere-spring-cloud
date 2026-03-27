@@ -18,9 +18,11 @@
 package io.microsphere.spring.cloud.openfeign.autoconfigure;
 
 
+import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpecificationPostProcessor.invokeSetConfigurationMethod;
+import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpecificationPostProcessor.log;
+import static io.microsphere.util.ArrayUtils.ofArray;
 
 /**
  * {@link FeignClientSpecificationPostProcessor} Test
@@ -32,7 +34,8 @@ import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpe
 class FeignClientSpecificationPostProcessorTest {
 
     @Test
-    void testInvokeSetConfigurationMethod() {
-        invokeSetConfigurationMethod(null, null);
+    @LoggingLevelsTest(levels = "ERROR")
+    void testLog() {
+        log(ofArray(), ofArray());
     }
 }

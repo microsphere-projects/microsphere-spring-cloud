@@ -60,6 +60,18 @@ public class FeignComponentRegistry {
 
     private final BeanFactory beanFactory;
 
+    /**
+     * Returns the Feign component class corresponding to the given configuration key.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Class<?> componentClass = FeignComponentRegistry.getComponentClass("retryer");
+     * // returns Retryer.class
+     * }</pre>
+     *
+     * @param config the configuration property key (e.g. {@code "retryer"}, {@code "decoder"})
+     * @return the mapped Feign component {@link Class}, or {@code null} if not found
+     */
     protected static Class<?> getComponentClass(String config) {
         if (isBlank(config)) {
             return null;
@@ -68,16 +80,53 @@ public class FeignComponentRegistry {
         return configComponentMappings.get(normalizedConfig);
     }
 
+    /**
+     * Normalizes a configuration key by stripping array index suffixes and converting
+     * to dashed form.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * String normalized = FeignComponentRegistry.normalizeConfig("requestInterceptors[0]");
+     * // returns "request-interceptors"
+     * }</pre>
+     *
+     * @param config the raw configuration property key
+     * @return the normalized, dashed-form configuration key
+     */
     static String normalizeConfig(String config) {
         String normalizedConfig = substringBefore(config, LEFT_SQUARE_BRACKET);
         return toDashedForm(normalizedConfig);
     }
 
+    /**
+     * Constructs a {@link FeignComponentRegistry} with the given default client name
+     * and {@link BeanFactory}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * FeignComponentRegistry registry = new FeignComponentRegistry("default", beanFactory);
+     * }</pre>
+     *
+     * @param defaultClientName the name of the default Feign client configuration
+     * @param beanFactory       the {@link BeanFactory} used for component resolution
+     */
     public FeignComponentRegistry(String defaultClientName, BeanFactory beanFactory) {
         this.defaultClientName = defaultClientName;
         this.beanFactory = beanFactory;
     }
 
+    /**
+     * Registers a list of {@link Refreshable} components for the specified Feign client name.
+     * Components are appended to any previously registered components for that client.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * registry.register("my-client", List.of(decoratedDecoder, decoratedEncoder));
+     * }</pre>
+     *
+     * @param clientName the Feign client name to associate the components with
+     * @param components the list of {@link Refreshable} components to register
+     */
     public void register(String clientName, List<Refreshable> components) {
         assertNotBlank(clientName, () -> "The 'clientName' must not be blank!");
         assertNotEmpty(components, () -> "The 'components' must not be empty!");
@@ -86,10 +135,36 @@ public class FeignComponentRegistry {
         componentList.addAll(components);
     }
 
+    /**
+     * Registers a single {@link Refreshable} component for the specified Feign client name.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * registry.register("my-client", decoratedContract);
+     * }</pre>
+     *
+     * @param clientName the Feign client name to associate the component with
+     * @param component the {@link Refreshable} component to register
+     */
     public void register(String clientName, Refreshable component) {
         register(clientName, ofList(component));
     }
 
+    /**
+     * Registers a {@link RequestInterceptor} for the specified Feign client name. Interceptors
+     * are grouped into a {@link CompositedRequestInterceptor} per client. Returns the composited
+     * interceptor if this is the first interceptor for the client, otherwise returns a no-op instance.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * RequestInterceptor result = registry.registerRequestInterceptor("my-client",
+     *     template -> template.header("Authorization", "Bearer token"));
+     * }</pre>
+     *
+     * @param clientName the Feign client name
+     * @param requestInterceptor the {@link RequestInterceptor} to register
+     * @return the {@link CompositedRequestInterceptor} if first registration, or a no-op interceptor
+     */
     public RequestInterceptor registerRequestInterceptor(String clientName, RequestInterceptor requestInterceptor) {
         assertNotBlank(clientName, () -> "The 'clientName' must not be blank!");
         assertNotNull(requestInterceptor, () -> "The 'requestInterceptor' must not be null!");
@@ -101,10 +176,36 @@ public class FeignComponentRegistry {
     }
 
 
+    /**
+     * Refreshes all registered components for the specified Feign client whose component
+     * types match the given changed configuration keys.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * registry.refresh("my-client", "decoder", "encoder");
+     * }</pre>
+     *
+     * @param clientName the Feign client name whose components should be refreshed
+     * @param changedConfigs the configuration keys that have changed
+     */
     public void refresh(String clientName, String... changedConfigs) {
         refresh(clientName, ofSet(changedConfigs));
     }
 
+    /**
+     * Refreshes the Feign components for the specified client based on a set of changed
+     * configuration keys. If the default client configuration changed, all registered
+     * components are refreshed.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Set<String> changed = Set.of("my-client.retryer", "my-client.decoder");
+     * registry.refresh("my-client", changed);
+     * }</pre>
+     *
+     * @param clientName     the Feign client name
+     * @param changedConfigs the set of changed configuration sub-keys
+     */
     public synchronized void refresh(String clientName, Set<String> changedConfigs) {
         Set<Class<?>> effectiveComponents = new HashSet<>(changedConfigs.size());
 
@@ -144,10 +245,37 @@ public class FeignComponentRegistry {
         }
     }
 
+    /**
+     * Checks whether the given {@link Refreshable} component's class is assignable from
+     * any of the effective component classes.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * boolean present = FeignComponentRegistry.isComponentPresent(
+     *     refreshableComponent, List.of(Retryer.class, Decoder.class));
+     * }</pre>
+     *
+     * @param component           the {@link Refreshable} component to check
+     * @param effectiveComponents the component classes to match against
+     * @return {@code true} if the component matches any of the effective classes
+     */
     static boolean isComponentPresent(Refreshable component, Iterable<Class<?>> effectiveComponents) {
         return isComponentClassPresent(component.getClass(), effectiveComponents);
     }
 
+    /**
+     * Checks whether the given class is assignable from any of the effective component classes.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * boolean present = FeignComponentRegistry.isComponentClassPresent(
+     *     DecoratedRetryer.class, List.of(Retryer.class));
+     * }</pre>
+     *
+     * @param componentsClass     the class to check
+     * @param effectiveComponents the component classes to match against
+     * @return {@code true} if the class is assignable from any effective class
+     */
     static boolean isComponentClassPresent(Class<?> componentsClass, Iterable<Class<?>> effectiveComponents) {
         for (Class<?> actualComponent : effectiveComponents) {
             if (actualComponent.isAssignableFrom(componentsClass)) {

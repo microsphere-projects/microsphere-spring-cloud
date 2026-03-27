@@ -19,6 +19,7 @@ package io.microsphere.spring.cloud.client.service.util;
 
 
 import io.microsphere.json.JSONObject;
+import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import io.microsphere.spring.web.metadata.WebEndpointMapping.Builder;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,6 +83,7 @@ public class ServiceInstanceUtilsTest {
     }
 
     @Test
+    @LoggingLevelsTest(levels = "ERROR")
     void testAttachMetadata() {
         attachMetadata(this.context, this.serviceInstance, this.webEndpointMappings);
         assertEquals(this.context, getMetadata(this.serviceInstance, WEB_CONTEXT_PATH_METADATA_NAME));

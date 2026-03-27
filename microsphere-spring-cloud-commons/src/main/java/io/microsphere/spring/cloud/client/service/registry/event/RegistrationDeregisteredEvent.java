@@ -30,10 +30,37 @@ import static io.microsphere.spring.cloud.client.service.registry.event.Registra
  */
 public class RegistrationDeregisteredEvent extends RegistrationEvent {
 
+    /**
+     * Create a new {@link RegistrationDeregisteredEvent} indicating that a
+     * {@link Registration} has been deregistered from the {@link ServiceRegistry}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ServiceRegistry<Registration> registry = ...;
+     * Registration registration = ...;
+     * RegistrationDeregisteredEvent event = new RegistrationDeregisteredEvent(registry, registration);
+     * applicationContext.publishEvent(event);
+     * }</pre>
+     *
+     * @param registry the {@link ServiceRegistry} that performed the deregistration
+     * @param source   the {@link Registration} that was deregistered
+     */
     public RegistrationDeregisteredEvent(ServiceRegistry<Registration> registry, Registration source) {
         super(registry, source);
     }
 
+    /**
+     * Returns the {@link Type} of this event, which is always {@link Type#DEREGISTERED}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * RegistrationDeregisteredEvent event = ...;
+     * RegistrationEvent.Type type = event.getType();
+     * // type == RegistrationEvent.Type.DEREGISTERED
+     * }</pre>
+     *
+     * @return {@link Type#DEREGISTERED}
+     */
     @Override
     public Type getType() {
         return DEREGISTERED;

@@ -39,32 +39,97 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
 
     private final ReactiveDiscoveryClient reactiveDiscoveryClient;
 
+    /**
+     * Create a new {@link ReactiveDiscoveryClientAdapter} that wraps the given
+     * {@link ReactiveDiscoveryClient} as a blocking {@link DiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ReactiveDiscoveryClient reactiveClient = new SimpleReactiveDiscoveryClient(properties);
+     * DiscoveryClient adapter = new ReactiveDiscoveryClientAdapter(reactiveClient);
+     * List<String> services = adapter.getServices();
+     * }</pre>
+     *
+     * @param reactiveDiscoveryClient the {@link ReactiveDiscoveryClient} to adapt, must not be {@code null}
+     */
     public ReactiveDiscoveryClientAdapter(ReactiveDiscoveryClient reactiveDiscoveryClient) {
         this.reactiveDiscoveryClient = reactiveDiscoveryClient;
     }
 
+    /**
+     * Delegates to the underlying {@link ReactiveDiscoveryClient#description()} method.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * String desc = adapter.description();
+     * }</pre>
+     *
+     * @return the description from the underlying {@link ReactiveDiscoveryClient}
+     */
     @Override
     public String description() {
         return this.reactiveDiscoveryClient.description();
     }
 
+    /**
+     * Returns a blocking list of {@link ServiceInstance} objects for the given service ID
+     * by collecting results from the underlying {@link ReactiveDiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * List<ServiceInstance> instances = adapter.getInstances("test-service");
+     * }</pre>
+     *
+     * @param serviceId the service ID to look up
+     * @return the list of {@link ServiceInstance} from the reactive client
+     */
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
         Flux<ServiceInstance> flux = this.reactiveDiscoveryClient.getInstances(serviceId);
         return toList(flux);
     }
 
+    /**
+     * Returns a blocking list of service names by collecting results from the
+     * underlying {@link ReactiveDiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * List<String> services = adapter.getServices();
+     * }</pre>
+     *
+     * @return the list of service names from the reactive client
+     */
     @Override
     public List<String> getServices() {
         Flux<String> flux = this.reactiveDiscoveryClient.getServices();
         return toList(flux);
     }
 
+    /**
+     * Delegates to the underlying {@link ReactiveDiscoveryClient#probe()} method to
+     * verify the discovery client is operational.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * adapter.probe();
+     * }</pre>
+     */
     @Override
     public void probe() {
         this.reactiveDiscoveryClient.probe();
     }
 
+    /**
+     * Returns the order value from the underlying {@link ReactiveDiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * int order = adapter.getOrder();
+     * }</pre>
+     *
+     * @return the order value of the underlying reactive discovery client
+     */
     @Override
     public int getOrder() {
         return this.reactiveDiscoveryClient.getOrder();

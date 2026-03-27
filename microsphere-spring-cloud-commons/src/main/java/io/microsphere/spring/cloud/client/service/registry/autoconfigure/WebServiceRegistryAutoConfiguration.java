@@ -62,6 +62,19 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
     @Value("${management.endpoints.web.base-path:/actuator}")
     protected String actuatorBasePath;
 
+    /**
+     * Handles {@link WebEndpointMappingsReadyEvent} by attaching web endpoint mapping metadata
+     * to all available {@link Registration} instances.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // This listener is invoked automatically by the Spring event system:
+     * // When WebEndpointMappingsReadyEvent is published, metadata is attached
+     * // to each Registration bean in the ApplicationContext.
+     * }</pre>
+     *
+     * @param event the {@link WebEndpointMappingsReadyEvent} containing the web endpoint mappings
+     */
     @Override
     public final void onApplicationEvent(WebEndpointMappingsReadyEvent event) {
         ApplicationContext context = event.getApplicationContext();
@@ -76,13 +89,15 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
         attachMetadata(getContextPath(), registration, mappings);
     }
 
-    private void excludeMappings(Set<WebEndpointMapping> mappings) {
+    void excludeMappings(Collection<WebEndpointMapping> mappings) {
         Iterator<WebEndpointMapping> iterator = mappings.iterator();
         while (iterator.hasNext()) {
             WebEndpointMapping mapping = iterator.next();
             String[] patterns = mapping.getPatterns();
             if (isExcludedMapping(mapping, patterns) || isActuatorWebEndpointMapping(mapping, patterns)) {
-                logger.trace("The '{}' was excluded", mapping);
+                if (logger.isTraceEnabled()) {
+                    logger.trace("The '{}' was excluded", mapping);
+                }
                 iterator.remove();
             }
         }
