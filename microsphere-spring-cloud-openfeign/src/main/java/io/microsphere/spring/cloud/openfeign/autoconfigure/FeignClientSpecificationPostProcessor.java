@@ -28,7 +28,7 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
 
     private static final Logger logger = getLogger(FeignClientSpecificationPostProcessor.class);
 
-    private static final Class<?> AUTO_REFRESH_CAPABILITY_CLASS = AutoRefreshCapability.class;
+    static final Class<?> AUTO_REFRESH_CAPABILITY_CLASS = AutoRefreshCapability.class;
 
     private static final String FEIGN_CLIENT_SPECIFICATION_CLASS_NAME = "org.springframework.cloud.openfeign.FeignClientSpecification";
 
@@ -47,7 +47,7 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
      * Object result = processor.postProcessAfterInitialization(bean, "default.MyClient");
      * }</pre>
      *
-     * @param bean the bean instance to inspect
+     * @param bean     the bean instance to inspect
      * @param beanName the name of the bean
      * @return the (potentially modified) bean instance
      * @throws BeansException if post-processing fails
@@ -61,7 +61,7 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
         return bean;
     }
 
-    private void injectAutoRefreshCapability(Specification defaultSpecification) {
+    void injectAutoRefreshCapability(Specification defaultSpecification) {
         invokeSetConfigurationMethod(setConfigurationMethod, defaultSpecification);
     }
 
@@ -71,6 +71,12 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
             Class<?>[] newConfigurationClasses = combine(AUTO_REFRESH_CAPABILITY_CLASS, originConfigurationClasses);
             Object arg = newConfigurationClasses;
             invokeMethod(specification, setConfigurationMethod, arg);
+            log(originConfigurationClasses, newConfigurationClasses);
+        }
+    }
+
+    static void log(Class<?>[] originConfigurationClasses, Class<?>[] newConfigurationClasses) {
+        if (logger.isTraceEnabled()) {
             logger.trace("The Configuration classes: before - {} , after - {}", arrayToString(originConfigurationClasses),
                     arrayToString(newConfigurationClasses));
         }

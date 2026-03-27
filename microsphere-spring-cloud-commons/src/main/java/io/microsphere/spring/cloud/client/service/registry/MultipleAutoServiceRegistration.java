@@ -21,18 +21,22 @@ public class MultipleAutoServiceRegistration extends AbstractAutoServiceRegistra
     private final MultipleRegistration multipleRegistration;
 
     /**
-     * Constructs a new {@link MultipleAutoServiceRegistration} with the given registration,
-     * service registry, and auto-registration properties.
+     * Constructs a new {@link MultipleAutoServiceRegistration} with the specified
+     * {@link MultipleRegistration}, {@link ServiceRegistry}, and
+     * {@link AutoServiceRegistrationProperties}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * MultipleAutoServiceRegistration autoReg = new MultipleAutoServiceRegistration(
-     *     multipleRegistration, serviceRegistry, properties);
+     * MultipleRegistration registration = new MultipleRegistration(registrations);
+     * ServiceRegistry<MultipleRegistration> serviceRegistry = new InMemoryServiceRegistry();
+     * AutoServiceRegistrationProperties properties = new AutoServiceRegistrationProperties();
+     * MultipleAutoServiceRegistration autoReg =
+     *     new MultipleAutoServiceRegistration(registration, serviceRegistry, properties);
      * }</pre>
      *
-     * @param multipleRegistration the {@link MultipleRegistration} to auto-register
-     * @param serviceRegistry      the {@link ServiceRegistry} to register with
-     * @param properties           the {@link AutoServiceRegistrationProperties} configuration
+     * @param multipleRegistration the {@link MultipleRegistration} to manage
+     * @param serviceRegistry      the {@link ServiceRegistry} to delegate to
+     * @param properties           the {@link AutoServiceRegistrationProperties} for configuration
      */
     public MultipleAutoServiceRegistration(MultipleRegistration multipleRegistration,
                                            ServiceRegistry<MultipleRegistration> serviceRegistry,
@@ -43,11 +47,13 @@ public class MultipleAutoServiceRegistration extends AbstractAutoServiceRegistra
     }
 
     /**
-     * Returns the configuration object for this auto-registration. Currently returns {@code null}.
+     * Returns the configuration object for this auto service registration.
+     * This implementation always returns {@code null}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * Object config = autoRegistration.getConfiguration();
+     * MultipleAutoServiceRegistration autoReg = ...;
+     * Object config = autoReg.getConfiguration(); // null
      * }</pre>
      *
      * @return {@code null}
@@ -58,11 +64,13 @@ public class MultipleAutoServiceRegistration extends AbstractAutoServiceRegistra
     }
 
     /**
-     * Returns whether auto service registration is enabled.
+     * Determines whether this auto service registration is enabled based on the
+     * {@link AutoServiceRegistrationProperties}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * boolean enabled = autoRegistration.isEnabled();
+     * MultipleAutoServiceRegistration autoReg = ...;
+     * boolean enabled = autoReg.isEnabled();
      * }</pre>
      *
      * @return {@code true} if auto service registration is enabled
@@ -73,11 +81,12 @@ public class MultipleAutoServiceRegistration extends AbstractAutoServiceRegistra
     }
 
     /**
-     * Returns the {@link MultipleRegistration} used for service registration.
+     * Returns the {@link MultipleRegistration} managed by this auto service registration.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * MultipleRegistration reg = autoRegistration.getRegistration();
+     * MultipleAutoServiceRegistration autoReg = ...;
+     * MultipleRegistration registration = autoReg.getRegistration();
      * }</pre>
      *
      * @return the {@link MultipleRegistration} instance
@@ -88,14 +97,16 @@ public class MultipleAutoServiceRegistration extends AbstractAutoServiceRegistra
     }
 
     /**
-     * Returns the {@link MultipleRegistration} used for management service registration.
+     * Returns the management {@link MultipleRegistration}, which is the same as
+     * the primary registration in this implementation.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * MultipleRegistration mgmtReg = autoRegistration.getManagementRegistration();
+     * MultipleAutoServiceRegistration autoReg = ...;
+     * MultipleRegistration mgmtRegistration = autoReg.getManagementRegistration();
      * }</pre>
      *
-     * @return the {@link MultipleRegistration} instance for management
+     * @return the {@link MultipleRegistration} instance used for management
      */
     @Override
     protected MultipleRegistration getManagementRegistration() {

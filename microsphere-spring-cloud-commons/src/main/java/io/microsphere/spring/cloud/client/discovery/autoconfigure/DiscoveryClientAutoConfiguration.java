@@ -81,12 +81,14 @@ public class DiscoveryClientAutoConfiguration {
     public static class UnionConfiguration {
 
         /**
-         * Creates a {@link UnionDiscoveryClient} bean that aggregates all registered
-         * {@link DiscoveryClient} instances into a single unified view.
+         * Creates a {@link UnionDiscoveryClient} bean that aggregates all {@link DiscoveryClient}
+         * instances in the {@link org.springframework.context.ApplicationContext}.
          *
          * <p>Example Usage:
          * <pre>{@code
-         * UnionDiscoveryClient client = unionDiscoveryClient();
+         * // Activated when microsphere.spring.cloud.client.discovery.mode=union
+         * UnionDiscoveryClient client = applicationContext.getBean(UnionDiscoveryClient.class);
+         * List<String> services = client.getServices();
          * }</pre>
          *
          * @return a new {@link UnionDiscoveryClient} instance

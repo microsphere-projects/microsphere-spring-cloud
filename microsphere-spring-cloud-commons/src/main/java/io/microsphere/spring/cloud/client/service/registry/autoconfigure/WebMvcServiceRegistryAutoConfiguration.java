@@ -80,11 +80,12 @@ public class WebMvcServiceRegistryAutoConfiguration extends WebServiceRegistryAu
      * <p>Example Usage:
      * <pre>{@code
      * boolean excluded = config.isExcludedMapping(mapping, new String[]{"/*"});
+     * // returns true if the mapping matches a built-in filter or DispatcherServlet
      * }</pre>
      *
      * @param mapping  the {@link WebEndpointMapping} to evaluate
      * @param patterns the URL patterns associated with the mapping
-     * @return {@code true} if the mapping is a built-in filter or dispatcher servlet mapping
+     * @return {@code true} if the mapping is a built-in filter or DispatcherServlet mapping
      */
     @Override
     protected boolean isExcludedMapping(WebEndpointMapping mapping, String[] patterns) {

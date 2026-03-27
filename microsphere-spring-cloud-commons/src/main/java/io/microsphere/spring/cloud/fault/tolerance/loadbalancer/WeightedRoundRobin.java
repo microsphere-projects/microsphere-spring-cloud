@@ -20,11 +20,12 @@ public class WeightedRoundRobin {
     private volatile long lastUpdate;
 
     /**
-     * Constructs a new {@link WeightedRoundRobin} instance with the specified identifier.
+     * Create a new {@link WeightedRoundRobin} instance with the given identifier.
      *
      * <p>Example Usage:
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
+     * wrr.setWeight(5);
      * }</pre>
      *
      * @param id the unique identifier for this weighted round-robin entry
@@ -34,7 +35,7 @@ public class WeightedRoundRobin {
     }
 
     /**
-     * Returns the unique identifier of this {@link WeightedRoundRobin} entry.
+     * Get the unique identifier for this {@link WeightedRoundRobin} entry.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -49,7 +50,7 @@ public class WeightedRoundRobin {
     }
 
     /**
-     * Returns the current weight assigned to this entry.
+     * Get the current weight of this {@link WeightedRoundRobin} entry.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -58,22 +59,22 @@ public class WeightedRoundRobin {
      * int weight = wrr.getWeight(); // 5
      * }</pre>
      *
-     * @return the weight value
+     * @return the current weight
      */
     public int getWeight() {
         return weight;
     }
 
     /**
-     * Sets the weight for this entry and resets the current accumulator to zero.
+     * Set the weight for this {@link WeightedRoundRobin} entry and reset the current counter.
      *
      * <p>Example Usage:
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
-     * wrr.setWeight(5);
+     * wrr.setWeight(10);
      * }</pre>
      *
-     * @param weight the weight value to assign
+     * @param weight the new weight value
      */
     public void setWeight(int weight) {
         this.weight = weight;
@@ -81,18 +82,18 @@ public class WeightedRoundRobin {
     }
 
     /**
-     * Increases the current accumulator by the configured weight and returns the updated value.
-     * This is used in the weighted round-robin selection algorithm to accumulate weight
-     * before selection.
+     * Increase the current counter by the weight value and return the updated value.
+     * Used during weighted round-robin selection to accumulate the weight for this entry.
      *
      * <p>Example Usage:
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(5);
-     * long current = wrr.increaseCurrent(); // adds weight to current
+     * long current = wrr.increaseCurrent(); // 5
+     * current = wrr.increaseCurrent();      // 10
      * }</pre>
      *
-     * @return the current accumulator value after adding the weight
+     * @return the updated current counter value
      */
     public long increaseCurrent() {
         current.add(weight);
@@ -100,29 +101,30 @@ public class WeightedRoundRobin {
     }
 
     /**
-     * Subtracts the given total weight from the current accumulator after this entry
-     * has been selected in the weighted round-robin algorithm.
+     * Subtract the total weight from the current counter after this entry has been selected.
+     * This is part of the weighted round-robin algorithm to reduce the selected entry's counter.
      *
      * <p>Example Usage:
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(5);
      * wrr.increaseCurrent();
-     * wrr.sel(10); // subtracts total from current
+     * wrr.sel(10); // subtract total weight of all entries
      * }</pre>
      *
-     * @param total the total weight of all entries to subtract from the current accumulator
+     * @param total the total weight of all entries to subtract
      */
     public void sel(int total) {
         current.add(-1 * total);
     }
 
     /**
-     * Returns the timestamp of the last update to this entry.
+     * Get the timestamp of the last update to this {@link WeightedRoundRobin} entry.
      *
      * <p>Example Usage:
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
+     * wrr.setLastUpdate(System.currentTimeMillis());
      * long lastUpdate = wrr.getLastUpdate();
      * }</pre>
      *
@@ -133,7 +135,7 @@ public class WeightedRoundRobin {
     }
 
     /**
-     * Sets the timestamp of the last update to this entry.
+     * Set the timestamp of the last update to this {@link WeightedRoundRobin} entry.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -148,17 +150,17 @@ public class WeightedRoundRobin {
     }
 
     /**
-     * Returns a string representation of this {@link WeightedRoundRobin} including its
-     * id, weight, current accumulator value, and last update timestamp.
+     * Returns a string representation of this {@link WeightedRoundRobin} including
+     * its id, weight, current counter, and last update timestamp.
      *
      * <p>Example Usage:
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(5);
-     * String str = wrr.toString(); // "WeightedRoundRobin[id='server-1', weight=5, current=0, lastUpdate=0]"
+     * String s = wrr.toString(); // "WeightedRoundRobin[id='server-1', weight=5, current=0, lastUpdate=0]"
      * }</pre>
      *
-     * @return the string representation
+     * @return a string representation of this entry
      */
     @Override
     public String toString() {

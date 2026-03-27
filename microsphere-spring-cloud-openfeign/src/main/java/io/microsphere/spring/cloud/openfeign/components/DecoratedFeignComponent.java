@@ -73,6 +73,20 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         return delegate;
     }
 
+    /**
+     * Loads a component instance of the given type from the {@link NamedContextFactory},
+     * falling back to direct instantiation if the bean is not available.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Decoder decoder = decoratedFeignComponent.loadInstanceFromContextFactory("my-client", Decoder.class);
+     * }</pre>
+     *
+     * @param <T>           the component type
+     * @param contextId     the Feign client context ID
+     * @param componentType the class of the component to load
+     * @return the loaded component instance
+     */
     @NonNull
     public <T> T loadInstanceFromContextFactory(String contextId, Class<T> componentType) {
         ObjectProvider<T> beanProvider = this.feignContext.getProvider(contextId, componentType);
@@ -104,10 +118,23 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * }</pre>
      */
     public void refresh() {
-        logger.trace("the component[{}] - Refreshing delegate instance[{}] for contextId : '{}'", componentType(), this.delegate, contextId);
+        if (logger.isTraceEnabled()) {
+            logger.trace("the component[{}] - Refreshing delegate instance[{}] for contextId : '{}'", componentType(), this.delegate, contextId);
+        }
         this.delegate = null;
     }
 
+    /**
+     * Returns the Feign component type class used to resolve the delegate implementation.
+     * Subclasses must implement this to return the appropriate configuration class.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Class<? extends T> type = decoratedFeignComponent.componentType();
+     * }</pre>
+     *
+     * @return the component type class
+     */
     protected abstract Class<? extends T> componentType();
 
     /**

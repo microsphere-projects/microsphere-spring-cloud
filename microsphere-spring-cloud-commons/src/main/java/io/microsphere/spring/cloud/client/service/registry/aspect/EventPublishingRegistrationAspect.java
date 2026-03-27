@@ -60,9 +60,8 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     private ObjectProvider<RegistrationCustomizer> registrationCustomizers;
 
     /**
-     * AOP Before advice for {@link ServiceRegistry#register(Registration)}.
-     * Publishes a {@link RegistrationPreRegisteredEvent} and applies any
-     * {@link RegistrationCustomizer} instances before the registration proceeds.
+     * AOP advice executed before {@link ServiceRegistry#register(Registration)}, publishing a
+     * {@link RegistrationPreRegisteredEvent} and applying {@link RegistrationCustomizer customizations}.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -87,8 +86,8 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     }
 
     /**
-     * AOP Before advice for {@link ServiceRegistry#deregister(Registration)}.
-     * Publishes a {@link RegistrationPreDeregisteredEvent} before the deregistration proceeds.
+     * AOP advice executed before {@link ServiceRegistry#deregister(Registration)}, publishing a
+     * {@link RegistrationPreDeregisteredEvent}.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -110,8 +109,8 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     }
 
     /**
-     * AOP After advice for {@link ServiceRegistry#register(Registration)}.
-     * Publishes a {@link RegistrationRegisteredEvent} after the registration completes.
+     * AOP advice executed after {@link ServiceRegistry#register(Registration)}, publishing a
+     * {@link RegistrationRegisteredEvent}.
      *
      * <p>Example Usage:
      * <pre>{@code
@@ -133,8 +132,8 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     }
 
     /**
-     * AOP After advice for {@link ServiceRegistry#deregister(Registration)}.
-     * Publishes a {@link RegistrationDeregisteredEvent} after the deregistration completes.
+     * AOP advice executed after {@link ServiceRegistry#deregister(Registration)}, publishing a
+     * {@link RegistrationDeregisteredEvent}.
      *
      * <p>Example Usage:
      * <pre>{@code

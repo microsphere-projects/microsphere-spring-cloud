@@ -31,13 +31,6 @@ import static reactor.core.scheduler.Schedulers.isInNonBlockingThread;
 /**
  * An adapter {@link DiscoveryClient} class based on {@link ReactiveDiscoveryClient}
  *
- * <p>Example Usage:
- * <pre>{@code
- * ReactiveDiscoveryClientAdapter adapter = new ReactiveDiscoveryClientAdapter(reactiveDiscoveryClient);
- * List<ServiceInstance> instances = adapter.getInstances("test-service");
- * List<String> services = adapter.getServices();
- * }</pre>
- *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see DiscoveryClient
  * @since 1.0.0
@@ -47,15 +40,17 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     private final ReactiveDiscoveryClient reactiveDiscoveryClient;
 
     /**
-     * Constructs a new {@link ReactiveDiscoveryClientAdapter} wrapping the given
-     * {@link ReactiveDiscoveryClient}.
+     * Create a new {@link ReactiveDiscoveryClientAdapter} that wraps the given
+     * {@link ReactiveDiscoveryClient} as a blocking {@link DiscoveryClient}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * ReactiveDiscoveryClientAdapter adapter = new ReactiveDiscoveryClientAdapter(reactiveDiscoveryClient);
+     * ReactiveDiscoveryClient reactiveClient = new SimpleReactiveDiscoveryClient(properties);
+     * DiscoveryClient adapter = new ReactiveDiscoveryClientAdapter(reactiveClient);
+     * List<String> services = adapter.getServices();
      * }</pre>
      *
-     * @param reactiveDiscoveryClient the {@link ReactiveDiscoveryClient} to adapt
+     * @param reactiveDiscoveryClient the {@link ReactiveDiscoveryClient} to adapt, must not be {@code null}
      */
     public ReactiveDiscoveryClientAdapter(ReactiveDiscoveryClient reactiveDiscoveryClient) {
         this.reactiveDiscoveryClient = reactiveDiscoveryClient;

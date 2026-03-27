@@ -20,12 +20,25 @@
 
     <properties>
         <!-- BOM versions -->
-        <microsphere-spring-boot.version>0.1.5</microsphere-spring-boot.version>
+        <microsphere-spring-boot.version>0.1.6</microsphere-spring-boot.version>
+        <spring-boot.version>2.6.15</spring-boot.version>
+        <spring-cloud.version>2021.0.9</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
         <testcontainers.version>1.21.3</testcontainers.version>
+        <!-- Testing -->
+        <junit-jupiter.version>6.0.3</junit-jupiter.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- JUnit BOM -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <!-- Testcontainers Dependencies -->
             <dependency>
@@ -97,14 +110,12 @@
         </profile>
 
         <profile>
-            <id>spring-cloud-2021</id>
+            <id>java8-16</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <jdk>[1.8,17)</jdk>
             </activation>
             <properties>
-                <spring-boot.version>2.6.15</spring-boot.version>
-                <spring-cloud.version>2021.0.9</spring-cloud.version>
-                <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
+                <junit-jupiter.version>5.14.3</junit-jupiter.version>
             </properties>
         </profile>
 

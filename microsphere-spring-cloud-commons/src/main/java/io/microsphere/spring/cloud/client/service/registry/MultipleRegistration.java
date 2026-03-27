@@ -30,16 +30,19 @@ public class MultipleRegistration implements Registration {
     private final RegistrationMetaData metaData;
 
     /**
-     * Constructs a new {@link MultipleRegistration} wrapping the given collection of
-     * {@link Registration} instances. Builds an internal mapping from registration types
-     * to their instances and initializes aggregated {@link RegistrationMetaData}.
+     * Constructs a new {@link MultipleRegistration} from the given collection of
+     * {@link Registration} instances. The last registration in the collection becomes
+     * the default registration.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * MultipleRegistration registration = new MultipleRegistration(registrations);
+     * DefaultRegistration registration = new DefaultRegistration();
+     * registration.setServiceId("test-service");
+     * MultipleRegistration multipleRegistration =
+     *     new MultipleRegistration(List.of(registration));
      * }</pre>
      *
-     * @param registrations the collection of {@link Registration} instances to wrap; must not be empty
+     * @param registrations the collection of {@link Registration} instances, must not be empty
      */
     public MultipleRegistration(Collection<Registration> registrations) {
         assertNotEmpty(registrations, () -> "registrations cannot be empty");
@@ -54,14 +57,15 @@ public class MultipleRegistration implements Registration {
     }
 
     /**
-     * Returns the instance ID of the default {@link Registration}.
+     * Returns the instance ID from the default {@link Registration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * String instanceId = registration.getInstanceId();
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * String instanceId = multipleRegistration.getInstanceId();
      * }</pre>
      *
-     * @return the instance ID
+     * @return the instance ID of the default registration
      */
     @Override
     public String getInstanceId() {
@@ -69,14 +73,15 @@ public class MultipleRegistration implements Registration {
     }
 
     /**
-     * Returns the service ID of the default {@link Registration}.
+     * Returns the service ID from the default {@link Registration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * String serviceId = registration.getServiceId();
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * String serviceId = multipleRegistration.getServiceId();
      * }</pre>
      *
-     * @return the service ID
+     * @return the service ID of the default registration
      */
     @Override
     public String getServiceId() {
@@ -84,14 +89,15 @@ public class MultipleRegistration implements Registration {
     }
 
     /**
-     * Returns the host of the default {@link Registration}.
+     * Returns the host from the default {@link Registration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * String host = registration.getHost();
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * String host = multipleRegistration.getHost();
      * }</pre>
      *
-     * @return the host name or IP address
+     * @return the host of the default registration
      */
     @Override
     public String getHost() {
@@ -99,14 +105,15 @@ public class MultipleRegistration implements Registration {
     }
 
     /**
-     * Returns the port of the default {@link Registration}.
+     * Returns the port from the default {@link Registration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * int port = registration.getPort();
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * int port = multipleRegistration.getPort();
      * }</pre>
      *
-     * @return the port number
+     * @return the port of the default registration
      */
     @Override
     public int getPort() {
@@ -114,14 +121,15 @@ public class MultipleRegistration implements Registration {
     }
 
     /**
-     * Returns whether the default {@link Registration} uses a secure (HTTPS) connection.
+     * Returns whether the default {@link Registration} is secure.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * boolean secure = registration.isSecure();
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * boolean secure = multipleRegistration.isSecure();
      * }</pre>
      *
-     * @return {@code true} if the connection is secure
+     * @return {@code true} if the default registration is secure
      */
     @Override
     public boolean isSecure() {
@@ -129,14 +137,15 @@ public class MultipleRegistration implements Registration {
     }
 
     /**
-     * Returns the URI of the default {@link Registration}.
+     * Returns the {@link URI} from the default {@link Registration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * URI uri = registration.getUri();
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * URI uri = multipleRegistration.getUri();
      * }</pre>
      *
-     * @return the {@link java.net.URI} of the service instance
+     * @return the URI of the default registration
      */
     @Override
     public URI getUri() {
@@ -144,14 +153,16 @@ public class MultipleRegistration implements Registration {
     }
 
     /**
-     * Returns the aggregated {@link RegistrationMetaData} across all wrapped registrations.
+     * Returns the aggregated {@link RegistrationMetaData} that synchronizes metadata
+     * across all underlying {@link Registration} instances.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * Map<String, String> metadata = registration.getMetadata();
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * Map<String, String> metadata = multipleRegistration.getMetadata();
      * }</pre>
      *
-     * @return the metadata map
+     * @return the aggregated metadata map
      */
     @Override
     public Map<String, String> getMetadata() {
@@ -164,7 +175,8 @@ public class MultipleRegistration implements Registration {
      *
      * <p>Example Usage:
      * <pre>{@code
-     * Registration defaultReg = registration.getDefaultRegistration();
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * Registration defaultReg = multipleRegistration.getDefaultRegistration();
      * }</pre>
      *
      * @return the default {@link Registration}
@@ -173,6 +185,21 @@ public class MultipleRegistration implements Registration {
         return defaultRegistration;
     }
 
+    /**
+     * Retrieves a specific {@link Registration} by its class type. If the specified
+     * class is {@link Registration} itself, returns this {@link MultipleRegistration}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
+     * DefaultRegistration specific = multipleRegistration.special(DefaultRegistration.class);
+     * Registration self = multipleRegistration.special(Registration.class);
+     * }</pre>
+     *
+     * @param specialClass the specific {@link Registration} subclass to look up
+     * @param <T>          the type of the registration
+     * @return the matching registration, or {@code null} if not found
+     */
     public <T extends Registration> T special(Class<T> specialClass) {
         if (Registration.class.equals(specialClass))
             return (T) this;
