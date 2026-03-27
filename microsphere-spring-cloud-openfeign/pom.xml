@@ -69,6 +69,13 @@
             </exclusions>
         </dependency>
 
+        <!-- Microsphere Test -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -121,16 +121,18 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     }
 
     /**
-     * Returns the list of underlying {@link DiscoveryClient} instances, excluding
-     * {@link CompositeDiscoveryClient} and this client itself. The list is lazily
-     * initialized and cached.
+     * Returns the sorted list of underlying {@link DiscoveryClient DiscoveryClients}, excluding
+     * {@link CompositeDiscoveryClient} and this instance itself. The list is lazily initialized
+     * from the {@link ApplicationContext} on first access and cached for subsequent calls.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * List<DiscoveryClient> clients = unionDiscoveryClient.getDiscoveryClients();
+     * UnionDiscoveryClient unionClient = applicationContext.getBean(UnionDiscoveryClient.class);
+     * List<DiscoveryClient> clients = unionClient.getDiscoveryClients();
+     * clients.forEach(c -> System.out.println(c.description()));
      * }</pre>
      *
-     * @return the sorted list of registered {@link DiscoveryClient} instances
+     * @return an unmodifiable list of {@link DiscoveryClient} instances
      */
     public List<DiscoveryClient> getDiscoveryClients() {
         List<DiscoveryClient> discoveryClients = this.discoveryClients;

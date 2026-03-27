@@ -1,8 +1,8 @@
 package io.microsphere.spring.cloud.openfeign;
 
+import io.microsphere.logging.Logger;
 import io.microsphere.spring.cloud.openfeign.autoconfigure.EnableFeignAutoRefresh;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -41,7 +43,7 @@ import java.util.Set;
 @EnableFeignAutoRefresh
 public abstract class BaseTest<T> {
 
-    private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
+    private static final Logger log = getLogger(BaseTest.class);
     @Autowired
     private ApplicationEventPublisher publisher;
     @Autowired

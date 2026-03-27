@@ -69,20 +69,23 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
     private volatile ServerProperties currentServerProperties;
 
     /**
-     * Constructs a new {@link TomcatDynamicConfigurationListener} that monitors
-     * {@link EnvironmentChangeEvent} instances to dynamically reconfigure the given
-     * {@link TomcatWebServer} at runtime.
+     * Create a new {@link TomcatDynamicConfigurationListener} to dynamically reconfigure
+     * the given {@link TomcatWebServer} when {@link EnvironmentChangeEvent EnvironmentChangeEvents}
+     * are published.
      *
      * <p>Example Usage:
      * <pre>{@code
+     * TomcatWebServer tomcatWebServer = ...;
+     * ServerProperties serverProperties = ...;
+     * ConfigurableApplicationContext context = ...;
      * TomcatDynamicConfigurationListener listener =
-     *     new TomcatDynamicConfigurationListener(tomcatWebServer, serverProperties, applicationContext);
-     * applicationContext.addApplicationListener(listener);
+     *     new TomcatDynamicConfigurationListener(tomcatWebServer, serverProperties, context);
+     * context.addApplicationListener(listener);
      * }</pre>
      *
-     * @param tomcatWebServer the embedded Tomcat web server to configure
-     * @param serverProperties the current {@link ServerProperties} bound from configuration
-     * @param context the {@link ConfigurableApplicationContext} used to resolve environment and beans
+     * @param tomcatWebServer  the {@link TomcatWebServer} to reconfigure dynamically
+     * @param serverProperties the current {@link ServerProperties}
+     * @param context          the {@link ConfigurableApplicationContext} for environment access
      */
     public TomcatDynamicConfigurationListener(TomcatWebServer tomcatWebServer, ServerProperties serverProperties,
                                               ConfigurableApplicationContext context) {
@@ -102,28 +105,31 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
     }
 
     /**
-     * Handles an {@link EnvironmentChangeEvent} by checking whether any server-related
-     * properties have changed, and if so, reconfigures the embedded Tomcat connector
-     * accordingly (e.g., thread pool sizes, connection timeouts, max connections).
+     * Handles an {@link EnvironmentChangeEvent} by reconfiguring the Tomcat connector
+     * if any server-related properties have changed.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * // Triggered automatically when environment properties change:
-     * // context.publishEvent(new EnvironmentChangeEvent(context, changedKeys));
+     * // Automatically invoked by Spring when an EnvironmentChangeEvent is published.
+     * // Reconfigures Tomcat settings such as thread pool size, connection timeout, etc.
      * }</pre>
      *
-     * @param event the {@link EnvironmentChangeEvent} containing the set of changed property keys
+     * @param event the {@link EnvironmentChangeEvent} containing the changed property keys
      */
     @Override
     public void onApplicationEvent(EnvironmentChangeEvent event) {
         if (!isSourceFrom(event)) {
-            logger.trace("Current context[id : '{}'] receives the other changed property names : {}", context.getId(), event.getKeys());
+            if (logger.isTraceEnabled()) {
+                logger.trace("Current context[id : '{}'] receives the other changed property names : {}", context.getId(), event.getKeys());
+            }
             return;
         }
 
         Set<String> serverPropertyNames = filterServerPropertyNames(event);
         if (serverPropertyNames.isEmpty()) {
-            logger.trace("Current context[id : '{}'] does not receive the property change of ServerProperties, keys : {}", context.getId(), event.getKeys());
+            if (logger.isTraceEnabled()) {
+                logger.trace("Current context[id : '{}'] does not receive the property change of ServerProperties, keys : {}", context.getId(), event.getKeys());
+            }
             return;
         }
 
@@ -149,7 +155,9 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
 
     private void configureTomcatIfChanged(Set<String> serverPropertyNames) {
         ServerProperties refreshableServerProperties = getRefreshableServerProperties(serverPropertyNames);
-        logger.trace("The ServerProperties property is changed to: {}", getProperties(environment, serverPropertyNames));
+        if (logger.isTraceEnabled()) {
+            logger.trace("The ServerProperties property is changed to: {}", getProperties(environment, serverPropertyNames));
+        }
         configureConnector(refreshableServerProperties);
         // Reset current ServerProperties
         initCurrentServerProperties();
@@ -175,6 +183,20 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
         configureHttp11Protocol(refreshableServerProperties, connector, protocolHandler);
     }
 
+    /**
+     * Configure the Tomcat {@link AbstractProtocol} settings such as thread pool sizes,
+     * accept count, connection timeout, and max connections from the refreshed {@link ServerProperties}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ServerProperties refreshedProperties = ...;
+     * ProtocolHandler protocolHandler = connector.getProtocolHandler();
+     * listener.configureProtocol(refreshedProperties, protocolHandler);
+     * }</pre>
+     *
+     * @param refreshableServerProperties the refreshed {@link ServerProperties} to apply
+     * @param protocolHandler             the {@link ProtocolHandler} to configure
+     */
     void configureProtocol(ServerProperties refreshableServerProperties, ProtocolHandler protocolHandler) {
         if (protocolHandler instanceof AbstractProtocol) {
 
@@ -223,6 +245,22 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
         }
     }
 
+    /**
+     * Configure the Tomcat {@link AbstractHttp11Protocol} settings such as max HTTP header size,
+     * max swallow size, and max HTTP form POST size from the refreshed {@link ServerProperties}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ServerProperties refreshedProperties = ...;
+     * Connector connector = tomcatWebServer.getTomcat().getConnector();
+     * ProtocolHandler protocolHandler = connector.getProtocolHandler();
+     * listener.configureHttp11Protocol(refreshedProperties, connector, protocolHandler);
+     * }</pre>
+     *
+     * @param refreshableServerProperties the refreshed {@link ServerProperties} to apply
+     * @param connector                   the Tomcat {@link Connector}
+     * @param protocolHandler             the {@link ProtocolHandler} to configure
+     */
     void configureHttp11Protocol(ServerProperties refreshableServerProperties, Connector connector, ProtocolHandler protocolHandler) {
         if (protocolHandler instanceof AbstractHttp11Protocol) {
             AbstractHttp11Protocol protocol = (AbstractHttp11Protocol) protocolHandler;
@@ -265,6 +303,18 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
         return (int) dataSize.toBytes();
     }
 
+    /**
+     * Check whether the given integer value is positive (greater than zero).
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * boolean result = listener.isPositive(10);  // true
+     * boolean result2 = listener.isPositive(0);  // false
+     * }</pre>
+     *
+     * @param value the value to check
+     * @return {@code true} if the value is greater than zero
+     */
     boolean isPositive(int value) {
         return value > 0;
     }

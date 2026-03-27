@@ -37,6 +37,21 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
 
     private String defaultRegistrationBeanName;
 
+    /**
+     * Constructs a new {@link MultipleServiceRegistry} from the given map of bean names
+     * to {@link ServiceRegistry} instances. Each registry is mapped to its corresponding
+     * {@link Registration} type.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * ServiceRegistry<DefaultRegistration> simpleRegistry = new InMemoryServiceRegistry();
+     * MultipleServiceRegistry registry =
+     *     new MultipleServiceRegistry(Map.of("default", simpleRegistry));
+     * }</pre>
+     *
+     * @param registriesMap the map of Spring bean names to {@link ServiceRegistry} instances,
+     *                      must not be empty
+     */
     public MultipleServiceRegistry(Map<String, ServiceRegistry> registriesMap) {
         assertNotEmpty(registriesMap, () -> "registrations cannot be empty");
 
@@ -54,15 +69,17 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
     }
 
     /**
-     * Registers all underlying service instances by delegating to each corresponding
-     * {@link ServiceRegistry}.
+     * Registers the given {@link MultipleRegistration} by delegating to each underlying
+     * {@link ServiceRegistry} with the corresponding specific {@link Registration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * multipleServiceRegistry.register(multipleRegistration);
+     * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
+     * MultipleRegistration registration = new MultipleRegistration(registrations);
+     * registry.register(registration);
      * }</pre>
      *
-     * @param registration the {@link MultipleRegistration} containing all registrations
+     * @param registration the {@link MultipleRegistration} to register
      */
     @Override
     public void register(MultipleRegistration registration) {
@@ -70,15 +87,18 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
     }
 
     /**
-     * Deregisters all underlying service instances by delegating to each corresponding
-     * {@link ServiceRegistry}.
+     * Deregisters the given {@link MultipleRegistration} by delegating to each underlying
+     * {@link ServiceRegistry} with the corresponding specific {@link Registration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * multipleServiceRegistry.deregister(multipleRegistration);
+     * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
+     * MultipleRegistration registration = new MultipleRegistration(registrations);
+     * registry.register(registration);
+     * registry.deregister(registration);
      * }</pre>
      *
-     * @param registration the {@link MultipleRegistration} containing all registrations
+     * @param registration the {@link MultipleRegistration} to deregister
      */
     @Override
     public void deregister(MultipleRegistration registration) {
@@ -90,7 +110,8 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
      *
      * <p>Example Usage:
      * <pre>{@code
-     * multipleServiceRegistry.close();
+     * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
+     * registry.close();
      * }</pre>
      */
     @Override
@@ -100,11 +121,13 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
 
     /**
      * Sets the status of the given {@link MultipleRegistration} by delegating to each
-     * corresponding {@link ServiceRegistry}.
+     * underlying {@link ServiceRegistry} with the corresponding specific {@link Registration}.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * multipleServiceRegistry.setStatus(multipleRegistration, "UP");
+     * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
+     * registry.register(registration);
+     * registry.setStatus(registration, "UP");
      * }</pre>
      *
      * @param registration the {@link MultipleRegistration} whose status is to be set
@@ -129,6 +152,22 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         registriesMap.values().forEach(action);
     }
 
+    /**
+     * Retrieves the status of the given {@link MultipleRegistration} from the default
+     * {@link ServiceRegistry}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
+     * registry.register(registration);
+     * registry.setStatus(registration, "UP");
+     * Object status = registry.getStatus(registration); // "UP"
+     * }</pre>
+     *
+     * @param registration the {@link MultipleRegistration} whose status is to be retrieved
+     * @param <T>          the type of the status value
+     * @return the status from the default service registry
+     */
     @Override
     public <T> T getStatus(MultipleRegistration registration) {
         Class<? extends Registration> registrationClass = beanNameToRegistrationTypesMap.get(defaultRegistrationBeanName);
@@ -136,6 +175,21 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         return (T) defaultServiceRegistry.getStatus(targetRegistration);
     }
 
+    /**
+     * Resolves the {@link Registration} class for the given {@link ServiceRegistry} class
+     * using generic type resolution. Falls back to {@code SpringFactoriesLoader} when the
+     * generic type resolves to {@link Registration} itself.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * Class<? extends Registration> regClass =
+     *     MultipleServiceRegistry.getRegistrationClass(NacosServiceRegistry.class);
+     * // returns NacosRegistration.class
+     * }</pre>
+     *
+     * @param serviceRegistryClass the {@link ServiceRegistry} implementation class
+     * @return the resolved {@link Registration} subclass
+     */
     static Class<? extends Registration> getRegistrationClass(Class<?> serviceRegistryClass) {
         Class<?> registrationClass = forClass(serviceRegistryClass)
                 .as(ServiceRegistry.class)

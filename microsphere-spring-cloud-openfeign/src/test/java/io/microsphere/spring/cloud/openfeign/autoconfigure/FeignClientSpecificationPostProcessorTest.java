@@ -18,9 +18,15 @@
 package io.microsphere.spring.cloud.openfeign.autoconfigure;
 
 
+import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.cloud.openfeign.FeignClientSpecification;
 
-import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpecificationPostProcessor.invokeSetConfigurationMethod;
+import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpecificationPostProcessor.AUTO_REFRESH_CAPABILITY_CLASS;
+import static io.microsphere.util.ArrayUtils.combine;
+import static io.microsphere.util.ArrayUtils.ofArray;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
  * {@link FeignClientSpecificationPostProcessor} Test
@@ -29,10 +35,22 @@ import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpe
  * @see FeignClientSpecificationPostProcessor
  * @since 1.0.0
  */
+@SpringLoggingTest
 class FeignClientSpecificationPostProcessorTest {
 
+    private FeignClientSpecificationPostProcessor postProcessor;
+
+    @BeforeEach
+    void setUp() {
+        this.postProcessor = new FeignClientSpecificationPostProcessor();
+    }
+
     @Test
-    void testInvokeSetConfigurationMethod() {
-        invokeSetConfigurationMethod(null, null);
+    void testInjectAutoRefreshCapability() {
+        Class<?>[] configurationClasses = ofArray(FeignClientSpecificationPostProcessorTest.class);
+        FeignClientSpecification specification = new FeignClientSpecification("test", configurationClasses);
+        assertArrayEquals(configurationClasses, specification.getConfiguration());
+        this.postProcessor.injectAutoRefreshCapability(specification);
+        assertArrayEquals(combine(AUTO_REFRESH_CAPABILITY_CLASS, configurationClasses), specification.getConfiguration());
     }
 }
