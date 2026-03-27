@@ -18,6 +18,7 @@
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
 
+import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -28,10 +29,8 @@ import java.util.Map;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Integer.valueOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link ServiceRegistrationEndpoint} Test
@@ -64,10 +63,9 @@ class ServiceRegistrationEndpointTest extends BaseServiceRegistrationEndpointTes
     }
 
     @Test
-    void testStart(int index) {
-        if (index == 0) {
-            assertFalse(this.endpoint.start());
-            assertTrue(this.endpoint.start());
-        }
+    @LoggingLevelsTest(levels = "ERROR")
+    void testStart() {
+        assertEquals(this.endpoint.isRunning(), this.endpoint.start());
+        assertEquals(this.endpoint.isRunning(), this.endpoint.start());
     }
 }
