@@ -38,6 +38,14 @@ import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryCl
 /**
  * The {@link DiscoveryClient} implementation for a union of the given {@link DiscoveryClient}
  *
+ * <p>Example Usage:
+ * <pre>{@code
+ * // Register UnionDiscoveryClient as a Spring bean, then retrieve merged service instances
+ * UnionDiscoveryClient unionDiscoveryClient = applicationContext.getBean(UnionDiscoveryClient.class);
+ * List<ServiceInstance> instances = unionDiscoveryClient.getInstances("test");
+ * List<String> services = unionDiscoveryClient.getServices();
+ * }</pre>
+ *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see CompositeDiscoveryClient
  * @since 1.0.0
@@ -49,9 +57,14 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     private List<DiscoveryClient> discoveryClients;
 
     /**
-     * {@inheritDoc}
+     * Returns a human-readable description of this {@link DiscoveryClient}.
      *
-     * @return the description "Union Discovery Client"
+     * <p>Example Usage:
+     * <pre>{@code
+     * String desc = unionDiscoveryClient.description();
+     * }</pre>
+     *
+     * @return the description string {@code "Union Discovery Client"}
      */
     @Override
     public String description() {
@@ -59,8 +72,16 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Aggregates service instances from all underlying {@link DiscoveryClient DiscoveryClients}.
+     * Returns a merged list of {@link ServiceInstance} objects from all registered
+     * {@link DiscoveryClient} instances for the given service ID.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * List<ServiceInstance> instances = unionDiscoveryClient.getInstances("test");
+     * }</pre>
+     *
+     * @param serviceId the service ID to look up
+     * @return the aggregated list of {@link ServiceInstance} from all discovery clients
      */
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
@@ -76,8 +97,15 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Returns a deduplicated union of service names from all underlying {@link DiscoveryClient DiscoveryClients}.
+     * Returns a deduplicated list of service names from all registered {@link DiscoveryClient}
+     * instances, preserving insertion order.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * List<String> services = unionDiscoveryClient.getServices();
+     * }</pre>
+     *
+     * @return the merged list of unique service names
      */
     @Override
     public List<String> getServices() {
@@ -126,9 +154,15 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the order value of this client. This client uses {@code HIGHEST_PRECEDENCE}
+     * to ensure it takes priority over other {@link DiscoveryClient} implementations.
      *
-     * @return {@link #HIGHEST_PRECEDENCE} to ensure this client takes priority
+     * <p>Example Usage:
+     * <pre>{@code
+     * int order = unionDiscoveryClient.getOrder();
+     * }</pre>
+     *
+     * @return {@link org.springframework.core.Ordered#HIGHEST_PRECEDENCE}
      */
     @Override
     public int getOrder() {
@@ -136,8 +170,14 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Eagerly initializes the list of {@link DiscoveryClient DiscoveryClients} after all singletons are instantiated.
+     * Callback invoked after all singleton beans have been instantiated. Eagerly initializes
+     * the internal list of {@link DiscoveryClient} instances.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Automatically called by the Spring container after singleton initialization
+     * unionDiscoveryClient.afterSingletonsInstantiated();
+     * }</pre>
      */
     @Override
     public void afterSingletonsInstantiated() {
@@ -145,8 +185,15 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Clears the cached list of {@link DiscoveryClient DiscoveryClients} on bean destruction.
+     * Clears the cached list of {@link DiscoveryClient} instances when this bean is destroyed.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Automatically called by the Spring container on shutdown
+     * unionDiscoveryClient.destroy();
+     * }</pre>
+     *
+     * @throws Exception if an error occurs during cleanup
      */
     @Override
     public void destroy() throws Exception {
@@ -154,8 +201,16 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Stores the {@link ApplicationContext} used to look up {@link DiscoveryClient} beans.
+     * Sets the {@link ApplicationContext} used to look up {@link DiscoveryClient} beans.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * // Automatically called by the Spring container
+     * unionDiscoveryClient.setApplicationContext(applicationContext);
+     * }</pre>
+     *
+     * @param applicationContext the {@link ApplicationContext} to set
+     * @throws BeansException if an error occurs while setting the context
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

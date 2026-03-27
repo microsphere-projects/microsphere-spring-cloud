@@ -16,7 +16,21 @@ import static io.microsphere.util.Assert.assertNotEmpty;
 import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass;
 
 /**
+ * A {@link Map}-based metadata container for {@link Registration} instances that synchronizes
+ * metadata changes across all underlying registrations. This class wraps one or more
+ * {@link Registration} objects and ensures that any metadata modifications (put, remove, clear)
+ * are propagated to every registration in a thread-safe manner.
+ *
+ * <p>Example Usage:
+ * <pre>{@code
+ * RegistrationMetaData metaData = new RegistrationMetaData(ofList(defaultRegistration));
+ * metaData.put("key", "value");
+ * String value = metaData.get("key");
+ * metaData.remove("key");
+ * }</pre>
+ *
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
+ * @see Registration
  * @since 1.0.0
  */
 public final class RegistrationMetaData implements Map<String, String> {
