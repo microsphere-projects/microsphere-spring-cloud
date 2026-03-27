@@ -21,12 +21,9 @@
     <properties>
         <!-- BOM versions -->
         <microsphere-spring-boot.version>0.1.6</microsphere-spring-boot.version>
-        <spring-boot.version>2.6.15</spring-boot.version>
-        <spring-cloud.version>2021.0.9</spring-cloud.version>
-        <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
         <testcontainers.version>1.21.3</testcontainers.version>
         <!-- Testing -->
-        <junit-jupiter.version>6.0.3</junit-jupiter.version>
+        <junit-jupiter.version>5.14.3</junit-jupiter.version>
     </properties>
 
     <dependencyManagement>
@@ -110,12 +107,14 @@
         </profile>
 
         <profile>
-            <id>java8-16</id>
+            <id>spring-cloud-2021</id>
             <activation>
-                <jdk>[1.8,17)</jdk>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <junit-jupiter.version>5.14.3</junit-jupiter.version>
+                <spring-boot.version>2.6.15</spring-boot.version>
+                <spring-cloud.version>2021.0.9</spring-cloud.version>
+                <spring-cloud-alibaba.version>2021.0.6.1</spring-cloud-alibaba.version>
             </properties>
         </profile>
 
