@@ -86,14 +86,18 @@ public class ServiceInstanceUtils extends BaseUtils {
         StringJoiner jsonBuilder = new StringJoiner(COMMA + LINE_SEPARATOR, LEFT_SQUARE_BRACKET, RIGHT_SQUARE_BRACKET);
         webEndpointMappings.stream().map(WebEndpointMapping::toJSON).forEach(jsonBuilder::add);
         String json = jsonBuilder.toString();
-        logger.trace("Web Endpoint Mappings JSON: \n{}", json);
+        if (logger.isTraceEnabled()) {
+            logger.trace("Web Endpoint Mappings JSON: \n{}", json);
+        }
         json = json.replace(LINE_SEPARATOR, EMPTY_STRING);
         String encodedJson = encode(json);
 
         metadata.put(WEB_CONTEXT_PATH_METADATA_NAME, contextPath);
         metadata.put(WEB_MAPPINGS_METADATA_NAME, encodedJson);
-        logger.trace("ServiceInstance's metadata :");
-        metadata.forEach((name, value) -> logger.trace("{} : {}", name, value));
+        if (logger.isTraceEnabled()) {
+            logger.trace("ServiceInstance's metadata :");
+            metadata.forEach((name, value) -> logger.trace("{} : {}", name, value));
+        }
     }
 
     /**

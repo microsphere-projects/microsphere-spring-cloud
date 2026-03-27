@@ -89,13 +89,15 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
         attachMetadata(getContextPath(), registration, mappings);
     }
 
-    private void excludeMappings(Set<WebEndpointMapping> mappings) {
+    void excludeMappings(Collection<WebEndpointMapping> mappings) {
         Iterator<WebEndpointMapping> iterator = mappings.iterator();
         while (iterator.hasNext()) {
             WebEndpointMapping mapping = iterator.next();
             String[] patterns = mapping.getPatterns();
             if (isExcludedMapping(mapping, patterns) || isActuatorWebEndpointMapping(mapping, patterns)) {
-                logger.trace("The '{}' was excluded", mapping);
+                if (logger.isTraceEnabled()) {
+                    logger.trace("The '{}' was excluded", mapping);
+                }
                 iterator.remove();
             }
         }
