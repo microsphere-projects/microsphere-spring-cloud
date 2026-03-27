@@ -89,7 +89,7 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
         attachMetadata(getContextPath(), registration, mappings);
     }
 
-    private void excludeMappings(Set<WebEndpointMapping> mappings) {
+    void excludeMappings(Collection<WebEndpointMapping> mappings) {
         Iterator<WebEndpointMapping> iterator = mappings.iterator();
         while (iterator.hasNext()) {
             WebEndpointMapping mapping = iterator.next();
