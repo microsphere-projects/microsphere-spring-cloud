@@ -18,7 +18,7 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 
-import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
+import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
 import io.microsphere.spring.test.web.controller.TestController;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import org.junit.jupiter.api.Test;
@@ -29,6 +29,8 @@ import org.springframework.cloud.client.serviceregistry.Registration;
 import java.util.Collection;
 import java.util.Map;
 
+import static io.microsphere.collection.ListUtils.newLinkedList;
+import static io.microsphere.collection.Lists.ofList;
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_CONTEXT_PATH_METADATA_NAME;
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.WEB_MAPPINGS_METADATA_NAME;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getWebEndpointMappings;
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpMethod.GET;
 
 /**
  * {@link WebServiceRegistryAutoConfiguration} Test
@@ -52,19 +55,37 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         },
         webEnvironment = RANDOM_PORT
 )
-@SpringLoggingTest
 abstract class WebServiceRegistryAutoConfigurationTest {
 
     @Autowired
     private Registration registration;
 
+    @Autowired
+    private WebServiceRegistryAutoConfiguration autoConfiguration;
+
     @Test
     void test() {
-        Map<String, String> metadata = registration.getMetadata();
+        Map<String, String> metadata = this.registration.getMetadata();
         assertEquals("", metadata.get(WEB_CONTEXT_PATH_METADATA_NAME));
         assertNotNull(metadata.get(WEB_MAPPINGS_METADATA_NAME));
 
-        Collection<WebEndpointMapping> webEndpointMappings = getWebEndpointMappings(registration);
+        Collection<WebEndpointMapping> webEndpointMappings = getWebEndpointMappings(this.registration);
         assertTrue(webEndpointMappings.size() >= 6);
+    }
+
+    @Test
+    @LoggingLevelsTest(levels = "ERROR")
+    void testExcludeMappings() {
+        WebEndpointMapping webEndpointMapping = WebEndpointMapping
+                .webmvc()
+                .endpoint(this)
+                .methods(GET)
+                .pattern("/actuator/test")
+                .build();
+
+        Collection<WebEndpointMapping> webEndpointMappings = newLinkedList(ofList(webEndpointMapping));
+
+        this.autoConfiguration.excludeMappings(webEndpointMappings);
+        assertTrue(webEndpointMappings.isEmpty());
     }
 }
