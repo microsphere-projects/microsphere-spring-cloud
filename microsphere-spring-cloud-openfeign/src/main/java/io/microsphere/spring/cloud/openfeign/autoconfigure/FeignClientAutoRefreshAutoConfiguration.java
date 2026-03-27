@@ -1,5 +1,6 @@
 package io.microsphere.spring.cloud.openfeign.autoconfigure;
 
+import io.microsphere.spring.cloud.openfeign.autoconfigure.EnableFeignAutoRefresh.Marker;
 import io.microsphere.spring.cloud.openfeign.autorefresh.FeignClientConfigurationChangedListener;
 import io.microsphere.spring.cloud.openfeign.autorefresh.FeignComponentRegistry;
 import io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor;
@@ -12,6 +13,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 
+import static io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor.INSTANCE;
+
 /**
  * The Auto-Configuration class for {@link EnableFeignAutoRefresh}
  *
@@ -20,7 +23,7 @@ import org.springframework.context.event.EventListener;
  * @see EnableFeignAutoRefresh
  * @since 0.0.1
  */
-@ConditionalOnBean(EnableFeignAutoRefresh.Marker.class)
+@ConditionalOnBean(Marker.class)
 public class FeignClientAutoRefreshAutoConfiguration {
 
     /**
@@ -38,7 +41,7 @@ public class FeignClientAutoRefreshAutoConfiguration {
     @Bean
     public FeignBuilderCustomizer addDefaultRequestInterceptorCustomizer() {
         return builder -> {
-            builder.requestInterceptor(NoOpRequestInterceptor.INSTANCE);
+            builder.requestInterceptor(INSTANCE);
         };
     }
 

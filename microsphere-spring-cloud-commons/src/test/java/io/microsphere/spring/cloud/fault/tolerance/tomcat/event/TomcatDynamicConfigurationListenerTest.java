@@ -18,6 +18,7 @@
 package io.microsphere.spring.cloud.fault.tolerance.tomcat.event;
 
 
+import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -37,6 +38,7 @@ import static io.microsphere.collection.Sets.ofSet;
  * @see TomcatDynamicConfigurationListener
  * @since 1.0.0
  */
+@SpringLoggingTest
 class TomcatDynamicConfigurationListenerTest {
 
     private ServerProperties serverProperties;

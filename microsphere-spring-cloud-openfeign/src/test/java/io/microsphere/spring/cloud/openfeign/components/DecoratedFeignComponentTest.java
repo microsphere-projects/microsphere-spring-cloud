@@ -20,6 +20,7 @@ package io.microsphere.spring.cloud.openfeign.components;
 import feign.Request;
 import feign.RequestTemplate;
 import feign.Response;
+import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.context.named.NamedContextFactory;
@@ -51,6 +52,7 @@ import static org.springframework.core.ResolvableType.forClass;
  * @see DecoratedFeignComponent
  * @since 1.0.0
  */
+@SpringLoggingTest
 abstract class DecoratedFeignComponentTest<C, D extends DecoratedFeignComponent<C>> {
 
     protected String contextId;
