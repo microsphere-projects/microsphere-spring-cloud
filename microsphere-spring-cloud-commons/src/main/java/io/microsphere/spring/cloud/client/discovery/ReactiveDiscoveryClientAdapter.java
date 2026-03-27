@@ -57,8 +57,14 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Delegates to the underlying {@link ReactiveDiscoveryClient#description()}.
+     * Delegates to the underlying {@link ReactiveDiscoveryClient#description()} method.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * String desc = adapter.description();
+     * }</pre>
+     *
+     * @return the description from the underlying {@link ReactiveDiscoveryClient}
      */
     @Override
     public String description() {
@@ -66,9 +72,16 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Delegates to {@link ReactiveDiscoveryClient#getInstances(String)} and collects the
-     * reactive {@link Flux} result into a blocking {@link List}.
+     * Returns a blocking list of {@link ServiceInstance} objects for the given service ID
+     * by collecting results from the underlying {@link ReactiveDiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * List<ServiceInstance> instances = adapter.getInstances("test-service");
+     * }</pre>
+     *
+     * @param serviceId the service ID to look up
+     * @return the list of {@link ServiceInstance} from the reactive client
      */
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
@@ -77,9 +90,15 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Delegates to {@link ReactiveDiscoveryClient#getServices()} and collects the
-     * reactive {@link Flux} result into a blocking {@link List}.
+     * Returns a blocking list of service names by collecting results from the
+     * underlying {@link ReactiveDiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * List<String> services = adapter.getServices();
+     * }</pre>
+     *
+     * @return the list of service names from the reactive client
      */
     @Override
     public List<String> getServices() {
@@ -88,8 +107,13 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Delegates to {@link ReactiveDiscoveryClient#probe()}.
+     * Delegates to the underlying {@link ReactiveDiscoveryClient#probe()} method to
+     * verify the discovery client is operational.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * adapter.probe();
+     * }</pre>
      */
     @Override
     public void probe() {
@@ -97,8 +121,14 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     }
 
     /**
-     * {@inheritDoc}
-     * <p>Delegates to {@link ReactiveDiscoveryClient#getOrder()}.
+     * Returns the order value from the underlying {@link ReactiveDiscoveryClient}.
+     *
+     * <p>Example Usage:
+     * <pre>{@code
+     * int order = adapter.getOrder();
+     * }</pre>
+     *
+     * @return the order value of the underlying reactive discovery client
      */
     @Override
     public int getOrder() {

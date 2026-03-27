@@ -67,11 +67,12 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * <pre>{@code
      * // This advice is triggered automatically when ServiceRegistry.register() is called:
      * serviceRegistry.register(registration);
-     * // A RegistrationPreRegisteredEvent is published before actual registration
+     * // A RegistrationPreRegisteredEvent is published before the actual registration
      * }</pre>
      *
-     * @param registry     the target {@link ServiceRegistry}
+     * @param registry     the {@link ServiceRegistry} performing the registration
      * @param registration the {@link Registration} being registered
+     * @see RegistrationPreRegisteredEvent
      */
     @Before(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeRegister(ServiceRegistry registry, Registration registration) {
@@ -92,11 +93,12 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * <pre>{@code
      * // This advice is triggered automatically when ServiceRegistry.deregister() is called:
      * serviceRegistry.deregister(registration);
-     * // A RegistrationPreDeregisteredEvent is published before actual deregistration
+     * // A RegistrationPreDeregisteredEvent is published before the actual deregistration
      * }</pre>
      *
-     * @param registry     the target {@link ServiceRegistry}
+     * @param registry     the {@link ServiceRegistry} performing the deregistration
      * @param registration the {@link Registration} being deregistered
+     * @see RegistrationPreDeregisteredEvent
      */
     @Before(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void beforeDeregister(ServiceRegistry registry, Registration registration) {
@@ -114,11 +116,12 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * <pre>{@code
      * // This advice is triggered automatically after ServiceRegistry.register() completes:
      * serviceRegistry.register(registration);
-     * // A RegistrationRegisteredEvent is published after successful registration
+     * // A RegistrationRegisteredEvent is published after the actual registration
      * }</pre>
      *
-     * @param registry     the target {@link ServiceRegistry}
+     * @param registry     the {@link ServiceRegistry} that performed the registration
      * @param registration the {@link Registration} that was registered
+     * @see RegistrationRegisteredEvent
      */
     @After(value = REGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterRegister(ServiceRegistry registry, Registration registration) {
@@ -136,11 +139,12 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * <pre>{@code
      * // This advice is triggered automatically after ServiceRegistry.deregister() completes:
      * serviceRegistry.deregister(registration);
-     * // A RegistrationDeregisteredEvent is published after successful deregistration
+     * // A RegistrationDeregisteredEvent is published after the actual deregistration
      * }</pre>
      *
-     * @param registry     the target {@link ServiceRegistry}
+     * @param registry     the {@link ServiceRegistry} that performed the deregistration
      * @param registration the {@link Registration} that was deregistered
+     * @see RegistrationDeregisteredEvent
      */
     @After(value = DEREGISTER_POINTCUT_EXPRESSION, argNames = "registry, registration")
     public void afterDeregister(ServiceRegistry registry, Registration registration) {
@@ -155,13 +159,17 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the {@link ApplicationContext} used to publish registration events and
+     * to look up {@link RegistrationCustomizer} instances.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * EventPublishingRegistrationAspect aspect = new EventPublishingRegistrationAspect();
+     * // Called automatically by Spring's ApplicationContextAware callback:
      * aspect.setApplicationContext(applicationContext);
      * }</pre>
+     *
+     * @param applicationContext the {@link ApplicationContext} to set
+     * @throws BeansException if the context cannot be set
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
