@@ -1,12 +1,12 @@
 package io.microsphere.spring.cloud.openfeign.components;
 
+import io.microsphere.annotation.Nonnull;
 import io.microsphere.logging.Logger;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
-import org.springframework.lang.NonNull;
 
 import java.lang.reflect.Constructor;
 import java.util.function.Function;
@@ -90,7 +90,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * @param componentType the class of the component to load
      * @return the loaded component instance
      */
-    @NonNull
+    @Nonnull
     public <T> T loadInstanceFromContextFactory(String contextId, Class<T> componentType) {
         ObjectProvider<T> beanProvider = this.contextFactory.getProvider(contextId, componentType);
         return beanProvider.getIfAvailable(() -> instantiateClass(componentType));
@@ -106,7 +106,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      *
      * @return the context ID string
      */
-    @NonNull
+    @Nonnull
     public String contextId() {
         return this.contextId;
     }
