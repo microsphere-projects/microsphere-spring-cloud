@@ -1,7 +1,7 @@
 package io.microsphere.spring.cloud.openfeign.retryer;
 
 import feign.Retryer;
-import io.microsphere.spring.cloud.openfeign.BaseTest;
+import io.microsphere.spring.cloud.openfeign.autorefresh.BaseTest;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;

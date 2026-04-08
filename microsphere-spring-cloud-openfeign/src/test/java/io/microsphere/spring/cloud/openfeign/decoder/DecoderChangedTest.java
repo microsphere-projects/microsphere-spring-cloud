@@ -1,7 +1,7 @@
 package io.microsphere.spring.cloud.openfeign.decoder;
 
 import feign.codec.Decoder;
-import io.microsphere.spring.cloud.openfeign.BaseTest;
+import io.microsphere.spring.cloud.openfeign.autorefresh.BaseTest;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;

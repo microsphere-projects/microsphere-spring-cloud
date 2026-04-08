@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package io.microsphere.spring.cloud.openfeign.autoconfigure;
+package io.microsphere.spring.cloud.openfeign.autorefresh;
 
 
 import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
@@ -23,34 +23,34 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
 
-import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpecificationPostProcessor.AUTO_REFRESH_CAPABILITY_CLASS;
+import static io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapabilityCustomizer.AUTO_REFRESH_CAPABILITY_CLASS;
 import static io.microsphere.util.ArrayUtils.combine;
 import static io.microsphere.util.ArrayUtils.ofArray;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
- * {@link FeignClientSpecificationPostProcessor} Test
+ * {@link AutoRefreshCapabilityCustomizer} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see FeignClientSpecificationPostProcessor
+ * @see AutoRefreshCapabilityCustomizer
  * @since 1.0.0
  */
 @SpringLoggingTest
-class FeignClientSpecificationPostProcessorTest {
+class AutoRefreshCapabilityCustomizerTest {
 
-    private FeignClientSpecificationPostProcessor postProcessor;
+    private AutoRefreshCapabilityCustomizer autoRefreshCapabilityCustomizer;
 
     @BeforeEach
     void setUp() {
-        this.postProcessor = new FeignClientSpecificationPostProcessor();
+        this.autoRefreshCapabilityCustomizer = new AutoRefreshCapabilityCustomizer();
     }
 
     @Test
     void testInjectAutoRefreshCapability() {
-        Class<?>[] configurationClasses = ofArray(FeignClientSpecificationPostProcessorTest.class);
+        Class<?>[] configurationClasses = ofArray(AutoRefreshCapabilityCustomizerTest.class);
         FeignClientSpecification specification = new FeignClientSpecification("test", "TestClass", configurationClasses);
         assertArrayEquals(configurationClasses, specification.getConfiguration());
-        this.postProcessor.injectAutoRefreshCapability(specification);
+        this.autoRefreshCapabilityCustomizer.injectAutoRefreshCapability(specification);
         assertArrayEquals(combine(AUTO_REFRESH_CAPABILITY_CLASS, configurationClasses), specification.getConfiguration());
     }
 }
