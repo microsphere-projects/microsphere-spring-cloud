@@ -15,12 +15,12 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.test.context.TestPropertySource;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static java.util.Collections.singleton;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -43,10 +43,13 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
 public abstract class BaseTest<T> {
 
     private static final Logger log = getLogger(BaseTest.class);
+
     @Autowired
     private ApplicationEventPublisher publisher;
+
     @Autowired
     private Environment environment;
+
     @Autowired
     private BaseClient client;
 
@@ -57,7 +60,7 @@ public abstract class BaseTest<T> {
 
     public void replaceConfig() {
         final String key = afterTestComponentConfigKey();
-        Set<String> keys = Collections.singleton(key);
+        Set<String> keys = singleton(key);
         final Class<?> className = afterTestComponent();
         MutablePropertySources propertySources = ((ConfigurableEnvironment)this.environment).getPropertySources();
         Map<String, Object> map = new HashMap<>();
