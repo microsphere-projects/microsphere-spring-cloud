@@ -15,27 +15,24 @@
  * limitations under the License.
  */
 
-package io.microsphere.spring.cloud.openfeign.autoconfigure;
+package io.microsphere.spring.cloud.openfeign;
 
-
-import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
-import org.junit.jupiter.api.Test;
-
-import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpecificationPostProcessor.log;
-import static io.microsphere.util.ArrayUtils.ofArray;
+import org.springframework.cloud.openfeign.FeignClientSpecification;
 
 /**
- * {@link FeignClientSpecificationPostProcessor} Test
+ * The Customizer of {@link FeignClientSpecification}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see FeignClientSpecificationPostProcessor
+ * @see FeignClientSpecification
  * @since 1.0.0
  */
-class FeignClientSpecificationPostProcessorTest {
+public interface FeignClientSpecificationCustomizer {
 
-    @Test
-    @LoggingLevelsTest(levels = "ERROR")
-    void testLog() {
-        log(ofArray(), ofArray());
-    }
+    /**
+     * Customizes {@link FeignClientSpecification} bean and bean name
+     *
+     * @param specification {@link FeignClientSpecification}
+     * @param beanName      the bean name of {@link FeignClientSpecification}
+     */
+    void customize(FeignClientSpecification specification, String beanName);
 }
