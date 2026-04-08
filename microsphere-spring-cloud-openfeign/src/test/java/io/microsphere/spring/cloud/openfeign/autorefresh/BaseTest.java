@@ -1,7 +1,9 @@
-package io.microsphere.spring.cloud.openfeign;
+package io.microsphere.spring.cloud.openfeign.autorefresh;
 
 import io.microsphere.logging.Logger;
-import io.microsphere.spring.cloud.openfeign.autorefresh.EnableFeignAutoRefresh;
+import io.microsphere.spring.cloud.openfeign.BaseClient;
+import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
+import io.microsphere.spring.cloud.openfeign.ObservableFeignInvocationHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
@@ -51,17 +53,20 @@ public abstract class BaseTest<T> {
     private BaseClient client;
 
     protected abstract String afterTestComponentConfigKey();
+
     protected abstract Class<? extends T> beforeTestComponentClass();
+
     protected abstract Class<? extends T> afterTestComponent();
+
     protected abstract FeignComponentAssert<T> loadFeignComponentAssert();
 
     public void replaceConfig() {
         final String key = afterTestComponentConfigKey();
         Set<String> keys = Collections.singleton(key);
-        final Class<?> className = afterTestComponent();
-        MutablePropertySources propertySources = ((ConfigurableEnvironment)this.environment).getPropertySources();
+        final String className = afterTestComponent().getName();
+        MutablePropertySources propertySources = ((ConfigurableEnvironment) this.environment).getPropertySources();
         Map<String, Object> map = new HashMap<>();
-        log.trace("replacing config key {} with value {}", key, className.getName());
+        log.trace("replacing config key {} with value {}", key, className);
         map.put(key, className);
         propertySources.addFirst(new MapPropertySource("after", map));
 

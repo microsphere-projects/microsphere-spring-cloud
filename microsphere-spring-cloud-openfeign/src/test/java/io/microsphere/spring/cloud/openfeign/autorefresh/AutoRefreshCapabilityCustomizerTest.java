@@ -21,9 +21,14 @@ package io.microsphere.spring.cloud.openfeign.autorefresh;
 import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.cloud.openfeign.FeignClientSpecification;
+import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 
+import java.lang.reflect.Constructor;
+
+import static io.microsphere.reflect.ConstructorUtils.findConstructor;
+import static io.microsphere.reflect.ConstructorUtils.newInstance;
 import static io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapabilityCustomizer.AUTO_REFRESH_CAPABILITY_CLASS;
+import static io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapabilityCustomizer.FEIGN_CLIENT_SPECIFICATION_CLASS;
 import static io.microsphere.util.ArrayUtils.combine;
 import static io.microsphere.util.ArrayUtils.ofArray;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -48,9 +53,14 @@ class AutoRefreshCapabilityCustomizerTest {
     @Test
     void testInjectAutoRefreshCapability() {
         Class<?>[] configurationClasses = ofArray(AutoRefreshCapabilityCustomizerTest.class);
-        FeignClientSpecification specification = new FeignClientSpecification("test", configurationClasses);
+        Specification specification = newSpecification(configurationClasses);
         assertArrayEquals(configurationClasses, specification.getConfiguration());
         this.autoRefreshCapabilityCustomizer.injectAutoRefreshCapability(specification);
         assertArrayEquals(combine(AUTO_REFRESH_CAPABILITY_CLASS, configurationClasses), specification.getConfiguration());
+    }
+
+    private Specification newSpecification(Class<?>[] configurationClasses) {
+        Constructor<?> constructor = findConstructor(FEIGN_CLIENT_SPECIFICATION_CLASS, String.class, Class[].class);
+        return (Specification) newInstance(constructor, "test", configurationClasses);
     }
 }

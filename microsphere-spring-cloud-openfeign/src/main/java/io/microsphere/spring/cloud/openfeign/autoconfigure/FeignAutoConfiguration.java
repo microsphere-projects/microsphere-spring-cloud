@@ -1,7 +1,6 @@
 package io.microsphere.spring.cloud.openfeign.autoconfigure;
 
 import feign.Feign;
-import io.microsphere.spring.cloud.openfeign.beans.factory.config.FeignClientSpecificationPostProcessor;
 import io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -40,23 +39,5 @@ public class FeignAutoConfiguration {
         return builder -> {
             builder.requestInterceptor(INSTANCE);
         };
-    }
-
-    /**
-     * Creates the {@link FeignClientSpecificationPostProcessor} bean that injects
-     * the {@link io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapability}
-     * into default Feign client specifications.
-     *
-     * <p>Example Usage:
-     * <pre>{@code
-     * // Automatically registered as a Spring bean
-     * FeignClientSpecificationPostProcessor processor = feignClientSpecificationPostProcessor();
-     * }</pre>
-     *
-     * @return a new {@link FeignClientSpecificationPostProcessor} instance
-     */
-    @Bean
-    public FeignClientSpecificationPostProcessor feignClientSpecificationPostProcessor() {
-        return new FeignClientSpecificationPostProcessor();
     }
 }

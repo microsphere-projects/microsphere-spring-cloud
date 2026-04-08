@@ -83,4 +83,17 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>spring-cloud-hoxton</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
 </project>
