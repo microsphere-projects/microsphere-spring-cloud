@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 
-package io.microsphere.spring.cloud.openfeign.autoconfigure;
+package io.microsphere.spring.cloud.context.named;
 
 
-import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
-import org.junit.jupiter.api.Test;
-
-import static io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientSpecificationPostProcessor.log;
-import static io.microsphere.util.ArrayUtils.ofArray;
+import io.microsphere.spring.cloud.context.named.config.SpecificationBeanPostProcessor;
+import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 
 /**
- * {@link FeignClientSpecificationPostProcessor} Test
+ * The Customizer of {@link Specification}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see FeignClientSpecificationPostProcessor
+ * @see Specification
+ * @see SpecificationBeanPostProcessor
  * @since 1.0.0
  */
-class FeignClientSpecificationPostProcessorTest {
+public interface SpecificationCustomizer {
 
-    @Test
-    @LoggingLevelsTest(levels = "ERROR")
-    void testLog() {
-        log(ofArray(), ofArray());
-    }
+    /**
+     * Customizes {@link Specification} bean and bean name
+     *
+     * @param specification {@link Specification}
+     * @param beanName      the bean name of {@link Specification}
+     */
+    void customize(Specification specification, String beanName);
 }

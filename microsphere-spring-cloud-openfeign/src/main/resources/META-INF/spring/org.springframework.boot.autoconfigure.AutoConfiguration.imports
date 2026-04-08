@@ -1,0 +1,2 @@
+io.microsphere.spring.cloud.openfeign.autoconfigure.FeignAutoConfiguration
+io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientAutoRefreshAutoConfiguration

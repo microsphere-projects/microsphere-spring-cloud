@@ -10,10 +10,10 @@
         <relativePath>../microsphere-spring-cloud-parent/pom.xml</relativePath>
     </parent>
 
+    <groupId>io.github.microsphere-projects</groupId>
     <artifactId>microsphere-spring-cloud-openfeign</artifactId>
     <version>${revision}</version>
-
-    <groupId>io.github.microsphere-projects</groupId>
+    <packaging>jar</packaging>
 
     <name>Microsphere :: Spring Cloud :: OpenFeign</name>
     <description>Microsphere Spring Cloud OpenFeign</description>
@@ -23,6 +23,13 @@
     </properties>
 
     <dependencies>
+
+        <!-- Microsphere Spring Cloud Commons -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-cloud-commons</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <!-- Microsphere Dependencies -->
         <dependency>
@@ -75,5 +82,18 @@
         </dependency>
 
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>spring-cloud-hoxton</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>
