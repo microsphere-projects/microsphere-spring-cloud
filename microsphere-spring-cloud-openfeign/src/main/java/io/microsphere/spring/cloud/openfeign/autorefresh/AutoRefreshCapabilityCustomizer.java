@@ -18,7 +18,8 @@
 package io.microsphere.spring.cloud.openfeign.autorefresh;
 
 import io.microsphere.logging.Logger;
-import io.microsphere.spring.cloud.openfeign.FeignClientSpecificationCustomizer;
+import io.microsphere.spring.cloud.context.named.SpecificationCustomizer;
+import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
@@ -26,13 +27,13 @@ import static io.microsphere.util.ArrayUtils.arrayToString;
 import static io.microsphere.util.ArrayUtils.combine;
 
 /**
- * The {@link FeignClientSpecificationCustomizer} class to register the bean of {@link AutoRefreshCapability}
+ * The {@link SpecificationCustomizer} class to register the bean of {@link AutoRefreshCapability}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see AutoRefreshCapability
  * @since 1.0.0
  */
-class AutoRefreshCapabilityCustomizer implements FeignClientSpecificationCustomizer {
+class AutoRefreshCapabilityCustomizer implements SpecificationCustomizer {
 
     private static final Logger logger = getLogger(AutoRefreshCapabilityCustomizer.class);
 
@@ -42,9 +43,9 @@ class AutoRefreshCapabilityCustomizer implements FeignClientSpecificationCustomi
     public static final Class<?> AUTO_REFRESH_CAPABILITY_CLASS = AutoRefreshCapability.class;
 
     @Override
-    public void customize(FeignClientSpecification specification, String beanName) {
-        if (beanName.startsWith("default.")) {
-            injectAutoRefreshCapability(specification);
+    public void customize(Specification specification, String beanName) {
+        if (specification instanceof FeignClientSpecification && beanName.startsWith("default.")) {
+            injectAutoRefreshCapability((FeignClientSpecification) specification);
         }
     }
 
