@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.microsphere.spring.cloud.context.named.autoconfigure.SpecificationAutoConfiguration,\
 io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration,\
 io.microsphere.spring.cloud.client.discovery.autoconfigure.ReactiveDiscoveryClientAutoConfiguration,\
 io.microsphere.spring.cloud.client.service.registry.autoconfigure.ServiceRegistryAutoConfiguration,\
