@@ -56,17 +56,20 @@ public abstract class BaseTest<T> {
     private BaseClient client;
 
     protected abstract String afterTestComponentConfigKey();
+
     protected abstract Class<? extends T> beforeTestComponentClass();
+
     protected abstract Class<? extends T> afterTestComponent();
+
     protected abstract FeignComponentAssert<T> loadFeignComponentAssert();
 
     public void replaceConfig() {
         final String key = afterTestComponentConfigKey();
         Set<String> keys = singleton(key);
-        final Class<?> className = afterTestComponent();
-        MutablePropertySources propertySources = ((ConfigurableEnvironment)this.environment).getPropertySources();
+        final String className = afterTestComponent().getName();
+        MutablePropertySources propertySources = ((ConfigurableEnvironment) this.environment).getPropertySources();
         Map<String, Object> map = new HashMap<>();
-        log.trace("replacing config key {} with value {}", key, className.getName());
+        log.trace("replacing config key {} with value {}", key, className);
         map.put(key, className);
         propertySources.addFirst(new MapPropertySource("after", map));
 
