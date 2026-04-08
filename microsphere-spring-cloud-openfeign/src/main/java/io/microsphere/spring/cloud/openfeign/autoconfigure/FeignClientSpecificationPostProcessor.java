@@ -1,6 +1,7 @@
 package io.microsphere.spring.cloud.openfeign.autoconfigure;
 
 import io.microsphere.logging.Logger;
+import io.microsphere.spring.beans.factory.config.GenericBeanPostProcessorAdapter;
 import io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapability;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -9,7 +10,6 @@ import org.springframework.cloud.openfeign.FeignClientSpecification;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.util.ArrayUtils.arrayToString;
 import static io.microsphere.util.ArrayUtils.combine;
-import static org.springframework.aop.support.AopUtils.getTargetClass;
 
 /**
  * {@link BeanPostProcessor} for {@link FeignClientSpecification}
@@ -19,7 +19,7 @@ import static org.springframework.aop.support.AopUtils.getTargetClass;
  * @see org.springframework.cloud.openfeign.FeignClientSpecification
  * @since 0.0.1
  */
-public class FeignClientSpecificationPostProcessor implements BeanPostProcessor {
+public class FeignClientSpecificationPostProcessor extends GenericBeanPostProcessorAdapter<FeignClientSpecification> {
 
     private static final Logger logger = getLogger(FeignClientSpecificationPostProcessor.class);
 
@@ -31,24 +31,16 @@ public class FeignClientSpecificationPostProcessor implements BeanPostProcessor 
      * Injects the {@link AutoRefreshCapability} into default {@link FeignClientSpecification}
      * beans after initialization.
      *
-     * <p>Example Usage:
-     * <pre>{@code
-     * // Invoked automatically by the Spring container during bean post-processing
-     * Object processed = postProcessAfterInitialization(bean, "default.my-client");
-     * }</pre>
-     *
-     * @param bean     the bean instance that has been initialized
+     * @param bean     {@link FeignClientSpecification}
      * @param beanName the name of the bean in the Spring context
      * @return the (possibly modified) bean instance
      * @throws BeansException if post-processing fails
      */
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        Class<?> beanType = getTargetClass(bean);
-        if (FEIGN_CLIENT_SPECIFICATION_CLASS.isAssignableFrom(beanType) && beanName.startsWith("default")) {
-            injectAutoRefreshCapability((FeignClientSpecification) bean);
+    protected void processAfterInitialization(FeignClientSpecification bean, String beanName) throws BeansException {
+        if (beanName.startsWith("default.")) {
+            injectAutoRefreshCapability(bean);
         }
-        return bean;
     }
 
     void injectAutoRefreshCapability(FeignClientSpecification specification) {
