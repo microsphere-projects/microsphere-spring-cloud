@@ -15,24 +15,27 @@
  * limitations under the License.
  */
 
-package io.microsphere.spring.cloud.openfeign;
+package io.microsphere.spring.cloud.context.named;
 
-import org.springframework.cloud.openfeign.FeignClientSpecification;
+
+import io.microsphere.spring.cloud.context.named.config.SpecificationBeanPostProcessor;
+import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 
 /**
- * The Customizer of {@link FeignClientSpecification}
+ * The Customizer of {@link Specification}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see FeignClientSpecification
+ * @see Specification
+ * @see SpecificationBeanPostProcessor
  * @since 1.0.0
  */
-public interface FeignClientSpecificationCustomizer {
+public interface SpecificationCustomizer {
 
     /**
-     * Customizes {@link FeignClientSpecification} bean and bean name
+     * Customizes {@link Specification} bean and bean name
      *
-     * @param specification {@link FeignClientSpecification}
-     * @param beanName      the bean name of {@link FeignClientSpecification}
+     * @param specification {@link Specification}
+     * @param beanName      the bean name of {@link Specification}
      */
-    void customize(FeignClientSpecification specification, String beanName);
+    void customize(Specification specification, String beanName);
 }
