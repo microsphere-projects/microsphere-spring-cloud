@@ -10,8 +10,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>io.github.microsphere-projects</groupId>
     <artifactId>microsphere-spring-cloud-commons</artifactId>
     <version>${revision}</version>
+    <packaging>jar</packaging>
 
     <name>Microsphere :: Spring Cloud :: Commons</name>
     <description>Microsphere Spring Cloud Commons</description>
