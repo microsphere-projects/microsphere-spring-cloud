@@ -1,7 +1,9 @@
-package io.microsphere.spring.cloud.openfeign;
+package io.microsphere.spring.cloud.openfeign.autorefresh;
 
 import io.microsphere.logging.Logger;
-import io.microsphere.spring.cloud.openfeign.autoconfigure.EnableFeignAutoRefresh;
+import io.microsphere.spring.cloud.openfeign.BaseClient;
+import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
+import io.microsphere.spring.cloud.openfeign.ObservableFeignInvocationHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.environment.EnvironmentChangeEvent;

@@ -1,5 +1,6 @@
-package io.microsphere.spring.cloud.openfeign.autoconfigure;
+package io.microsphere.spring.cloud.openfeign.autorefresh;
 
+import io.microsphere.spring.cloud.openfeign.autoconfigure.FeignClientAutoRefreshAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.Documented;
@@ -22,9 +23,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(TYPE)
 @Documented
 @Inherited
-@Import(EnableFeignAutoRefresh.Marker.class)
+@Import(value = {
+        EnableFeignAutoRefresh.Marker.class,
+        AutoRefreshCapabilityCustomizer.class
+})
 public @interface EnableFeignAutoRefresh {
 
-    class Marker {
-    }
+    class Marker {}
 }
