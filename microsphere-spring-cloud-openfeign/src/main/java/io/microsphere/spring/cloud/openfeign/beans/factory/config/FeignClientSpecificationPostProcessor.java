@@ -5,9 +5,12 @@ import io.microsphere.spring.cloud.openfeign.FeignClientSpecificationCustomizer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cloud.openfeign.FeignClientSpecification;
+
+import java.util.List;
+
+import static io.microsphere.spring.beans.BeanUtils.getSortedBeans;
 
 /**
  * {@link BeanPostProcessor} for {@link FeignClientSpecification}
@@ -20,15 +23,15 @@ import org.springframework.cloud.openfeign.FeignClientSpecification;
  */
 public class FeignClientSpecificationPostProcessor extends GenericBeanPostProcessorAdapter<FeignClientSpecification> implements BeanFactoryAware {
 
-    private ObjectProvider<FeignClientSpecificationCustomizer> customizerProvider;
+    private List<FeignClientSpecificationCustomizer> customizers;
 
     @Override
     protected void processAfterInitialization(FeignClientSpecification bean, String beanName) throws BeansException {
-        customizerProvider.forEach(customizer -> customizer.customize(bean, beanName));
+        customizers.forEach(customizer -> customizer.customize(bean, beanName));
     }
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        this.customizerProvider = beanFactory.getBeanProvider(FeignClientSpecificationCustomizer.class);
+        this.customizers = getSortedBeans(beanFactory, FeignClientSpecificationCustomizer.class);
     }
 }
