@@ -19,8 +19,6 @@ package io.microsphere.spring.cloud.openfeign;
 
 import org.springframework.cloud.openfeign.FeignClientSpecification;
 
-import java.util.function.BiConsumer;
-
 /**
  * The Customizer of {@link FeignClientSpecification}
  *
@@ -28,7 +26,7 @@ import java.util.function.BiConsumer;
  * @see FeignClientSpecification
  * @since 1.0.0
  */
-public interface FeignClientSpecificationCustomizer extends BiConsumer<FeignClientSpecification, String> {
+public interface FeignClientSpecificationCustomizer {
 
     /**
      * Customizes {@link FeignClientSpecification} bean and bean name
@@ -37,9 +35,4 @@ public interface FeignClientSpecificationCustomizer extends BiConsumer<FeignClie
      * @param beanName      the bean name of {@link FeignClientSpecification}
      */
     void customize(FeignClientSpecification specification, String beanName);
-
-    @Override
-    default void accept(FeignClientSpecification specification, String beanName) {
-        customize(specification, beanName);
-    }
 }
