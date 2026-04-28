@@ -9,7 +9,6 @@
 ![Maven](https://img.shields.io/maven-central/v/io.github.microsphere-projects/microsphere-spring-cloud.svg)
 ![License](https://img.shields.io/github/license/microsphere-projects/microsphere-spring-cloud.svg)
 
-
 Microsphere Spring Cloud is an extension library for Spring Cloud that enhances and optimizes its capabilities,
 particularly focused on providing dynamic runtime configuration changes without application restarts. It's designed to
 solve common pain points when working with distributed systems in Spring Cloud.
@@ -41,6 +40,7 @@ The easiest way to get started is by adding the Microsphere Spring Cloud BOM (Bi
 pom.xml:
 
 ```xml
+
 <dependencyManagement>
     <dependencies>
         ...
@@ -61,12 +61,13 @@ pom.xml:
 
 | **Branches** | **Purpose**                                      | **Latest Version** |
 |--------------|--------------------------------------------------|--------------------|
-| **0.2.x**    | Compatible with Spring Cloud 2022.0.x - 2025.0.x | 0.2.9              |
-| **0.1.x**    | Compatible with Spring Cloud Hoxton - 2021.0.x   | 0.1.9              |
+| **0.2.x**    | Compatible with Spring Cloud 2022.0.x - 2025.0.x | 0.2.10             |
+| **0.1.x**    | Compatible with Spring Cloud Hoxton - 2021.0.x   | 0.1.10             |
 
 Then add the specific modules you need:
 
 ```xml
+
 <dependencies>
     <!-- Microsphere Spring Cloud Commons -->
     <dependency>
