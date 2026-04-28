@@ -28,7 +28,7 @@
 
     <dependencyManagement>
         <dependencies>
-            
+
             <!-- JUnit BOM -->
             <dependency>
                 <groupId>org.junit</groupId>
@@ -123,7 +123,7 @@
             </activation>
             <properties>
                 <spring-boot.version>3.5.8</spring-boot.version>
-                <spring-cloud.version>2025.0.1</spring-cloud.version>
+                <spring-cloud.version>2025.0.2</spring-cloud.version>
                 <spring-cloud-alibaba.version>2025.0.0.0</spring-cloud-alibaba.version>
             </properties>
         </profile>
