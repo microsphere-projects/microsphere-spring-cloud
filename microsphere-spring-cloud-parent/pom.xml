@@ -110,7 +110,7 @@
         <profile>
             <id>spring-cloud-2024</id>
             <properties>
-                <spring-boot.version>3.4.12</spring-boot.version>
+                <spring-boot.version>3.4.13</spring-boot.version>
                 <spring-cloud.version>2024.0.3</spring-cloud.version>
                 <spring-cloud-alibaba.version>2023.0.3.4</spring-cloud-alibaba.version>
             </properties>
@@ -122,7 +122,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spring-boot.version>3.5.8</spring-boot.version>
+                <spring-boot.version>3.5.13</spring-boot.version>
                 <spring-cloud.version>2025.0.2</spring-cloud.version>
                 <spring-cloud-alibaba.version>2025.0.0.0</spring-cloud-alibaba.version>
             </properties>
@@ -131,7 +131,7 @@
         <profile>
             <id>spring-cloud-2025.1</id>
             <properties>
-                <spring-boot.version>4.0.2</spring-boot.version>
+                <spring-boot.version>4.0.6</spring-boot.version>
                 <spring-cloud.version>2025.1.1</spring-cloud.version>
                 <spring-cloud-alibaba.version>2025.1.0.0</spring-cloud-alibaba.version>
             </properties>
