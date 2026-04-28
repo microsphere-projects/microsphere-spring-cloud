@@ -23,7 +23,8 @@ jobs:
     strategy:
       matrix:
         java: [ '17' , '21' , '25' ]
-        maven-profile-spring-cloud: [ 'spring-cloud-2022' , 'spring-cloud-2023' , 'spring-cloud-2024' , 'spring-cloud-2025' ]
+        maven-profile-spring-cloud: [ 'spring-cloud-2022' , 'spring-cloud-2023' , 'spring-cloud-2024' ,
+                                      'spring-cloud-2025' , 'spring-cloud-2025.1' ]
     steps:
       - name: Checkout Source
         uses: actions/checkout@v5
