@@ -33,14 +33,15 @@ jobs:
         with:
           token: ${{ secrets.TC_CLOUD_TOKEN }}
 
-      - name: Setup JDK ${{ matrix.Java }}
+      - name: Setup Java ${{ matrix.java }}
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
+          cache: maven
 
       - name: Build with Maven
-        run: ./mvnw
+        run: mvn
           --batch-mode
           --update-snapshots
           --file pom.xml

@@ -14,3 +14,28 @@
 
 --- 
 
+## v0.1.12
+
+# Release Notes for Version 0.1.12
+
+## Dependency Updates
+- Bumped `microsphere-spring-boot` to `0.1.13`. ([cd39772](https://github.com/mercyblitz/microsphere-spring-cloud/commit/cd39772))
+- Updated `JUnit Jupiter` to version `5.14.4`. ([9e40411](https://github.com/mercyblitz/microsphere-spring-cloud/commit/9e40411))
+- Upgraded parent project version to `0.2.9`. ([9319838](https://github.com/mercyblitz/microsphere-spring-cloud/commit/9319838))
+
+## Build and Workflow Enhancements
+- Configured Maven server authentication and introduced Maven wrapper. ([fe02ac5](https://github.com/mercyblitz/microsphere-spring-cloud/commit/fe02ac5))
+- Adjusted CI setup for Java and transitioned to Maven wrapper usage. ([5c84be7](https://github.com/mercyblitz/microsphere-spring-cloud/commit/5c84be7))
+
+## Documentation
+- Enhanced release notes and improved release creation workflows. ([00e8170](https://github.com/mercyblitz/microsphere-spring-cloud/commit/00e8170))
+
+## Other Changes
+- Updated version to prepare for the next development iteration after `0.1.11`. ([4d79072](https://github.com/mercyblitz/microsphere-spring-cloud/commit/4d79072))
+- Merged `release-1.x` branch into `dev-1.x`. ([a0d0961](https://github.com/mercyblitz/microsphere-spring-cloud/commit/a0d0961))  
+
+---
+
+For a detailed list of changes, see the [Full Changelog](https://github.com/mercyblitz/microsphere-spring-cloud/compare/0.1.11...0.1.12).  
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.11...0.1.12
