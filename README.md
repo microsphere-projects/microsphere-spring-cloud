@@ -142,7 +142,7 @@ Spring Cloud Config or Nacos Config), the affected Feign clients are automatical
 
 ```java
 @SpringBootApplication
-@EnableFeignClient
+@EnableFeignClients
 @EnableFeignAutoRefresh
 public class MyApplication {
     public static void main(String[] args) {
