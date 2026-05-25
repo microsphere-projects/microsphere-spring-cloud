@@ -23,3 +23,25 @@ No new features or bug fixes were introduced in this release.
   - Re-added `spring-cloud-2025.1` to CI matrix.  
 - **Maintenance**: Fixed indentation issue in Dependabot configuration.  
 
+## v0.2.12
+
+# Release Notes for v0.2.12
+
+## Dependency Updates
+- Bumped `org.junit:junit-bom` from 6.0.3 to 6.1.0. (#121)
+- Bumped `microsphere-spring-boot` to 0.2.13.
+- Updated project parent version to 0.2.9.
+
+## Documentation
+- Refined README with updated branch names.
+- Updated README branch versions to reflect `0.2.12` / `0.1.12`.
+- Added complete changelog and refined release notes.
+
+## Build and Workflow Enhancements
+- Updated Maven CI workflows and fixed EOF issues.
+- Added Maven server credentials to CI pipelines.
+
+## Other Changes
+- Merged multiple updates from the main branch into the release branch. [skip ci]
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.11...0.2.12
