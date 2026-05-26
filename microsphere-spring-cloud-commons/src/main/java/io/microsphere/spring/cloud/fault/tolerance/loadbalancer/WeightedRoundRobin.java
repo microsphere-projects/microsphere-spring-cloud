@@ -1,7 +1,7 @@
 package io.microsphere.spring.cloud.fault.tolerance.loadbalancer;
 
 import java.util.StringJoiner;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * Weighed Round-Robin
@@ -15,7 +15,7 @@ public class WeightedRoundRobin {
 
     private volatile int weight;
 
-    AtomicLong current = new AtomicLong();
+    LongAdder current = new LongAdder();
 
     private volatile long lastUpdate;
 
@@ -78,7 +78,7 @@ public class WeightedRoundRobin {
      */
     public void setWeight(int weight) {
         this.weight = weight;
-        current.set(0);
+        current.reset();
     }
 
     /**
@@ -96,7 +96,8 @@ public class WeightedRoundRobin {
      * @return the updated current counter value
      */
     public long increaseCurrent() {
-        return current.addAndGet(weight);
+        current.add(weight);
+        return current.longValue();
     }
 
     /**
@@ -114,7 +115,7 @@ public class WeightedRoundRobin {
      * @param total the total weight of all entries to subtract
      */
     public void sel(int total) {
-        current.addAndGet(-1 * total);
+        current.add(-1 * total);
     }
 
     /**
