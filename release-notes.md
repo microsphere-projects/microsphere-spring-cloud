@@ -44,4 +44,23 @@ No new features or bug fixes were introduced in this release.
 ## Other Changes
 - Merged multiple updates from the main branch into the release branch. [skip ci]
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.11...0.2.12
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.11...0.2.12## v0.2.13
+
+# Release Notes - Version 0.2.13
+
+## Documentation
+- Fixed formatting issues and removed `zread` badge in `README.md`.  
+- Corrected typo for the `@EnableFeignClients` annotation in `README.md`.  
+- Rewrote `README.md` with comprehensive sections for better clarity.  
+
+## Dependency Updates
+- Bumped `spring-boot` version for compatibility and enhancements.
+
+## Build and Workflow Enhancements
+- Added GitHub prompts to streamline contribution and collaboration.
+
+---
+
+*Thank you for using this version!*
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.12...0.2.13
