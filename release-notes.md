@@ -38,4 +38,23 @@
 
 For a detailed list of changes, see the [Full Changelog](https://github.com/mercyblitz/microsphere-spring-cloud/compare/0.1.11...0.1.12).  
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.11...0.1.12
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.11...0.1.12## v0.1.13
+
+# Release Notes: Version 0.1.13
+
+## Documentation
+- Updated README with a Table of Contents (TOC), usage, and documentation details. ([5f994c8](<commit-link>))
+- Improved README formatting and clarified branch naming conventions. ([9309569](<commit-link>))
+
+## Build and Workflow Enhancements
+- Added `.github` prompt templates for improved workflow automation. ([32aff6f](<commit-link>))
+- Merged updates from `release-1.x` and upstream `microsphere-projects:dev-1.x`. ([b9a2076](<commit-link>), [bb02189](<commit-link>))
+
+## Dependency Updates
+- Updated `microsphere-spring-boot.version` to `0.1.14`. ([94b315d](<commit-link>))
+
+---
+
+For a detailed commit history, refer to the full changelog.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.12...0.1.13
