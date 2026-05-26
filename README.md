@@ -3,7 +3,6 @@
 > Microsphere Projects for Spring Cloud
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/microsphere-projects/microsphere-spring-cloud)
-[![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/microsphere-projects/microsphere-spring-cloud)
 [![Maven Build](https://github.com/microsphere-projects/microsphere-spring-cloud/actions/workflows/maven-build.yml/badge.svg)](https://github.com/microsphere-projects/microsphere-spring-cloud/actions/workflows/maven-build.yml)
 [![Codecov](https://codecov.io/gh/microsphere-projects/microsphere-spring-cloud/branch/main/graph/badge.svg)](https://app.codecov.io/gh/microsphere-projects/microsphere-spring-cloud)
 ![Maven](https://img.shields.io/maven-central/v/io.github.microsphere-projects/microsphere-spring-cloud.svg)
@@ -19,13 +18,13 @@ It solves common pain points when building and operating distributed systems wit
 - [Prerequisites](#prerequisites)
 - [Modules](#modules)
 - [Getting Started](#getting-started)
-  - [Add the BOM](#add-the-bom)
-  - [Add Module Dependencies](#add-module-dependencies)
-  - [Version Compatibility](#version-compatibility)
+    - [Add the BOM](#add-the-bom)
+    - [Add Module Dependencies](#add-module-dependencies)
+    - [Version Compatibility](#version-compatibility)
 - [Usage](#usage)
-  - [OpenFeign Auto-Refresh](#openfeign-auto-refresh)
-  - [Multiple Service Registry](#multiple-service-registry)
-  - [Service Registration Events](#service-registration-events)
+    - [OpenFeign Auto-Refresh](#openfeign-auto-refresh)
+    - [Multiple Service Registry](#multiple-service-registry)
+    - [Service Registration Events](#service-registration-events)
 - [Building from Source](#building-from-source)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
@@ -52,12 +51,12 @@ It solves common pain points when building and operating distributed systems wit
 
 ## Prerequisites
 
-| Requirement      | Version                          |
-|------------------|----------------------------------|
-| Java             | 17+                              |
-| Spring Boot      | 3.0+ (main branch) / 2.x (1.x branch) |
-| Spring Cloud     | 2022.0.x – 2025.x (main branch) / Hoxton – 2021.0.x (1.x branch) |
-| Maven            | 3.6+                             |
+| Requirement  | Version                                                          |
+|--------------|------------------------------------------------------------------|
+| Java         | 17+                                                              |
+| Spring Boot  | 3.0+ (main branch) / 2.x (1.x branch)                            |
+| Spring Cloud | 2022.0.x – 2025.x (main branch) / Hoxton – 2021.0.x (1.x branch) |
+| Maven        | 3.6+                                                             |
 
 ## Modules
 
@@ -111,10 +110,10 @@ Then declare only the modules you need (versions are managed by the BOM):
 
 ### Version Compatibility
 
-| **Branch** | **Spring Cloud compatibility**              | **Latest version** |
-|------------|---------------------------------------------|--------------------|
-| `main`     | 2022.0.x, 2023.0.x, 2024.0.x, 2025.0.x     | 0.2.12             |
-| `1.x`      | Hoxton, 2020.0.x, 2021.0.x                  | 0.1.12             |
+| **Branch** | **Spring Cloud compatibility**         | **Latest version** |
+|------------|----------------------------------------|--------------------|
+| `main`     | 2022.0.x, 2023.0.x, 2024.0.x, 2025.0.x | 0.2.12             |
+| `1.x`      | Hoxton, 2020.0.x, 2021.0.x             | 0.1.12             |
 
 By default, the `main` branch builds against Spring Cloud 2025.0.x. To build or run tests against an older generation,
 activate the corresponding Maven profile:
@@ -245,14 +244,14 @@ mvnw.cmd verify
 
 ## Documentation
 
-| Resource | Link |
-|----------|------|
+| Resource              | Link                                                                                                                             |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | User Guide (DeepWiki) | [deepwiki.com/microsphere-projects/microsphere-spring-cloud](https://deepwiki.com/microsphere-projects/microsphere-spring-cloud) |
-| User Guide (ZRead) | [zread.ai/microsphere-projects/microsphere-spring-cloud](https://zread.ai/microsphere-projects/microsphere-spring-cloud) |
-| Wiki | [GitHub Wiki](https://github.com/microsphere-projects/microsphere-spring-cloud/wiki) |
-| JavaDoc — commons | [javadoc.io](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-spring-cloud-commons) |
-| JavaDoc — openfeign | [javadoc.io](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-spring-cloud-openfeign) |
-| Release Notes | [release-notes.md](./release-notes.md) |
+| User Guide (ZRead)    | [zread.ai/microsphere-projects/microsphere-spring-cloud](https://zread.ai/microsphere-projects/microsphere-spring-cloud)         |
+| Wiki                  | [GitHub Wiki](https://github.com/microsphere-projects/microsphere-spring-cloud/wiki)                                             |
+| JavaDoc — commons     | [javadoc.io](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-spring-cloud-commons)                             |
+| JavaDoc — openfeign   | [javadoc.io](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-spring-cloud-openfeign)                           |
+| Release Notes         | [release-notes.md](./release-notes.md)                                                                                           |
 
 ## Contributing
 
@@ -270,14 +269,15 @@ follow it.
 
 ### Maintainers
 
-| Name | Role | Contact |
-|------|------|---------|
+| Name                                      | Role                       | Contact              |
+|-------------------------------------------|----------------------------|----------------------|
 | [Mercy Ma](https://github.com/mercyblitz) | Lead architect & developer | mercyblitz@gmail.com |
 
 ## Getting Help
 
 - **Bugs & feature requests** — [GitHub Issues](https://github.com/microsphere-projects/microsphere-spring-cloud/issues)
-- **Questions & discussions** — [GitHub Discussions](https://github.com/microsphere-projects/microsphere-spring-cloud/discussions)
+- **Questions & discussions
+  ** — [GitHub Discussions](https://github.com/microsphere-projects/microsphere-spring-cloud/discussions)
 - **Interactive AI docs** — [DeepWiki](https://deepwiki.com/microsphere-projects/microsphere-spring-cloud) or
   [ZRead](https://zread.ai/microsphere-projects/microsphere-spring-cloud)
 - **Wiki** — [GitHub Wiki](https://github.com/microsphere-projects/microsphere-spring-cloud/wiki)
