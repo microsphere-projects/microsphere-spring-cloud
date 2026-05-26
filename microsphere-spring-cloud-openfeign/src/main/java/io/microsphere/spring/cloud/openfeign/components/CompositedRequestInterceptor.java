@@ -61,7 +61,9 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
      * @return an unmodifiable {@link Set} of registered request interceptors
      */
     public Set<RequestInterceptor> getRequestInterceptors() {
-        return unmodifiableSet(set);
+        synchronized (this.set) {
+            return unmodifiableSet(new LinkedHashSet<>(set));
+        }
     }
 
     /**

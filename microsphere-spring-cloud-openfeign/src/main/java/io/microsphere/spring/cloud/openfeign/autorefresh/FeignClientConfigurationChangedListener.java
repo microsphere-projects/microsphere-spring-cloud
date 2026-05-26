@@ -71,6 +71,7 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
         return keys.stream()
                 .filter(str -> str.startsWith(PREFIX))
                 .map(str -> str.replace(PREFIX, ""))
+                .filter(str -> str.indexOf(".") > 0)
                 .collect(Collectors.groupingBy(str -> {
                     int index = str.indexOf(".");
                     return str.substring(0, index);

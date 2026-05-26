@@ -197,7 +197,9 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
      */
     @Override
     public void destroy() throws Exception {
-        this.discoveryClients.clear();
+        if (this.discoveryClients != null) {
+            this.discoveryClients.clear();
+        }
     }
 
     /**
