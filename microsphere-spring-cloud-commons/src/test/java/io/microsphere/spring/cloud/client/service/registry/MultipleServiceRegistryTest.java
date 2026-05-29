@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.registry;
 
-
 import com.alibaba.cloud.nacos.registry.NacosRegistration;
 import com.alibaba.cloud.nacos.registry.NacosServiceRegistry;
 import org.junit.jupiter.api.BeforeEach;

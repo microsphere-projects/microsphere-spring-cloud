@@ -14,7 +14,6 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
  */
 public class AQueryMapEncoder implements QueryMapEncoder {
 
-
     private static final Logger log = getLogger(AQueryMapEncoder.class);
 
     @Override

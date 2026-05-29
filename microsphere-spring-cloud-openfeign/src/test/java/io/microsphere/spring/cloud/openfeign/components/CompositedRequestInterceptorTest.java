@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.openfeign.components;
 
-
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.junit.jupiter.api.BeforeEach;
