@@ -19,7 +19,6 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
  */
 public class ObservableFeignInvocationHandler implements InvocationHandler {
 
-
     private static final Logger log = getLogger(ObservableFeignInvocationHandler.class);
     public static FeignComponentAssert<?> componentAssert;
     public static Class expectComponentClass;

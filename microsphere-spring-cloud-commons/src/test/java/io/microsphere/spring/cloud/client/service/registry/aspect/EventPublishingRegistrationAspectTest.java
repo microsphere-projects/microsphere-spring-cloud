@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.registry.aspect;
 
-
 import io.microsphere.spring.cloud.client.service.registry.DefaultRegistration;
 import io.microsphere.spring.cloud.client.service.registry.InMemoryServiceRegistry;
 import io.microsphere.spring.cloud.client.service.registry.MultipleRegistration;
