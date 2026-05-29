@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.openfeign.components;
 
-
 import feign.Request;
 import feign.RetryableException;
 import feign.Retryer;
