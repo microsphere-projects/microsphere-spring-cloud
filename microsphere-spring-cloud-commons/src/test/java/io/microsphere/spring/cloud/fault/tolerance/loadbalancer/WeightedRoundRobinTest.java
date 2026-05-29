@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.fault.tolerance.loadbalancer;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

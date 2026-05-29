@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.openfeign.autorefresh;
 
-
 import io.microsphere.spring.test.junit.jupiter.SpringLoggingTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -16,7 +16,6 @@
  */
 package io.microsphere.spring.cloud.fault.tolerance.tomcat.event;
 
-
 import io.microsphere.logging.Logger;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.AbstractProtocol;

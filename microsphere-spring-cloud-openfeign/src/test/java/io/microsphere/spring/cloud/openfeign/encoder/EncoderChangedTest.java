@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @EnableAutoConfiguration
 class EncoderChangedTest extends BaseTest<Encoder> {
 
-
     @Override
     protected Class<? extends Encoder> beforeTestComponentClass() {
         return AEncoder.class;

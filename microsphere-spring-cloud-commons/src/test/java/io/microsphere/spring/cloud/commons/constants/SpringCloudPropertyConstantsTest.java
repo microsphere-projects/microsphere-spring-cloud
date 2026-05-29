@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.commons.constants;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.spring.cloud.commons.constants.SpringCloudPropertyConstants.FEATURES_ENABLED_PROPERTY_NAME;

@@ -175,7 +175,6 @@ public class FeignComponentRegistry {
         return INSTANCE;
     }
 
-
     /**
      * Refreshes all registered components for the specified Feign client whose component
      * types match the given changed configuration keys.
