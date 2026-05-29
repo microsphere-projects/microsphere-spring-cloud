@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.fault.tolerance.loadbalancer.util;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.spring.cloud.fault.tolerance.loadbalancer.util.LoadBalancerUtils.calculateWarmupWeight;

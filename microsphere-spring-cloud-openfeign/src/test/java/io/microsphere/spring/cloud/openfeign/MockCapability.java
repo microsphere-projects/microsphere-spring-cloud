@@ -14,5 +14,4 @@ public class MockCapability implements Capability {
         return ObservableFeignInvocationHandler::new;
     }
 
-
 }
