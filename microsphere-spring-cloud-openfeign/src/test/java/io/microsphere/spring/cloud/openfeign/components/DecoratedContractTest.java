@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.openfeign.components;
 
-
 import feign.Contract;
 import feign.MethodMetadata;
 import io.microsphere.spring.cloud.openfeign.BaseClient;

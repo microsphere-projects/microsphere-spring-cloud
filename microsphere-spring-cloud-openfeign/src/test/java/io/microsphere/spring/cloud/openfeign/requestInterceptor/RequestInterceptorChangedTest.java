@@ -36,5 +36,4 @@ class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> {
         return BRequestInterceptor.class;
     }
 
-
 }

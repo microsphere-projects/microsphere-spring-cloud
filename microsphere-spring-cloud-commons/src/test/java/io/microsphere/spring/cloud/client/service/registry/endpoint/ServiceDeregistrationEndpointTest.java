@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.registry.endpoint;
 
-
 import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
