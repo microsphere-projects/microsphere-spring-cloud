@@ -17,10 +17,10 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.test.context.TestPropertySource;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static io.microsphere.collection.MapUtils.newHashMap;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 import static java.util.Collections.singleton;
 
@@ -68,7 +68,7 @@ public abstract class BaseTest<T> {
         Set<String> keys = singleton(key);
         final String className = afterTestComponent().getName();
         MutablePropertySources propertySources = ((ConfigurableEnvironment) this.environment).getPropertySources();
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = newHashMap();
         log.trace("replacing config key {} with value {}", key, className);
         map.put(key, className);
         propertySources.addFirst(new MapPropertySource("after", map));

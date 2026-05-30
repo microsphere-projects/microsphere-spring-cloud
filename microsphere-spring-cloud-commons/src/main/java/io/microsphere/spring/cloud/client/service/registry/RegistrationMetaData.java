@@ -7,8 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
+import static io.microsphere.collection.MapUtils.newConcurrentHashMap;
 import static io.microsphere.reflect.MethodUtils.invokeMethod;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.removeMetadata;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
@@ -71,7 +71,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     public RegistrationMetaData(Collection<Registration> registrations) {
         assertNotEmpty(registrations, () -> "registrations cannot be empty");
         this.registrations = registrations;
-        this.applicationMetaData = new ConcurrentHashMap<>();
+        this.applicationMetaData = newConcurrentHashMap();
         for (Registration registration : registrations) {
             initializeIfZookeeperRegistrationAvailable(registration);
 

@@ -25,12 +25,13 @@ import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryCl
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static io.microsphere.collection.CollectionUtils.isNotEmpty;
+import static io.microsphere.collection.ListUtils.newArrayList;
+import static io.microsphere.collection.ListUtils.newLinkedList;
+import static io.microsphere.collection.SetUtils.newLinkedHashSet;
 import static io.microsphere.reflect.TypeUtils.getClassName;
 import static io.microsphere.spring.beans.BeanUtils.getSortedBeans;
 import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryClientConstants.COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME;
@@ -85,7 +86,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
      */
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
-        List<ServiceInstance> serviceInstances = new LinkedList<>();
+        List<ServiceInstance> serviceInstances = newLinkedList();
         List<DiscoveryClient> discoveryClients = getDiscoveryClients();
         for (DiscoveryClient discoveryClient : discoveryClients) {
             List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
@@ -109,7 +110,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
      */
     @Override
     public List<String> getServices() {
-        LinkedHashSet<String> services = new LinkedHashSet<>();
+        Set<String> services = newLinkedHashSet();
         List<DiscoveryClient> discoveryClients = getDiscoveryClients();
         for (DiscoveryClient discoveryClient : discoveryClients) {
             List<String> serviceForClient = discoveryClient.getServices();
@@ -117,7 +118,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
                 services.addAll(serviceForClient);
             }
         }
-        return new ArrayList<>(services);
+        return newArrayList(services);
     }
 
     /**
@@ -140,7 +141,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
             return discoveryClients;
         }
 
-        discoveryClients = new ArrayList<>();
+        discoveryClients = newLinkedList();
         for (DiscoveryClient discoveryClient : getSortedBeans(this.context, DiscoveryClient.class)) {
             String className = getClassName(discoveryClient.getClass());
             if (COMPOSITE_DISCOVERY_CLIENT_CLASS_NAME.equals(className) || this.equals(discoveryClient)) {

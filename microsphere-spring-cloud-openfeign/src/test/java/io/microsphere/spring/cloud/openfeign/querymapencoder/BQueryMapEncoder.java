@@ -3,9 +3,9 @@ package io.microsphere.spring.cloud.openfeign.querymapencoder;
 import feign.QueryMapEncoder;
 import io.microsphere.logging.Logger;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import static io.microsphere.collection.MapUtils.newHashMap;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
@@ -18,6 +18,6 @@ public class BQueryMapEncoder implements QueryMapEncoder {
 
     @Override
     public Map<String, Object> encode(Object object) {
-        return new HashMap<>();
+        return newHashMap();
     }
 }
