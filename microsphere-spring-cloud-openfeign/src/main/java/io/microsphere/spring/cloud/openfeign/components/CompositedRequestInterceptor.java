@@ -8,15 +8,15 @@ import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
 import static io.microsphere.collection.CollectionUtils.isNotEmpty;
 import static io.microsphere.collection.MapUtils.isNotEmpty;
+import static io.microsphere.collection.MapUtils.newHashMap;
+import static io.microsphere.collection.SetUtils.newHashSet;
+import static io.microsphere.collection.SetUtils.newLinkedHashSet;
 import static java.util.Collections.unmodifiableSet;
 import static org.springframework.beans.BeanUtils.instantiateClass;
 
@@ -31,7 +31,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
 
     private final String contextId;
 
-    private final Set<RequestInterceptor> set = new LinkedHashSet<>();
+    private final Set<RequestInterceptor> set = newLinkedHashSet();
 
     /**
      * Constructs a {@link CompositedRequestInterceptor} for the specified Feign client context.
@@ -122,10 +122,10 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     @Override
     public void refresh() {
         FeignClientProperties properties = getOrInstantiate(FeignClientProperties.class);
-        Set<Class<RequestInterceptor>> interceptors = new HashSet<>();
+        Set<Class<RequestInterceptor>> interceptors = newHashSet();
         //headers
-        Map<String, Collection<String>> headers = new HashMap<>();
-        Map<String, Collection<String>> params = new HashMap<>();
+        Map<String, Collection<String>> headers = newHashMap();
+        Map<String, Collection<String>> params = newHashMap();
 
         Map<String, FeignClientConfiguration> config = properties.getConfig();
         FeignClientConfiguration defaultConfiguration = config.get(properties.getDefaultConfig());

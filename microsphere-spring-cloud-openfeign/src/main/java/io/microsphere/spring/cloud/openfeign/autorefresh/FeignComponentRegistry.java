@@ -11,15 +11,15 @@ import io.microsphere.spring.cloud.openfeign.components.CompositedRequestInterce
 import io.microsphere.spring.cloud.openfeign.components.Refreshable;
 import org.springframework.beans.factory.BeanFactory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
+import static io.microsphere.collection.ListUtils.newLinkedList;
 import static io.microsphere.collection.Lists.ofList;
+import static io.microsphere.collection.MapUtils.newConcurrentHashMap;
 import static io.microsphere.collection.Maps.ofMap;
+import static io.microsphere.collection.SetUtils.newHashSet;
 import static io.microsphere.collection.Sets.ofSet;
 import static io.microsphere.constants.SymbolConstants.LEFT_SQUARE_BRACKET;
 import static io.microsphere.spring.boot.context.properties.source.util.ConfigurationPropertyUtils.toDashedForm;
@@ -52,9 +52,9 @@ public class FeignComponentRegistry {
             "query-map-encoder", QueryMapEncoder.class
     );
 
-    private final Map<String, List<Refreshable>> refreshableComponents = new ConcurrentHashMap<>(32);
+    private final Map<String, List<Refreshable>> refreshableComponents = newConcurrentHashMap(32);
 
-    private final Map<String, CompositedRequestInterceptor> interceptorsMap = new ConcurrentHashMap<>(32);
+    private final Map<String, CompositedRequestInterceptor> interceptorsMap = newConcurrentHashMap(32);
 
     private final String defaultClientName;
 
@@ -116,54 +116,54 @@ public class FeignComponentRegistry {
     }
 
     /**
-     * Registers a list of {@link Refreshable} components for the specified Feign client name.
-     * Components are appended to any previously registered components for that client.
+     * Registers a list of {@link Refreshable} components for the specified Feign client.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * registry.register("my-client", List.of(decoratedDecoder, decoratedEncoder));
+     * List<Refreshable> components = List.of(decoratedContract, decoratedDecoder);
+     * registry.register("my-client", components);
      * }</pre>
      *
-     * @param clientName the Feign client name to associate the components with
+     * @param clientName the Feign client name
      * @param components the list of {@link Refreshable} components to register
      */
     public void register(String clientName, List<Refreshable> components) {
         assertNotBlank(clientName, () -> "The 'clientName' must not be blank!");
         assertNotEmpty(components, () -> "The 'components' must not be empty!");
         assertNoNullElements(components, () -> "The 'components' must not contain the null  element!");
-        List<Refreshable> componentList = this.refreshableComponents.computeIfAbsent(clientName, name -> new ArrayList<>());
+        List<Refreshable> componentList = this.refreshableComponents.computeIfAbsent(clientName, name -> newLinkedList());
         componentList.addAll(components);
     }
 
     /**
-     * Registers a single {@link Refreshable} component for the specified Feign client name.
+     * Registers a single {@link Refreshable} component for the specified Feign client.
      *
      * <p>Example Usage:
      * <pre>{@code
      * registry.register("my-client", decoratedContract);
      * }</pre>
      *
-     * @param clientName the Feign client name to associate the component with
-     * @param component the {@link Refreshable} component to register
+     * @param clientName the Feign client name
+     * @param component  the {@link Refreshable} component to register
      */
     public void register(String clientName, Refreshable component) {
         register(clientName, ofList(component));
     }
 
     /**
-     * Registers a {@link RequestInterceptor} for the specified Feign client name. Interceptors
-     * are grouped into a {@link CompositedRequestInterceptor} per client. Returns the composited
-     * interceptor if this is the first interceptor for the client, otherwise returns a no-op instance.
+     * Registers a {@link RequestInterceptor} for the specified Feign client. Interceptors
+     * are collected into a {@link CompositedRequestInterceptor} per client.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * RequestInterceptor result = registry.registerRequestInterceptor("my-client",
-     *     template -> template.header("Authorization", "Bearer token"));
+     * RequestInterceptor interceptor = template -> template.header("X-Custom", "value");
+     * RequestInterceptor result = registry.registerRequestInterceptor("my-client", interceptor);
      * }</pre>
      *
-     * @param clientName the Feign client name
+     * @param clientName         the Feign client name
      * @param requestInterceptor the {@link RequestInterceptor} to register
-     * @return the {@link CompositedRequestInterceptor} if first registration, or a no-op interceptor
+     * @return the {@link CompositedRequestInterceptor} if this is the first interceptor
+     * for the client, or {@link io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor#INSTANCE} otherwise
      */
     public RequestInterceptor registerRequestInterceptor(String clientName, RequestInterceptor requestInterceptor) {
         assertNotBlank(clientName, () -> "The 'clientName' must not be blank!");
@@ -176,15 +176,14 @@ public class FeignComponentRegistry {
     }
 
     /**
-     * Refreshes all registered components for the specified Feign client whose component
-     * types match the given changed configuration keys.
+     * Refreshes the Feign components for the specified client whose configurations have changed.
      *
      * <p>Example Usage:
      * <pre>{@code
-     * registry.refresh("my-client", "decoder", "encoder");
+     * registry.refresh("my-client", "retryer", "decoder");
      * }</pre>
      *
-     * @param clientName the Feign client name whose components should be refreshed
+     * @param clientName     the Feign client name
      * @param changedConfigs the configuration keys that have changed
      */
     public void refresh(String clientName, String... changedConfigs) {
@@ -206,7 +205,7 @@ public class FeignComponentRegistry {
      * @param changedConfigs the set of changed configuration sub-keys
      */
     public synchronized void refresh(String clientName, Set<String> changedConfigs) {
-        Set<Class<?>> effectiveComponents = new HashSet<>(changedConfigs.size());
+        Set<Class<?>> effectiveComponents = newHashSet(changedConfigs.size());
 
         boolean hasInterceptor = false;
         for (String changedConfig : changedConfigs) {
