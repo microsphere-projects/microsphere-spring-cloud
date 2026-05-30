@@ -3,12 +3,12 @@ package io.microsphere.spring.cloud.client.service.registry;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static io.microsphere.collection.MapUtils.newHashMap;
 import static io.microsphere.util.Assert.assertNotEmpty;
 import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass;
 import static org.springframework.core.ResolvableType.forClass;
@@ -56,7 +56,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
         assertNotEmpty(registriesMap, () -> "registrations cannot be empty");
 
         this.registriesMap = registriesMap;
-        this.beanNameToRegistrationTypesMap = new HashMap<>(registriesMap.size());
+        this.beanNameToRegistrationTypesMap = newHashMap(registriesMap.size());
 
         for (Map.Entry<String, ServiceRegistry> entry : registriesMap.entrySet()) {
             String beanName = entry.getKey();

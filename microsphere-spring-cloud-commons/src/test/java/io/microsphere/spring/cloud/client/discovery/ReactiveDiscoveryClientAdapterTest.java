@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.discovery;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.DefaultServiceInstance;
@@ -30,12 +29,12 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 import static io.microsphere.collection.Lists.ofList;
+import static io.microsphere.collection.MapUtils.newHashMap;
 import static io.microsphere.spring.cloud.client.discovery.ReactiveDiscoveryClientAdapter.toList;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtilsTest.createDefaultServiceInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,7 +65,7 @@ class ReactiveDiscoveryClientAdapterTest {
 
     @BeforeEach
     void setUp() {
-        Map<String, List<DefaultServiceInstance>> instances = new HashMap<>();
+        Map<String, List<DefaultServiceInstance>> instances = newHashMap();
         this.serviceInstance = createDefaultServiceInstance();
         this.appName = this.serviceInstance.getServiceId();
         instances.put(appName, ofList(this.serviceInstance));

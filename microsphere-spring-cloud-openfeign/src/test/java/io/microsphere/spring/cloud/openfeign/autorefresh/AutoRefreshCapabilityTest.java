@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.openfeign.autorefresh;
 
-
 import feign.Contract;
 import feign.QueryMapEncoder;
 import feign.RequestInterceptor;

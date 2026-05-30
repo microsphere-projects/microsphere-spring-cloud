@@ -29,5 +29,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 })
 public @interface EnableFeignAutoRefresh {
 
-    class Marker {}
+    class Marker {
+    }
 }

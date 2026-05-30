@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.util;
 
-
 import io.microsphere.json.JSONObject;
 import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;

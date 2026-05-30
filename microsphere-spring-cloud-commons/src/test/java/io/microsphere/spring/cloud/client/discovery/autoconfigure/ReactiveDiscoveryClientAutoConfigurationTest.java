@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
-
 import io.microsphere.spring.cloud.client.discovery.ReactiveDiscoveryClientAdapter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

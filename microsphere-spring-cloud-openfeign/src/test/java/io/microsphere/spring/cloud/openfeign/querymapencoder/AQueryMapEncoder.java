@@ -13,7 +13,6 @@ import java.util.Map;
  */
 public class AQueryMapEncoder implements QueryMapEncoder {
 
-
     private static final Logger log = LoggerFactory.getLogger(AQueryMapEncoder.class);
 
     @Override

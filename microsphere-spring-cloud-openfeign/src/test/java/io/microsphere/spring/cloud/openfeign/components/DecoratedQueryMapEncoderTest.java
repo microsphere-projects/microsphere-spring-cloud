@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.openfeign.components;
 
-
 import feign.QueryMapEncoder;
 import feign.querymap.BeanQueryMapEncoder;
 import org.junit.jupiter.api.Test;

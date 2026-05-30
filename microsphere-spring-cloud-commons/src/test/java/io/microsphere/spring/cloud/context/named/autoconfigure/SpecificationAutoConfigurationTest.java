@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.context.named.autoconfigure;
 
-
 import io.microsphere.spring.cloud.context.named.SpecificationCustomizer;
 import io.microsphere.spring.cloud.context.named.config.SpecificationBeanPostProcessor;
 import org.junit.jupiter.api.Test;
@@ -64,7 +63,6 @@ class SpecificationAutoConfigurationTest implements Specification {
             };
         }
     }
-
 
     @Override
     public String getName() {

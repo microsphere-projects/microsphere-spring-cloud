@@ -1,8 +1,8 @@
 package io.microsphere.spring.cloud.openfeign.requestInterceptor;
 
 import feign.RequestInterceptor;
-import io.microsphere.spring.cloud.openfeign.autorefresh.BaseTest;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
+import io.microsphere.spring.cloud.openfeign.autorefresh.BaseTest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -33,6 +33,5 @@ class RequestInterceptorChangedTest extends BaseTest<RequestInterceptor> {
     protected Class<? extends RequestInterceptor> afterTestComponent() {
         return BRequestInterceptor.class;
     }
-
 
 }

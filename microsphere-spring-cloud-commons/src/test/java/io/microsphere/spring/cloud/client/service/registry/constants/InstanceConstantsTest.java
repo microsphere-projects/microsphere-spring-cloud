@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.registry.constants;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants.MANAGEMENT_PORT_METADATA_NAME;

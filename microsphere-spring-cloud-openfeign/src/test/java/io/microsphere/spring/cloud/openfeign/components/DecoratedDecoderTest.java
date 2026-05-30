@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.openfeign.components;
 
-
 import feign.Response;
 import feign.codec.Decoder;
 import org.junit.jupiter.api.Test;

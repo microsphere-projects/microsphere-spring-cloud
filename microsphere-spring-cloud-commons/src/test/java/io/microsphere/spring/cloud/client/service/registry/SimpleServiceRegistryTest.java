@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.registry;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.client.DefaultServiceInstance;

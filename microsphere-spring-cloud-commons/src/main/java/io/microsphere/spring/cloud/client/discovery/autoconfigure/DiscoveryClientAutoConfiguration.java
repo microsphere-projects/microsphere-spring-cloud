@@ -75,7 +75,6 @@ public class DiscoveryClientAutoConfiguration {
     )
     public static final String DISCOVERY_CLIENT_MODE_PROPERTY_NAME = DISCOVERY_CLIENT_PROPERTY_PREFIX + MODE_PROPERTY_NAME;
 
-
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(name = DISCOVERY_CLIENT_MODE_PROPERTY_NAME, havingValue = UNION_DISCOVERY_CLIENT_MODE)
     public static class UnionConfiguration {

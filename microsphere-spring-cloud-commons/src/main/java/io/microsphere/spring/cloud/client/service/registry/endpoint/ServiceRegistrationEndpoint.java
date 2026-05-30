@@ -5,9 +5,9 @@ import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 import org.springframework.cloud.client.serviceregistry.AbstractAutoServiceRegistration;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static io.microsphere.collection.MapUtils.newLinkedHashMap;
 import static io.microsphere.lang.function.ThrowableSupplier.execute;
 import static io.microsphere.reflect.MethodUtils.invokeMethod;
 
@@ -39,7 +39,7 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
      */
     @ReadOperation
     public Map<String, Object> metadata() {
-        Map<String, Object> metadata = new LinkedHashMap<>(16);
+        Map<String, Object> metadata = newLinkedHashMap(16);
         metadata.put("application-name", applicationName);
         metadata.put("registration", registration);
         metadata.put("port", port);

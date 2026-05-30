@@ -1,8 +1,8 @@
 package io.microsphere.spring.cloud.openfeign.encoder;
 
 import feign.codec.Encoder;
-import io.microsphere.spring.cloud.openfeign.autorefresh.BaseTest;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
+import io.microsphere.spring.cloud.openfeign.autorefresh.BaseTest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = EncoderChangedTest.class)
 @EnableAutoConfiguration
 class EncoderChangedTest extends BaseTest<Encoder> {
-
 
     @Override
     protected Class<? extends Encoder> beforeTestComponentClass() {

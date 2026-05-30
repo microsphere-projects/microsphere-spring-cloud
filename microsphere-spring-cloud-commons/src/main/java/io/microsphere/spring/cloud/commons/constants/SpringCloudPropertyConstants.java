@@ -82,7 +82,6 @@ public interface SpringCloudPropertyConstants {
     )
     String LOAD_BALANCER_ENABLED_PROPERTY_NAME = SPRING_CLOUD_PROPERTY_PREFIX + "loadbalancer." + ENABLED_PROPERTY_NAME;
 
-
     /**
      * The property name for enabling Spring Cloud Util : "spring.cloud.util.enabled"
      *

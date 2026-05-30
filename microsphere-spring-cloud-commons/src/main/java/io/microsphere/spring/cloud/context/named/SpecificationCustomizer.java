@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.context.named;
 
-
 import io.microsphere.spring.cloud.context.named.config.SpecificationBeanPostProcessor;
 import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 

@@ -8,7 +8,6 @@ import feign.InvocationHandlerFactory;
  */
 public abstract class FeignComponentAssert<T> {
 
-
     protected abstract T loadCurrentComponent(InvocationHandlerFactory.MethodHandler methodHandler) throws Exception;
 
     public boolean expect(InvocationHandlerFactory.MethodHandler methodHandler, Class<T> expectedClass) throws Exception {

@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.fault.tolerance.constants;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.spring.cloud.fault.tolerance.constants.FaultTolerancePropertyConstants.DEFAULT_WARMUP_TIME_PROPERTY_VALUE;

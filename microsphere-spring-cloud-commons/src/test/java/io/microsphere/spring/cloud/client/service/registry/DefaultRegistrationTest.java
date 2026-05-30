@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.registry;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +24,8 @@ import java.net.URI;
 
 import static java.lang.System.currentTimeMillis;
 import static java.net.URI.create;
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 

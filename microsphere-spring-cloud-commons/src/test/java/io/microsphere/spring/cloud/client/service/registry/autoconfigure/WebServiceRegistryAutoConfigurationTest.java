@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-
 import io.microsphere.logging.test.jupiter.LoggingLevelsTest;
 import io.microsphere.spring.test.web.controller.TestController;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
