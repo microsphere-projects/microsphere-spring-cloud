@@ -47,7 +47,7 @@ public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implement
      * decoratedEncoder.encode(myDto, MyDto.class, requestTemplate);
      * }</pre>
      *
-     * @param object the object to encode
+     * @param object   the object to encode
      * @param bodyType the type of the body
      * @param template the {@link RequestTemplate} to write the encoded body into
      * @throws EncodeException if encoding fails

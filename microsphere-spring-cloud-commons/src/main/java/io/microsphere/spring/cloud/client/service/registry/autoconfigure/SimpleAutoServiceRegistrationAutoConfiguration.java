@@ -91,9 +91,9 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
      * String serviceId = registration.getServiceId();
      * }</pre>
      *
-     * @param applicationName the Spring application name resolved from {@code spring.application.name}
+     * @param applicationName  the Spring application name resolved from {@code spring.application.name}
      * @param serverProperties the {@link ServerProperties} providing the server port
-     * @param inetUtils the {@link InetUtils} for resolving the host address
+     * @param inetUtils        the {@link InetUtils} for resolving the host address
      * @return a new {@link DefaultRegistration} instance
      */
     @Bean

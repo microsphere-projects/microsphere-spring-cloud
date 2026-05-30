@@ -48,8 +48,8 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      *     new AutoRefreshCapability(clientProperties, feignContext, componentRegistry);
      * }</pre>
      *
-     * @param clientProperties the {@link FeignClientProperties} containing Feign client configuration
-     * @param feignContext the {@link FeignContext} for resolving Feign component instances
+     * @param clientProperties  the {@link FeignClientProperties} containing Feign client configuration
+     * @param feignContext      the {@link FeignContext} for resolving Feign component instances
      * @param componentRegistry the {@link FeignComponentRegistry} for registering refreshable components
      */
     public AutoRefreshCapability(FeignClientProperties clientProperties, FeignContext feignContext, FeignComponentRegistry componentRegistry) {

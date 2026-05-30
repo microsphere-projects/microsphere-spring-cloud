@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.FeignContext;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 0.0.1
  */
-public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implements Retryer  {
+public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implements Retryer {
 
     public DecoratedRetryer(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, Retryer delegate) {
         super(contextId, feignContext, clientProperties, delegate);

@@ -41,10 +41,10 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * DecoratedDecoder decoder = new DecoratedDecoder(contextId, feignContext, clientProperties, originalDecoder);
      * }</pre>
      *
-     * @param contextId the Feign client context identifier
-     * @param feignContext the {@link FeignContext} for loading component instances
+     * @param contextId        the Feign client context identifier
+     * @param feignContext     the {@link FeignContext} for loading component instances
      * @param clientProperties the {@link FeignClientProperties} containing configuration
-     * @param delegate the original Feign component to decorate
+     * @param delegate         the original Feign component to decorate
      */
     public DecoratedFeignComponent(String contextId, FeignContext feignContext, FeignClientProperties clientProperties, T delegate) {
         this.contextId = contextId;

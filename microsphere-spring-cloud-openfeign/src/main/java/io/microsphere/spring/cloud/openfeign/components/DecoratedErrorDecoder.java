@@ -44,7 +44,7 @@ public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder>
      * }</pre>
      *
      * @param methodKey the Feign method key (e.g., {@code "MyClient#myMethod()"})
-     * @param response the HTTP {@link Response} that caused the error
+     * @param response  the HTTP {@link Response} that caused the error
      * @return an {@link Exception} representing the error
      */
     @Override
