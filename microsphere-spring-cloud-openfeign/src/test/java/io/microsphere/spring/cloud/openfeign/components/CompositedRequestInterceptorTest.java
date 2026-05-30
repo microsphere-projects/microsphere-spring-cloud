@@ -25,11 +25,11 @@ import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.context.support.GenericApplicationContext;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static io.microsphere.collection.ListUtils.newLinkedList;
 import static io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor.INSTANCE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -140,14 +140,14 @@ class CompositedRequestInterceptorTest {
     void addRequestInterceptor(FeignClientConfiguration configuration, Class<? extends RequestInterceptor> requestInterceptorClass) {
         List<Class<RequestInterceptor>> requestInterceptors = configuration.getRequestInterceptors();
         if (requestInterceptors == null) {
-            requestInterceptors = new ArrayList<>();
+            requestInterceptors = newLinkedList();
             configuration.setRequestInterceptors(requestInterceptors);
         }
         requestInterceptors.add((Class<RequestInterceptor>) requestInterceptorClass);
     }
 
     void add(Map<String, Collection<String>> map, String name, String value) {
-        Collection<String> values = map.computeIfAbsent(name, n -> new ArrayList<>());
+        Collection<String> values = map.computeIfAbsent(name, n -> newLinkedList());
         values.add(value);
     }
 

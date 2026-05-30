@@ -20,8 +20,9 @@ import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import static io.microsphere.collection.MapUtils.newConcurrentHashMap;
 
 /**
  * In-Memory {@link ServiceRegistry}
@@ -33,7 +34,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
 
     private static final String STATUS_KEY = "_status_";
 
-    private final ConcurrentMap<String, Registration> storage = new ConcurrentHashMap<>(1);
+    private final ConcurrentMap<String, Registration> storage = newConcurrentHashMap(2);
 
     /**
      * Registers the given {@link Registration} instance in the in-memory storage,

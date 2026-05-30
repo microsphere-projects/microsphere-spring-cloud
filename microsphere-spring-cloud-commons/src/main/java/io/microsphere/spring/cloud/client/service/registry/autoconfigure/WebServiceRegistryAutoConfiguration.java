@@ -32,10 +32,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import static io.microsphere.collection.SetUtils.newHashSet;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.attachMetadata;
 
@@ -84,7 +84,7 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
     }
 
     private void attachWebMappingsMetadata(Registration registration, Collection<WebEndpointMapping> webEndpointMappings) {
-        Set<WebEndpointMapping> mappings = new HashSet<>(webEndpointMappings);
+        Set<WebEndpointMapping> mappings = newHashSet(webEndpointMappings);
         excludeMappings(mappings);
         attachMetadata(getContextPath(), registration, mappings);
     }

@@ -16,10 +16,10 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.event;
 
+import io.microsphere.annotation.Nonnull;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.ApplicationEvent;
-import io.microsphere.annotation.Nonnull;
 import org.springframework.util.Assert;
 
 import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.DEREGISTERED;
