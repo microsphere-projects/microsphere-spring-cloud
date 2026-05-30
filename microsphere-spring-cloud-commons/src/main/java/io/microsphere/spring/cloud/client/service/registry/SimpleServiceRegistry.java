@@ -22,10 +22,10 @@ import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryProperti
 import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryProperties;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static io.microsphere.collection.ListUtils.newLinkedList;
 import static io.microsphere.spring.cloud.client.discovery.util.DiscoveryUtils.getInstancesMap;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.getMetadata;
 import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUtils.setMetadata;
@@ -217,6 +217,6 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      * @return the list of instances for the service ID
      */
     List<DefaultServiceInstance> getInstances(String serviceId) {
-        return this.instancesMap.computeIfAbsent(serviceId, k -> new ArrayList<>());
+        return this.instancesMap.computeIfAbsent(serviceId, k -> newLinkedList());
     }
 }

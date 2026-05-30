@@ -11,15 +11,15 @@ import io.microsphere.spring.cloud.openfeign.components.CompositedRequestInterce
 import io.microsphere.spring.cloud.openfeign.components.Refreshable;
 import org.springframework.beans.factory.BeanFactory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
+import static io.microsphere.collection.ListUtils.newLinkedList;
 import static io.microsphere.collection.Lists.ofList;
+import static io.microsphere.collection.MapUtils.newConcurrentHashMap;
 import static io.microsphere.collection.Maps.ofMap;
+import static io.microsphere.collection.SetUtils.newHashSet;
 import static io.microsphere.collection.Sets.ofSet;
 import static io.microsphere.constants.SymbolConstants.LEFT_SQUARE_BRACKET;
 import static io.microsphere.spring.boot.context.properties.source.util.ConfigurationPropertyUtils.toDashedForm;
@@ -52,9 +52,9 @@ public class FeignComponentRegistry {
             "query-map-encoder", QueryMapEncoder.class
     );
 
-    private final Map<String, List<Refreshable>> refreshableComponents = new ConcurrentHashMap<>(32);
+    private final Map<String, List<Refreshable>> refreshableComponents = newConcurrentHashMap(32);
 
-    private final Map<String, CompositedRequestInterceptor> interceptorsMap = new ConcurrentHashMap<>(32);
+    private final Map<String, CompositedRequestInterceptor> interceptorsMap = newConcurrentHashMap(32);
 
     private final String defaultClientName;
 
@@ -131,7 +131,7 @@ public class FeignComponentRegistry {
         assertNotBlank(clientName, () -> "The 'clientName' must not be blank!");
         assertNotEmpty(components, () -> "The 'components' must not be empty!");
         assertNoNullElements(components, () -> "The 'components' must not contain the null  element!");
-        List<Refreshable> componentList = this.refreshableComponents.computeIfAbsent(clientName, name -> new ArrayList<>());
+        List<Refreshable> componentList = this.refreshableComponents.computeIfAbsent(clientName, name -> newLinkedList());
         componentList.addAll(components);
     }
 
@@ -163,7 +163,7 @@ public class FeignComponentRegistry {
      * @param clientName         the Feign client name
      * @param requestInterceptor the {@link RequestInterceptor} to register
      * @return the {@link CompositedRequestInterceptor} if this is the first interceptor
-     *         for the client, or {@link io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor#INSTANCE} otherwise
+     * for the client, or {@link io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor#INSTANCE} otherwise
      */
     public RequestInterceptor registerRequestInterceptor(String clientName, RequestInterceptor requestInterceptor) {
         assertNotBlank(clientName, () -> "The 'clientName' must not be blank!");
@@ -205,7 +205,7 @@ public class FeignComponentRegistry {
      * @param changedConfigs the set of changed configuration sub-keys
      */
     public synchronized void refresh(String clientName, Set<String> changedConfigs) {
-        Set<Class<?>> effectiveComponents = new HashSet<>(changedConfigs.size());
+        Set<Class<?>> effectiveComponents = newHashSet(changedConfigs.size());
 
         boolean hasInterceptor = false;
         for (String changedConfig : changedConfigs) {
