@@ -4,10 +4,10 @@ import org.springframework.cloud.client.serviceregistry.Registration;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static io.microsphere.collection.MapUtils.newHashMap;
 import static io.microsphere.util.Assert.assertNotEmpty;
 import static io.microsphere.util.ClassUtils.findAllClasses;
 import static io.microsphere.util.ClassUtils.isAssignableFrom;
@@ -23,7 +23,7 @@ import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClas
  */
 public class MultipleRegistration implements Registration {
 
-    private Map<Class<? extends Registration>, Registration> registrationMap = new HashMap<>();
+    private Map<Class<? extends Registration>, Registration> registrationMap = newHashMap();
 
     private Registration defaultRegistration;
 

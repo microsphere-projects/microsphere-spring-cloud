@@ -57,4 +57,32 @@ For a detailed list of changes, see the [Full Changelog](https://github.com/merc
 
 For a detailed commit history, refer to the full changelog.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.12...0.1.13
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.12...0.1.13## v0.1.14
+
+# Release Notes - Version 0.1.14
+
+## New Features
+- Adopted `microsphere` collection factories for improved consistency. (#947e789)
+
+## Dependency Updates
+- Bumped `microsphere-spring-boot` dependency to 0.1.16. (#09f4726, #29a36aa)
+- Upgraded parent version to 0.3.0. (#0f06438)
+
+## Documentation
+- Updated README to reflect the latest branch and version tables. (#c39d353, #4b537cf)
+- Adjusted README branch versions to align with 0.1.14 and 0.2.14 releases. (#536f17a)
+
+## Code Quality Improvements
+- Removed trailing newlines in 146 Java source files. (#7eb224a)
+- Cleaned up duplicated line separators and trailing whitespaces. (#e60a7b3)
+- Reformatted code to align with consistent indentation and import structure. (#d0046eb)
+
+## Build and Workflow Enhancements
+- Merged `release-1.x` into `dev-1.x` for better workflow alignment. (#b7a9b6c)
+- Incremented version to prepare for 0.1.14 release. (#76152b5)
+
+---
+
+**Commit Reference:** [View Full Changelog](https://github.com/mercyblitz/microsphere-spring-cloud/compare/0.1.13...0.1.14)
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.13...0.1.14

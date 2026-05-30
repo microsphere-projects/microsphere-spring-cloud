@@ -1,8 +1,8 @@
 package io.microsphere.spring.cloud.openfeign.querymapencoder;
 
 import feign.QueryMapEncoder;
-import io.microsphere.spring.cloud.openfeign.autorefresh.BaseTest;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
+import io.microsphere.spring.cloud.openfeign.autorefresh.BaseTest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
