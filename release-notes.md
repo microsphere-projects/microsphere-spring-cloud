@@ -63,4 +63,24 @@ No new features or bug fixes were introduced in this release.
 
 *Thank you for using this version!*
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.12...0.2.13
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.12...0.2.13## v0.2.14
+
+# Release Notes for v0.2.14
+
+## Dependency Updates
+- Upgraded `microsphere-spring-boot` to version 0.2.16.  
+- Updated parent POM to version 0.3.0.
+
+## Bug Fixes
+- Fixed README branch version inconsistencies.  
+- Updated README versions for clarity and corrected formatting.
+
+## Build and Workflow Enhancements
+- Removed redundant JavaDoc lines and normalized formatting/whitespace in Java files.  
+- Eliminated trailing newlines, duplicated line separators, and trailing whitespace across Java source code.
+
+## Other Changes
+- Improved code quality by replacing raw collection instantiations with utility methods.  
+- Merged multiple updates from the `main` branch.  
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.13...0.2.14
