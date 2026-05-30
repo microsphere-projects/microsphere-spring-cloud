@@ -66,9 +66,9 @@ public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implement
      * @param response the Feign {@link Response} to decode
      * @param type     the target type to decode into
      * @return the decoded object
-     * @throws IOException      if an I/O error occurs
-     * @throws DecodeException  if decoding fails
-     * @throws FeignException   if a Feign-specific error occurs
+     * @throws IOException     if an I/O error occurs
+     * @throws DecodeException if decoding fails
+     * @throws FeignException  if a Feign-specific error occurs
      */
     @Override
     public Object decode(Response response, Type type) throws IOException, DecodeException, FeignException {

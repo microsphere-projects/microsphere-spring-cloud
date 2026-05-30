@@ -77,9 +77,9 @@ public class ServiceInstanceUtils extends BaseUtils {
      * ServiceInstanceUtils.attachMetadata("/context", serviceInstance, mappings);
      * }</pre>
      *
-     * @param contextPath           the web application context path
-     * @param serviceInstance       the {@link ServiceInstance} to attach metadata to
-     * @param webEndpointMappings   the collection of {@link WebEndpointMapping}s to attach
+     * @param contextPath         the web application context path
+     * @param serviceInstance     the {@link ServiceInstance} to attach metadata to
+     * @param webEndpointMappings the collection of {@link WebEndpointMapping}s to attach
      */
     public static void attachMetadata(String contextPath, ServiceInstance serviceInstance, Collection<WebEndpointMapping> webEndpointMappings) {
         Map<String, String> metadata = serviceInstance.getMetadata();

@@ -31,7 +31,7 @@ public class RequestInterceptorComponentAssert extends FeignComponentAssert<Requ
     @Override
     public boolean expect(Object configuration, ResponseHandler responseHandler, Class<RequestInterceptor> expectedClass) throws Exception {
         CompositedRequestInterceptor requestInterceptor = loadCurrentComponent(configuration, responseHandler);
-        for(RequestInterceptor interceptor : requestInterceptor.getRequestInterceptors()) {
+        for (RequestInterceptor interceptor : requestInterceptor.getRequestInterceptors()) {
             if (expectedClass.equals(interceptor.getClass()))
                 return true;
         }

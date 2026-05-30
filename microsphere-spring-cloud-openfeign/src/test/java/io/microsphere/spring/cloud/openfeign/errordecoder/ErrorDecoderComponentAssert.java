@@ -18,7 +18,7 @@ public class ErrorDecoderComponentAssert extends FeignComponentAssert<ErrorDecod
         Class<ResponseHandler> responseHandlerClass = ResponseHandler.class;
         Field errorDecoderField = responseHandlerClass.getDeclaredField("errorDecoder");
         errorDecoderField.setAccessible(true);
-        DecoratedErrorDecoder errorDecoder = (DecoratedErrorDecoder)errorDecoderField.get(responseHandler);
+        DecoratedErrorDecoder errorDecoder = (DecoratedErrorDecoder) errorDecoderField.get(responseHandler);
         return errorDecoder.delegate();
     }
 }
