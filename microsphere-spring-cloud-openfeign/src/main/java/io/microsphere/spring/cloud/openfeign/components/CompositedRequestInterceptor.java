@@ -67,7 +67,6 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     /**
      * Applies all registered {@link RequestInterceptor} instances to the given
      * {@link RequestTemplate} in order.
-     *
      * <p>Example Usage:
      * <pre>{@code
      * RequestTemplate template = new RequestTemplate();
