@@ -53,7 +53,7 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
      * @param registration    the {@link Registration} to manage
      */
     public SimpleAutoServiceRegistration(ServiceRegistry<Registration> serviceRegistry,
-                                            AutoServiceRegistrationProperties properties, Registration registration) {
+                                         AutoServiceRegistrationProperties properties, Registration registration) {
         super(serviceRegistry, properties);
         this.properties = properties;
         this.registration = registration;

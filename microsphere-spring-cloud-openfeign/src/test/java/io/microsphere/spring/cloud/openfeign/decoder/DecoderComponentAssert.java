@@ -18,7 +18,7 @@ public class DecoderComponentAssert extends FeignComponentAssert<Decoder> {
         Class<ResponseHandler> responseHandlerClass = ResponseHandler.class;
         Field decoderField = responseHandlerClass.getDeclaredField("decoder");
         decoderField.setAccessible(true);
-        DecoratedDecoder decoder = (DecoratedDecoder)decoderField.get(responseHandler);
+        DecoratedDecoder decoder = (DecoratedDecoder) decoderField.get(responseHandler);
         return decoder.delegate();
     }
 }
