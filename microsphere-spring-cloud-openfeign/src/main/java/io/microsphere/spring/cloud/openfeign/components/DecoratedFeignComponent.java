@@ -214,19 +214,25 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
         return loadInstanceFromContextFactory(contextId, componentType);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return delegate().hashCode();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         return delegate().equals(obj);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return delegate().toString();

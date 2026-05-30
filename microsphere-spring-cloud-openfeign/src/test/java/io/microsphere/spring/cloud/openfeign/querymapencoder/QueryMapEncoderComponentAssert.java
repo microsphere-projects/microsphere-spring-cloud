@@ -22,7 +22,7 @@ public class QueryMapEncoderComponentAssert extends FeignComponentAssert<QueryMa
         Class<?> buildTemplateFromArgsType = buildTemplateFromArgsValue.getClass().getSuperclass();
         Field encoderField = buildTemplateFromArgsType.getDeclaredField("queryMapEncoder");
         encoderField.setAccessible(true);
-        DecoratedQueryMapEncoder encoder = (DecoratedQueryMapEncoder)encoderField.get(buildTemplateFromArgsValue);
+        DecoratedQueryMapEncoder encoder = (DecoratedQueryMapEncoder) encoderField.get(buildTemplateFromArgsValue);
         return encoder.delegate();
     }
 }

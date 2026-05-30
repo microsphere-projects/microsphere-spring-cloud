@@ -28,7 +28,7 @@ public class EncoderComponentAssert extends FeignComponentAssert<Encoder> {
         Class<?> buildTemplateFromArgsType = buildTemplateFromArgsValue.getClass();
         Field encoderField = buildTemplateFromArgsType.getDeclaredField("encoder");
         encoderField.setAccessible(true);
-        DecoratedEncoder encoder = (DecoratedEncoder)encoderField.get(buildTemplateFromArgsValue);
+        DecoratedEncoder encoder = (DecoratedEncoder) encoderField.get(buildTemplateFromArgsValue);
         return encoder.delegate();
     }
 }
