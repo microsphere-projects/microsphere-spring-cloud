@@ -85,4 +85,23 @@ For a detailed commit history, refer to the full changelog.
 
 **Commit Reference:** [View Full Changelog](https://github.com/mercyblitz/microsphere-spring-cloud/compare/0.1.13...0.1.14)
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.13...0.1.14
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.13...0.1.14## v0.1.15
+
+# Release Notes for v0.1.15
+
+## Dependency Updates
+- Bumped `microsphere-spring-boot` to version `0.1.17`. ([2d9e4ed](https://github.com/mercyblitz/microsphere-spring-cloud/commit/2d9e4ed))
+
+## Documentation
+- Fixed list indentation in `README.md`. ([27cd979](https://github.com/mercyblitz/microsphere-spring-cloud/commit/27cd979))
+- Updated documentation to reflect version bumps. ([27cd979](https://github.com/mercyblitz/microsphere-spring-cloud/commit/27cd979))
+
+## Build and Workflow Enhancements
+- Merged `release-1.x` into `dev-1.x`. ([d1b555c](https://github.com/mercyblitz/microsphere-spring-cloud/commit/d1b555c))
+- Bumped version to next patch after publishing v0.1.14. ([cff7f3f](https://github.com/mercyblitz/microsphere-spring-cloud/commit/cff7f3f))
+
+---
+
+Full Changelog: [v0.1.14...v0.1.15](https://github.com/mercyblitz/microsphere-spring-cloud/compare/v0.1.14...v0.1.15)
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.14...0.1.15
