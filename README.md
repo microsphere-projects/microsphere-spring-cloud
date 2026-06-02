@@ -18,13 +18,13 @@ It solves common pain points when building and operating distributed systems wit
 - [Prerequisites](#prerequisites)
 - [Modules](#modules)
 - [Getting Started](#getting-started)
-  - [Add the BOM](#add-the-bom)
-  - [Add Module Dependencies](#add-module-dependencies)
-  - [Version Compatibility](#version-compatibility)
+    - [Add the BOM](#add-the-bom)
+    - [Add Module Dependencies](#add-module-dependencies)
+    - [Version Compatibility](#version-compatibility)
 - [Usage](#usage)
-  - [OpenFeign Auto-Refresh](#openfeign-auto-refresh)
-  - [Multiple Service Registry](#multiple-service-registry)
-  - [Service Registration Events](#service-registration-events)
+    - [OpenFeign Auto-Refresh](#openfeign-auto-refresh)
+    - [Multiple Service Registry](#multiple-service-registry)
+    - [Service Registration Events](#service-registration-events)
 - [Building from Source](#building-from-source)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
@@ -74,6 +74,7 @@ It solves common pain points when building and operating distributed systems wit
 Add the Microsphere Spring Cloud BOM to your project's `pom.xml` to manage dependency versions centrally:
 
 ```xml
+
 <dependencyManagement>
     <dependencies>
         <!-- Microsphere Spring Cloud Dependencies -->
@@ -93,6 +94,7 @@ Add the Microsphere Spring Cloud BOM to your project's `pom.xml` to manage depen
 Then declare only the modules you need (versions are managed by the BOM):
 
 ```xml
+
 <dependencies>
     <!-- Core utilities: service registry, discovery, fault tolerance -->
     <dependency>
@@ -112,8 +114,8 @@ Then declare only the modules you need (versions are managed by the BOM):
 
 | **Branch** | **Spring Cloud compatibility**         | **Latest version** |
 |------------|----------------------------------------|--------------------|
-| `main`     | 2022.0.x, 2023.0.x, 2024.0.x, 2025.0.x | `0.2.14`           |
-| `1.x`      | Hoxton, 2020.0.x, 2021.0.x             | `0.1.14`           |
+| `main`     | 2022.0.x, 2023.0.x, 2024.0.x, 2025.0.x | `0.2.15`           |
+| `1.x`      | Hoxton, 2020.0.x, 2021.0.x             | `0.1.15`           |
 
 By default, the `main` branch builds against Spring Cloud 2025.0.x. To build or run tests against an older generation,
 activate the corresponding Maven profile:
@@ -140,6 +142,7 @@ Spring Cloud Config or Nacos Config), the affected Feign clients are automatical
 1. Annotate your Spring Boot application (or any `@Configuration` class) with `@EnableFeignAutoRefresh`:
 
 ```java
+
 @SpringBootApplication
 @EnableFeignClients
 @EnableFeignAutoRefresh
@@ -153,6 +156,7 @@ public class MyApplication {
 2. Define your Feign client as usual:
 
 ```java
+
 @FeignClient(name = "my-service")
 public interface MyServiceClient {
     @GetMapping("/api/resource")
@@ -170,6 +174,7 @@ Register a service instance with more than one service registry simultaneously. 
 registries or when different consumers rely on different discovery systems.
 
 ```java
+
 @Configuration
 public class RegistryConfig {
 
@@ -192,6 +197,7 @@ React to service registration lifecycle changes by listening to the dedicated Sp
 `EventPublishingRegistrationAspect`:
 
 ```java
+
 @Component
 public class RegistrationListener {
 
