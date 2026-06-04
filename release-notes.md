@@ -83,4 +83,23 @@ No new features or bug fixes were introduced in this release.
 - Improved code quality by replacing raw collection instantiations with utility methods.  
 - Merged multiple updates from the `main` branch.  
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.13...0.2.14
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.13...0.2.14## v0.2.15
+
+# Release Notes for Version 0.2.15
+
+## Dependency Updates
+- Updated `microsphere-spring-boot` to version `0.2.17`. ([a131d10](https://github.com/your-repo/commit/a131d10))
+
+## Documentation
+- Updated README with the latest version information. ([f2507ea](https://github.com/your-repo/commit/f2507ea))
+
+## Build and Workflow Enhancements
+- Merged `main` into `release` to keep branches up-to-date. ([0690aad](https://github.com/your-repo/commit/0690aad), [5fa78e0](https://github.com/your-repo/commit/5fa78e0))
+- Incremented version to prepare for the next patch release after `0.2.14`. ([9cceec3](https://github.com/your-repo/commit/9cceec3))
+- Merged `release` branch changes back into `main`. ([393314e](https://github.com/your-repo/commit/393314e))
+
+---
+
+**Note:** This release primarily includes dependency updates, minor documentation edits, and maintenance tasks.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.14...0.2.15
