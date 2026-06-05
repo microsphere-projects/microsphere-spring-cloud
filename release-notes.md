@@ -104,4 +104,21 @@ For a detailed commit history, refer to the full changelog.
 
 Full Changelog: [v0.1.14...v0.1.15](https://github.com/mercyblitz/microsphere-spring-cloud/compare/v0.1.14...v0.1.15)
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.14...0.1.15
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.14...0.1.15## v0.1.16
+
+# Release Notes - Version 0.1.16
+
+## Dependency Updates
+- Upgraded `microsphere-spring-boot` to version **0.1.18**.  
+- Updated `microsphere-build` parent to version **0.3.1**.
+
+## Documentation
+- Updated README to reflect the latest versions.
+
+## Build and Workflow Enhancements
+- Merged `release-1.x` into `dev-1.x` to synchronize branches.
+
+## Other Changes
+- Bumped the patch version for post-0.1.15 release preparation.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.15...0.1.16
