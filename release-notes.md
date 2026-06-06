@@ -121,4 +121,19 @@ No new features or bug fixes were introduced in this release.
 
 Thank you for using our project! 🚀
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.15...0.2.16
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.15...0.2.16## v0.2.17
+
+# Release Notes for Version 0.2.17
+
+## New Features
+- **Auto-Registration**: Automatically register `HasFeatures` from properties.  
+- **Configurations**: Add conditional and switch `HasFeatures` bean names.  
+
+## Other Changes
+- **Service Changes**: Disable service registration endpoints.  
+
+---
+
+**Note**: For a detailed list of changes, please refer to the full changelog.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.16...0.2.17
