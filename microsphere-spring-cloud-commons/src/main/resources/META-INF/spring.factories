@@ -1,1 +1,2 @@
-com.alibaba.cloud.nacos.registry.NacosServiceRegistry = com.alibaba.cloud.nacos.registry.NacosRegistration
+com.alibaba.cloud.nacos.registry.NacosServiceRegistry = \
+com.alibaba.cloud.nacos.registry.NacosRegistration
