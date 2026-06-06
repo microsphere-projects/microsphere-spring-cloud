@@ -102,4 +102,23 @@ No new features or bug fixes were introduced in this release.
 
 **Note:** This release primarily includes dependency updates, minor documentation edits, and maintenance tasks.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.14...0.2.15
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.14...0.2.15## v0.2.16
+
+# Release Notes for Version 0.2.16
+
+## Dependency Updates
+- Upgraded `microsphere-spring-boot` to version **0.2.18**.
+- Updated parent POM version to **0.3.1**.
+
+## Documentation
+- Updated README to reflect branch versions **0.2.16/0.1.16**.
+
+## Other Changes
+- Version bump to **0.2.16** post-publishing of **0.2.15**.
+- Merged `main` into `release` to streamline branches.
+
+---
+
+Thank you for using our project! 🚀
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.15...0.2.16
