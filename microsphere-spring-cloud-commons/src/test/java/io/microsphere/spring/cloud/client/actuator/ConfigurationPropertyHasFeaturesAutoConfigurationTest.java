@@ -30,6 +30,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
+import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN;
+import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.BEAN_NAME_SUFFIX;
+import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.NAME;
+import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.NAMED_FEATURE_PROPERTY_NAME_PATTERN;
+import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.PROPERTY_PREFIX;
 import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.getBeanName;
 import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.getQualifierFeatureName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,6 +68,9 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
 
     @Test
     void test() {
+
+        testConstants();
+
         HasFeatures hasFeatures = this.hasFeaturesBeansMap.get(getBeanName("jdbc"));
         assertNotNull(hasFeatures);
         assertTrue(hasFeatures.getAbstractFeatures().isEmpty());
@@ -86,6 +94,14 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
         assertTrue(hasFeatures.getAbstractFeatures().isEmpty());
         assertTrue(hasFeatures.getNamedFeatures().isEmpty());
 
+    }
+
+    private void testConstants() {
+        assertEquals("features", NAME);
+        assertEquals("microsphere.spring.cloud.features.", PROPERTY_PREFIX);
+        assertEquals("microsphere.spring.cloud.features.{}", ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN);
+        assertEquals("microsphere.spring.cloud.features.{}.{}", NAMED_FEATURE_PROPERTY_NAME_PATTERN);
+        assertEquals(".features", BEAN_NAME_SUFFIX);
     }
 
 }
