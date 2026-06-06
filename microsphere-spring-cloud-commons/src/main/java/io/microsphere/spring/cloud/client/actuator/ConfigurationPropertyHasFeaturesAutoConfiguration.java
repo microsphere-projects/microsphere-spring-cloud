@@ -18,16 +18,14 @@
 package io.microsphere.spring.cloud.client.actuator;
 
 import io.microsphere.logging.Logger;
-import io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesEnabled;
+import io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesAvailable;
 import io.microsphere.spring.context.config.AutoRegistrationBean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
-import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.cloud.client.actuator.FeaturesEndpoint;
 import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.client.actuator.NamedFeature;
 import org.springframework.context.EnvironmentAware;
@@ -79,7 +77,7 @@ import static java.lang.String.valueOf;
  *
  * <h3>Resulting Beans</h3>
  * For each module found in the configuration, a {@link HasFeatures} bean is registered with the name format:
- * {@code HasFeatures.{module-name}} (e.g., {@code HasFeatures.jdbc}, {@code HasFeatures.web}).
+ * {@code HasFeatures.{module-name}} (e.g., {@code jdbc.features}, {@code web.features}).
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see HasFeatures
@@ -87,18 +85,19 @@ import static java.lang.String.valueOf;
  * @see AutoRegistrationBean
  * @since 1.0.0
  */
-@ConditionalOnFeaturesEnabled
-@ConditionalOnAvailableEndpoint(endpoint = FeaturesEndpoint.class)
+@ConditionalOnFeaturesAvailable
 @AutoConfigureBefore(name = "org.springframework.cloud.client.CommonsClientAutoConfiguration")
 public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFactoryAware, BeanClassLoaderAware,
         EnvironmentAware {
 
     private static final Logger logger = getLogger(ConfigurationPropertyHasFeaturesAutoConfiguration.class);
 
+    static final String NAME = "features";
+
     /**
      * The prefix of the configuration properties for {@link HasFeatures} : "microsphere.spring.cloud.features."
      */
-    public static final String PROPERTY_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "features.";
+    public static final String PROPERTY_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + NAME + DOT;
 
     /**
      * The pattern of the configuration properties for abstract features: "microsphere.spring.cloud.features.{module-name}"
@@ -111,9 +110,9 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
     public static final String NAMED_FEATURE_PROPERTY_NAME_PATTERN = ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN + DOT + "{}";
 
     /**
-     * The prefix of the bean name for {@link HasFeatures} : "HasFeatures."
+     * The suffix of the bean name for {@link HasFeatures} : ".features"
      */
-    public static final String BEAN_NAME_PREFIX = "HasFeatures.";
+    public static final String BEAN_NAME_SUFFIX = DOT + NAME;
 
     private ClassLoader classLoader;
 
@@ -193,14 +192,14 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
      * <pre>{@code
      * // For module name "jdbc"
      * String beanName = getBeanName("jdbc");
-     * // Result: "HasFeatures.jdbc"
+     * // Result: "jdbc.features"
      * }</pre>
      *
      * @param moduleName the name of the module
      * @return the bean name for {@link HasFeatures}
      */
     public static String getBeanName(String moduleName) {
-        return BEAN_NAME_PREFIX + moduleName;
+        return moduleName + BEAN_NAME_SUFFIX;
     }
 
     /**
