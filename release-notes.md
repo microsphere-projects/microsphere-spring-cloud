@@ -121,4 +121,24 @@ Full Changelog: [v0.1.14...v0.1.15](https://github.com/mercyblitz/microsphere-sp
 ## Other Changes
 - Bumped the patch version for post-0.1.15 release preparation.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.15...0.1.16
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.15...0.1.16## v0.1.17
+
+# Release Notes - Version 0.1.17
+
+## New Features
+- **ConditionalOnFeaturesAvailable**: Added new annotation for conditional beans based on feature availability. (#904380b)  
+- **Auto-Configuration for HasFeatures**: Introduced configuration support to enable feature detection from properties. (#9cbbf19)
+
+## Documentation
+- Updated version compatibility information in the README. (#0e64e3a)
+
+## Dependency Updates
+- Upgraded `microsphere-spring-boot` dependency to version 0.1.19. (#65781ef)
+
+## Build and Workflow Enhancements
+- Bumped patch version post-release of 0.1.16. (#3f7abbe)  
+- Merged `release-1.x` into `dev-1.x` for synchronization. (#973349c)
+
+---
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.16...0.1.17
