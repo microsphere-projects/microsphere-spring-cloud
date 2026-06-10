@@ -18,16 +18,12 @@ package io.microsphere.spring.cloud.client.condition;
 
 import io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants;
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cloud.client.CommonsClientAutoConfiguration;
 import org.springframework.cloud.client.actuator.FeaturesEndpoint;
-import org.springframework.cloud.client.actuator.HasFeatures;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.FEATURES_ENABLED_PROPERTY_NAME;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
