@@ -16,12 +16,15 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
+import io.microsphere.spring.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
+import io.microsphere.spring.boot.webmvc.autoconfigure.condition.ConditionalOnWebMvcAvailable;
+import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationAvailable;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import io.microsphere.util.ValueHolder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
@@ -33,7 +36,6 @@ import java.util.Objects;
 import static io.microsphere.util.ArrayUtils.EMPTY_STRING_ARRAY;
 import static io.microsphere.util.ArrayUtils.arrayEquals;
 import static java.lang.Boolean.FALSE;
-import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
  * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry} on the Spring WebMVC Application
@@ -41,7 +43,12 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@ConditionalOnWebApplication(type = SERVLET)
+@ConditionalOnWebMvcAvailable
+@ConditionalOnAutoServiceRegistrationAvailable
+@AutoConfigureAfter(value = {
+        WebMvcAutoConfiguration.class,
+        ServiceRegistryAutoConfiguration.class
+})
 public class WebMvcServiceRegistryAutoConfiguration extends WebServiceRegistryAutoConfiguration {
 
     private static final String[] DEFAULT_URL_MAPPINGS = {"/*"};
