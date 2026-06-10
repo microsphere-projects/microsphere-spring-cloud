@@ -16,11 +16,11 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
+import io.microsphere.spring.boot.webflux.autoconfigure.condition.ConditionalOnWebFluxAvailable;
+import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationAvailable;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
-
-import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
 
 /**
  * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry} on the Spring WebFlux Application
@@ -28,7 +28,13 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@ConditionalOnWebApplication(type = REACTIVE)
+@ConditionalOnWebFluxAvailable
+@ConditionalOnAutoServiceRegistrationAvailable
+@AutoConfigureAfter(value = {
+        ServiceRegistryAutoConfiguration.class
+}, name = {
+        "io.microsphere.spring.boot.webflux.autoconfigure.WebFluxAutoConfiguration"
+})
 public class WebFluxServiceRegistryAutoConfiguration extends WebServiceRegistryAutoConfiguration {
 
     /**
