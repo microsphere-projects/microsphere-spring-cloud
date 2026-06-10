@@ -18,6 +18,7 @@
 package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
 import io.microsphere.spring.cloud.client.discovery.ReactiveDiscoveryClientAdapter;
+import io.microsphere.spring.cloud.client.discovery.condition.ConditionalOnReactiveDiscoveryAvailable;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -43,11 +44,7 @@ import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryCl
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(name = {
-        DISCOVERY_CLIENT_CLASS_NAME
-})
-@ConditionalOnDiscoveryEnabled
-@ConditionalOnReactiveDiscoveryEnabled
+@ConditionalOnReactiveDiscoveryAvailable
 @AutoConfigureBefore(name = {
         REACTIVE_COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME
 })

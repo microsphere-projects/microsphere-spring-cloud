@@ -19,6 +19,7 @@ package io.microsphere.spring.cloud.client.discovery.constants;
 import org.springframework.cloud.client.CommonsClientAutoConfiguration;
 import org.springframework.cloud.client.ReactiveCommonsClientAutoConfiguration;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.reactive.ReactiveCompositeDiscoveryClientAutoConfiguration;
 import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClientAutoConfiguration;
@@ -37,6 +38,13 @@ public interface DiscoveryClientConstants {
      * @see org.springframework.cloud.client.discovery.DiscoveryClient
      */
     String DISCOVERY_CLIENT_CLASS_NAME = "org.springframework.cloud.client.discovery.DiscoveryClient";
+
+    /**
+     * The class name of {@link ReactiveDiscoveryClient}
+     *
+     * @see org.springframework.cloud.client.discovery.ReactiveDiscoveryClient
+     */
+    String REACTIVE_DISCOVERY_CLIENT_CLASS_NAME = "org.springframework.cloud.client.discovery.ReactiveDiscoveryClient";
 
     /**
      * The class name of {@link CompositeDiscoveryClient}
