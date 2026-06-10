@@ -16,7 +16,6 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.webmvc.annotation.EnableWebMvcExtension;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 /**
@@ -25,7 +24,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@EnableWebMvcExtension
 @EnableAutoConfiguration
 class WebMvcServiceRegistryAutoConfigurationTest extends WebServiceRegistryAutoConfigurationTest {
 }

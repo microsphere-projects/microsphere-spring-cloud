@@ -17,7 +17,6 @@
 
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.webflux.annotation.EnableWebFluxExtension;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
@@ -33,7 +32,6 @@ import org.springframework.test.context.TestPropertySource;
                 "spring.main.web-application-type=reactive"
         }
 )
-@EnableWebFluxExtension
 @EnableAutoConfiguration
 class WebFluxServiceRegistryAutoConfigurationTest extends WebServiceRegistryAutoConfigurationTest {
 }
