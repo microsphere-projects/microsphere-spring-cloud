@@ -16,7 +16,6 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import io.microsphere.spring.boot.webmvc.autoconfigure.condition.ConditionalOnWebMvcAvailable;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationAvailable;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
@@ -46,8 +45,9 @@ import static java.lang.Boolean.FALSE;
 @ConditionalOnWebMvcAvailable
 @ConditionalOnAutoServiceRegistrationAvailable
 @AutoConfigureAfter(value = {
-        WebMvcAutoConfiguration.class,
         ServiceRegistryAutoConfiguration.class
+}, name = {
+        "io.microsphere.spring.boot.webmvc.autoconfigure.WebMvcAutoConfiguration"
 })
 public class WebMvcServiceRegistryAutoConfiguration extends WebServiceRegistryAutoConfiguration {
 
