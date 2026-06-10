@@ -18,6 +18,7 @@ package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
 import io.microsphere.annotation.ConfigurationProperty;
 import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
+import io.microsphere.spring.cloud.client.discovery.condition.ConditionalOnBlockingDiscoveryAvailable;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -42,11 +43,7 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(name = {
-        DISCOVERY_CLIENT_CLASS_NAME
-})
-@ConditionalOnDiscoveryEnabled
-@ConditionalOnBlockingDiscoveryEnabled
+@ConditionalOnBlockingDiscoveryAvailable
 @AutoConfigureBefore(name = {
         COMMONS_CLIENT_AUTO_CONFIGURATION_CLASS_NAME
 })
