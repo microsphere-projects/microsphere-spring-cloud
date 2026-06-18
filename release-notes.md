@@ -141,4 +141,29 @@ Full Changelog: [v0.1.14...v0.1.15](https://github.com/mercyblitz/microsphere-sp
 
 ---
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.16...0.1.17
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.16...0.1.17## v0.1.18
+
+# Release Notes - Version 0.1.18
+
+### New Features
+- Added support for discovery availability conditional annotations. ([6136830](#))
+- Introduced auto-registration condition and web modules. ([a83c9af](#))
+- Adopted name-based `AutoConfigureAfter` for improved web configurations. ([a94a820](#))
+
+### Dependency Updates
+- Upgraded `microsphere-build` parent to version `0.3.4`. ([eb742af](#))
+- Bumped `microsphere-spring-boot` to version `0.1.20`. ([dcb6186](#))
+- Updated parent POM version to `0.3.3`. ([1abbcfb](#))
+
+### Documentation
+- Updated README to reflect new branch versions. ([733d1d3](#))
+
+### Build and Workflow Enhancements
+- Updated POMs: version bump and refined dependencies. ([47b6771](#))
+- Merged branch `release-1.x` into `dev-1.x`. ([05e4173](#))
+
+---
+
+**Note**: For the complete list of changes, please refer to the commit history.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.17...0.1.18
