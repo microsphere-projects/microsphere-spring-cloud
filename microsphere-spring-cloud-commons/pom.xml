@@ -20,7 +20,7 @@
 
     <dependencies>
 
-        <!-- Microsphere Dependencies -->
+        <!-- Microsphere Spring Boot Dependencies -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-spring-boot-webmvc</artifactId>
@@ -34,7 +34,6 @@
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-spring-boot-actuator</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <!-- Spring Boot Dependencies -->
