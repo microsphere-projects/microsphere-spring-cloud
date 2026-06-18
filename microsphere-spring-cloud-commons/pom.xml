@@ -20,9 +20,20 @@
 
     <dependencies>
 
+        <!-- Microsphere Spring Boot Dependencies -->
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-boot-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-boot-webflux</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-boot-actuator</artifactId>
         </dependency>
 
         <!-- Spring Boot Dependencies -->
@@ -109,28 +120,9 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Microsphere Dependencies -->
         <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-boot-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-boot-actuator</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-webmvc</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-webflux</artifactId>
-            <optional>true</optional>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
         </dependency>
 
         <!-- Testing -->

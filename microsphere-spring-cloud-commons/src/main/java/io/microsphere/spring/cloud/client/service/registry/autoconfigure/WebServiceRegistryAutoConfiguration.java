@@ -17,19 +17,14 @@
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import io.microsphere.logging.Logger;
-import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent;
 import io.microsphere.spring.web.metadata.WebEndpointMapping;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -45,16 +40,6 @@ import static io.microsphere.spring.cloud.client.service.util.ServiceInstanceUti
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(name = {
-        "io.microsphere.spring.web.metadata.WebEndpointMapping",
-        "io.microsphere.spring.web.event.WebEndpointMappingsReadyEvent"
-})
-@ConditionalOnBean(Registration.class)
-@ConditionalOnAutoServiceRegistrationEnabled
-@AutoConfigureAfter(value = {
-        ServiceRegistryAutoConfiguration.class
-})
 public abstract class WebServiceRegistryAutoConfiguration implements ApplicationListener<WebEndpointMappingsReadyEvent> {
 
     protected final Logger logger = getLogger(getClass());
