@@ -166,4 +166,20 @@ Full Changelog: [v0.1.14...v0.1.15](https://github.com/mercyblitz/microsphere-sp
 
 **Note**: For the complete list of changes, please refer to the commit history.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.17...0.1.18
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.17...0.1.18## v0.1.19
+
+# Release Notes for v0.1.19
+
+## Dependency Updates
+- Bumped `microsphere-spring-boot` to version `0.1.22`. [5020895]
+
+## Documentation
+- Updated `README` to reflect the latest versions. [95d6eff]
+
+## Build and Workflow Enhancements
+- Merged `release-1.x` into `dev-1.x` for branch alignment. [d66d3c6]
+- Updated post-release version to prepare for the next patch cycle. [af3cd39]
+
+---
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.18...0.1.19
