@@ -136,4 +136,31 @@ Thank you for using our project! 🚀
 
 **Note**: For a detailed list of changes, please refer to the full changelog.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.16...0.2.17
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.16...0.2.17## v0.2.18
+
+# Release Notes - Version 0.2.18
+
+## New Features
+- **Auto-Service Registration**: Added conditional configuration for auto-service registration. ([#3341a57](https://github.com/your-repo/commit/3341a57))
+- **Discovery Clients**: Introduced availability conditions for discovery clients. ([#f85332b](https://github.com/your-repo/commit/f85332b))
+- **Web Autoconfiguration**: Reference web autoconfiguration by name in `AutoConfigureAfter`. ([#bac8e6c](https://github.com/your-repo/commit/bac8e6c))
+
+## Bug Fixes
+- Removed unused imports in discovery and feature classes for cleaner code. ([#4867531](https://github.com/your-repo/commit/4867531))
+
+## Dependency Updates
+- Bumped `microsphere-spring-boot` to version 0.2.21. ([#d96feac](https://github.com/your-repo/commit/d96feac))
+- Updated parent version to 0.3.4. ([#475e365](https://github.com/your-repo/commit/475e365))
+- Bumped `microsphere-spring-boot` to version 0.2.20. ([#0bf2437](https://github.com/your-repo/commit/0bf2437))
+
+## Documentation
+- Updated `README` references to versions 0.2.18 and 0.1.18. ([#bf5673b](https://github.com/your-repo/commit/bf5673b))
+
+## Build and Workflow Enhancements
+- Regular merges between `main` and `release` branches to keep branches in sync. ([Multiple commits tagged `[skip ci]`](https://github.com/your-repo/commits))
+
+---
+
+*Thank you for using and supporting our project!* 🎉
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.17...0.2.18
