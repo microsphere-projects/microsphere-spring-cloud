@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.client.actuator.FeaturesEndpoint;
 import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.client.actuator.NamedFeature;
 import org.springframework.web.client.RestOperations;
@@ -66,6 +67,9 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
     @Autowired
     private Map<String, HasFeatures> hasFeaturesBeansMap;
 
+    @Autowired
+    private FeaturesEndpoint featuresEndpoint;
+
     @Test
     void test() {
         HasFeatures hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("jdbc"));
@@ -92,5 +96,7 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
         NamedFeature namedFeature = namedFeatures.get(0);
         assertEquals(getQualifierFeatureName("rest", "RestTemplate"), namedFeature.getName());
         assertEquals(RestTemplate.class, namedFeature.getType());
+
+        assertNotNull(featuresEndpoint.features());
     }
 }
