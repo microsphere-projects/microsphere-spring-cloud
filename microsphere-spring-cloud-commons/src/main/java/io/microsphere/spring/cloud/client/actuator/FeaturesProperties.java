@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.PROPERTY_NAME_PREFIX;
+import static java.util.Collections.emptyMap;
 
 /**
  * The {@link ConfigurationProperties} for {@link FeaturesEndpoint}
@@ -44,6 +45,9 @@ public class FeaturesProperties {
     }
 
     public Map<String, List<String>> getAbstract() {
+        if (_abstract == null) {
+            return emptyMap();
+        }
         return _abstract;
     }
 
@@ -52,6 +56,9 @@ public class FeaturesProperties {
     }
 
     public Map<String, Map<String, String>> getNamed() {
+        if (named == null) {
+            return emptyMap();
+        }
         return named;
     }
 }
