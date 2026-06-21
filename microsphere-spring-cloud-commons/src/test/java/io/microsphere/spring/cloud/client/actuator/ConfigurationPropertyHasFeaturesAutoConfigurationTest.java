@@ -26,6 +26,7 @@ import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.client.actuator.NamedFeature;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Map;
@@ -74,12 +75,15 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
         assertNull(hasFeatures);
 
         hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("web"));
-        assertNull(hasFeatures);
+        assertNotNull(hasFeatures);
+        List<Class<?>> abstractFeatures = hasFeatures.getAbstractFeatures();
+        assertEquals(1, abstractFeatures.size());
+        assertEquals(WebClient.class, abstractFeatures.get(0));
 
         hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("rest"));
         assertNotNull(hasFeatures);
 
-        List<Class<?>> abstractFeatures = hasFeatures.getAbstractFeatures();
+        abstractFeatures = hasFeatures.getAbstractFeatures();
         assertEquals(1, abstractFeatures.size());
         assertEquals(RestOperations.class, abstractFeatures.get(0));
 
