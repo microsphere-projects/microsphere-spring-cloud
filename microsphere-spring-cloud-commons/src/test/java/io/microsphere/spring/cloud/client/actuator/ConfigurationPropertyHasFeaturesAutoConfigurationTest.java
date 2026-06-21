@@ -30,16 +30,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
-import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN;
-import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.BEAN_NAME_SUFFIX;
-import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.NAME;
-import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.NAMED_FEATURE_PROPERTY_NAME_PATTERN;
-import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.PROPERTY_PREFIX;
-import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.getBeanName;
-import static io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration.getQualifierFeatureName;
+import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getHasFeaturesBeanName;
+import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getQualifierFeatureName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * {@link ConfigurationPropertyHasFeaturesAutoConfiguration} Test
@@ -49,15 +44,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 1.0.0
  */
 @SpringBootTest(
-        classes = ConfigurationPropertyHasFeaturesAutoConfigurationTest.class,
+        classes = {
+                RestTemplate.class,
+                ConfigurationPropertyHasFeaturesAutoConfigurationTest.class
+        },
         properties = {
-                "microsphere.spring.cloud.features.jdbc.JdbcTemplate=org.springframework.jdbc.core.JdbcTemplate",
-                "microsphere.spring.cloud.features.rest.RestTemplate=org.springframework.web.client.RestTemplate",
-                "microsphere.spring.cloud.features.rest=org.springframework.web.client.RestOperations",
-                "microsphere.spring.cloud.features.redis.RedisConnection=org.springframework.data.redis.connection.RedisConnection",
-                "microsphere.spring.cloud.features.redis=org.springframework.data.redis.connection.RedisConnectionFactory," +
+                "microsphere.spring.cloud.features.abstract.rest=org.springframework.web.client.RestOperations",
+                "microsphere.spring.cloud.features.abstract.redis=org.springframework.data.redis.connection.RedisConnectionFactory," +
                         "org.springframework.data.redis.core.RedisTemplate," +
                         "org.springframework.data.redis.core.StringRedisTemplate",
+                "microsphere.spring.cloud.features.named.jdbc.JdbcTemplate=org.springframework.jdbc.core.JdbcTemplate",
+                "microsphere.spring.cloud.features.named.rest.RestTemplate=org.springframework.web.client.RestTemplate",
+                "microsphere.spring.cloud.features.named.redis.RedisConnection=org.springframework.data.redis.connection.RedisConnection",
+                "microsphere.spring.cloud.features.named.web.WebClient=org.springframework.web.reactive.function.client.WebClient"
         }
 )
 @EnableAutoConfiguration
@@ -68,15 +67,16 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
 
     @Test
     void test() {
+        HasFeatures hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("jdbc"));
+        assertNull(hasFeatures);
 
-        testConstants();
+        hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("redis"));
+        assertNull(hasFeatures);
 
-        HasFeatures hasFeatures = this.hasFeaturesBeansMap.get(getBeanName("jdbc"));
-        assertNotNull(hasFeatures);
-        assertTrue(hasFeatures.getAbstractFeatures().isEmpty());
-        assertTrue(hasFeatures.getNamedFeatures().isEmpty());
+        hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("web"));
+        assertNull(hasFeatures);
 
-        hasFeatures = this.hasFeaturesBeansMap.get(getBeanName("rest"));
+        hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("rest"));
         assertNotNull(hasFeatures);
 
         List<Class<?>> abstractFeatures = hasFeatures.getAbstractFeatures();
@@ -88,20 +88,5 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
         NamedFeature namedFeature = namedFeatures.get(0);
         assertEquals(getQualifierFeatureName("rest", "RestTemplate"), namedFeature.getName());
         assertEquals(RestTemplate.class, namedFeature.getType());
-
-        hasFeatures = this.hasFeaturesBeansMap.get(getBeanName("redis"));
-        assertNotNull(hasFeatures);
-        assertTrue(hasFeatures.getAbstractFeatures().isEmpty());
-        assertTrue(hasFeatures.getNamedFeatures().isEmpty());
-
     }
-
-    private void testConstants() {
-        assertEquals("features", NAME);
-        assertEquals("microsphere.spring.cloud.features.", PROPERTY_PREFIX);
-        assertEquals("microsphere.spring.cloud.features.{}", ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN);
-        assertEquals("microsphere.spring.cloud.features.{}.{}", NAMED_FEATURE_PROPERTY_NAME_PATTERN);
-        assertEquals(".features", BEAN_NAME_SUFFIX);
-    }
-
 }

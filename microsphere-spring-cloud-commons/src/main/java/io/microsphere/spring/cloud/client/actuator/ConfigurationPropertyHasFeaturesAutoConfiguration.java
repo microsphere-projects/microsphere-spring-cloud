@@ -18,19 +18,20 @@
 package io.microsphere.spring.cloud.client.actuator;
 
 import io.microsphere.logging.Logger;
+import io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants;
 import io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesAvailable;
 import io.microsphere.spring.context.config.AutoRegistrationBean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.config.SingletonBeanRegistry;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.client.actuator.NamedFeature;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
 
 import java.util.List;
 import java.util.Map;
@@ -38,24 +39,20 @@ import java.util.Map.Entry;
 
 import static io.microsphere.collection.ListUtils.newLinkedList;
 import static io.microsphere.collection.MapUtils.newLinkedHashMap;
-import static io.microsphere.constants.PropertyConstants.MICROSPHERE_PROPERTY_NAME_PREFIX;
-import static io.microsphere.constants.SymbolConstants.COMMA_CHAR;
-import static io.microsphere.constants.SymbolConstants.DOT;
-import static io.microsphere.constants.SymbolConstants.DOT_CHAR;
 import static io.microsphere.logging.LoggerFactory.getLogger;
-import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
-import static io.microsphere.spring.core.env.EnvironmentUtils.asConfigurableEnvironment;
-import static io.microsphere.spring.core.env.PropertySourcesUtils.getSubProperties;
+import static io.microsphere.spring.beans.BeanUtils.isBeanPresent;
+import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getAbstractFeaturePropertyName;
+import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getHasFeaturesBeanName;
+import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getNamedFeaturePropertyName;
+import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getQualifierFeatureName;
 import static io.microsphere.text.FormatUtils.format;
 import static io.microsphere.util.ClassLoaderUtils.resolveClass;
-import static io.microsphere.util.StringUtils.split;
-import static java.lang.String.valueOf;
 
 /**
  * Auto-registrar for Spring Cloud Client Actuator's {@link HasFeatures} based on configuration properties.
  * <p>
- * This class scans configuration properties under the prefix {@value #PROPERTY_PREFIX} to automatically register
- * {@link HasFeatures} beans. It supports two types of feature definitions:
+ * This class scans configuration properties under the prefix {@value FeaturesConstants#PROPERTY_NAME_PREFIX} to
+ * automatically register {@link HasFeatures} beans. It supports two types of feature definitions:
  * <ul>
  *     <li><strong>Abstract Features:</strong> Defined by listing feature classes directly under a module name.</li>
  *     <li><strong>Named Features:</strong> Defined by mapping a specific feature name to a feature class under a module name.</li>
@@ -87,38 +84,19 @@ import static java.lang.String.valueOf;
  */
 @ConditionalOnFeaturesAvailable
 @AutoConfigureBefore(name = "org.springframework.cloud.client.CommonsClientAutoConfiguration")
-public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFactoryAware, BeanClassLoaderAware,
-        EnvironmentAware {
+@EnableConfigurationProperties(FeaturesProperties.class)
+public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFactoryAware, BeanClassLoaderAware, InitializingBean {
 
     private static final Logger logger = getLogger(ConfigurationPropertyHasFeaturesAutoConfiguration.class);
 
-    static final String NAME = "features";
-
-    /**
-     * The prefix of the configuration properties for {@link HasFeatures} : "microsphere.spring.cloud.features."
-     */
-    public static final String PROPERTY_PREFIX = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + NAME + DOT;
-
-    /**
-     * The pattern of the configuration properties for abstract features: "microsphere.spring.cloud.features.{module-name}"
-     */
-    public static final String ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN = PROPERTY_PREFIX + "{}";
-
-    /**
-     * The pattern of the configuration properties for named features: "microsphere.spring.cloud.features.{module-name}.{feature-name}"
-     */
-    public static final String NAMED_FEATURE_PROPERTY_NAME_PATTERN = ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN + DOT + "{}";
-
-    /**
-     * The suffix of the bean name for {@link HasFeatures} : ".features"
-     */
-    public static final String BEAN_NAME_SUFFIX = DOT + NAME;
-
     private ClassLoader classLoader;
 
-    private SingletonBeanRegistry singletonBeanRegistry;
+    private DefaultListableBeanFactory beanFactory;
 
     private final Map<String, ModuleFeatures> moduleFeaturesMap = newLinkedHashMap();
+
+    @Autowired
+    private FeaturesProperties featuresProperties;
 
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
@@ -127,100 +105,33 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        this.singletonBeanRegistry = (SingletonBeanRegistry) beanFactory;
+        this.beanFactory = (DefaultListableBeanFactory) beanFactory;
     }
 
     @Override
-    public void setEnvironment(Environment environment) {
-        ConfigurableEnvironment env = asConfigurableEnvironment(environment);
-        Map<String, Object> subProperties = getSubProperties(env, PROPERTY_PREFIX);
-        for (Entry<String, Object> entry : subProperties.entrySet()) {
-            String key = entry.getKey();
-            String value = valueOf(entry.getValue());
-            int index = key.indexOf(DOT_CHAR);
-            boolean isAbstract = index == -1;
-            if (isAbstract) {
-                String[] featureClassNames = split(value, COMMA_CHAR);
-                String moduleName = key;
-                addAbstractFeatureClassNames(moduleName, featureClassNames);
-            } else {
-                String moduleName = key.substring(0, index);
-                String featureName = key.substring(index + 1);
-                String featureClassName = value;
+    public void afterPropertiesSet() {
+        FeaturesProperties featuresProperties = this.featuresProperties;
+
+        Map<String, List<String>> abstractProperties = featuresProperties.getAbstract();
+
+        abstractProperties.forEach((moduleName, featureClassNames) -> {
+            addAbstractFeatureClassNames(moduleName, featureClassNames);
+        });
+
+        Map<String, Map<String, String>> namedProperties = featuresProperties.getNamed();
+
+        namedProperties.forEach((moduleName, namedFeatures) -> {
+            for (Entry<String, String> entry : namedFeatures.entrySet()) {
+                String featureName = entry.getKey();
+                String featureClassName = entry.getValue();
                 addNamedFeatureClassName(moduleName, featureName, featureClassName);
             }
-        }
+        });
+
         registerHasFeaturesBeans();
     }
 
-    /**
-     * Gets the configuration property name for abstract features of the specified module.
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // For module name "jdbc"
-     * String propertyName = getAbstractFeaturePropertyName("jdbc");
-     * // Result: "microsphere.spring.cloud.features.jdbc"
-     * }</pre>
-     *
-     * @param moduleName the name of the module
-     * @return the configuration property name for abstract features
-     */
-    public static String getAbstractFeaturePropertyName(String moduleName) {
-        return format(ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN, moduleName);
-    }
-
-    /**
-     * Gets the configuration property name for a named feature of the specified module.
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // For module name "web" and feature name "rest-template"
-     * String propertyName = getNamedFeaturePropertyName("web", "rest-template");
-     * // Result: "microsphere.spring.cloud.features.web.rest-template"
-     * }</pre>
-     *
-     * @param moduleName  the name of the module
-     * @param featureName the name of the feature
-     * @return the configuration property name for the named feature
-     */
-    public static String getNamedFeaturePropertyName(String moduleName, String featureName) {
-        return format(NAMED_FEATURE_PROPERTY_NAME_PATTERN, moduleName, featureName);
-    }
-
-    /**
-     * Gets the bean name for {@link HasFeatures} of the specified module.
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // For module name "jdbc"
-     * String beanName = getBeanName("jdbc");
-     * // Result: "jdbc.features"
-     * }</pre>
-     *
-     * @param moduleName the name of the module
-     * @return the bean name for {@link HasFeatures}
-     */
-    public static String getBeanName(String moduleName) {
-        return moduleName + BEAN_NAME_SUFFIX;
-    }
-
-    /**
-     * Gets the qualified feature name for a named feature of the specified module.
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // For module name "web" and feature name "rest-template"
-     * String qualifiedName = getQualifierFeatureName("web", "rest-template");
-     * // Result: "microsphere.web.rest-template"
-     * }</pre>
-     *
-     * @param moduleName  the name of the module
-     * @param featureName the name of the feature
-     * @return the qualified feature name
-     */
-    public static String getQualifierFeatureName(String moduleName, String featureName) {
-        return MICROSPHERE_PROPERTY_NAME_PREFIX + moduleName + DOT_CHAR + featureName;
-    }
-
-    private void addAbstractFeatureClassNames(String moduleName, String[] featureClassNames) {
-        ModuleFeatures moduleFeatures = getModuleFeatures(moduleName);
+    private void addAbstractFeatureClassNames(String moduleName, List<String> featureClassNames) {
         for (String featureClassName : featureClassNames) {
             Class<?> featureClass = loadClass(featureClassName);
             if (featureClass == null) {
@@ -229,22 +140,38 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
                         featureClassName, propertyName);
                 continue;
             }
-            moduleFeatures.abstractFeatures.add(featureClass);
+            addAbstractFeatureClass(moduleName, featureClass);
         }
     }
 
-    private void addNamedFeatureClassName(String moduleName, String featureName, String featureClassName) {
+    private void addAbstractFeatureClass(String moduleName, Class<?> featureClass) {
         ModuleFeatures moduleFeatures = getModuleFeatures(moduleName);
+        logger.trace("The AbstractFeature[moduel: '{}' , class : '{}'] will be added in the HasFeatures.", moduleName,
+                featureClass.getName());
+        moduleFeatures.abstractFeatures.add(featureClass);
+    }
+
+    private void addNamedFeatureClassName(String moduleName, String featureName, String featureClassName) {
         String name = getQualifierFeatureName(moduleName, featureName);
         Class<?> featureClass = loadClass(featureClassName);
+        String propertyName = getNamedFeaturePropertyName(moduleName, featureName);
         if (featureClass == null) {
-            String propertyName = getNamedFeaturePropertyName(moduleName, featureName);
             logger.warn("The class of named feature[name : '{}' , class : '{}'] is not found in classpath, please check the configuration property : '{}'",
                     name, featureClassName, propertyName);
             return;
         }
-        NamedFeature namedFeature = new NamedFeature(name, featureClass);
-        moduleFeatures.namedFeatures.add(namedFeature);
+
+        if (isBeanPresent(this.beanFactory, featureClass)) {
+            logger.trace("The NamedFeature[name : '{}' , class : '{}' , configuration property : '{}'] will be added in the HasFeatures.",
+                    name, featureClassName, propertyName);
+            NamedFeature namedFeature = new NamedFeature(name, featureClass);
+            ModuleFeatures moduleFeatures = getModuleFeatures(moduleName);
+            moduleFeatures.namedFeatures.add(namedFeature);
+        } else {
+            logger.warn("No bean of named feature[name : '{}' , class : '{}'] is present in the BeanFactory, so it will be fallback as an abstract feature, please check the configuration property : '{}'",
+                    name, featureClassName, propertyName);
+            addAbstractFeatureClass(moduleName, featureClass);
+        }
     }
 
     private Class<?> loadClass(String className) {
@@ -260,8 +187,8 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
             String moduleName = entry.getKey();
             ModuleFeatures moduleFeatures = entry.getValue();
             HasFeatures hasFeatures = moduleFeatures.toHasFeatures();
-            String beanName = getBeanName(moduleName);
-            this.singletonBeanRegistry.registerSingleton(beanName, hasFeatures);
+            String beanName = getHasFeaturesBeanName(moduleName);
+            this.beanFactory.registerSingleton(beanName, hasFeatures);
         }
     }
 
