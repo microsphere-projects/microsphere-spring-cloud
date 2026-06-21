@@ -163,4 +163,18 @@ Thank you for using our project! 🚀
 
 *Thank you for using and supporting our project!* 🎉
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.17...0.2.18
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.17...0.2.18## v0.2.19
+
+# Release Notes - Version 0.2.19
+
+## Dependency Updates
+- Updated `microsphere-spring-boot` to version `0.2.22`. ([d08f684](#))
+
+## Documentation
+- Updated README to reflect the latest version information. ([8faf95f](#))
+
+## Build and Workflow Enhancements
+- Merged `main` into `release` and `release` into `main`. ([44aa456](#), [5747cab](#))
+- Bumped version to next patch after publishing `0.2.18`. ([eb566d9](#))
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.18...0.2.19
