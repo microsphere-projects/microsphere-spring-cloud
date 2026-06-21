@@ -1,0 +1,40 @@
+microsphere:
+  spring:
+    cloud:
+      features:
+        abstract:
+          spring-context:
+            - io.microsphere.spring.beans.factory.annotation.ConfigurationBeanBindingPostProcessor
+            - io.microsphere.spring.context.config.AutoRegistrationBean
+            - io.microsphere.spring.context.event.InterceptingApplicationEventMulticaster
+            - io.microsphere.spring.context.event.InterceptingApplicationEventMulticasterProxy
+            - io.microsphere.spring.context.event.ApplicationEventInterceptor
+            - io.microsphere.spring.context.event.ApplicationListenerInterceptor
+          spring-jdbc:
+            - io.microsphere.spring.jdbc.p6spy.beans.factory.config.P6DataSourceBeanPostProcessor
+          spring-web:
+            - io.microsphere.spring.web.metadata.WebEndpointMappingResolver
+            - io.microsphere.spring.web.metadata.WebEndpointMappingRegistry
+            - io.microsphere.spring.web.metadata.WebEndpointMappingFactory
+            - io.microsphere.spring.web.metadata.WebEndpointMappingFilter
+            - io.microsphere.spring.web.metadata.WebEndpointMappingRegistrar
+            - io.microsphere.spring.web.method.support.HandlerMethodAdvice
+            - io.microsphere.spring.web.method.support.HandlerMethodArgumentInterceptor
+            - io.microsphere.spring.web.method.support.HandlerMethodInterceptor
+            - io.microsphere.spring.web.event.WebEventPublisher
+          spring-webmvc:
+            - io.microsphere.spring.web.metadata.ServletWebEndpointMappingResolver
+            - io.microsphere.spring.webmvc.metadata.HandlerMappingWebEndpointMappingResolver
+            - io.microsphere.spring.webmvc.method.support.InterceptingHandlerMethodProcessor
+            - io.microsphere.spring.webmvc.interceptor.LazyCompositeHandlerInterceptor
+            - io.microsphere.spring.webmvc.advice.StoringRequestBodyArgumentAdvice
+            - io.microsphere.spring.webmvc.advice.StoringResponseBodyReturnValueAdvice
+            - io.microsphere.spring.webmvc.handler.ReversedProxyHandlerMapping
+          spring-webflux:
+            - io.microsphere.spring.webflux.metadata.HandlerMappingWebEndpointMappingResolver
+            - io.microsphere.spring.webflux.method.InterceptingHandlerMethodProcessor
+            - io.microsphere.spring.webflux.server.filter.RequestHandledEventPublishingWebFilter
+            - io.microsphere.spring.webflux.server.filter.RequestContextWebFilter
+            - io.microsphere.spring.webflux.method.StoringRequestBodyArgumentInterceptor
+            - io.microsphere.spring.webflux.method.StoringResponseBodyReturnValueInterceptor
+            - io.microsphere.spring.webflux.handler.ReversedProxyHandlerMapping
