@@ -48,7 +48,7 @@ class FeaturesConstantsTest {
         assertEquals("named", NAMED);
         assertEquals("{}", PLACEHOLDER);
 
-        assertEquals("microsphere.spring.cloud.features.", PROPERTY_NAME_PREFIX);
+        assertEquals("microsphere.spring.cloud.features", PROPERTY_NAME_PREFIX);
         assertEquals("microsphere.spring.cloud.features.abstract.", ABSTRACT_FEATURE_PROPERTY_NAME_PREFIX);
         assertEquals("microsphere.spring.cloud.features.named.", NAMED_FEATURE_PROPERTY_NAME_PREFIX);
         assertEquals("microsphere.spring.cloud.features.abstract.{}", ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN);
