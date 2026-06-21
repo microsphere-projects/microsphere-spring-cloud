@@ -63,13 +63,13 @@ import static io.microsphere.util.ClassLoaderUtils.resolveClass;
  * <h4>1. Abstract Features</h4>
  * <pre>{@code
  * # Defines abstract features for the 'jdbc' module
- * microsphere.spring.cloud.features.jdbc=org.springframework.jdbc.core.JdbcTemplate,org.springframework.transaction.PlatformTransactionManager
+ * microsphere.spring.cloud.features.abstract.jdbc=org.springframework.jdbc.core.JdbcTemplate,org.springframework.transaction.PlatformTransactionManager
  * }</pre>
  *
  * <h4>2. Named Features</h4>
  * <pre>{@code
  * # Defines a named feature 'rest-template' for the 'web' module
- * microsphere.spring.cloud.features.web.rest-template=org.springframework.web.client.RestTemplate
+ * microsphere.spring.cloud.features.named.web.rest-template=org.springframework.web.client.RestTemplate
  * }</pre>
  *
  * <h3>Resulting Beans</h3>
