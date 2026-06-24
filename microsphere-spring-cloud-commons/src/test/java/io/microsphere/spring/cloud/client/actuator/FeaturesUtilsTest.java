@@ -56,6 +56,6 @@ class FeaturesUtilsTest {
     @Test
     void testGetQualifierFeatureName() {
         String featureName = getQualifierFeatureName("web", "rest-template");
-        assertEquals("microsphere.web.rest-template", featureName);
+        assertEquals("web:rest-template", featureName);
     }
 }
