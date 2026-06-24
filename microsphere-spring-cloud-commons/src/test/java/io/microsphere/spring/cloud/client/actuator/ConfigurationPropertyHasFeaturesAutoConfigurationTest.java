@@ -81,7 +81,7 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
         List<Class<?>> abstractFeatures = hasFeatures.getAbstractFeatures();
         List<NamedFeature> namedFeatures = hasFeatures.getNamedFeatures();
         assertEquals(1, namedFeatures.size());
-        assertEquals("microsphere.web.WebClient", namedFeatures.get(0).getName());
+        assertEquals("web:WebClient", namedFeatures.get(0).getName());
         assertTrue(abstractFeatures.isEmpty());
 
         hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("rest"));
@@ -89,7 +89,7 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
 
         abstractFeatures = hasFeatures.getAbstractFeatures();
         namedFeatures = hasFeatures.getNamedFeatures();
-        assertEquals("microsphere.rest.RestTemplate", namedFeatures.get(0).getName());
+        assertEquals("rest:RestTemplate", namedFeatures.get(0).getName());
         assertEquals(1, namedFeatures.size());
         assertTrue(abstractFeatures.isEmpty());
 
