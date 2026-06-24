@@ -36,18 +36,23 @@ import org.springframework.cloud.client.actuator.NamedFeature;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import static io.microsphere.collection.ListUtils.newLinkedList;
+import static io.microsphere.collection.ListUtils.ofList;
 import static io.microsphere.collection.MapUtils.newLinkedHashMap;
+import static io.microsphere.collection.SetUtils.newLinkedHashSet;
+import static io.microsphere.collection.SetUtils.newTreeSet;
 import static io.microsphere.logging.LoggerFactory.getLogger;
-import static io.microsphere.spring.beans.BeanUtils.isBeanPresent;
+import static io.microsphere.spring.beans.BeanSource.BEAN_FACTORY;
 import static io.microsphere.spring.beans.factory.BeanFactoryUtils.asDefaultListableBeanFactory;
 import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getAbstractFeaturePropertyName;
 import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getHasFeaturesBeanName;
 import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getNamedFeaturePropertyName;
 import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getQualifierFeatureName;
+import static io.microsphere.spring.cloud.client.actuator.NamedFeatureComparator.INSTANCE;
 import static io.microsphere.text.FormatUtils.format;
 import static io.microsphere.util.ClassLoaderUtils.resolveClass;
+import static io.microsphere.util.ClassUtils.getSimpleName;
 
 /**
  * Auto-registrar for Spring Cloud Client Actuator's {@link HasFeatures} based on configuration properties.
@@ -134,22 +139,26 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
 
     private void addAbstractFeatureClassNames(String moduleName, List<String> featureClassNames, Map<String, ModuleFeatures> moduleFeaturesMap) {
         for (String featureClassName : featureClassNames) {
-            Class<?> featureClass = loadClass(featureClassName);
-            if (featureClass == null) {
-                String propertyName = getAbstractFeaturePropertyName(moduleName);
-                logger.warn("The class of abstract feature[class : '{}'] is not found in classpath, please check the configuration property : '{}'",
-                        featureClassName, propertyName);
-                continue;
-            }
-            addAbstractFeatureClass(moduleName, featureClass, moduleFeaturesMap);
+            addAbstractFeatureClassName(moduleName, featureClassName, moduleFeaturesMap);
         }
     }
 
-    private void addAbstractFeatureClass(String moduleName, Class<?> featureClass, Map<String, ModuleFeatures> moduleFeaturesMap) {
-        ModuleFeatures moduleFeatures = getModuleFeatures(moduleFeaturesMap, moduleName);
-        logger.trace("The AbstractFeature[moduel: '{}' , class : '{}'] will be added in the HasFeatures.", moduleName,
-                featureClass.getName());
-        moduleFeatures.abstractFeatures.add(featureClass);
+    private void addAbstractFeatureClassName(String moduleName, String featureClassName, Map<String, ModuleFeatures> moduleFeaturesMap) {
+        Class<?> featureClass = loadClass(featureClassName);
+        if (featureClass == null) {
+            logger.warn("The class of AbstractFeature[class : '{}'] is not found in classpath, please check the configuration property : '{}'",
+                    featureClassName, getAbstractFeaturePropertyName(moduleName));
+            return;
+        }
+
+        Set<Class<?>> beanTypes = getBeanTypes(featureClass);
+        if (beanTypes.isEmpty()) { // No bean type found
+            addAbstractFeatureClass(moduleName, featureClass, moduleFeaturesMap);
+        } else {
+            for (Class<?> beanType : beanTypes) {
+                addNamedFeatureClass(moduleName, beanType, moduleFeaturesMap);
+            }
+        }
     }
 
     private void addNamedFeatureClassName(String moduleName, String featureName, String featureClassName, Map<String, ModuleFeatures> moduleFeaturesMap) {
@@ -162,18 +171,34 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
             return;
         }
 
-        if (isBeanPresent(this.beanFactory, featureClass)) {
-            logger.trace("The NamedFeature[name : '{}' , class : '{}' , configuration property : '{}'] will be added in the HasFeatures.",
-                    name, featureClassName, propertyName);
-            NamedFeature namedFeature = new NamedFeature(name, featureClass);
-            ModuleFeatures moduleFeatures = getModuleFeatures(moduleFeaturesMap, moduleName);
-            moduleFeatures.namedFeatures.add(namedFeature);
-        } else {
-            logger.warn("No bean of named feature[name : '{}' , class : '{}'] is present in the BeanFactory, so it will be fallback as an abstract feature, please check the configuration property : '{}'",
-                    name, featureClassName, propertyName);
-            addAbstractFeatureClass(moduleName, featureClass, moduleFeaturesMap);
-        }
+        addNamedFeatureClass(moduleName, featureName, featureClass, moduleFeaturesMap);
     }
+
+    private Set<Class<?>> getBeanTypes(Class<?> featureClass) {
+        return (Set) BEAN_FACTORY.getBeanTypes(this.beanFactory, featureClass);
+    }
+
+    private void addAbstractFeatureClass(String moduleName, Class<?> featureClass, Map<String, ModuleFeatures> moduleFeaturesMap) {
+        ModuleFeatures moduleFeatures = getModuleFeatures(moduleFeaturesMap, moduleName);
+        logger.trace("The AbstractFeature[module : '{}' , class : '{}'] will be added in the HasFeatures.", moduleName,
+                featureClass.getName());
+        moduleFeatures.abstractFeatures.add(featureClass);
+    }
+
+    private void addNamedFeatureClass(String moduleName, Class<?> featureClass, Map<String, ModuleFeatures> moduleFeaturesMap) {
+        String featureName = getSimpleName(featureClass);
+        addNamedFeatureClass(moduleName, featureName, featureClass, moduleFeaturesMap);
+    }
+
+    private void addNamedFeatureClass(String moduleName, String featureName, Class<?> featureClass, Map<String, ModuleFeatures> moduleFeaturesMap) {
+        String name = getQualifierFeatureName(moduleName, featureName);
+        NamedFeature namedFeature = new NamedFeature(name, featureClass);
+        ModuleFeatures moduleFeatures = getModuleFeatures(moduleFeaturesMap, moduleName);
+        logger.trace("The NamedFeature[module : '{}' , name : '{}' , class : '{}'] will be added in the HasFeatures.",
+                moduleName, name, featureClass.getName());
+        moduleFeatures.namedFeatures.add(namedFeature);
+    }
+
 
     private Class<?> loadClass(String className) {
         return resolveClass(className, this.classLoader);
@@ -197,9 +222,9 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
 
         private final String moduleName;
 
-        private final List<Class<?>> abstractFeatures = newLinkedList();
+        private final Set<Class<?>> abstractFeatures = newLinkedHashSet();
 
-        private final List<NamedFeature> namedFeatures = newLinkedList();
+        private final Set<NamedFeature> namedFeatures = newTreeSet(INSTANCE);
 
         ModuleFeatures(String moduleName) {
             this.moduleName = moduleName;
@@ -207,7 +232,7 @@ public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFa
 
         HasFeatures toHasFeatures() {
             logger.info(toString());
-            return new HasFeatures(this.abstractFeatures, this.namedFeatures);
+            return new HasFeatures(ofList(this.abstractFeatures), ofList(this.namedFeatures));
         }
 
         @Override
