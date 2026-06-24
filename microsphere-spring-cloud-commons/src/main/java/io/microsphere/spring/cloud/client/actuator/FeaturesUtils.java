@@ -21,6 +21,7 @@ import io.microsphere.util.Utils;
 import org.springframework.cloud.client.actuator.HasFeatures;
 
 import static io.microsphere.constants.PropertyConstants.MICROSPHERE_PROPERTY_NAME_PREFIX;
+import static io.microsphere.constants.SymbolConstants.COLON_CHAR;
 import static io.microsphere.constants.SymbolConstants.DOT_CHAR;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.BEAN_NAME_SUFFIX;
@@ -92,7 +93,7 @@ public abstract class FeaturesUtils implements Utils {
      * <pre>{@code
      * // For module name "web" and feature name "rest-template"
      * String qualifiedName = getQualifierFeatureName("web", "rest-template");
-     * // Result: "microsphere.web.rest-template"
+     * // Result: "web:rest-template"
      * }</pre>
      *
      * @param moduleName  the name of the module
@@ -100,7 +101,7 @@ public abstract class FeaturesUtils implements Utils {
      * @return the qualified feature name
      */
     public static String getQualifierFeatureName(String moduleName, String featureName) {
-        return MICROSPHERE_PROPERTY_NAME_PREFIX + moduleName + DOT_CHAR + featureName;
+        return moduleName + COLON_CHAR + featureName;
     }
 
     private FeaturesUtils() {
