@@ -25,18 +25,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.actuator.FeaturesEndpoint;
 import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.client.actuator.NamedFeature;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Map;
 
 import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getHasFeaturesBeanName;
-import static io.microsphere.spring.cloud.client.actuator.FeaturesUtils.getQualifierFeatureName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link ConfigurationPropertyHasFeaturesAutoConfiguration} Test
@@ -81,21 +79,20 @@ class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
         hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("web"));
         assertNotNull(hasFeatures);
         List<Class<?>> abstractFeatures = hasFeatures.getAbstractFeatures();
-        assertEquals(1, abstractFeatures.size());
-        assertEquals(WebClient.class, abstractFeatures.get(0));
+        List<NamedFeature> namedFeatures = hasFeatures.getNamedFeatures();
+        assertEquals(1, namedFeatures.size());
+        assertEquals("microsphere.web.WebClient", namedFeatures.get(0).getName());
+        assertTrue(abstractFeatures.isEmpty());
 
         hasFeatures = this.hasFeaturesBeansMap.get(getHasFeaturesBeanName("rest"));
         assertNotNull(hasFeatures);
 
         abstractFeatures = hasFeatures.getAbstractFeatures();
-        assertEquals(1, abstractFeatures.size());
-        assertEquals(RestOperations.class, abstractFeatures.get(0));
-
-        List<NamedFeature> namedFeatures = hasFeatures.getNamedFeatures();
+        namedFeatures = hasFeatures.getNamedFeatures();
+        assertEquals("microsphere.rest.RestTemplate", namedFeatures.get(0).getName());
         assertEquals(1, namedFeatures.size());
-        NamedFeature namedFeature = namedFeatures.get(0);
-        assertEquals(getQualifierFeatureName("rest", "RestTemplate"), namedFeature.getName());
-        assertEquals(RestTemplate.class, namedFeature.getType());
+        assertTrue(abstractFeatures.isEmpty());
+
 
         assertNotNull(featuresEndpoint.features());
     }
