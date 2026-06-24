@@ -1,0 +1,121 @@
+microsphere:
+  spring:
+    cloud:
+      features:
+        abstract:
+          microsphere-spring-context:
+            - io.microsphere.spring.beans.factory.annotation.AnnotatedInjectionBeanPostProcessor
+            - io.microsphere.spring.beans.factory.config.GenericBeanPostProcessorAdapter
+            - io.microsphere.spring.context.event.GenericApplicationListenerAdapter
+            - io.microsphere.spring.context.event.OnceApplicationContextEventListener
+            - io.microsphere.spring.context.lifecycle.AbstractSmartLifecycle
+            ## ListenableAutowireCandidateResolverInitializer
+            - io.microsphere.spring.beans.factory.support.ListenableAutowireCandidateResolver
+            - io.microsphere.spring.beans.factory.support.AutowireCandidateResolvingListener
+            ## @EnableTTLCaching
+            - io.microsphere.spring.cache.intereptor.TTLCacheResolver
+            ## @Enable*
+            - io.microsphere.spring.context.annotation.BeanCapableImportCandidate
+            ## @OverrideAnnotationAttributes
+            - io.microsphere.spring.context.annotation.OverrideAnnotationAttributesStrategy
+            ## @EnableAutoRegistrationBean
+            - io.microsphere.spring.context.config.AutoRegistrationBean
+            ## @EnableConfigurationBeanBinding
+            - io.microsphere.spring.context.config.ConfigurationBeanBinder
+            - io.microsphere.spring.context.config.ConfigurationBeanCustomizer
+            - io.microsphere.spring.beans.factory.annotation.ConfigurationBeanBindingPostProcessor
+            ## @EnableEventExtension
+            - io.microsphere.spring.context.event.ApplicationEventInterceptor
+            - io.microsphere.spring.context.event.ApplicationListenerInterceptor
+            - io.microsphere.spring.context.event.InterceptingApplicationEventMulticaster
+            - io.microsphere.spring.context.event.InterceptingApplicationEventMulticasterProxy
+            ## EventPublishingBean*
+            - io.microsphere.spring.context.event.BeanFactoryListener
+            - io.microsphere.spring.context.event.BeanListener
+            - io.microsphere.spring.context.event.EventPublishingBeanBeforeProcessor
+            - io.microsphere.spring.context.event.EventPublishingBeanAfterProcessor
+            ## ListenableConfigurableEnvironment
+            - io.microsphere.spring.core.env.EnvironmentListener
+            - io.microsphere.spring.core.env.ProfileListener
+            - io.microsphere.spring.core.env.PropertyResolverListener
+            ## SpringProtocolURLStreamHandler
+            - io.microsphere.spring.net.SpringProtocolURLStreamHandler
+          microsphere-spring-guice:
+            ## @EnableGuice
+            - io.microsphere.spring.guice.annotation.GuiceInjectAnnotationBeanPostProcessor
+          microsphere-spring-jdbc:
+            ## @EnableP6DataSource
+            - io.microsphere.spring.jdbc.p6spy.beans.factory.config.P6DataSourceBeanPostProcessor
+          microsphere-spring-web:
+            ## @EnableWebExtension
+            - io.microsphere.spring.web.metadata.WebEndpointMappingResolver
+            - io.microsphere.spring.web.metadata.WebEndpointMappingRegistry
+            - io.microsphere.spring.web.metadata.WebEndpointMappingFactory
+            - io.microsphere.spring.web.metadata.WebEndpointMappingFilter
+            - io.microsphere.spring.web.metadata.WebEndpointMappingRegistrar
+            - io.microsphere.spring.web.method.support.HandlerMethodAdvice
+            - io.microsphere.spring.web.method.support.HandlerMethodArgumentInterceptor
+            - io.microsphere.spring.web.method.support.HandlerMethodInterceptor
+            - io.microsphere.spring.web.event.WebEventPublisher
+          microsphere-spring-webflux:
+            - io.microsphere.spring.webflux.server.filter.DelegatingWebFilter
+            - io.microsphere.spring.webflux.server.filter.RequestContextWebFilter
+            ## @EnableWebFluxExtension
+            - io.microsphere.spring.webflux.metadata.HandlerMappingWebEndpointMappingResolver
+            - io.microsphere.spring.webflux.method.InterceptingHandlerMethodProcessor
+            - io.microsphere.spring.webflux.server.filter.RequestHandledEventPublishingWebFilter
+            - io.microsphere.spring.webflux.server.filter.RequestContextWebFilter
+            - io.microsphere.spring.webflux.method.StoringRequestBodyArgumentInterceptor
+            - io.microsphere.spring.webflux.method.StoringResponseBodyReturnValueInterceptor
+            - io.microsphere.spring.webflux.handler.ReversedProxyHandlerMapping
+          microsphere-spring-webmvc:
+            - io.microsphere.spring.web.servlet.filter.ContentCachingFilter
+            ## @EnableWebMvcExtension
+            - io.microsphere.spring.webmvc.metadata.HandlerMappingWebEndpointMappingResolver
+            - io.microsphere.spring.webmvc.method.support.InterceptingHandlerMethodProcessor
+            - io.microsphere.spring.webmvc.interceptor.LazyCompositeHandlerInterceptor
+            - io.microsphere.spring.webmvc.advice.StoringRequestBodyArgumentAdvice
+            - io.microsphere.spring.webmvc.advice.StoringResponseBodyReturnValueAdvice
+            - io.microsphere.spring.webmvc.handler.ReversedProxyHandlerMapping
+            - io.microsphere.spring.web.metadata.ServletWebEndpointMappingResolver
+          microsphere-spring-boot:
+            - io.microsphere.spring.boot.context.config.BindableConfigurationBeanBinder
+            - io.microsphere.spring.boot.context.properties.bind.BindListener
+            - io.microsphere.spring.boot.context.properties.ListenableConfigurationPropertiesBindHandlerAdvisor
+            - io.microsphere.spring.boot.context.OnceApplicationPreparedEventListener
+            - io.microsphere.spring.boot.context.OnceMainApplicationPreparedEventListener
+
+        named:
+          microsphere-spring-context:
+            # InjectionPointDependencyResolver
+            ConstructionInjectionPointDependencyResolver: io.microsphere.spring.beans.factory.ConstructionInjectionPointDependencyResolver
+            AutowiredInjectionPointDependencyResolver: io.microsphere.spring.beans.factory.annotation.AutowiredInjectionPointDependencyResolver
+            ResourceInjectionPointDependencyResolver: io.microsphere.spring.beans.factory.annotation.ResourceInjectionPointDependencyResolver
+            # ApplicationContextInitializer
+            EventPublishingBeanInitializer: io.microsphere.spring.context.event.EventPublishingBeanInitializer
+            ListenableAutowireCandidateResolverInitializer: io.microsphere.spring.beans.factory.support.ListenableAutowireCandidateResolverInitializer
+            ListenableConfigurableEnvironmentInitializer: io.microsphere.spring.core.env.ListenableConfigurableEnvironmentInitializer
+            AutoRegistrationBeanInitializer: io.microsphere.spring.boot.context.config.AutoRegistrationBeanInitializer
+          microsphere-spring-webflux:
+            SpringWebFluxHelper: io.microsphere.spring.webflux.util.SpringWebFluxHelper
+          microsphere-spring-webmvc:
+            SpringWebMvcHelper: io.microsphere.spring.webmvc.util.SpringWebMvcHelper
+          microsphere-spring-boot:
+            # ApplicationContextInitializer
+            ConditionEvaluationReportInitializer: io.microsphere.spring.boot.report.ConditionEvaluationReportInitializer
+            OriginTrackedConfigurationPropertyInitializer: io.microsphere.spring.boot.env.config.OriginTrackedConfigurationPropertyInitializer
+            # SpringApplicationRunListener
+            BannedArtifactClassLoadingListener: io.microsphere.spring.boot.classloading.BannedArtifactClassLoadingListener
+            FailureReportSpringApplicationRunListener: io.microsphere.spring.boot.listener.FailureReportSpringApplicationRunListener
+            # ApplicationListener
+            ArtifactsCollisionDiagnosisListener: io.microsphere.spring.boot.diagnostics.ArtifactsCollisionDiagnosisListener
+            ConditionEvaluationReportListener: io.microsphere.spring.boot.report.ConditionEvaluationReportListener
+            DefaultPropertiesApplicationListener: io.microsphere.spring.boot.env.DefaultPropertiesApplicationListener
+            # SpringBootExceptionReporter
+            ConditionEvaluationSpringBootExceptionReporter: io.microsphere.spring.boot.report.ConditionEvaluationSpringBootExceptionReporter
+            # FailureAnalyzer
+            ArtifactsCollisionFailureAnalyzer: io.microsphere.spring.boot.diagnostics.ArtifactsCollisionFailureAnalyzer
+            # AutoConfigurationImportFilter
+            ConfigurableAutoConfigurationImportFilter: io.microsphere.spring.boot.autoconfigure.ConfigurableAutoConfigurationImportFilter
+            # DefaultPropertiesPostProcessor
+            SpringApplicationDefaultPropertiesPostProcessor: io.microsphere.spring.boot.env.SpringApplicationDefaultPropertiesPostProcessor
