@@ -20,10 +20,10 @@
 
     <properties>
         <!-- BOM versions -->
-        <microsphere-spring-boot.version>0.2.25</microsphere-spring-boot.version>
+        <microsphere-spring-boot.version>0.2.26</microsphere-spring-boot.version>
         <testcontainers.version>2.0.5</testcontainers.version>
         <!-- Testing -->
-        <junit-jupiter.version>6.1.0</junit-jupiter.version>
+        <junit-jupiter.version>6.1.1</junit-jupiter.version>
     </properties>
 
     <dependencyManagement>
