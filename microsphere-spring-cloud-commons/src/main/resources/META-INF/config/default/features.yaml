@@ -84,6 +84,26 @@ microsphere:
             - io.microsphere.spring.boot.context.properties.ListenableConfigurationPropertiesBindHandlerAdvisor
             - io.microsphere.spring.boot.context.OnceApplicationPreparedEventListener
             - io.microsphere.spring.boot.context.OnceMainApplicationPreparedEventListener
+          microsphere-spring-cloud-commons:
+            ## Discovery Client
+            - io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient
+            - io.microsphere.spring.cloud.client.discovery.ReactiveDiscoveryClientAdapter
+            ## Service Registry
+            - io.microsphere.spring.cloud.client.service.registry.MultipleRegistration
+            - io.microsphere.spring.cloud.client.service.registry.MultipleServiceRegistry
+            - io.microsphere.spring.cloud.client.service.registry.MultipleAutoServiceRegistration
+            - io.microsphere.spring.cloud.client.service.registry.aspect.EventPublishingRegistrationAspect
+            - io.microsphere.spring.cloud.client.service.registry.SimpleServiceRegistry
+            - io.microsphere.spring.cloud.client.service.registry.SimpleAutoServiceRegistration
+            - io.microsphere.spring.cloud.client.service.registry.InMemoryServiceRegistry
+            ## Service Registry Actuator
+            - io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceRegistrationEndpoint
+            - io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceDeregistrationEndpoint
+            ## Spring Cloud Context
+            - io.microsphere.spring.cloud.context.named.config.SpecificationBeanPostProcessor
+            - io.microsphere.spring.cloud.context.named.SpecificationCustomizer
+            ## Tomcat
+            - io.microsphere.spring.cloud.fault.tolerance.tomcat.event.TomcatDynamicConfigurationListener
 
         named:
           microsphere-spring-context:
