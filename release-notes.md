@@ -182,4 +182,32 @@ Full Changelog: [v0.1.14...v0.1.15](https://github.com/mercyblitz/microsphere-sp
 
 ---
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.18...0.1.19
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.18...0.1.19## v0.1.20
+
+# Release Notes: Version 0.1.20
+
+## New Features
+- **FeaturesProperties Introduced**: Added `FeaturesProperties` utility for managing feature-related configurations. ([2aca15c](https://example.com))
+- **Default Feature Registration**: Spring Cloud Commons default features are now registered automatically. ([f6a4d24](https://example.com))
+- **Feature Naming Enhancements**: FeaturesUtils now uses colon (`:`) as the separator for feature names. ([296f84a](https://example.com))
+
+## Bug Fixes
+- Cleaned up unused Javadoc links and imports. ([e992ff1](https://example.com))
+- Adjusted expected feature names in tests. ([2bed908](https://example.com))
+
+## Documentation
+- Updated README to reflect branch version table changes. ([917ac13](https://example.com))
+
+## Dependency Updates
+- Upgraded `microsphere-spring-boot` to versions `0.1.23`, `0.1.24`, `0.1.25`, and finally `0.1.27`. ([945bd32](https://example.com), [7700498](https://example.com), [d152e33](https://example.com), [5f8e140](https://example.com))
+- Bumped `microsphere-build` parent to `0.3.5`. ([ecb37ad](https://example.com))
+
+## Build and Workflow Enhancements
+- Merged `release-1.x` into `dev-1.x` branch for synchronization. ([bc033b9](https://example.com))
+- Updated project version to next patch after publishing `0.1.19`. ([d1fd478](https://example.com))
+
+---
+
+For full details of the changes included in this release, please refer to the [Full Changelog](https://example.com).
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.19...0.1.20
