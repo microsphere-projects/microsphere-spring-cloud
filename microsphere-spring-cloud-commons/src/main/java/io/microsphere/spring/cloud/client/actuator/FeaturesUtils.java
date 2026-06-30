@@ -20,9 +20,7 @@ package io.microsphere.spring.cloud.client.actuator;
 import io.microsphere.util.Utils;
 import org.springframework.cloud.client.actuator.HasFeatures;
 
-import static io.microsphere.constants.PropertyConstants.MICROSPHERE_PROPERTY_NAME_PREFIX;
 import static io.microsphere.constants.SymbolConstants.COLON_CHAR;
-import static io.microsphere.constants.SymbolConstants.DOT_CHAR;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.BEAN_NAME_SUFFIX;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.NAMED_FEATURE_PROPERTY_NAME_PATTERN;
