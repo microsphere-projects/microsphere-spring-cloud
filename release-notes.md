@@ -177,4 +177,42 @@ Thank you for using our project! 🚀
 - Merged `main` into `release` and `release` into `main`. ([44aa456](#), [5747cab](#))
 - Bumped version to next patch after publishing `0.2.18`. ([eb566d9](#))
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.18...0.2.19
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.18...0.2.19## v0.2.20
+
+# Release Notes: Version 0.2.20
+
+## New Features
+- Added support for Spring Cloud commons feature mappings. 
+- Introduced `FeaturesConstants` for defining Spring Cloud features.
+- Created `FeaturesUtils` for handling feature-related properties and names.
+- Implemented `FeaturesProperties` configuration class for registering feature-related beans.
+- Added default `features.yaml` file for Spring Cloud features.
+
+## Bug Fixes
+- Fixed `PROPERTY_NAME_PREFIX` value for feature registration.  
+- Returned empty maps from feature getters to handle edge cases.
+
+## Dependency Updates
+- Bumped `microsphere-spring-boot` to version 0.2.27 (includes 0.2.23, 0.2.24, and 0.2.25 updates).
+- Upgraded `spring-cloud-dependencies` to version 2025.1.2.  
+- Bumped parent POM to `microsphere-build` version 0.3.5.  
+- Updated BOM and JUnit versions.
+
+## Documentation
+- Updated README with latest branch versions.
+
+## Test Improvements
+- Added unit tests for `FeaturesUtils` and `FeaturesConstants`.
+- Introduced additional assertions for the `FeaturesEndpoint`.
+
+## Build and Workflow Enhancements
+- Removed unused imports across multiple classes, improving code clarity.
+- Optimized module features mapping by making `moduleFeaturesMap` local and utilizing `BeanFactory`.
+
+## Other Changes
+- Minor reorganization and clarification for feature property keys in `defaults.yaml`.  
+- Used colon separator for qualified feature names in tests and setup.
+
+---
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.19...0.2.20
