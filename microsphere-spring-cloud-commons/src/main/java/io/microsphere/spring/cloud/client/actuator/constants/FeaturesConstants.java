@@ -23,10 +23,10 @@ import static io.microsphere.constants.SymbolConstants.DOT;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
 
 /**
- * The constants class for Spring Cloud {@link HasFeatures features}
+ * The constants class for Spring Cloud {@link org.springframework.cloud.client.actuator.HasFeatures features}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see HasFeatures
+ * @see org.springframework.cloud.client.actuator.HasFeatures
  * @see org.springframework.cloud.client.actuator.FeaturesEndpoint
  * @since 1.0.0
  */
