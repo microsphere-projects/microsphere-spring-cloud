@@ -210,4 +210,25 @@ Full Changelog: [v0.1.14...v0.1.15](https://github.com/mercyblitz/microsphere-sp
 
 For full details of the changes included in this release, please refer to the [Full Changelog](https://example.com).
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.19...0.1.20
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.19...0.1.20## v0.1.21
+
+# Release Notes for Version 0.1.21
+
+## 🚀 New Features
+- **OpenFeign Support:** Added feature class mappings to enhance OpenFeign integration. (#141)
+
+## 📝 Documentation
+- Updated `README` to reflect branch release version changes. (b94c7f8)
+
+## 📦 Dependency Updates
+- Upgraded `microsphere-spring-boot` BOM to version 0.1.28. (f771442)
+
+## 🔧 Build and Workflow Enhancements
+- Merged `release-1.x` into `dev-1.x` for synchronization. (0032d8f)
+- Bumped version to 0.1.21 following the release of 0.1.20. (0da83b5)
+
+---
+
+For detailed changes, check the [Full Changelog](https://github.com/mercyblitz/project-name/compare/0.1.20...0.1.21).
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.20...0.1.21
