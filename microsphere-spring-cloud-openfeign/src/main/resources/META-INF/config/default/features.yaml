@@ -1,0 +1,18 @@
+microsphere:
+  spring:
+    cloud:
+      features:
+        abstract:
+          spring-cloud-openfeign-core:
+            - feign.Client
+            - feign.Capability
+            - org.springframework.cloud.openfeign.Targeter
+            - org.springframework.cloud.openfeign.FeignClientFactory
+            - org.springframework.cloud.openfeign.FeignClientsConfiguration
+            - org.springframework.cloud.openfeign.FeignClientSpecification
+            - org.springframework.cloud.openfeign.FallbackFactory
+            - org.springframework.cloud.openfeign.CircuitBreakerNameResolver
+            - org.springframework.cloud.openfeign.FeignBuilderCustomizer
+          microsphere-spring-cloud-openfeign:
+            - io.microsphere.spring.cloud.openfeign.autorefresh.FeignComponentRegistry
+            - io.microsphere.spring.cloud.openfeign.autorefresh.AutoRefreshCapability
