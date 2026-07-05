@@ -13,6 +13,7 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 import org.springframework.context.ApplicationListener;
 
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SPRING_APPLICATION_NAME_PLACEHOLDER;
 
 /**
  * Abstract Endpoint for Service Registration
@@ -24,7 +25,7 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
 
     protected final Logger logger = getLogger(getClass());
 
-    @Value("${spring.application.name}")
+    @Value(SPRING_APPLICATION_NAME_PLACEHOLDER)
     protected String applicationName;
 
     @Autowired
