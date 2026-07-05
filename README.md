@@ -114,8 +114,8 @@ Then declare only the modules you need (versions are managed by the BOM):
 
 | **Branch** | **Spring Cloud compatibility**         | **Latest version** |
 |------------|----------------------------------------|--------------------|
-| `main`     | 2022.0.x, 2023.0.x, 2024.0.x, 2025.0.x | `0.2.21`           |
-| `1.x`      | Hoxton, 2020.0.x, 2021.0.x             | `0.1.21`           |
+| `main`     | 2022.0.x, 2023.0.x, 2024.0.x, 2025.0.x | `0.2.22`           |
+| `1.x`      | Hoxton, 2020.0.x, 2021.0.x             | `0.1.22`           |
 
 By default, the `main` branch builds against Spring Cloud 2025.0.x. To build or run tests against an older generation,
 activate the corresponding Maven profile:
