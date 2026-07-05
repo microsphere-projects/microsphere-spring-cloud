@@ -27,6 +27,7 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MULTIPLE_REGISTRATION_ENABLED_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SERVICE_REGISTRY_AUTO_REGISTRATION_ENABLED_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SERVICE_REGISTRY_PROPERTY_PREFIX;
+import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SPRING_APPLICATION_NAME_PLACEHOLDER;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SPRING_CLOUD_PROPERTY_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -51,5 +52,6 @@ class CommonsPropertyConstantsTest {
         assertEquals("microsphere.spring.cloud.default-registration.type", MULTIPLE_REGISTRATION_DEFAULT_REGISTRATION_PROPERTY_NAME);
         assertEquals("microsphere.spring.cloud.default-service-registry.type", MULTIPLE_REGISTRATION_DEFAULT_REGISTRY_PROPERTY_NAME);
         assertEquals("microsphere.spring.cloud.composite-registration.enabled", COMPOSITE_REGISTRATION_ENABLED_PROPERTY_NAME);
+        assertEquals("${spring.application.name:application}", SPRING_APPLICATION_NAME_PLACEHOLDER);
     }
 }
