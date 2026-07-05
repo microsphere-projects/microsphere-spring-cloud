@@ -34,7 +34,7 @@ public class MultipleRegistration implements Registration {
      * {@link Registration} instances. The last registration in the collection becomes
      * the default registration.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DefaultRegistration registration = new DefaultRegistration();
      * registration.setServiceId("test-service");
@@ -59,7 +59,7 @@ public class MultipleRegistration implements Registration {
     /**
      * Returns the instance ID from the default {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * String instanceId = multipleRegistration.getInstanceId();
@@ -75,7 +75,7 @@ public class MultipleRegistration implements Registration {
     /**
      * Returns the service ID from the default {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * String serviceId = multipleRegistration.getServiceId();
@@ -91,7 +91,7 @@ public class MultipleRegistration implements Registration {
     /**
      * Returns the host from the default {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * String host = multipleRegistration.getHost();
@@ -107,7 +107,7 @@ public class MultipleRegistration implements Registration {
     /**
      * Returns the port from the default {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * int port = multipleRegistration.getPort();
@@ -123,7 +123,7 @@ public class MultipleRegistration implements Registration {
     /**
      * Returns whether the default {@link Registration} is secure.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * boolean secure = multipleRegistration.isSecure();
@@ -139,7 +139,7 @@ public class MultipleRegistration implements Registration {
     /**
      * Returns the {@link URI} from the default {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * URI uri = multipleRegistration.getUri();
@@ -156,7 +156,7 @@ public class MultipleRegistration implements Registration {
      * Returns the aggregated {@link RegistrationMetaData} that synchronizes metadata
      * across all underlying {@link Registration} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * Map<String, String> metadata = multipleRegistration.getMetadata();
@@ -173,7 +173,7 @@ public class MultipleRegistration implements Registration {
      * Returns the default {@link Registration} instance, which is the last registration
      * provided during construction.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * Registration defaultReg = multipleRegistration.getDefaultRegistration();
@@ -189,7 +189,7 @@ public class MultipleRegistration implements Registration {
      * Retrieves a specific {@link Registration} by its class type. If the specified
      * class is {@link Registration} itself, returns this {@link MultipleRegistration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleRegistration multipleRegistration = new MultipleRegistration(registrations);
      * DefaultRegistration specific = multipleRegistration.special(DefaultRegistration.class);

@@ -14,7 +14,7 @@ public class NoOpRequestInterceptor implements RequestInterceptor {
      * A no-operation {@link RequestInterceptor} that does nothing when applied.
      * Used as a placeholder to ensure at least one interceptor is registered.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RequestInterceptor noOp = NoOpRequestInterceptor.INSTANCE;
      * noOp.apply(requestTemplate); // does nothing
@@ -26,7 +26,7 @@ public class NoOpRequestInterceptor implements RequestInterceptor {
      * Applies this interceptor to the given {@link RequestTemplate}. This implementation
      * intentionally performs no operation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * NoOpRequestInterceptor.INSTANCE.apply(requestTemplate);
      * }</pre>

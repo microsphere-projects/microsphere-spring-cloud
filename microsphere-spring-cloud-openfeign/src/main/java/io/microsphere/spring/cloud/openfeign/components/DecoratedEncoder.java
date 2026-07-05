@@ -20,7 +20,7 @@ public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implement
     /**
      * Constructs a {@link DecoratedEncoder} wrapping the given {@link Encoder} delegate.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DecoratedEncoder encoder = new DecoratedEncoder(
      *     "my-client", contextFactory, clientProperties, new Encoder.Default());
@@ -40,7 +40,7 @@ public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implement
      * Returns the configured {@link Encoder} class from {@link FeignClientConfiguration},
      * falling back to {@link Encoder} if not configured.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Encoder> type = decoratedEncoder.componentType();
      * }</pre>
@@ -57,7 +57,7 @@ public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implement
      * Encodes the given object into the {@link RequestTemplate} by delegating to the
      * underlying {@link Encoder}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * decoratedEncoder.encode(myObject, MyObject.class, requestTemplate);
      * }</pre>

@@ -41,7 +41,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
     /**
      * Constructs an {@link AutoRefreshCapability} with the required dependencies.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * AutoRefreshCapability capability = new AutoRefreshCapability(
      *     clientProperties, contextFactory, componentRegistry);
@@ -63,7 +63,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Sets the {@link ApplicationContext} and extracts the Feign client context ID
      * from the {@code spring.cloud.openfeign.client.name} property.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * AutoRefreshCapability capability = new AutoRefreshCapability(props, factory, registry);
      * capability.setApplicationContext(applicationContext);
@@ -81,7 +81,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link Retryer} by wrapping it in a {@link DecoratedRetryer}
      * that supports auto-refresh on configuration changes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Retryer original = new Retryer.Default();
      * Retryer enriched = capability.enrich(original);
@@ -106,7 +106,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link Contract} by wrapping it in a {@link DecoratedContract}
      * that supports auto-refresh on configuration changes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Contract original = new Contract.Default();
      * Contract enriched = capability.enrich(original);
@@ -131,7 +131,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link Decoder} by wrapping it in a {@link DecoratedDecoder}
      * that supports auto-refresh on configuration changes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Decoder original = new Decoder.Default();
      * Decoder enriched = capability.enrich(original);
@@ -156,7 +156,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link Encoder} by wrapping it in a {@link DecoratedEncoder}
      * that supports auto-refresh on configuration changes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Encoder original = new Encoder.Default();
      * Encoder enriched = capability.enrich(original);
@@ -181,7 +181,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link ErrorDecoder} by wrapping it in a {@link DecoratedErrorDecoder}
      * that supports auto-refresh on configuration changes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ErrorDecoder original = new ErrorDecoder.Default();
      * ErrorDecoder enriched = capability.enrich(original);
@@ -205,7 +205,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link RequestInterceptor} by registering it in the
      * {@link FeignComponentRegistry} as part of a {@link io.microsphere.spring.cloud.openfeign.components.CompositedRequestInterceptor}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RequestInterceptor original = template -> template.header("X-Custom", "value");
      * RequestInterceptor enriched = capability.enrich(original);
@@ -226,7 +226,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link QueryMapEncoder} by wrapping it in a {@link DecoratedQueryMapEncoder}
      * that supports auto-refresh on configuration changes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * QueryMapEncoder original = new QueryMapEncoder.Default();
      * QueryMapEncoder enriched = capability.enrich(original);

@@ -66,7 +66,7 @@ public class WebMvcServiceRegistryAutoConfiguration extends WebServiceRegistryAu
      * Returns the servlet context path configured via the {@code server.servlet.context-path}
      * property for Spring WebMVC applications.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // With server.servlet.context-path=/api
      * String contextPath = config.getContextPath(); // returns "/api"
@@ -84,7 +84,7 @@ public class WebMvcServiceRegistryAutoConfiguration extends WebServiceRegistryAu
      * registration metadata. A mapping is excluded if it corresponds to a built-in
      * Spring {@link Filter} registration or a {@link DispatcherServletRegistrationBean} mapping.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * boolean excluded = config.isExcludedMapping(mapping, new String[]{"/*"});
      * // returns true if the mapping matches a built-in filter or DispatcherServlet

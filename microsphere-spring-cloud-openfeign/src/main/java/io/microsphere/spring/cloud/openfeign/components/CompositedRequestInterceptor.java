@@ -36,7 +36,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     /**
      * Constructs a {@link CompositedRequestInterceptor} for the specified Feign client context.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * CompositedRequestInterceptor interceptor =
      *     new CompositedRequestInterceptor("my-client", beanFactory);
@@ -53,7 +53,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     /**
      * Returns an unmodifiable view of the registered {@link RequestInterceptor} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Set<RequestInterceptor> interceptors = compositedInterceptor.getRequestInterceptors();
      * }</pre>
@@ -67,7 +67,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
     /**
      * Applies all registered {@link RequestInterceptor} instances to the given
      * {@link RequestTemplate} in order.
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RequestTemplate template = new RequestTemplate();
      * compositedInterceptor.apply(template);
@@ -86,7 +86,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
      * Adds a {@link RequestInterceptor} to this composite. Returns {@code true} if this
      * is the first interceptor added (i.e., the composite was previously empty).
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * boolean wasFirst = compositedInterceptor.addRequestInterceptor(
      *     template -> template.header("Authorization", "Bearer token"));
@@ -112,7 +112,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
      * {@link FeignClientProperties} configuration for request interceptors, default
      * headers, and default query parameters.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * compositedInterceptor.refresh();
      * }</pre>
@@ -170,7 +170,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
      * Adds all elements from the source collection (obtained via the supplier) into the
      * target collection if the source is not empty.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Collection<String> target = new ArrayList<>();
      * addAll(() -> List.of("a", "b"), target);
@@ -191,7 +191,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
      * Retrieves a bean of the given type from the {@link BeanFactory}, falling back to
      * instantiation via the default constructor if the bean is not available.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * FeignClientProperties properties = getOrInstantiate(FeignClientProperties.class);
      * }</pre>
@@ -209,7 +209,7 @@ public class CompositedRequestInterceptor implements RequestInterceptor, Refresh
      * Puts all entries from the source map (obtained via the supplier) into the target
      * map if the source is not empty, without overwriting existing keys.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Map<String, String> target = newHashMap();
      * putIfAbsent(() -> Map.of("key", "value"), target);

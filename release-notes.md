@@ -215,4 +215,25 @@ Thank you for using our project! 🚀
 
 ---
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.19...0.2.20
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.19...0.2.20## v0.2.21
+
+# Release Notes - Version 0.2.21
+
+### New Features
+- **OpenFeign:** Added feature class metadata for enhanced functionality. (#e077a59)
+
+### Documentation
+- Updated README with the latest release version information. (#a5c680e)
+
+### Dependency Updates
+- Upgraded `microsphere-spring-boot` to the latest version. (#136cc5f)
+
+### Build and Workflow Enhancements
+- Merged main into release and release into main for alignment. [skip ci] (#5139232, #09cd034)
+- Bumped version to the next patch post 0.2.20 release. (#d66fae5)
+
+---
+
+**Note:** For additional details, refer to the full commit history.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.20...0.2.21

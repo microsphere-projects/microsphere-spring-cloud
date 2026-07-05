@@ -43,7 +43,7 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
      * Create a new {@link ReactiveDiscoveryClientAdapter} that wraps the given
      * {@link ReactiveDiscoveryClient} as a blocking {@link DiscoveryClient}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ReactiveDiscoveryClient reactiveClient = new SimpleReactiveDiscoveryClient(properties);
      * DiscoveryClient adapter = new ReactiveDiscoveryClientAdapter(reactiveClient);
@@ -59,7 +59,7 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     /**
      * Delegates to the underlying {@link ReactiveDiscoveryClient#description()} method.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * String desc = adapter.description();
      * }</pre>
@@ -75,7 +75,7 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
      * Returns a blocking list of {@link ServiceInstance} objects for the given service ID
      * by collecting results from the underlying {@link ReactiveDiscoveryClient}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * List<ServiceInstance> instances = adapter.getInstances("test-service");
      * }</pre>
@@ -93,7 +93,7 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
      * Returns a blocking list of service names by collecting results from the
      * underlying {@link ReactiveDiscoveryClient}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * List<String> services = adapter.getServices();
      * }</pre>
@@ -110,7 +110,7 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
      * Delegates to the underlying {@link ReactiveDiscoveryClient#probe()} method to
      * verify the discovery client is operational.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * adapter.probe();
      * }</pre>
@@ -123,7 +123,7 @@ public class ReactiveDiscoveryClientAdapter implements DiscoveryClient {
     /**
      * Returns the order value from the underlying {@link ReactiveDiscoveryClient}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * int order = adapter.getOrder();
      * }</pre>

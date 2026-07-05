@@ -83,7 +83,7 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
     /**
      * Creates a {@link Registration} bean from the application name, server properties, and network info.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Auto-configured via Spring Boot; the bean is available for injection:
      * @Autowired
@@ -117,7 +117,7 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
     /**
      * Creates an {@link InMemoryServiceRegistry} bean as the default {@link ServiceRegistry} implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Auto-configured when no other ServiceRegistry bean is present:
      * @Autowired

@@ -19,7 +19,7 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
     /**
      * Constructs a {@link DecoratedContract} wrapping the given {@link Contract} delegate.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DecoratedContract contract = new DecoratedContract(
      *     "my-client", contextFactory, clientProperties, new Contract.Default());
@@ -38,7 +38,7 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
      * Returns the configured {@link Contract} class from {@link FeignClientConfiguration},
      * falling back to {@link Contract} if not configured.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Contract> type = decoratedContract.componentType();
      * }</pre>
@@ -55,7 +55,7 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
      * Parses and validates metadata for the given target type by delegating to the
      * underlying {@link Contract}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * List<MethodMetadata> metadata = decoratedContract.parseAndValidateMetadata(MyFeignClient.class);
      * }</pre>

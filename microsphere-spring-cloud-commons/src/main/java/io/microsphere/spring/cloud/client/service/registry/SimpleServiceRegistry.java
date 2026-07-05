@@ -52,7 +52,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      * Constructs a new {@link SimpleServiceRegistry} using the given
      * {@link SimpleDiscoveryProperties} to obtain the instances map.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleDiscoveryProperties properties = new SimpleDiscoveryProperties();
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
@@ -68,7 +68,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      * Constructs a new {@link SimpleServiceRegistry} using the given
      * {@link SimpleReactiveDiscoveryProperties} to obtain the instances map.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleReactiveDiscoveryProperties reactiveProperties = ...;
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(reactiveProperties);
@@ -83,7 +83,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
     /**
      * Constructs a new {@link SimpleServiceRegistry} with the given instances map.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Map<String, List<DefaultServiceInstance>> instancesMap = new HashMap<>();
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(instancesMap);
@@ -99,7 +99,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      * Registers the given {@link DefaultRegistration} by adding it to the instances list
      * for its service ID.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * DefaultRegistration registration = new DefaultRegistration();
@@ -119,7 +119,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      * Deregisters the given {@link DefaultRegistration} by removing it from the instances
      * list for its service ID.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * registry.register(registration);
@@ -137,7 +137,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
     /**
      * Closes this registry. This implementation is a no-op.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * registry.close();
@@ -151,7 +151,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      * Sets the status of the given {@link DefaultRegistration} by storing it in the
      * registration's metadata under the {@link #STATUS_KEY} key.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * registry.register(registration);
@@ -169,7 +169,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
     /**
      * Retrieves the status of the given {@link DefaultRegistration} from its metadata.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * registry.register(registration);
@@ -189,7 +189,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      * Returns the list of {@link DefaultServiceInstance} instances for the given
      * {@link DefaultRegistration}'s service ID.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * registry.register(registration);
@@ -207,7 +207,7 @@ public class SimpleServiceRegistry implements ServiceRegistry<DefaultRegistratio
      * Returns the list of {@link DefaultServiceInstance} instances for the given service ID,
      * creating an empty list if none exists.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleServiceRegistry registry = new SimpleServiceRegistry(properties);
      * List<DefaultServiceInstance> instances = registry.getInstances("test-service");
