@@ -19,7 +19,7 @@ public class ServiceDeregistrationEndpoint extends AbstractServiceRegistrationEn
      * Deregisters the service from the {@link ServiceRegistry} if it is currently running.
      * This is a write operation exposed via the {@code /actuator/serviceDeregistration} endpoint.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Via actuator HTTP POST to /actuator/serviceDeregistration
      * ServiceDeregistrationEndpoint endpoint = context.getBean(ServiceDeregistrationEndpoint.class);

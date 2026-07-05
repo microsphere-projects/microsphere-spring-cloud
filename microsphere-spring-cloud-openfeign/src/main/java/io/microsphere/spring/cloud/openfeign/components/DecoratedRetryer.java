@@ -17,7 +17,7 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
     /**
      * Constructs a {@link DecoratedRetryer} wrapping the given {@link Retryer} delegate.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DecoratedRetryer retryer = new DecoratedRetryer(
      *     "my-client", contextFactory, clientProperties, new Retryer.Default());
@@ -36,7 +36,7 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
      * Returns the configured {@link Retryer} class from {@link FeignClientConfiguration},
      * falling back to {@link Retryer} if not configured.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Retryer> type = decoratedRetryer.componentType();
      * }</pre>
@@ -52,7 +52,7 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
     /**
      * Continues or propagates the retry by delegating to the underlying {@link Retryer}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * try {
      *     // Feign call
@@ -72,7 +72,7 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
      * Delegates the continue-or-propagate decision to the given {@link Retryer} if it
      * is not {@code null}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DecoratedRetryer.continueOrPropagate(retryerInstance, retryableException);
      * }</pre>
@@ -89,7 +89,7 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
     /**
      * Returns a clone of the delegate {@link Retryer}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Retryer cloned = decoratedRetryer.clone();
      * }</pre>

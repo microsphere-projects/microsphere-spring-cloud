@@ -17,7 +17,7 @@ public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder>
     /**
      * Constructs a {@link DecoratedErrorDecoder} wrapping the given {@link ErrorDecoder} delegate.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DecoratedErrorDecoder decoder = new DecoratedErrorDecoder(
      *     "my-client", contextFactory, clientProperties, new ErrorDecoder.Default());
@@ -36,7 +36,7 @@ public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder>
      * Returns the configured {@link ErrorDecoder} class from {@link FeignClientConfiguration},
      * falling back to {@link ErrorDecoder.Default} if not configured.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends ErrorDecoder> type = decoratedErrorDecoder.componentType();
      * }</pre>
@@ -52,7 +52,7 @@ public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder>
     /**
      * Decodes an error response by delegating to the underlying {@link ErrorDecoder}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Exception ex = decoratedErrorDecoder.decode("MyClient#myMethod()", response);
      * }</pre>

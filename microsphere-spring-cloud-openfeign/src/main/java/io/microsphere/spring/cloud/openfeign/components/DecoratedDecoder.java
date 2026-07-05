@@ -22,7 +22,7 @@ public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implement
     /**
      * Constructs a {@link DecoratedDecoder} wrapping the given {@link Decoder} delegate.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DecoratedDecoder decoder = new DecoratedDecoder(
      *     "my-client", contextFactory, clientProperties, new Decoder.Default());
@@ -41,7 +41,7 @@ public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implement
      * Returns the configured {@link Decoder} class from {@link FeignClientConfiguration},
      * falling back to {@link Decoder} if not configured.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Decoder> type = decoratedDecoder.componentType();
      * }</pre>
@@ -58,7 +58,7 @@ public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implement
      * Decodes a Feign {@link Response} into an object of the given type by delegating
      * to the underlying {@link Decoder}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Object result = decoratedDecoder.decode(response, String.class);
      * }</pre>

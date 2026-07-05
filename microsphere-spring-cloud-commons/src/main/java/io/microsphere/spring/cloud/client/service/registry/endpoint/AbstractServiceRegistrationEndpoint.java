@@ -51,7 +51,7 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
      * <p>Initializes the {@link Registration}, {@link ServiceRegistry}, and
      * {@link AbstractAutoServiceRegistration} from available bean providers.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Called automatically by the Spring container after all singletons are instantiated.
      * // Ensures registration, serviceRegistry, and serviceRegistration fields are populated.
@@ -69,7 +69,7 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
      * <p>Captures the web server port and detects the running state of the
      * {@link AbstractAutoServiceRegistration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Called automatically when the embedded web server has been initialized.
      * // After this event, the port and running state are available.
@@ -87,7 +87,7 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
     /**
      * Detects whether the given {@link AbstractAutoServiceRegistration} is currently running.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * boolean running = AbstractServiceRegistrationEndpoint.detectRunning(serviceRegistration);
      * }</pre>
@@ -102,7 +102,7 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
     /**
      * Returns whether the service registration is currently running.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * if (endpoint.isRunning()) {
      *     // service is registered and running
@@ -118,7 +118,7 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
     /**
      * Sets the running state of the service registration.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * endpoint.setRunning(true);  // mark service as running
      * endpoint.setRunning(false); // mark service as stopped

@@ -39,7 +39,7 @@ import static io.microsphere.spring.cloud.client.discovery.constants.DiscoveryCl
 /**
  * The {@link DiscoveryClient} implementation for a union of the given {@link DiscoveryClient}
  *
- * <p>Example Usage:
+ * <h3>Example Usage</h3>
  * <pre>{@code
  * // Register UnionDiscoveryClient as a Spring bean, then retrieve merged service instances
  * UnionDiscoveryClient unionDiscoveryClient = applicationContext.getBean(UnionDiscoveryClient.class);
@@ -60,7 +60,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     /**
      * Returns a human-readable description of this {@link DiscoveryClient}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * String desc = unionDiscoveryClient.description();
      * }</pre>
@@ -76,7 +76,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
      * Returns a merged list of {@link ServiceInstance} objects from all registered
      * {@link DiscoveryClient} instances for the given service ID.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * List<ServiceInstance> instances = unionDiscoveryClient.getInstances("test");
      * }</pre>
@@ -101,7 +101,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
      * Returns a deduplicated list of service names from all registered {@link DiscoveryClient}
      * instances, preserving insertion order.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * List<String> services = unionDiscoveryClient.getServices();
      * }</pre>
@@ -126,7 +126,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
      * {@link CompositeDiscoveryClient} and this instance itself. The list is lazily initialized
      * from the {@link ApplicationContext} on first access and cached for subsequent calls.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * UnionDiscoveryClient unionClient = applicationContext.getBean(UnionDiscoveryClient.class);
      * List<DiscoveryClient> clients = unionClient.getDiscoveryClients();
@@ -158,7 +158,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
      * Returns the order value of this client. This client uses {@code HIGHEST_PRECEDENCE}
      * to ensure it takes priority over other {@link DiscoveryClient} implementations.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * int order = unionDiscoveryClient.getOrder();
      * }</pre>
@@ -174,7 +174,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
      * Callback invoked after all singleton beans have been instantiated. Eagerly initializes
      * the internal list of {@link DiscoveryClient} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Automatically called by the Spring container after singleton initialization
      * unionDiscoveryClient.afterSingletonsInstantiated();
@@ -188,7 +188,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     /**
      * Clears the cached list of {@link DiscoveryClient} instances when this bean is destroyed.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Automatically called by the Spring container on shutdown
      * unionDiscoveryClient.destroy();
@@ -204,7 +204,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     /**
      * Sets the {@link ApplicationContext} used to look up {@link DiscoveryClient} beans.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Automatically called by the Spring container
      * unionDiscoveryClient.setApplicationContext(applicationContext);

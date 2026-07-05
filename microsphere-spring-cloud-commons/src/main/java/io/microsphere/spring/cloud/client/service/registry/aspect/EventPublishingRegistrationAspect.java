@@ -63,7 +63,7 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * AOP advice executed before {@link ServiceRegistry#register(Registration)}, publishing a
      * {@link RegistrationPreRegisteredEvent} and applying {@link RegistrationCustomizer customizations}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // This advice is triggered automatically when ServiceRegistry.register() is called:
      * serviceRegistry.register(registration);
@@ -89,7 +89,7 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * AOP advice executed before {@link ServiceRegistry#deregister(Registration)}, publishing a
      * {@link RegistrationPreDeregisteredEvent}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // This advice is triggered automatically when ServiceRegistry.deregister() is called:
      * serviceRegistry.deregister(registration);
@@ -112,7 +112,7 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * AOP advice executed after {@link ServiceRegistry#register(Registration)}, publishing a
      * {@link RegistrationRegisteredEvent}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // This advice is triggered automatically after ServiceRegistry.register() completes:
      * serviceRegistry.register(registration);
@@ -135,7 +135,7 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * AOP advice executed after {@link ServiceRegistry#deregister(Registration)}, publishing a
      * {@link RegistrationDeregisteredEvent}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // This advice is triggered automatically after ServiceRegistry.deregister() completes:
      * serviceRegistry.deregister(registration);
@@ -162,7 +162,7 @@ public class EventPublishingRegistrationAspect implements ApplicationContextAwar
      * Sets the {@link ApplicationContext} used to publish registration events and
      * to look up {@link RegistrationCustomizer} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Called automatically by Spring's ApplicationContextAware callback:
      * aspect.setApplicationContext(applicationContext);

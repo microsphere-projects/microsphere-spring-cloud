@@ -34,7 +34,7 @@ public class RegistrationDeregisteredEvent extends RegistrationEvent {
      * Create a new {@link RegistrationDeregisteredEvent} indicating that a
      * {@link Registration} has been deregistered from the {@link ServiceRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ServiceRegistry<Registration> registry = ...;
      * Registration registration = ...;
@@ -52,7 +52,7 @@ public class RegistrationDeregisteredEvent extends RegistrationEvent {
     /**
      * Returns the {@link Type} of this event, which is always {@link Type#DEREGISTERED}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationDeregisteredEvent event = ...;
      * RegistrationEvent.Type type = event.getType();

@@ -28,7 +28,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
     /**
      * Constructs a {@link DecoratedQueryMapEncoder} wrapping the given {@link QueryMapEncoder} delegate.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DecoratedQueryMapEncoder encoder = new DecoratedQueryMapEncoder(
      *     "my-client", contextFactory, clientProperties, new QueryMapEncoder.Default());
@@ -47,7 +47,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
      * Returns the configured {@link QueryMapEncoder} class from {@link FeignClientConfiguration},
      * falling back to {@link PageableSpringQueryMapEncoder} if not configured.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends QueryMapEncoder> type = decoratedQueryMapEncoder.componentType();
      * }</pre>
@@ -71,7 +71,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
      * Retrieves the {@link QueryMapEncoder} class from a {@link FeignClientConfiguration}
      * using a {@link MethodHandle} for compatibility across Spring Cloud versions.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<QueryMapEncoder> encoderClass = DecoratedQueryMapEncoder.getQueryMapEncoder(
      *     getQueryMapEncoderMethodHandle, feignClientConfiguration);
@@ -98,7 +98,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
      * Encodes the given object into a query parameter map by delegating to the
      * underlying {@link QueryMapEncoder}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Map<String, Object> queryParams = decoratedQueryMapEncoder.encode(myQueryObject);
      * }</pre>
