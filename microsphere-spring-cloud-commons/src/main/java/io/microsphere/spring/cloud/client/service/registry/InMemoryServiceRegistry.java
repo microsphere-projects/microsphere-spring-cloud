@@ -40,7 +40,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
      * Registers the given {@link Registration} instance in the in-memory storage,
      * keyed by its instance ID.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
      * Registration registration = createRegistration();
@@ -58,7 +58,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
     /**
      * Removes the given {@link Registration} instance from the in-memory storage.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
      * Registration registration = createRegistration();
@@ -77,7 +77,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
     /**
      * Closes this registry by clearing all stored {@link Registration} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
      * registry.register(registration);
@@ -93,7 +93,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
      * Sets the status of the given {@link Registration} by storing it in
      * the registration's metadata under the {@code _status_} key.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
      * registry.register(registration);
@@ -114,7 +114,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
     /**
      * Retrieves the status of the given {@link Registration} from its metadata.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
      * registry.register(registration);
@@ -138,7 +138,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
      * Retrieves the metadata {@link Map} for the given {@link Registration}
      * from the in-memory storage.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * InMemoryServiceRegistry registry = new InMemoryServiceRegistry();
      * registry.register(registration);

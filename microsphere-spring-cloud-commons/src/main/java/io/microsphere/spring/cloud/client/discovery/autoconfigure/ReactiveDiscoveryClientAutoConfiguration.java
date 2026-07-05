@@ -58,7 +58,7 @@ public class ReactiveDiscoveryClientAutoConfiguration {
          * Creates a {@link ReactiveDiscoveryClientAdapter} bean that adapts a
          * {@link ReactiveDiscoveryClient} to the blocking {@link org.springframework.cloud.client.discovery.DiscoveryClient} interface.
          *
-         * <p>Example Usage:
+         * <h3>Example Usage</h3>
          * <pre>{@code
          * // Auto-configured when both reactive and blocking discovery are enabled
          * DiscoveryClient client = applicationContext.getBean(ReactiveDiscoveryClientAdapter.class);

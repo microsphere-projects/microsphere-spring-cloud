@@ -35,7 +35,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     /**
      * Constructs a {@link DecoratedFeignComponent} wrapping the given delegate.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Typically invoked via a subclass constructor
      * super(contextId, contextFactory, clientProperties, delegate);
@@ -57,7 +57,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * Returns the current delegate instance, lazily loading it from the context factory
      * if it was previously cleared by a {@link #refresh()} call.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * T component = decoratedFeignComponent.delegate();
      * }</pre>
@@ -80,7 +80,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * Loads a component instance of the given type from the {@link NamedContextFactory},
      * falling back to direct instantiation if the bean is not available.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Decoder decoder = decoratedFeignComponent.loadInstanceFromContextFactory("my-client", Decoder.class);
      * }</pre>
@@ -99,7 +99,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     /**
      * Returns the Feign client context ID associated with this decorated component.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * String id = decoratedFeignComponent.contextId();
      * }</pre>
@@ -115,7 +115,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * Refreshes this component by clearing the delegate, causing the next call to
      * {@link #delegate()} to reload the instance from the context factory.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * decoratedFeignComponent.refresh();
      * }</pre>
@@ -131,7 +131,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * Returns the Feign component type class used to resolve the delegate implementation.
      * Subclasses must implement this to return the appropriate configuration class.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends T> type = decoratedFeignComponent.componentType();
      * }</pre>
@@ -144,7 +144,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * Returns the default {@link FeignClientConfiguration} as defined by the
      * {@link FeignClientProperties#getDefaultConfig()} key.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * FeignClientConfiguration defaultConfig = decoratedFeignComponent.getDefaultConfiguration();
      * }</pre>
@@ -158,7 +158,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
     /**
      * Returns the {@link FeignClientConfiguration} for the current Feign client context ID.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * FeignClientConfiguration currentConfig = decoratedFeignComponent.getCurrentConfiguration();
      * }</pre>
@@ -173,7 +173,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * Retrieves a value from the {@link FeignClientConfiguration} using the provided function,
      * checking the default configuration first and then the current context configuration.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<Decoder> decoderClass = get(FeignClientConfiguration::getDecoder);
      * }</pre>
@@ -201,7 +201,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * Loads the delegate instance from the {@link NamedContextFactory} using the
      * component type returned by {@link #componentType()}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * T instance = decoratedFeignComponent.loadInstance();
      * }</pre>
@@ -242,7 +242,7 @@ public abstract class DecoratedFeignComponent<T> implements Refreshable {
      * Factory method to instantiate a {@link DecoratedFeignComponent} subclass by locating
      * the appropriate constructor via reflection.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DecoratedContract contract = DecoratedFeignComponent.instantiate(
      *     DecoratedContract.class, Contract.class,

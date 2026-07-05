@@ -76,7 +76,7 @@ public class DiscoveryClientAutoConfiguration {
          * Creates a {@link UnionDiscoveryClient} bean that aggregates all {@link DiscoveryClient}
          * instances in the {@link org.springframework.context.ApplicationContext}.
          *
-         * <p>Example Usage:
+         * <h3>Example Usage</h3>
          * <pre>{@code
          * // Activated when microsphere.spring.cloud.client.discovery.mode=union
          * UnionDiscoveryClient client = applicationContext.getBean(UnionDiscoveryClient.class);

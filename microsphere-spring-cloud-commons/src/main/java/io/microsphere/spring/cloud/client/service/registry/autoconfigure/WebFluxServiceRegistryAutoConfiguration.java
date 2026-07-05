@@ -41,7 +41,7 @@ public class WebFluxServiceRegistryAutoConfiguration extends WebServiceRegistryA
      * Returns an empty string as the context path for WebFlux applications,
      * since reactive applications do not have a servlet context path.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WebFluxServiceRegistryAutoConfiguration config = new WebFluxServiceRegistryAutoConfiguration();
      * String contextPath = config.getContextPath(); // returns ""
@@ -58,7 +58,7 @@ public class WebFluxServiceRegistryAutoConfiguration extends WebServiceRegistryA
      * Always returns {@code false} for WebFlux applications, indicating that no
      * {@link WebEndpointMapping} is excluded from registration metadata.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * boolean excluded = config.isExcludedMapping(mapping, patterns); // always false
      * }</pre>

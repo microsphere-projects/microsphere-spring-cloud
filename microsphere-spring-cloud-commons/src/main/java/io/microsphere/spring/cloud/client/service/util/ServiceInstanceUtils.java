@@ -70,7 +70,7 @@ public class ServiceInstanceUtils extends BaseUtils {
      * The web endpoint mappings are serialized as JSON and stored in the service instance's
      * metadata under the {@link io.microsphere.spring.cloud.client.service.registry.constants.InstanceConstants#WEB_MAPPINGS_METADATA_NAME} key.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ServiceInstance serviceInstance = new DefaultServiceInstance("id", "service", "localhost", 8080, false);
      * Collection<WebEndpointMapping> mappings = new ArrayList<>();

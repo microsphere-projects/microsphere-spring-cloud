@@ -39,7 +39,7 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
      * {@link ServiceRegistry}, {@link AutoServiceRegistrationProperties}, and
      * {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * InMemoryServiceRegistry serviceRegistry = new InMemoryServiceRegistry();
      * AutoServiceRegistrationProperties properties = new AutoServiceRegistrationProperties();
@@ -62,7 +62,7 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
     /**
      * Returns the {@link AutoServiceRegistrationProperties} as the configuration object.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleAutoServiceRegistration autoReg = ...;
      * Object config = autoReg.getConfiguration();
@@ -79,7 +79,7 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
      * Determines whether this auto service registration is enabled based on the
      * {@link AutoServiceRegistrationProperties}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleAutoServiceRegistration autoReg = ...;
      * boolean enabled = autoReg.isEnabled();
@@ -95,7 +95,7 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
     /**
      * Returns the {@link Registration} managed by this auto service registration.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleAutoServiceRegistration autoReg = ...;
      * Registration registration = autoReg.getRegistration();
@@ -112,7 +112,7 @@ public class SimpleAutoServiceRegistration extends AbstractAutoServiceRegistrati
      * Returns the management {@link Registration}, which is the same as the primary
      * registration in this implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * SimpleAutoServiceRegistration autoReg = ...;
      * Registration mgmtRegistration = autoReg.getManagementRegistration();

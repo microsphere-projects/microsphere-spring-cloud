@@ -52,7 +52,7 @@ public class ServiceRegistrationEndpointAutoConfiguration {
     /**
      * Creates a {@link ServiceRegistrationEndpoint} bean for managing service registration via actuator.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // The endpoint is auto-configured and accessible at /actuator/serviceRegistration
      * @Autowired
@@ -72,7 +72,7 @@ public class ServiceRegistrationEndpointAutoConfiguration {
     /**
      * Creates a {@link ServiceDeregistrationEndpoint} bean for managing service deregistration via actuator.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // The endpoint is auto-configured and accessible at /actuator/serviceDeregistration
      * @Autowired

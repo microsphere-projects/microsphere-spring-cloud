@@ -63,7 +63,7 @@ public class FeignComponentRegistry {
     /**
      * Returns the Feign component class corresponding to the given configuration key.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<?> componentClass = FeignComponentRegistry.getComponentClass("retryer");
      * // returns Retryer.class
@@ -84,7 +84,7 @@ public class FeignComponentRegistry {
      * Normalizes a configuration key by stripping array index suffixes and converting
      * to dashed form.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * String normalized = FeignComponentRegistry.normalizeConfig("requestInterceptors[0]");
      * // returns "request-interceptors"
@@ -102,7 +102,7 @@ public class FeignComponentRegistry {
      * Constructs a {@link FeignComponentRegistry} with the given default client name
      * and {@link BeanFactory}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * FeignComponentRegistry registry = new FeignComponentRegistry("default", beanFactory);
      * }</pre>
@@ -118,7 +118,7 @@ public class FeignComponentRegistry {
     /**
      * Registers a list of {@link Refreshable} components for the specified Feign client.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * List<Refreshable> components = List.of(decoratedContract, decoratedDecoder);
      * registry.register("my-client", components);
@@ -138,7 +138,7 @@ public class FeignComponentRegistry {
     /**
      * Registers a single {@link Refreshable} component for the specified Feign client.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * registry.register("my-client", decoratedContract);
      * }</pre>
@@ -154,7 +154,7 @@ public class FeignComponentRegistry {
      * Registers a {@link RequestInterceptor} for the specified Feign client. Interceptors
      * are collected into a {@link CompositedRequestInterceptor} per client.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RequestInterceptor interceptor = template -> template.header("X-Custom", "value");
      * RequestInterceptor result = registry.registerRequestInterceptor("my-client", interceptor);
@@ -178,7 +178,7 @@ public class FeignComponentRegistry {
     /**
      * Refreshes the Feign components for the specified client whose configurations have changed.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * registry.refresh("my-client", "retryer", "decoder");
      * }</pre>
@@ -195,7 +195,7 @@ public class FeignComponentRegistry {
      * configuration keys. If the default client configuration changed, all registered
      * components are refreshed.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Set<String> changed = Set.of("my-client.retryer", "my-client.decoder");
      * registry.refresh("my-client", changed);
@@ -247,7 +247,7 @@ public class FeignComponentRegistry {
      * Checks whether the given {@link Refreshable} component's class is assignable from
      * any of the effective component classes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * boolean present = FeignComponentRegistry.isComponentPresent(
      *     refreshableComponent, List.of(Retryer.class, Decoder.class));
@@ -264,7 +264,7 @@ public class FeignComponentRegistry {
     /**
      * Checks whether the given class is assignable from any of the effective component classes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * boolean present = FeignComponentRegistry.isComponentClassPresent(
      *     DecoratedRetryer.class, List.of(Retryer.class));

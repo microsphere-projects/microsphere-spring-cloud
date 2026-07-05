@@ -27,7 +27,7 @@ public class FeignClientAutoRefreshAutoConfiguration {
      * Handles the {@link ApplicationReadyEvent} to register the
      * {@link FeignClientConfigurationChangedListener} after the application is fully initialized.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Invoked automatically by the Spring event system on application ready
      * onApplicationReadyEvent(applicationReadyEvent);
@@ -47,7 +47,7 @@ public class FeignClientAutoRefreshAutoConfiguration {
      * Creates the {@link FeignComponentRegistry} bean that tracks decorated Feign components
      * and supports auto-refresh when configuration properties change.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Automatically registered as a Spring bean
      * FeignComponentRegistry registry = feignClientRegistry(clientProperties, beanFactory);

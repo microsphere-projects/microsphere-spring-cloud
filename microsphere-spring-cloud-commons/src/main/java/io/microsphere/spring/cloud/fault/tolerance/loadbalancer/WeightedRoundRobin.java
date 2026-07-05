@@ -22,7 +22,7 @@ public class WeightedRoundRobin {
     /**
      * Create a new {@link WeightedRoundRobin} instance with the given identifier.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(5);
@@ -37,7 +37,7 @@ public class WeightedRoundRobin {
     /**
      * Get the unique identifier for this {@link WeightedRoundRobin} entry.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * String id = wrr.getId(); // "server-1"
@@ -52,7 +52,7 @@ public class WeightedRoundRobin {
     /**
      * Get the current weight of this {@link WeightedRoundRobin} entry.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(5);
@@ -68,7 +68,7 @@ public class WeightedRoundRobin {
     /**
      * Set the weight for this {@link WeightedRoundRobin} entry and reset the current counter.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(10);
@@ -85,7 +85,7 @@ public class WeightedRoundRobin {
      * Increase the current counter by the weight value and return the updated value.
      * Used during weighted round-robin selection to accumulate the weight for this entry.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(5);
@@ -104,7 +104,7 @@ public class WeightedRoundRobin {
      * Subtract the total weight from the current counter after this entry has been selected.
      * This is part of the weighted round-robin algorithm to reduce the selected entry's counter.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(5);
@@ -121,7 +121,7 @@ public class WeightedRoundRobin {
     /**
      * Get the timestamp of the last update to this {@link WeightedRoundRobin} entry.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setLastUpdate(System.currentTimeMillis());
@@ -137,7 +137,7 @@ public class WeightedRoundRobin {
     /**
      * Set the timestamp of the last update to this {@link WeightedRoundRobin} entry.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setLastUpdate(System.currentTimeMillis());
@@ -153,7 +153,7 @@ public class WeightedRoundRobin {
      * Returns a string representation of this {@link WeightedRoundRobin} including
      * its id, weight, current counter, and last update timestamp.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * WeightedRoundRobin wrr = new WeightedRoundRobin("server-1");
      * wrr.setWeight(5);

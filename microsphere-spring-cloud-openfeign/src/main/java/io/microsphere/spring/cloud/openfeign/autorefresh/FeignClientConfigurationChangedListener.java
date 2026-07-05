@@ -18,7 +18,7 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
     /**
      * Constructs a listener that refreshes Feign components when the environment changes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * FeignComponentRegistry registry = ...;
      * FeignClientConfigurationChangedListener listener =
@@ -37,7 +37,7 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
      * Handles an {@link EnvironmentChangeEvent} by resolving which Feign clients are affected
      * and triggering a refresh on the corresponding components in the registry.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Invoked automatically by the Spring event system
      * listener.onApplicationEvent(environmentChangeEvent);
@@ -57,7 +57,7 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
      * Resolves which Feign client names and their changed configuration keys are affected
      * by the given {@link EnvironmentChangeEvent}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Map<String, Set<String>> changed = listener.resolveChangedClient(event);
      * // e.g. {"my-client" -> {"retryer", "decoder"}}

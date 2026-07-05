@@ -27,7 +27,7 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
      * registration details, port, status, and running state.
      * This is a read operation exposed via the {@code /actuator/serviceRegistration} endpoint.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Via actuator HTTP GET to /actuator/serviceRegistration
      * ServiceRegistrationEndpoint endpoint = context.getBean(ServiceRegistrationEndpoint.class);
@@ -57,7 +57,7 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
      * Registers the service with the {@link ServiceRegistry} if it is not already running.
      * This is a write operation exposed via the {@code /actuator/serviceRegistration} endpoint.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Via actuator HTTP POST to /actuator/serviceRegistration
      * ServiceRegistrationEndpoint endpoint = context.getBean(ServiceRegistrationEndpoint.class);
