@@ -42,6 +42,7 @@ import org.springframework.context.annotation.Import;
 import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.spring.cloud.client.service.registry.autoconfigure.SimpleAutoServiceRegistrationAutoConfiguration.ENABLED_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
+import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SPRING_APPLICATION_NAME_PLACEHOLDER;
 
 /**
  * Auto-Configuration class for {@link SimpleAutoServiceRegistration}
@@ -98,7 +99,7 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
      */
     @Bean
     public Registration registration(
-            @Value("${spring.application.name:default}") String applicationName,
+            @Value(SPRING_APPLICATION_NAME_PLACEHOLDER) String applicationName,
             ServerProperties serverProperties,
             InetUtils inetUtils
     ) {
