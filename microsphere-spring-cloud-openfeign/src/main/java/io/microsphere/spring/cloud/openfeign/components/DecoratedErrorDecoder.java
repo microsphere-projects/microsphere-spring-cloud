@@ -21,7 +21,7 @@ public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder>
      * Returns the {@link ErrorDecoder} implementation class to use when reloading
      * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends ErrorDecoder> type = decoratedErrorDecoder.componentType();
      * }</pre>
@@ -38,7 +38,7 @@ public class DecoratedErrorDecoder extends DecoratedFeignComponent<ErrorDecoder>
      * Decodes an error {@link Response} into an {@link Exception} by delegating
      * to the underlying {@link ErrorDecoder} implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Exception ex = decoratedErrorDecoder.decode("MyClient#myMethod()", response);
      * }</pre>

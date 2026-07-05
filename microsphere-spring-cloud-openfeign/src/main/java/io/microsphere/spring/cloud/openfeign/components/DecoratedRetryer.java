@@ -21,7 +21,7 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
      * Returns the {@link Retryer} implementation class to use when reloading
      * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Retryer> type = decoratedRetryer.componentType();
      * }</pre>
@@ -38,7 +38,7 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
      * Continues or propagates the given {@link RetryableException} by delegating
      * to the underlying {@link Retryer} implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * try {
      *     decoratedRetryer.continueOrPropagate(retryableException);
@@ -64,7 +64,7 @@ public class DecoratedRetryer extends DecoratedFeignComponent<Retryer> implement
      * Clones the underlying {@link Retryer} delegate to produce a fresh copy for
      * each request invocation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Retryer cloned = decoratedRetryer.clone();
      * }</pre>

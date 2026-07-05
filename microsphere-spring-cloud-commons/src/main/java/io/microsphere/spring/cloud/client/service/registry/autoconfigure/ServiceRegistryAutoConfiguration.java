@@ -59,7 +59,7 @@ public class ServiceRegistryAutoConfiguration {
          * Creates a primary {@link MultipleRegistration} bean that aggregates all available
          * {@link Registration} instances.
          *
-         * <p>Example Usage:
+         * <h3>Example Usage</h3>
          * <pre>{@code
          * @Autowired
          * MultipleRegistration multipleRegistration;
@@ -80,7 +80,7 @@ public class ServiceRegistryAutoConfiguration {
          * Creates a primary {@link MultipleServiceRegistry} bean that delegates to all available
          * {@link ServiceRegistry} instances.
          *
-         * <p>Example Usage:
+         * <h3>Example Usage</h3>
          * <pre>{@code
          * @Autowired
          * MultipleServiceRegistry multipleServiceRegistry;
@@ -102,7 +102,7 @@ public class ServiceRegistryAutoConfiguration {
          * Creates a primary {@link MultipleAutoServiceRegistration} bean that manages auto-registration
          * across multiple service registries.
          *
-         * <p>Example Usage:
+         * <h3>Example Usage</h3>
          * <pre>{@code
          * @Autowired
          * MultipleAutoServiceRegistration autoRegistration;

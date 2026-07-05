@@ -34,7 +34,7 @@ public class RegistrationPreRegisteredEvent extends RegistrationEvent {
      * Create a new {@link RegistrationPreRegisteredEvent} indicating that a
      * {@link Registration} is about to be registered with the {@link ServiceRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ServiceRegistry<Registration> registry = ...;
      * Registration registration = ...;
@@ -52,7 +52,7 @@ public class RegistrationPreRegisteredEvent extends RegistrationEvent {
     /**
      * Returns the {@link Type} of this event, which is always {@link Type#PRE_REGISTERED}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationPreRegisteredEvent event = ...;
      * RegistrationEvent.Type type = event.getType();

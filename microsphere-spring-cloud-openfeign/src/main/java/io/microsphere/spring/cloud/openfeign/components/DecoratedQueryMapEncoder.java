@@ -22,7 +22,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
      * Returns the {@link QueryMapEncoder} implementation class to use when reloading
      * the delegate after a refresh. Defaults to {@link PageableSpringQueryMapEncoder}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends QueryMapEncoder> type = decoratedQueryMapEncoder.componentType();
      * }</pre>
@@ -38,7 +38,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
      * Encodes the given object into a query parameter map by delegating to the
      * underlying {@link QueryMapEncoder} implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Map<String, Object> queryParams = decoratedQueryMapEncoder.encode(myQueryObject);
      * }</pre>

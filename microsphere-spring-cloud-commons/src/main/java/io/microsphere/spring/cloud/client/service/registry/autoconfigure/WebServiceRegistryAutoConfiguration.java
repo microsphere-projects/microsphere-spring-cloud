@@ -51,7 +51,7 @@ public abstract class WebServiceRegistryAutoConfiguration implements Application
      * Handles {@link WebEndpointMappingsReadyEvent} by attaching web endpoint mapping metadata
      * to all available {@link Registration} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // This listener is invoked automatically by the Spring event system:
      * // When WebEndpointMappingsReadyEvent is published, metadata is attached

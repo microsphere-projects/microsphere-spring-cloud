@@ -26,7 +26,7 @@ public class FeignAutoConfiguration {
      * Creates a {@link FeignBuilderCustomizer} that adds the {@link NoOpRequestInterceptor}
      * as a default request interceptor to every Feign client builder.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Automatically registered as a Spring bean; customizes every Feign builder
      * FeignBuilderCustomizer customizer = addDefaultRequestInterceptorCustomizer();
