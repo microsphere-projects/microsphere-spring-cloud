@@ -17,9 +17,12 @@
 
 package io.microsphere.spring.cloud.context.named.autoconfigure;
 
+import io.microsphere.spring.cloud.context.named.SpecificationCustomizer;
 import io.microsphere.spring.cloud.context.named.config.SpecificationBeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,10 +33,11 @@ import org.springframework.context.annotation.Configuration;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see Specification
  * @see SpecificationBeanPostProcessor
+ * @see SpecificationCustomizer
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnBean(value = Specification.class)
+@ConditionalOnClass(name = "org.springframework.cloud.context.named.NamedContextFactory")
 @AutoConfigureAfter(name = {
         "org.springframework.cloud.loadbalancer.config.LoadBalancerAutoConfiguration",
         "org.springframework.cloud.openfeign.FeignAutoConfiguration"
@@ -41,6 +45,8 @@ import org.springframework.context.annotation.Configuration;
 public class SpecificationAutoConfiguration {
 
     @Bean
+    @ConditionalOnBean(value = Specification.class)
+    @ConditionalOnMissingBean
     public SpecificationBeanPostProcessor specificationBeanPostProcessor() {
         return new SpecificationBeanPostProcessor();
     }
