@@ -50,7 +50,7 @@
             <artifactId>microsphere-spring-boot-actuator</artifactId>
             <optional>true</optional>
         </dependency>
-        
+
         <!-- Spring Boot Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
