@@ -17,16 +17,21 @@
 
 package io.microsphere.spring.cloud.context.named.autoconfigure;
 
+import io.microsphere.spring.boot.test.AutoConfigurationTest;
 import io.microsphere.spring.cloud.context.named.SpecificationCustomizer;
 import io.microsphere.spring.cloud.context.named.config.SpecificationBeanPostProcessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.context.named.NamedContextFactory;
 import org.springframework.cloud.context.named.NamedContextFactory.Specification;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 /**
  * {@link SpecificationAutoConfiguration} Test
@@ -36,10 +41,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @since 1.0.0
  */
 @SpringBootTest(
-        classes = SpecificationAutoConfigurationTest.Config.class
+        classes = SpecificationAutoConfigurationTest.Config.class,
+        webEnvironment = NONE
 )
 @EnableAutoConfiguration
-class SpecificationAutoConfigurationTest implements Specification {
+class SpecificationAutoConfigurationTest extends AutoConfigurationTest<SpecificationAutoConfiguration> {
 
     @Autowired
     private SpecificationBeanPostProcessor specificationBeanPostProcessor;
@@ -53,7 +59,21 @@ class SpecificationAutoConfigurationTest implements Specification {
         assertNotNull(specificationCustomizer);
     }
 
-    static class Config {
+    @Override
+    protected void configureAutoConfiguredClasses(Set<Class<?>> autoConfiguredClasses) {
+        autoConfiguredClasses.add(SpecificationBeanPostProcessor.class);
+    }
+
+    @Override
+    protected void configureGlobalDisabledPropertyValues(Set<String> globalDisabledPropertyValues) {
+    }
+
+    @Override
+    protected void configureGlobalMissingClasses(Set<Class<?>> globalMissingClasses) {
+        globalMissingClasses.add(NamedContextFactory.class);
+    }
+
+    static class Config implements Specification {
 
         @Bean
         public static SpecificationCustomizer customizer() {
@@ -62,15 +82,16 @@ class SpecificationAutoConfigurationTest implements Specification {
                 assertNotNull(name);
             };
         }
+
+        @Override
+        public String getName() {
+            return "test";
+        }
+
+        @Override
+        public Class<?>[] getConfiguration() {
+            return new Class[0];
+        }
     }
 
-    @Override
-    public String getName() {
-        return "test";
-    }
-
-    @Override
-    public Class<?>[] getConfiguration() {
-        return new Class[0];
-    }
 }
