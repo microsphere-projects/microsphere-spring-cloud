@@ -20,15 +20,29 @@
 
     <dependencies>
 
-        <!-- Microsphere Dependencies -->
+        <!-- Microsphere Annotation Processor -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-annotation-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Microsphere Spring Boot Dependencies -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-spring-boot-core</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-spring-boot-webmvc</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-spring-boot-webflux</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
