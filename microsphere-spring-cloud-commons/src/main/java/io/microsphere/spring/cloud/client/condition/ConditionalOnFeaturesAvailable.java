@@ -18,12 +18,14 @@ package io.microsphere.spring.cloud.client.condition;
 
 import io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants;
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.client.actuator.FeaturesEndpoint;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.FEATURES_ENDPOINT_CLASS_NAME;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -67,6 +69,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({TYPE, METHOD})
 @Documented
 @ConditionalOnFeaturesEnabled
+@ConditionalOnClass(name = {
+        FEATURES_ENDPOINT_CLASS_NAME
+})
 @ConditionalOnAvailableEndpoint(endpoint = FeaturesEndpoint.class)
 public @interface ConditionalOnFeaturesAvailable {
 }
