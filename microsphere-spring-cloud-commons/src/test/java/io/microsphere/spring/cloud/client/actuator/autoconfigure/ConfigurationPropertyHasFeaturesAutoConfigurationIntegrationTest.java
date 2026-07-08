@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package io.microsphere.spring.cloud.client.actuator;
+package io.microsphere.spring.cloud.client.actuator.autoconfigure;
 
 
 import org.junit.jupiter.api.Test;
