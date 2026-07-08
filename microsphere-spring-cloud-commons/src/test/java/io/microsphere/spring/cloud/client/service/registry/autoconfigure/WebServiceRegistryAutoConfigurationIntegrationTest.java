@@ -54,7 +54,7 @@ import static org.springframework.http.HttpMethod.GET;
         },
         webEnvironment = RANDOM_PORT
 )
-abstract class WebServiceRegistryAutoConfigurationTest {
+abstract class WebServiceRegistryAutoConfigurationIntegrationTest {
 
     @Autowired
     private Registration registration;
