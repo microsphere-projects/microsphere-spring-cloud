@@ -17,11 +17,7 @@
 
     <name>Microsphere :: Spring Cloud :: OpenFeign</name>
     <description>Microsphere Spring Cloud OpenFeign</description>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+    
     <dependencies>
 
         <!-- Microsphere Annotation Processor -->
