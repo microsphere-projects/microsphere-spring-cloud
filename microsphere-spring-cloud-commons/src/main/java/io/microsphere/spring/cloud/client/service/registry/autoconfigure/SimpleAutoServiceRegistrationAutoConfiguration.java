@@ -54,8 +54,10 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = ENABLED_PROPERTY_NAME)
 @ConditionalOnAutoServiceRegistrationEnabled
+@ConditionalOnProperty(name = {
+        ENABLED_PROPERTY_NAME
+})
 @ConditionalOnClass(name = {
         REGISTRATION_CLASS_NAME
 })
