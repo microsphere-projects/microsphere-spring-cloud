@@ -78,10 +78,10 @@
             </exclusions>
         </dependency>
 
-        <!-- Microsphere Test -->
+        <!-- Microsphere Spring Boot Test -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-test</artifactId>
+            <artifactId>microsphere-spring-boot-test</artifactId>
             <scope>test</scope>
         </dependency>
 
