@@ -25,6 +25,7 @@ import io.microsphere.spring.cloud.client.service.registry.condition.Conditional
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -41,7 +42,9 @@ import org.springframework.context.annotation.Import;
 
 import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.spring.cloud.client.service.registry.autoconfigure.SimpleAutoServiceRegistrationAutoConfiguration.ENABLED_PROPERTY_NAME;
+import static io.microsphere.spring.cloud.client.service.registry.constants.ServiceRegistryConstants.REGISTRATION_CLASS_NAME;
 import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX;
+import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConstants.SPRING_APPLICATION_NAME_PLACEHOLDER;
 
 /**
  * Auto-Configuration class for {@link SimpleAutoServiceRegistration}
@@ -51,8 +54,13 @@ import static io.microsphere.spring.cloud.commons.constants.CommonsPropertyConst
  * @since 1.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = ENABLED_PROPERTY_NAME)
 @ConditionalOnAutoServiceRegistrationEnabled
+@ConditionalOnProperty(name = {
+        ENABLED_PROPERTY_NAME
+})
+@ConditionalOnClass(name = {
+        REGISTRATION_CLASS_NAME
+})
 @AutoConfigureBefore(value = {
         AutoServiceRegistrationAutoConfiguration.class
 })
@@ -83,14 +91,6 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
     /**
      * Creates a {@link Registration} bean from the application name, server properties, and network info.
      *
-     * <p>Example Usage:
-     * <pre>{@code
-     * // Auto-configured via Spring Boot; the bean is available for injection:
-     * @Autowired
-     * Registration registration;
-     * String serviceId = registration.getServiceId();
-     * }</pre>
-     *
      * @param applicationName  the Spring application name resolved from {@code spring.application.name}
      * @param serverProperties the {@link ServerProperties} providing the server port
      * @param inetUtils        the {@link InetUtils} for resolving the host address
@@ -98,7 +98,7 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
      */
     @Bean
     public Registration registration(
-            @Value("${spring.application.name:default}") String applicationName,
+            @Value(SPRING_APPLICATION_NAME_PLACEHOLDER) String applicationName,
             ServerProperties serverProperties,
             InetUtils inetUtils
     ) {
@@ -116,14 +116,6 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
 
     /**
      * Creates an {@link InMemoryServiceRegistry} bean as the default {@link ServiceRegistry} implementation.
-     *
-     * <p>Example Usage:
-     * <pre>{@code
-     * // Auto-configured when no other ServiceRegistry bean is present:
-     * @Autowired
-     * ServiceRegistry<Registration> serviceRegistry;
-     * serviceRegistry.register(registration);
-     * }</pre>
      *
      * @return a new {@link InMemoryServiceRegistry} instance
      */

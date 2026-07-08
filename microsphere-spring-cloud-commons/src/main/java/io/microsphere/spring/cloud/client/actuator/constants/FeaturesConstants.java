@@ -69,4 +69,11 @@ public interface FeaturesConstants {
      * The suffix of the bean name for {@link HasFeatures} : ".features"
      */
     String BEAN_NAME_SUFFIX = DOT + FEATURES;
+
+    /**
+     * The class name of {@link org.springframework.cloud.client.actuator.FeaturesEndpoint}
+     *
+     * @see org.springframework.cloud.client.actuator.FeaturesEndpoint
+     */
+    String FEATURES_ENDPOINT_CLASS_NAME = "org.springframework.cloud.client.actuator.FeaturesEndpoint";
 }

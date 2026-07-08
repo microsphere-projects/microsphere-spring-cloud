@@ -17,15 +17,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see FeignClientAutoRefreshAutoConfiguration
- * @since 0.0.1
+ * @since 1.0.0
  */
 @Retention(RUNTIME)
 @Target(TYPE)
 @Documented
 @Inherited
 @Import(value = {
-        EnableFeignAutoRefresh.Marker.class,
-        AutoRefreshCapabilityCustomizer.class
+        EnableFeignAutoRefresh.Marker.class
 })
 public @interface EnableFeignAutoRefresh {
 

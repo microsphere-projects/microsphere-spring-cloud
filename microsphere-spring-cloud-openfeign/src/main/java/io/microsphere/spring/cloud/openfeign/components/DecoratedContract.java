@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class DecoratedContract extends DecoratedFeignComponent<Contract> implements Contract {
 
@@ -23,7 +23,7 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
      * Returns the {@link Contract} implementation class to use when reloading
      * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Contract> type = decoratedContract.componentType();
      * }</pre>
@@ -40,7 +40,7 @@ public class DecoratedContract extends DecoratedFeignComponent<Contract> impleme
      * Parses and validates the metadata for the given target type by delegating
      * to the underlying {@link Contract} implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * List<MethodMetadata> metadata = decoratedContract.parseAndValidateMetadata(MyFeignClient.class);
      * }</pre>

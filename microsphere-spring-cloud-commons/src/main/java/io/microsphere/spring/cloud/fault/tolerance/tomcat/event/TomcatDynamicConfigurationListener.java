@@ -72,7 +72,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
      * the given {@link TomcatWebServer} when {@link EnvironmentChangeEvent EnvironmentChangeEvents}
      * are published.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * TomcatWebServer tomcatWebServer = ...;
      * ServerProperties serverProperties = ...;
@@ -107,7 +107,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
      * Handles an {@link EnvironmentChangeEvent} by reconfiguring the Tomcat connector
      * if any server-related properties have changed.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Automatically invoked by Spring when an EnvironmentChangeEvent is published.
      * // Reconfigures Tomcat settings such as thread pool size, connection timeout, etc.
@@ -186,7 +186,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
      * Configure the Tomcat {@link AbstractProtocol} settings such as thread pool sizes,
      * accept count, connection timeout, and max connections from the refreshed {@link ServerProperties}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ServerProperties refreshedProperties = ...;
      * ProtocolHandler protocolHandler = connector.getProtocolHandler();
@@ -248,7 +248,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
      * Configure the Tomcat {@link AbstractHttp11Protocol} settings such as max HTTP header size,
      * max swallow size, and max HTTP form POST size from the refreshed {@link ServerProperties}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ServerProperties refreshedProperties = ...;
      * Connector connector = tomcatWebServer.getTomcat().getConnector();
@@ -305,7 +305,7 @@ public class TomcatDynamicConfigurationListener implements ApplicationListener<E
     /**
      * Check whether the given integer value is positive (greater than zero).
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * boolean result = listener.isPositive(10);  // true
      * boolean result2 = listener.isPositive(0);  // false

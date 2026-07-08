@@ -45,7 +45,7 @@ public abstract class RegistrationEvent extends ApplicationEvent {
     /**
      * Create a new {@link RegistrationEvent} with the given {@link ServiceRegistry} and {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ServiceRegistry<Registration> registry = ...;
      * Registration registration = ...;

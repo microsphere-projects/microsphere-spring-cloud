@@ -21,7 +21,7 @@ import static org.springframework.aop.framework.AopProxyUtils.ultimateTargetClas
  * {@link Registration} objects and ensures that any metadata modifications (put, remove, clear)
  * are propagated to every registration in a thread-safe manner.
  *
- * <p>Example Usage:
+ * <h3>Example Usage</h3>
  * <pre>{@code
  * RegistrationMetaData metaData = new RegistrationMetaData(ofList(defaultRegistration));
  * metaData.put("key", "value");
@@ -59,7 +59,7 @@ public final class RegistrationMetaData implements Map<String, String> {
      * collection of {@link Registration} instances. Metadata changes are synchronized across
      * all registrations.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * DefaultRegistration registration = new DefaultRegistration();
      * registration.getMetadata().put("key1", "value1");
@@ -90,7 +90,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     /**
      * Returns the number of metadata entries.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * int count = metaData.size(); // e.g. 3
@@ -106,7 +106,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     /**
      * Returns whether this metadata map is empty.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * boolean empty = metaData.isEmpty(); // false if registrations have metadata
@@ -122,7 +122,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     /**
      * Returns whether this metadata contains the specified key.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * boolean hasKey = metaData.containsKey("key1"); // true
@@ -140,7 +140,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     /**
      * Returns whether this metadata contains the specified value.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * boolean hasValue = metaData.containsValue("value1"); // true
@@ -158,7 +158,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     /**
      * Returns the metadata value associated with the specified key.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * String value = metaData.get("key1"); // "value1"
@@ -177,7 +177,7 @@ public final class RegistrationMetaData implements Map<String, String> {
      * Puts a metadata entry and synchronizes it across all underlying {@link Registration}
      * instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * metaData.put("key4", "value4");
@@ -202,7 +202,7 @@ public final class RegistrationMetaData implements Map<String, String> {
      * Removes the metadata entry for the specified key and synchronizes the removal
      * across all underlying {@link Registration} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * metaData.remove("key1");
@@ -226,7 +226,7 @@ public final class RegistrationMetaData implements Map<String, String> {
      * Copies all entries from the specified map into this metadata and synchronizes
      * them across all underlying {@link Registration} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * metaData.putAll(Map.of("key4", "value4", "key5", "value5"));
@@ -248,7 +248,7 @@ public final class RegistrationMetaData implements Map<String, String> {
      * Clears all metadata entries and synchronizes the clearing across all underlying
      * {@link Registration} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * metaData.clear();
@@ -266,7 +266,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     /**
      * Returns an unmodifiable {@link Set} view of the metadata keys.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * Set<String> keys = metaData.keySet();
@@ -283,7 +283,7 @@ public final class RegistrationMetaData implements Map<String, String> {
     /**
      * Returns an unmodifiable {@link Collection} view of the metadata values.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * Collection<String> values = metaData.values();
@@ -302,7 +302,7 @@ public final class RegistrationMetaData implements Map<String, String> {
      * {@link #keySet()} and {@link #values()}, the returned set is not wrapped
      * in an unmodifiable view.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RegistrationMetaData metaData = new RegistrationMetaData(registrations);
      * Set<Map.Entry<String, String>> entries = metaData.entrySet();

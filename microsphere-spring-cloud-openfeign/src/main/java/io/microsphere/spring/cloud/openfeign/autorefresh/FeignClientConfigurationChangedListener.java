@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class FeignClientConfigurationChangedListener implements ApplicationListener<EnvironmentChangeEvent> {
 
@@ -18,7 +18,7 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
     /**
      * Constructs a listener that refreshes Feign components when the environment changes.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * FeignComponentRegistry registry = ...;
      * FeignClientConfigurationChangedListener listener =
@@ -38,7 +38,7 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
      * have changed (based on property keys prefixed with {@code feign.client.config.}) and
      * triggering a refresh on the corresponding clients via the {@link FeignComponentRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Triggered automatically when environment properties change:
      * // context.publishEvent(new EnvironmentChangeEvent(context, changedKeys));
@@ -58,7 +58,7 @@ public class FeignClientConfigurationChangedListener implements ApplicationListe
      * Resolves which Feign client names and their changed configuration keys are affected
      * by the given {@link EnvironmentChangeEvent}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Map<String, Set<String>> changed = listener.resolveChangedClient(event);
      * // e.g. {"my-client" -> {"retryer", "decoder"}}

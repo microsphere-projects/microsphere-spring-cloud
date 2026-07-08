@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEncoder> implements QueryMapEncoder {
 
@@ -22,7 +22,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
      * Returns the {@link QueryMapEncoder} implementation class to use when reloading
      * the delegate after a refresh. Defaults to {@link PageableSpringQueryMapEncoder}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends QueryMapEncoder> type = decoratedQueryMapEncoder.componentType();
      * }</pre>
@@ -38,7 +38,7 @@ public class DecoratedQueryMapEncoder extends DecoratedFeignComponent<QueryMapEn
      * Encodes the given object into a query parameter map by delegating to the
      * underlying {@link QueryMapEncoder} implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Map<String, Object> queryParams = decoratedQueryMapEncoder.encode(myQueryObject);
      * }</pre>
