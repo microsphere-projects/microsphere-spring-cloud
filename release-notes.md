@@ -236,4 +236,43 @@ Thank you for using our project! 🚀
 
 **Note:** For additional details, refer to the full commit history.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.20...0.2.21
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.20...0.2.21## v0.2.22
+
+# Release Notes for Version 0.2.22
+
+## New Features
+- **Feign Auto-Refresh**: Added auto-configuration for Feign auto-refresh components.  
+- **OpenFeign Enhancements**:  
+  - Introduced `@ConditionalOnOpenFeignEnabled` annotation.  
+  - Added OpenFeign availability condition annotation and constants.  
+  - Refactored OpenFeign condition constants usage.
+
+## Bug Fixes
+- Fixed integration test class name typo in `web registry` tests.
+
+## Documentation
+- **Javadocs**:  
+  - Clarified Javadoc example headings and cleaned up formatting.  
+  - Updated `@since` tags for OpenFeign to `1.0.0`.  
+  - Refined class Javadocs for integration tests.  
+- **README**: Updated version matrix to reflect the latest version.  
+
+## Dependency Updates
+- Bumped `microsphere-spring-boot` to version `0.2.30`.  
+- Upgraded parent POM to `microsphere-build` version `0.3.8`.  
+
+## Test Improvements
+- Added integration tests for service endpoints, auto-registration, and Tomcat fault tolerance.  
+- Simplified setup for discovery auto-config tests.  
+- Refined integration tests for registry and auto-registration functionality.  
+
+## Build and Workflow Enhancements
+- Centralized application name placeholder with `@Value`.  
+- Improved handling of merge conflicts for continuous integration (`chore: merge main into release`).  
+
+## Other Changes
+- Refined imports, annotations, and formatting across configurations and tests.  
+- Removed redundant encoding property from configurations.  
+- Introduced class constants to streamline conditions in auto-configuration.  
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.21...0.2.22
