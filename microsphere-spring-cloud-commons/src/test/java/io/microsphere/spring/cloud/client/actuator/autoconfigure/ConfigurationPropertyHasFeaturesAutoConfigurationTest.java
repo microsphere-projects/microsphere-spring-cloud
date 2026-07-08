@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package io.microsphere.spring.cloud.client.actuator;
+package io.microsphere.spring.cloud.client.actuator.autoconfigure;
 
 
 import io.microsphere.spring.boot.test.WebAutoConfigurationTest;
+import io.microsphere.spring.cloud.client.actuator.FeaturesProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.actuator.FeaturesEndpoint;
 

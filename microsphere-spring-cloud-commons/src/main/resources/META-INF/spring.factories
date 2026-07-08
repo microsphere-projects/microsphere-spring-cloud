@@ -8,6 +8,6 @@ io.microsphere.spring.cloud.client.service.registry.autoconfigure.WebFluxService
 io.microsphere.spring.cloud.client.service.registry.autoconfigure.SimpleAutoServiceRegistrationAutoConfiguration,\
 io.microsphere.spring.cloud.client.service.registry.actuate.autoconfigure.ServiceRegistrationEndpointAutoConfiguration,\
 io.microsphere.spring.cloud.fault.tolerance.tomcat.autoconfigure.TomcatFaultToleranceAutoConfiguration,\
-io.microsphere.spring.cloud.client.actuator.ConfigurationPropertyHasFeaturesAutoConfiguration
+io.microsphere.spring.cloud.client.actuator.autoconfigure.ConfigurationPropertyHasFeaturesAutoConfiguration
 
 com.alibaba.cloud.nacos.registry.NacosServiceRegistry = com.alibaba.cloud.nacos.registry.NacosRegistration
