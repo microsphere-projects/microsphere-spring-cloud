@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package io.microsphere.spring.cloud.client.actuator;
+package io.microsphere.spring.cloud.client.actuator.autoconfigure;
 
 import io.microsphere.logging.Logger;
+import io.microsphere.spring.cloud.client.actuator.FeaturesProperties;
 import io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants;
 import io.microsphere.spring.cloud.client.condition.ConditionalOnFeaturesAvailable;
 import io.microsphere.spring.context.config.AutoRegistrationBean;
