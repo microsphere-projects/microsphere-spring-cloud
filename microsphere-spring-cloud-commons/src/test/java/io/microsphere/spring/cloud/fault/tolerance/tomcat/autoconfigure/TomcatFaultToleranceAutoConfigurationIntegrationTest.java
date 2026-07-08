@@ -37,14 +37,16 @@ import static org.mockito.Mockito.mock;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
- * {@link TomcatFaultToleranceAutoConfiguration} Test
+ * {@link TomcatFaultToleranceAutoConfiguration} Integration Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-@SpringBootTest(classes = TomcatFaultToleranceAutoConfigurationTest.class, webEnvironment = RANDOM_PORT)
+@SpringBootTest(classes = {
+        TomcatFaultToleranceAutoConfigurationIntegrationTest.class
+}, webEnvironment = RANDOM_PORT)
 @EnableAutoConfiguration
-class TomcatFaultToleranceAutoConfigurationTest {
+class TomcatFaultToleranceAutoConfigurationIntegrationTest {
 
     @Autowired
     private EnvironmentManager environmentManager;
