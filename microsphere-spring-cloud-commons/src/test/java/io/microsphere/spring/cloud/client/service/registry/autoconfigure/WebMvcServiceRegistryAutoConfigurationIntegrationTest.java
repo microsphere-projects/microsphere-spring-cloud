@@ -25,5 +25,5 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
  * @since 1.0.0
  */
 @EnableAutoConfiguration
-class WebMvcServiceRegistryAutoConfigurationTest extends WebServiceRegistryAutoConfigurationTest {
+class WebMvcServiceRegistryAutoConfigurationIntegrationTest extends WebServiceRegistryAutoConfigurationIntegrationTest {
 }
