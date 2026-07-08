@@ -32,6 +32,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.client.actuator.NamedFeature;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 import java.util.Map;
@@ -88,8 +89,11 @@ import static io.microsphere.util.ClassUtils.getSimpleName;
  * @see AutoRegistrationBean
  * @since 1.0.0
  */
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnFeaturesAvailable
-@AutoConfigureBefore(name = "org.springframework.cloud.client.CommonsClientAutoConfiguration")
+@AutoConfigureBefore(name = {
+        "org.springframework.cloud.client.CommonsClientAutoConfiguration"             // Spring Cloud Commons API
+})
 @EnableConfigurationProperties(FeaturesProperties.class)
 public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFactoryAware, BeanClassLoaderAware, InitializingBean {
 
