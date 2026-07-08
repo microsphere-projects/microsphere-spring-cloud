@@ -19,7 +19,7 @@ package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 /**
- * {@link WebMvcServiceRegistryAutoConfiguration} Test
+ * {@link WebMvcServiceRegistryAutoConfiguration} Integration Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
