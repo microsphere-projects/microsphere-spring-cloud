@@ -14,77 +14,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
+import io.microsphere.spring.boot.test.AutoConfigurationTest;
 import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.UnionConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
-import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClientAutoConfiguration;
-import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClient;
-import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClientAutoConfiguration;
-import org.springframework.cloud.commons.util.UtilAutoConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
-import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.DISCOVERY_CLIENT_PROPERTY_PREFIX;
-import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.MODE_PROPERTY_NAME;
-import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.UNION_DISCOVERY_CLIENT_MODE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 /**
  * {@link DiscoveryClientAutoConfiguration} Test
  *
- * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see DiscoveryClientAutoConfiguration
+ * @see AutoConfigurationTest
  * @since 1.0.0
  */
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {
-        UtilAutoConfiguration.class,
-        SimpleDiscoveryClientAutoConfiguration.class,
-        CompositeDiscoveryClientAutoConfiguration.class,
-        DiscoveryClientAutoConfiguration.class
-})
-@TestPropertySource(
+        DiscoveryClientAutoConfigurationTest.class,
+}, webEnvironment = NONE,
         properties = {
-                "microsphere.spring.cloud.client.discovery.mode=union",
-                "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
-                "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
-                "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
-                "spring.cloud.discovery.client.simple.instances.test[0].port=8080",
-                "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
-        }
-)
-class DiscoveryClientAutoConfigurationTest {
+                "microsphere.spring.cloud.client.discovery.mode=union"
+        })
+public class DiscoveryClientAutoConfigurationTest extends AutoConfigurationTest<DiscoveryClientAutoConfiguration> {
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
-
-    @Test
-    void testConstants() {
-        assertEquals("microsphere.spring.cloud.client.discovery.", DISCOVERY_CLIENT_PROPERTY_PREFIX);
-        assertEquals("mode", MODE_PROPERTY_NAME);
-        assertEquals("union", UNION_DISCOVERY_CLIENT_MODE);
+    @Override
+    protected void configureAutoConfiguredClasses(Set<Class<?>> autoConfiguredClasses) {
+        autoConfiguredClasses.add(UnionConfiguration.class);
+        autoConfiguredClasses.add(UnionDiscoveryClient.class);
     }
 
-    @Test
-    void test() {
-        assertEquals(CompositeDiscoveryClient.class, discoveryClient.getClass());
-        CompositeDiscoveryClient compositeDiscoveryClient = CompositeDiscoveryClient.class.cast(discoveryClient);
-        List<DiscoveryClient> discoveryClients = compositeDiscoveryClient.getDiscoveryClients();
-        assertEquals(2, discoveryClients.size());
-        assertEquals(UnionDiscoveryClient.class, discoveryClients.get(0).getClass());
-        assertEquals(SimpleDiscoveryClient.class, discoveryClients.get(1).getClass());
-        List<String> services = compositeDiscoveryClient.getServices();
-        assertEquals(Arrays.asList("test"), services);
-        assertEquals(services, discoveryClients.get(0).getServices());
-        assertEquals(services, discoveryClients.get(1).getServices());
+    @Override
+    protected void configureGlobalDisabledPropertyValues(Set<String> globalDisabledPropertyValues) {
+        globalDisabledPropertyValues.add("spring.cloud.discovery.enabled=false");
+        globalDisabledPropertyValues.add("spring.cloud.discovery.blocking.enabled=false");
+    }
+
+    @Override
+    protected void configureGlobalMissingClasses(Set<Class<?>> globalMissingClasses) {
+        globalMissingClasses.add(DiscoveryClient.class);
     }
 }

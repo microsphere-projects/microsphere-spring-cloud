@@ -40,7 +40,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.http.HttpMethod.GET;
 
 /**
- * {@link WebServiceRegistryAutoConfiguration} Test
+ * {@link WebServiceRegistryAutoConfiguration} Integration Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see WebServiceRegistryAutoConfiguration
@@ -54,7 +54,7 @@ import static org.springframework.http.HttpMethod.GET;
         },
         webEnvironment = RANDOM_PORT
 )
-abstract class WebServiceRegistryAutoConfigurationTest {
+abstract class WebServiceRegistryAutoConfigurationIntegrationTest {
 
     @Autowired
     private Registration registration;

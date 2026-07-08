@@ -42,7 +42,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
      * to {@link ServiceRegistry} instances. Each registry is mapped to its corresponding
      * {@link Registration} type.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ServiceRegistry<DefaultRegistration> simpleRegistry = new InMemoryServiceRegistry();
      * MultipleServiceRegistry registry =
@@ -72,7 +72,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
      * Registers the given {@link MultipleRegistration} by delegating to each underlying
      * {@link ServiceRegistry} with the corresponding specific {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
      * MultipleRegistration registration = new MultipleRegistration(registrations);
@@ -90,7 +90,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
      * Deregisters the given {@link MultipleRegistration} by delegating to each underlying
      * {@link ServiceRegistry} with the corresponding specific {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
      * MultipleRegistration registration = new MultipleRegistration(registrations);
@@ -108,7 +108,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
     /**
      * Closes all underlying {@link ServiceRegistry} instances.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
      * registry.close();
@@ -123,7 +123,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
      * Sets the status of the given {@link MultipleRegistration} by delegating to each
      * underlying {@link ServiceRegistry} with the corresponding specific {@link Registration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
      * registry.register(registration);
@@ -156,7 +156,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
      * Retrieves the status of the given {@link MultipleRegistration} from the default
      * {@link ServiceRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * MultipleServiceRegistry registry = new MultipleServiceRegistry(registriesMap);
      * registry.register(registration);
@@ -180,7 +180,7 @@ public class MultipleServiceRegistry implements ServiceRegistry<MultipleRegistra
      * using generic type resolution. Falls back to {@code SpringFactoriesLoader} when the
      * generic type resolves to {@link Registration} itself.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Registration> regClass =
      *     MultipleServiceRegistry.getRegistrationClass(NacosServiceRegistry.class);

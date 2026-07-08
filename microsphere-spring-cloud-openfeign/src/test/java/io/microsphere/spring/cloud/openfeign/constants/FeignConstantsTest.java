@@ -15,23 +15,27 @@
  * limitations under the License.
  */
 
-package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
+package io.microsphere.spring.cloud.openfeign.constants;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.test.context.TestPropertySource;
+
+import org.junit.jupiter.api.Test;
+
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.ENABLED_PROPERTY_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CLASS_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * {@link WebFluxServiceRegistryAutoConfiguration} Test
+ * {@link FeignConstants} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see WebFluxServiceRegistryAutoConfiguration
+ * @see FeignConstants
  * @since 1.0.0
  */
-@TestPropertySource(
-        properties = {
-                "spring.main.web-application-type=reactive"
-        }
-)
-@EnableAutoConfiguration
-class WebFluxServiceRegistryAutoConfigurationTest extends WebServiceRegistryAutoConfigurationTest {
+class FeignConstantsTest {
+
+    @Test
+    void test() {
+        assertEquals("microsphere.spring.cloud.openfeign.enabled", ENABLED_PROPERTY_NAME);
+        assertEquals("feign.Feign", FEIGN_CLASS_NAME);
+    }
 }

@@ -24,7 +24,7 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class AutoRefreshCapability implements Capability, ApplicationContextAware {
 
@@ -42,7 +42,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Constructs a new {@link AutoRefreshCapability} with the required dependencies
      * for enriching Feign components with auto-refresh support.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * AutoRefreshCapability capability =
      *     new AutoRefreshCapability(clientProperties, feignContext, componentRegistry);
@@ -62,7 +62,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Sets the {@link ApplicationContext} and resolves the Feign client context ID
      * from the environment property {@code feign.client.name}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * // Invoked automatically by Spring's ApplicationContextAware mechanism
      * capability.setApplicationContext(applicationContext);
@@ -80,7 +80,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link Retryer} by wrapping it in a {@link DecoratedRetryer}
      * that supports auto-refresh, and registers it with the {@link FeignComponentRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Retryer enriched = capability.enrich(Retryer.NEVER_RETRY);
      * }</pre>
@@ -104,7 +104,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link Contract} by wrapping it in a {@link DecoratedContract}
      * that supports auto-refresh, and registers it with the {@link FeignComponentRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Contract enriched = capability.enrich(new SpringMvcContract());
      * }</pre>
@@ -128,7 +128,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link Decoder} by wrapping it in a {@link DecoratedDecoder}
      * that supports auto-refresh, and registers it with the {@link FeignComponentRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Decoder enriched = capability.enrich(new ResponseEntityDecoder(decoder));
      * }</pre>
@@ -152,7 +152,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link Encoder} by wrapping it in a {@link DecoratedEncoder}
      * that supports auto-refresh, and registers it with the {@link FeignComponentRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Encoder enriched = capability.enrich(new SpringEncoder(messageConverters));
      * }</pre>
@@ -176,7 +176,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link ErrorDecoder} by wrapping it in a {@link DecoratedErrorDecoder}
      * that supports auto-refresh, and registers it with the {@link FeignComponentRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * ErrorDecoder enriched = capability.enrich(new ErrorDecoder.Default());
      * }</pre>
@@ -199,7 +199,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link RequestInterceptor} by registering it with the
      * {@link FeignComponentRegistry} as part of a {@link io.microsphere.spring.cloud.openfeign.components.CompositedRequestInterceptor}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * RequestInterceptor enriched = capability.enrich(template -> template.header("X-Custom", "value"));
      * }</pre>
@@ -219,7 +219,7 @@ public class AutoRefreshCapability implements Capability, ApplicationContextAwar
      * Enriches the given {@link QueryMapEncoder} by wrapping it in a {@link DecoratedQueryMapEncoder}
      * that supports auto-refresh, and registers it with the {@link FeignComponentRegistry}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * QueryMapEncoder enriched = capability.enrich(new BeanQueryMapEncoder());
      * }</pre>

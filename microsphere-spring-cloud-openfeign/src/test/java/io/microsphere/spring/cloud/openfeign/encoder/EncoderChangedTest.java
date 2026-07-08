@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 @SpringBootTest(classes = EncoderChangedTest.class)
 @EnableAutoConfiguration

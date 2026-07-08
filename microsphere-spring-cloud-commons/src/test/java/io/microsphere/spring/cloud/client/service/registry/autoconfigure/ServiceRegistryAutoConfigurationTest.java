@@ -1,134 +1,58 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
-import io.microsphere.spring.cloud.client.service.registry.InMemoryServiceRegistry;
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationDeregisteredEvent;
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent;
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreDeregisteredEvent;
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationPreRegisteredEvent;
-import io.microsphere.spring.cloud.client.service.registry.event.RegistrationRegisteredEvent;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import io.microsphere.spring.boot.test.AutoConfigurationTest;
+import io.microsphere.spring.cloud.client.service.registry.aspect.EventPublishingRegistrationAspect;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-import static io.microsphere.spring.cloud.client.service.registry.DefaultRegistrationTest.createDefaultRegistration;
-import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.DEREGISTERED;
-import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_DEREGISTERED;
-import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.PRE_REGISTERED;
-import static io.microsphere.spring.cloud.client.service.registry.event.RegistrationEvent.Type.REGISTERED;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.aop.support.AopUtils.getTargetClass;
+import java.util.Set;
+
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 /**
  * {@link ServiceRegistryAutoConfiguration} Test
  *
- * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see ServiceRegistryAutoConfiguration
  * @since 1.0.0
  */
-@SpringBootTest(
-        classes = {
-                InMemoryServiceRegistry.class,
-                ServiceRegistryAutoConfiguration.class,
-                ServiceRegistryAutoConfigurationTest.class
-        }
-)
-@EnableAspectJAutoProxy
-class ServiceRegistryAutoConfigurationTest {
+@SpringBootTest(classes = {
+        ServiceRegistryAutoConfigurationTest.class
+}, webEnvironment = NONE)
+class ServiceRegistryAutoConfigurationTest extends AutoConfigurationTest<ServiceRegistryAutoConfiguration> {
 
-    @Autowired
-    private ConfigurableApplicationContext context;
-
-    @Autowired
-    private ServiceRegistry serviceRegistry;
-
-    private Registration registration;
-
-    private int count;
-
-    @BeforeEach
-    void setUp() {
-        this.registration = createDefaultRegistration();
+    @Override
+    protected void configureAutoConfiguredClasses(Set<Class<?>> autoConfiguredClasses) {
+        autoConfiguredClasses.add(EventPublishingRegistrationAspect.class);
     }
 
-    @Test
-    void testEventPublishingRegistrationAspect() {
-
-        context.addApplicationListener(this::onApplicationEvent);
-
-        serviceRegistry.register(registration);
-
-        assertEquals(2, count);
-
-        serviceRegistry.deregister(registration);
-
-        assertEquals(4, count);
+    @Override
+    protected void configureGlobalDisabledPropertyValues(Set<String> globalDisabledPropertyValues) {
+        globalDisabledPropertyValues.add("spring.cloud.service-registry.auto-registration.enabled=false");
     }
 
-    private void onApplicationEvent(ApplicationEvent event) {
-        if (event instanceof RegistrationPreRegisteredEvent) {
-            onRegistrationPreRegisteredEvent((RegistrationPreRegisteredEvent) event);
-        } else if (event instanceof RegistrationRegisteredEvent) {
-            onRegistrationRegisteredEvent((RegistrationRegisteredEvent) event);
-        } else if (event instanceof RegistrationPreDeregisteredEvent) {
-            onRegistrationPreDeregisteredEvent((RegistrationPreDeregisteredEvent) event);
-        } else if (event instanceof RegistrationDeregisteredEvent) {
-            onRegistrationDeregisteredEvent((RegistrationDeregisteredEvent) event);
-        }
-    }
-
-    private void onRegistrationPreRegisteredEvent(RegistrationPreRegisteredEvent event) {
-        assertRegistrationEvent(event);
-        assertTrue(event.isPreRegistered());
-        assertFalse(event.isRegistered());
-        assertFalse(event.isPreDeregistered());
-        assertFalse(event.isDeregistered());
-        assertEquals(PRE_REGISTERED, event.getType());
-    }
-
-    private void onRegistrationRegisteredEvent(RegistrationRegisteredEvent event) {
-        assertRegistrationEvent(event);
-        assertFalse(event.isPreRegistered());
-        assertTrue(event.isRegistered());
-        assertFalse(event.isPreDeregistered());
-        assertFalse(event.isDeregistered());
-        assertEquals(REGISTERED, event.getType());
-    }
-
-    private void onRegistrationPreDeregisteredEvent(RegistrationPreDeregisteredEvent event) {
-        assertRegistrationEvent(event);
-        assertFalse(event.isPreRegistered());
-        assertFalse(event.isRegistered());
-        assertTrue(event.isPreDeregistered());
-        assertFalse(event.isDeregistered());
-        assertEquals(PRE_DEREGISTERED, event.getType());
-    }
-
-    private void onRegistrationDeregisteredEvent(RegistrationDeregisteredEvent event) {
-        assertRegistrationEvent(event);
-        assertFalse(event.isPreRegistered());
-        assertFalse(event.isRegistered());
-        assertFalse(event.isPreDeregistered());
-        assertTrue(event.isDeregistered());
-        assertEquals(DEREGISTERED, event.getType());
-    }
-
-    private void assertRegistrationEvent(RegistrationEvent event) {
-        Registration registration = event.getRegistration();
-        assertEquals(this.registration, registration);
-        assertSame(this.registration, registration);
-        assertSame(getTargetClass(this.serviceRegistry), getTargetClass(event.getRegistry()));
-        assertNotNull(event.getSource());
-        assertNotNull(event.getType());
-        count++;
+    @Override
+    protected void configureGlobalMissingClasses(Set<Class<?>> globalMissingClasses) {
+        globalMissingClasses.add(Aspect.class);
+        globalMissingClasses.add(Registration.class);
     }
 }

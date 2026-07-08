@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implements Encoder {
 
@@ -25,7 +25,7 @@ public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implement
      * Returns the {@link Encoder} implementation class to use when reloading
      * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Encoder> type = decoratedEncoder.componentType();
      * }</pre>
@@ -42,7 +42,7 @@ public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implement
      * Encodes the given object into the {@link RequestTemplate} body by delegating
      * to the underlying {@link Encoder} implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * decoratedEncoder.encode(myDto, MyDto.class, requestTemplate);
      * }</pre>

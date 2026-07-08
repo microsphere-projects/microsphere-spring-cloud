@@ -14,16 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.microsphere.spring.cloud.client.service.registry.autoconfigure;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 /**
- * {@link WebMvcServiceRegistryAutoConfiguration} Test
+ * {@link WebFluxServiceRegistryAutoConfiguration} Integration Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see WebFluxServiceRegistryAutoConfiguration
  * @since 1.0.0
  */
+@TestPropertySource(
+        properties = {
+                "spring.main.web-application-type=reactive"
+        }
+)
 @EnableAutoConfiguration
-class WebMvcServiceRegistryAutoConfigurationTest extends WebServiceRegistryAutoConfigurationTest {
+class WebFluxServiceRegistryAutoConfigurationIntegrationTest extends WebServiceRegistryAutoConfigurationIntegrationTest {
 }

@@ -1,20 +1,36 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.microsphere.spring.cloud.client.service.registry.actuate.autoconfigure;
 
+
+import io.microsphere.spring.boot.test.WebAutoConfigurationTest;
 import io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceDeregistrationEndpoint;
 import io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceRegistrationEndpoint;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.client.serviceregistry.AutoServiceRegistration;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import java.util.Set;
 
 /**
  * {@link ServiceRegistrationEndpointAutoConfiguration} Test
  *
- * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see ServiceRegistrationEndpointAutoConfiguration
  * @since 1.0.0
  */
@@ -22,25 +38,29 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         classes = {
                 ServiceRegistrationEndpointAutoConfigurationTest.class
         },
-        webEnvironment = RANDOM_PORT,
         properties = {
-                "microsphere.spring.cloud.service-registry.auto-registration.simple.enabled=true",
+                "management.endpoints.web.exposure.include=serviceRegistration,serviceDeregistration",
                 "management.endpoint.serviceRegistration.enabled=true",
                 "management.endpoint.serviceDeregistration.enabled=true",
         }
 )
-@EnableAutoConfiguration
-class ServiceRegistrationEndpointAutoConfigurationTest {
+class ServiceRegistrationEndpointAutoConfigurationTest extends WebAutoConfigurationTest<ServiceRegistrationEndpointAutoConfiguration> {
 
-    @Autowired
-    private ObjectProvider<ServiceRegistrationEndpoint> serviceRegistrationEndpoint;
+    @Override
+    protected void configureAutoConfiguredClasses(Set<Class<?>> autoConfiguredClasses) {
+        autoConfiguredClasses.add(ServiceRegistrationEndpoint.class);
+        autoConfiguredClasses.add(ServiceDeregistrationEndpoint.class);
+    }
 
-    @Autowired
-    private ObjectProvider<ServiceDeregistrationEndpoint> serviceDeregistrationEndpoint;
+    @Override
+    protected void configureGlobalDisabledPropertyValues(Set<String> globalDisabledPropertyValues) {
+        globalDisabledPropertyValues.add("spring.cloud.discovery.enabled=false");
+        globalDisabledPropertyValues.add("spring.cloud.service-registry.auto-registration.enabled=false");
+    }
 
-    @Test
-    void testEndpoints() {
-        assertNotNull(serviceRegistrationEndpoint.getIfAvailable());
-        assertNotNull(serviceDeregistrationEndpoint.getIfAvailable());
+    @Override
+    protected void configureGlobalMissingClasses(Set<Class<?>> globalMissingClasses) {
+        globalMissingClasses.add(Endpoint.class);
+        globalMissingClasses.add(AutoServiceRegistration.class);
     }
 }

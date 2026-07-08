@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implements Decoder {
 
@@ -26,7 +26,7 @@ public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implement
      * Returns the {@link Decoder} implementation class to use when reloading
      * the delegate after a refresh, as configured in {@link FeignClientConfiguration}.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Class<? extends Decoder> type = decoratedDecoder.componentType();
      * }</pre>
@@ -43,7 +43,7 @@ public class DecoratedDecoder extends DecoratedFeignComponent<Decoder> implement
      * Decodes the given {@link Response} into an object of the specified type by
      * delegating to the underlying {@link Decoder} implementation.
      *
-     * <p>Example Usage:
+     * <h3>Example Usage</h3>
      * <pre>{@code
      * Object result = decoratedDecoder.decode(response, MyDto.class);
      * }</pre>

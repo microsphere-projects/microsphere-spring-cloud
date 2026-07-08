@@ -78,4 +78,11 @@ public interface CommonsPropertyConstants extends SpringCloudPropertyConstants {
     )
     String COMPOSITE_REGISTRATION_ENABLED_PROPERTY_NAME = MICROSPHERE_SPRING_CLOUD_PROPERTY_NAME_PREFIX + "composite-registration." + ENABLED_PROPERTY_NAME;
 
+    /**
+     * The placeholder of Spring Application Name : ${spring.application.name:application}
+     *
+     * @see org.springframework.beans.factory.annotation.Value
+     */
+    String SPRING_APPLICATION_NAME_PLACEHOLDER = "${spring.application.name:application}";
+
 }
