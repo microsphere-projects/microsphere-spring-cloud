@@ -21,7 +21,11 @@ package io.microsphere.spring.cloud.openfeign.constants;
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.OPEN_FEIGN_CLASS_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_AUTO_CONFIGURATION_CLASS_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_BUILDER_CUSTOMIZER_CLASS_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CAPABILITY_CLASS_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CLASS_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CLIENT_FACTORY_BEAN_CLASS_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -36,6 +40,10 @@ class FeignConstantsTest {
     @Test
     void test() {
         assertEquals("microsphere.spring.cloud.openfeign.enabled", ENABLED_PROPERTY_NAME);
-        assertEquals("feign.Feign", OPEN_FEIGN_CLASS_NAME);
+        assertEquals("feign.Feign", FEIGN_CLASS_NAME);
+        assertEquals("feign.Capability", FEIGN_CAPABILITY_CLASS_NAME);
+        assertEquals("org.springframework.cloud.openfeign.FeignBuilderCustomizer", FEIGN_BUILDER_CUSTOMIZER_CLASS_NAME);
+        assertEquals("org.springframework.cloud.openfeign.FeignClientFactoryBean", FEIGN_CLIENT_FACTORY_BEAN_CLASS_NAME);
+        assertEquals("org.springframework.cloud.openfeign.FeignAutoConfiguration", FEIGN_AUTO_CONFIGURATION_CLASS_NAME);
     }
 }

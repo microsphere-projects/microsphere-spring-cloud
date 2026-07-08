@@ -49,6 +49,34 @@ public interface FeignConstants {
      *
      * @see feign.Feign
      */
-    String OPEN_FEIGN_CLASS_NAME = "feign.Feign";
+    String FEIGN_CLASS_NAME = "feign.Feign";
+
+    /**
+     * The class name of {@link feign.Capability}
+     *
+     * @see feign.Capability
+     */
+    String FEIGN_CAPABILITY_CLASS_NAME = "feign.Capability";
+
+    /**
+     * The class name of {@link org.springframework.cloud.openfeign.FeignBuilderCustomizer}
+     *
+     * @see org.springframework.cloud.openfeign.FeignBuilderCustomizer
+     */
+    String FEIGN_BUILDER_CUSTOMIZER_CLASS_NAME = "org.springframework.cloud.openfeign.FeignBuilderCustomizer";
+
+    /**
+     * The class name of {@link org.springframework.cloud.openfeign.FeignClientFactoryBean}
+     *
+     * @see org.springframework.cloud.openfeign.FeignClientFactoryBean
+     */
+    String FEIGN_CLIENT_FACTORY_BEAN_CLASS_NAME = "org.springframework.cloud.openfeign.FeignClientFactoryBean";
+
+    /**
+     * The class name of {@link org.springframework.cloud.openfeign.FeignAutoConfiguration}
+     *
+     * @see org.springframework.cloud.openfeign.FeignAutoConfiguration
+     */
+    String FEIGN_AUTO_CONFIGURATION_CLASS_NAME = "org.springframework.cloud.openfeign.FeignAutoConfiguration";
 
 }
