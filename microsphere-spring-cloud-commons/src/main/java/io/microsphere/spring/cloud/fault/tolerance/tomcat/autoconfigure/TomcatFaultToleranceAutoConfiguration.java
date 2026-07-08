@@ -19,21 +19,18 @@ package io.microsphere.spring.cloud.fault.tolerance.tomcat.autoconfigure;
 import io.microsphere.annotation.ConfigurationProperty;
 import io.microsphere.constants.PropertyConstants;
 import io.microsphere.spring.cloud.fault.tolerance.tomcat.event.TomcatDynamicConfigurationListener;
-import org.apache.catalina.startup.Tomcat;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration;
 import org.springframework.boot.web.context.ConfigurableWebServerApplicationContext;
 import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.server.WebServer;
-import org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration;
-import org.springframework.cloud.context.environment.EnvironmentChangeEvent;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
 import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
@@ -45,18 +42,20 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(
         name = ENABLED_PROPERTY_NAME,
         matchIfMissing = true
 )
-@ConditionalOnClass(value = {
-        EnvironmentChangeEvent.class,
-        Tomcat.class
+@ConditionalOnClass(name = {
+        "org.apache.catalina.startup.Tomcat",                                                                      // Apache Tomcat API
+        "org.springframework.cloud.context.environment.EnvironmentChangeEvent",                                    // Spring Cloud Context API
 })
 @ConditionalOnWebApplication(type = SERVLET)
-@AutoConfigureAfter(value = {
-        EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
-        ConfigurationPropertiesRebinderAutoConfiguration.class
+@AutoConfigureAfter(name = {
+        "org.springframework.boot.web.embedded.tomcat.TomcatWebServer",                                            // Spring Boot API
+        "org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration", // Spring Boot Auto-Configure API
+        "org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration"                 // Spring Cloud Context API
 })
 public class TomcatFaultToleranceAutoConfiguration {
 
