@@ -10,7 +10,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 @SpringBootTest(classes = RequestInterceptorChangedTest.class, webEnvironment = NONE)
 @EnableAutoConfiguration

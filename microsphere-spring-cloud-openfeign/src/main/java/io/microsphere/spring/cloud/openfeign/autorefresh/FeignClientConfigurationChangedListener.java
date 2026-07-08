@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class FeignClientConfigurationChangedListener implements ApplicationListener<EnvironmentChangeEvent> {
 
