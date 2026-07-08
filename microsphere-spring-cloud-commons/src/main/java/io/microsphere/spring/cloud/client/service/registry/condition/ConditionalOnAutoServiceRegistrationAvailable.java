@@ -17,14 +17,15 @@
 package io.microsphere.spring.cloud.client.service.registry.condition;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistration;
-import org.springframework.cloud.client.serviceregistry.Registration;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static io.microsphere.spring.cloud.client.service.registry.constants.ServiceRegistryConstants.REGISTRATION_CLASS_NAME;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -41,7 +42,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
 @Documented
-@ConditionalOnBean(Registration.class)
+@ConditionalOnBean(type = {
+        REGISTRATION_CLASS_NAME
+})
 @ConditionalOnAutoServiceRegistrationEnabled
 public @interface ConditionalOnAutoServiceRegistrationAvailable {
 }
