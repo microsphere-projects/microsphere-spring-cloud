@@ -89,7 +89,9 @@ import static io.microsphere.util.ClassUtils.getSimpleName;
  * @since 1.0.0
  */
 @ConditionalOnFeaturesAvailable
-@AutoConfigureBefore(name = "org.springframework.cloud.client.CommonsClientAutoConfiguration")
+@AutoConfigureBefore(name = {
+        "org.springframework.cloud.client.CommonsClientAutoConfiguration"             // Spring Cloud Commons API
+})
 @EnableConfigurationProperties(FeaturesProperties.class)
 public class ConfigurationPropertyHasFeaturesAutoConfiguration implements BeanFactoryAware, BeanClassLoaderAware, InitializingBean {
 
