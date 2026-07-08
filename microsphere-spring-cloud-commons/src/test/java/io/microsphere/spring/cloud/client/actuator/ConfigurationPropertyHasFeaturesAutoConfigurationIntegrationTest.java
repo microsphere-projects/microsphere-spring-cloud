@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link ConfigurationPropertyHasFeaturesAutoConfiguration} Test
+ * {@link ConfigurationPropertyHasFeaturesAutoConfiguration} Integration Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see ConfigurationPropertyHasFeaturesAutoConfiguration
@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(
         classes = {
                 RestTemplate.class,
-                ConfigurationPropertyHasFeaturesAutoConfigurationTest.class
+                ConfigurationPropertyHasFeaturesAutoConfigurationIntegrationTest.class
         },
         properties = {
                 "microsphere.spring.cloud.features.abstract.rest=org.springframework.web.client.RestOperations",
@@ -60,7 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         }
 )
 @EnableAutoConfiguration
-class ConfigurationPropertyHasFeaturesAutoConfigurationTest {
+class ConfigurationPropertyHasFeaturesAutoConfigurationIntegrationTest {
 
     @Autowired
     private Map<String, HasFeatures> hasFeaturesBeansMap;
