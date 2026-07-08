@@ -25,6 +25,7 @@ import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesCons
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.ABSTRACT_FEATURE_PROPERTY_NAME_PREFIX;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.BEAN_NAME_SUFFIX;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.FEATURES;
+import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.FEATURES_ENDPOINT_CLASS_NAME;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.NAMED;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.NAMED_FEATURE_PROPERTY_NAME_PATTERN;
 import static io.microsphere.spring.cloud.client.actuator.constants.FeaturesConstants.NAMED_FEATURE_PROPERTY_NAME_PREFIX;
@@ -54,5 +55,6 @@ class FeaturesConstantsTest {
         assertEquals("microsphere.spring.cloud.features.abstract.{}", ABSTRACT_FEATURE_PROPERTY_NAME_PATTERN);
         assertEquals("microsphere.spring.cloud.features.named.{}.{}", NAMED_FEATURE_PROPERTY_NAME_PATTERN);
         assertEquals(".features", BEAN_NAME_SUFFIX);
+        assertEquals("org.springframework.cloud.client.actuator.FeaturesEndpoint", FEATURES_ENDPOINT_CLASS_NAME);
     }
 }
