@@ -19,7 +19,6 @@ package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
 import io.microsphere.spring.cloud.client.discovery.ReactiveDiscoveryClientAdapter;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -27,8 +26,6 @@ import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryCl
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClientAutoConfiguration;
 import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClientAutoConfiguration;
 import org.springframework.cloud.commons.util.UtilAutoConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
@@ -43,22 +40,18 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  * @see ReactiveDiscoveryClientAutoConfiguration
  * @since 1.0.0
  */
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {
         UtilAutoConfiguration.class,
         SimpleReactiveDiscoveryClientAutoConfiguration.class,
         CompositeDiscoveryClientAutoConfiguration.class,
         ReactiveDiscoveryClientAutoConfiguration.class
+}, properties = {
+        "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
+        "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
+        "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
+        "spring.cloud.discovery.client.simple.instances.test[0].port=8080",
+        "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
 })
-@TestPropertySource(
-        properties = {
-                "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
-                "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
-                "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
-                "spring.cloud.discovery.client.simple.instances.test[0].port=8080",
-                "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
-        }
-)
 class ReactiveDiscoveryClientAutoConfigurationTest {
 
     @Autowired

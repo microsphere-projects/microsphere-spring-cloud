@@ -18,7 +18,6 @@ package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
 import io.microsphere.spring.cloud.client.discovery.UnionDiscoveryClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -27,12 +26,11 @@ import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryCl
 import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClient;
 import org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClientAutoConfiguration;
 import org.springframework.cloud.commons.util.UtilAutoConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static io.microsphere.collection.Lists.ofList;
 import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.DISCOVERY_CLIENT_PROPERTY_PREFIX;
 import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.MODE_PROPERTY_NAME;
 import static io.microsphere.spring.cloud.client.discovery.autoconfigure.DiscoveryClientAutoConfiguration.UNION_DISCOVERY_CLIENT_MODE;
@@ -45,23 +43,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @see DiscoveryClientAutoConfiguration
  * @since 1.0.0
  */
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {
         UtilAutoConfiguration.class,
         SimpleDiscoveryClientAutoConfiguration.class,
         CompositeDiscoveryClientAutoConfiguration.class,
         DiscoveryClientAutoConfiguration.class
+}, properties = {
+        "microsphere.spring.cloud.client.discovery.mode=union",
+        "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
+        "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
+        "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
+        "spring.cloud.discovery.client.simple.instances.test[0].port=8080",
+        "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
 })
-@TestPropertySource(
-        properties = {
-                "microsphere.spring.cloud.client.discovery.mode=union",
-                "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
-                "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
-                "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
-                "spring.cloud.discovery.client.simple.instances.test[0].port=8080",
-                "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
-        }
-)
 class DiscoveryClientAutoConfigurationTest {
 
     @Autowired
@@ -83,7 +77,7 @@ class DiscoveryClientAutoConfigurationTest {
         assertEquals(UnionDiscoveryClient.class, discoveryClients.get(0).getClass());
         assertEquals(SimpleDiscoveryClient.class, discoveryClients.get(1).getClass());
         List<String> services = compositeDiscoveryClient.getServices();
-        assertEquals(Arrays.asList("test"), services);
+        assertEquals(ofList("test"), services);
         assertEquals(services, discoveryClients.get(0).getServices());
         assertEquals(services, discoveryClients.get(1).getServices());
     }
