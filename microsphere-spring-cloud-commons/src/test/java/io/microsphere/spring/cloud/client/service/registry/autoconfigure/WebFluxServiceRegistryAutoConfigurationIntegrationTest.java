@@ -21,7 +21,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 /**
- * {@link WebFluxServiceRegistryAutoConfiguration} Test
+ * {@link WebFluxServiceRegistryAutoConfiguration} Integration Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see WebFluxServiceRegistryAutoConfiguration
