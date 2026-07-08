@@ -18,7 +18,7 @@
 package io.microsphere.spring.cloud.client.service.registry.actuate.autoconfigure;
 
 
-import io.microsphere.spring.boot.test.AutoConfigurationTest;
+import io.microsphere.spring.boot.test.WebAutoConfigurationTest;
 import io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceDeregistrationEndpoint;
 import io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceRegistrationEndpoint;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
@@ -44,7 +44,7 @@ import java.util.Set;
                 "management.endpoint.serviceDeregistration.enabled=true",
         }
 )
-class ServiceRegistrationEndpointAutoConfigurationTest extends AutoConfigurationTest<ServiceRegistrationEndpointAutoConfiguration> {
+class ServiceRegistrationEndpointAutoConfigurationTest extends WebAutoConfigurationTest<ServiceRegistrationEndpointAutoConfiguration> {
 
     @Override
     protected void configureAutoConfiguredClasses(Set<Class<?>> autoConfiguredClasses) {
