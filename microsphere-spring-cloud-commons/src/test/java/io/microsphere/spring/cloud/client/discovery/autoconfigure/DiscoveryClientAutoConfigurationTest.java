@@ -25,6 +25,8 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 import java.util.Set;
 
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
+
 /**
  * {@link DiscoveryClientAutoConfiguration} Test
  *
@@ -35,9 +37,10 @@ import java.util.Set;
  */
 @SpringBootTest(classes = {
         DiscoveryClientAutoConfigurationTest.class,
-}, properties = {
-        "microsphere.spring.cloud.client.discovery.mode=union"
-})
+}, webEnvironment = NONE,
+        properties = {
+                "microsphere.spring.cloud.client.discovery.mode=union"
+        })
 public class DiscoveryClientAutoConfigurationTest extends AutoConfigurationTest<DiscoveryClientAutoConfiguration> {
 
     @Override
