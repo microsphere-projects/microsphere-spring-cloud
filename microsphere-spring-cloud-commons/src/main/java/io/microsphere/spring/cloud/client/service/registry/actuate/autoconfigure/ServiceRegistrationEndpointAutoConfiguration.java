@@ -16,6 +16,7 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.actuate.autoconfigure;
 
+import io.microsphere.spring.boot.actuate.condition.ConditionalOnActuatorEndpointPresent;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceDeregistrationEndpoint;
 import io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceRegistrationEndpoint;
@@ -27,6 +28,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.cloud.client.ConditionalOnDiscoveryEnabled;
 import org.springframework.context.annotation.Bean;
 
+import static io.microsphere.spring.cloud.client.service.registry.constants.ServiceRegistryConstants.AUTO_SERVICE_REGISTRATION_CLASS_NAME;
+
 /**
  * Microsphere {@link Endpoint @Endpoints} Auto-Configuration for Service Registration
  *
@@ -35,11 +38,11 @@ import org.springframework.context.annotation.Bean;
  * @since 1.0.0
  */
 @ConditionalOnDiscoveryEnabled
-@ConditionalOnClass(name = {
-        "org.springframework.boot.actuate.endpoint.annotation.Endpoint",
-        "org.springframework.cloud.client.serviceregistry.AutoServiceRegistration"
-})
 @ConditionalOnAutoServiceRegistrationEnabled
+@ConditionalOnActuatorEndpointPresent
+@ConditionalOnClass(name = {
+        AUTO_SERVICE_REGISTRATION_CLASS_NAME
+})
 @AutoConfigureAfter(name = {
         "org.springframework.cloud.client.serviceregistry.ServiceRegistryAutoConfiguration",
         "org.springframework.cloud.zookeeper.serviceregistry.ZookeeperServiceRegistryAutoConfiguration",
