@@ -75,12 +75,6 @@ public class TomcatFaultToleranceAutoConfiguration {
      * Handles the {@link WebServerInitializedEvent} to register a {@link TomcatDynamicConfigurationListener}
      * when the embedded web server is a {@link TomcatWebServer}.
      *
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // Automatically invoked by Spring when WebServerInitializedEvent is published.
-     * // The listener is registered as an ApplicationListener on the web application context.
-     * }</pre>
-     *
      * @param event the {@link WebServerInitializedEvent} triggered after the web server starts
      */
     @EventListener(WebServerInitializedEvent.class)
