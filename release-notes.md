@@ -231,4 +231,47 @@ For full details of the changes included in this release, please refer to the [F
 
 For detailed changes, check the [Full Changelog](https://github.com/mercyblitz/project-name/compare/0.1.20...0.1.21).
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.20...0.1.21
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.20...0.1.21## v0.1.22
+
+# Release Notes for Version 0.1.22
+
+## New Features
+- Added support for Feign auto-refresh with customizer and improved ordering ([7f09bfb], [4c39928]).
+- Introduced conditional annotations for OpenFeign: `@ConditionalOnOpenFeignAvailable` and `@ConditionalOnOpenFeignEnabled` ([fc73e41], [4c82ac0]).
+- Added optional Microsphere annotation processor ([9684774]).
+
+## Bug Fixes
+- Hardened OpenFeign auto-configuration class conditions ([dffe6b0]).
+- Improved feature auto-configuration to handle classpath dependencies more effectively ([0e43d3e], [d9f7d53], [147d975]).
+- Guarded multiple service registry and auto-registration configurations by classpath or bean presence ([57d051e], [79588cd], [052a02a]).
+
+## Documentation
+- Updated README with latest branch versions ([d9a8ba8]).
+- Improved Javadoc consistency with standardized headings and example blocks ([7cf912a], [138cc57]).
+- Enhanced Javadoc clarification for integration test classes ([ceb651d]).
+
+## Dependency Updates
+- Upgraded `microsphere-spring-boot` to `0.1.30` ([5cf5f20]).
+- Updated `microsphere-build` parent to versions `0.3.6`, `0.3.7`, and `0.3.8` ([1b2f7d0], [2942487], [1033366]).
+
+## Test Improvements
+- Added comprehensive condition tests for feature auto-configurations ([aee75ba]).
+- Improved coverage and integration tests for service endpoints, registry, and auto-registration configurations ([52736df], [c62b5fe], [158db7f], [7a92168]).
+- Standardized test setup to use `NONE` as the web environment where applicable ([a94182b], [111dda1]).
+- Refactored and renamed test classes for clarity and improved scope definitions ([3096606], [24c52ba], [862e429], [ba84a43]).
+
+## Build and Workflow Enhancements
+- Introduced Maven Wrapper to CI build workflow ([9ea1165]).
+- Adjusted CI workflow to use `mvn` commands ([8629a90]).
+- Normalized whitespace in commons POM ([1da4d7d]).
+- Refined Microsphere dependencies for the commons module ([ea95293]).
+
+## Other Changes
+- Cleaned up Javadoc in Tomcat fault tolerance auto-configuration ([037c5b1]).
+- Inline Feign and OpenFeign class references for clarity ([39d9bb0], [54ee2a8]).
+
+---
+
+**Full Changelog:** Available in the project repository.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.21...0.1.22
