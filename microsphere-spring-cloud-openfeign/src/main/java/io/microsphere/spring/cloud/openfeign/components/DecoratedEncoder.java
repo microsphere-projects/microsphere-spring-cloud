@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class DecoratedEncoder extends DecoratedFeignComponent<Encoder> implements Encoder {
 

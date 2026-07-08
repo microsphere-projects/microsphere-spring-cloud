@@ -4,7 +4,7 @@ import feign.ResponseHandler;
 
 /**
  * @author <a href="mailto:hanchao@66yunlian.com">韩超</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public abstract class FeignComponentAssert<T> {
 
