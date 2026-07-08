@@ -23,6 +23,7 @@ import io.microsphere.spring.cloud.client.service.registry.aspect.EventPublishin
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnMultipleRegistrationEnabled;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationProperties;
 import org.springframework.cloud.client.serviceregistry.Registration;
@@ -35,6 +36,8 @@ import org.springframework.context.annotation.Primary;
 import java.util.Collection;
 import java.util.Map;
 
+import static io.microsphere.spring.cloud.client.service.registry.constants.ServiceRegistryConstants.REGISTRATION_CLASS_NAME;
+
 /**
  * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry}
  *
@@ -43,6 +46,10 @@ import java.util.Map;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnAutoServiceRegistrationEnabled
+@ConditionalOnClass(name = {
+        "org.aspectj.lang.annotation.Aspect",              // AspectJ API
+        REGISTRATION_CLASS_NAME
+})
 @Import(value = {
         EventPublishingRegistrationAspect.class,
         ServiceRegistryAutoConfiguration.MultipleConfiguration.class
