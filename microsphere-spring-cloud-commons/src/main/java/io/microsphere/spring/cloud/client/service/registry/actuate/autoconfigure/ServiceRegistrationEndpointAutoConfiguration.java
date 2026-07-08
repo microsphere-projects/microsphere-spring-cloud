@@ -16,6 +16,7 @@
  */
 package io.microsphere.spring.cloud.client.service.registry.actuate.autoconfigure;
 
+import io.microsphere.spring.boot.actuate.condition.ConditionalOnActuatorEndpointPresent;
 import io.microsphere.spring.cloud.client.service.registry.condition.ConditionalOnAutoServiceRegistrationEnabled;
 import io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceDeregistrationEndpoint;
 import io.microsphere.spring.cloud.client.service.registry.endpoint.ServiceRegistrationEndpoint;
@@ -26,6 +27,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.client.ConditionalOnDiscoveryEnabled;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import static io.microsphere.spring.cloud.client.service.registry.constants.ServiceRegistryConstants.AUTO_SERVICE_REGISTRATION_CLASS_NAME;
 
 /**
  * Microsphere {@link Endpoint @Endpoints} Auto-Configuration for Service Registration
@@ -34,31 +38,24 @@ import org.springframework.context.annotation.Bean;
  * @see Endpoint
  * @since 1.0.0
  */
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnDiscoveryEnabled
-@ConditionalOnClass(name = {
-        "org.springframework.boot.actuate.endpoint.annotation.Endpoint",
-        "org.springframework.cloud.client.serviceregistry.AutoServiceRegistration"
-})
 @ConditionalOnAutoServiceRegistrationEnabled
+@ConditionalOnActuatorEndpointPresent
+@ConditionalOnClass(name = {
+        AUTO_SERVICE_REGISTRATION_CLASS_NAME
+})
 @AutoConfigureAfter(name = {
-        "org.springframework.cloud.client.serviceregistry.ServiceRegistryAutoConfiguration",
-        "org.springframework.cloud.zookeeper.serviceregistry.ZookeeperServiceRegistryAutoConfiguration",
-        "org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistryAutoConfiguration",
-        "org.springframework.cloud.kubernetes.discovery.KubernetesDiscoveryClientAutoConfiguration",
-        "com.alibaba.cloud.nacos.registry.NacosServiceRegistryAutoConfiguration",
+        "org.springframework.cloud.client.serviceregistry.ServiceRegistryAutoConfiguration",             // Spring Cloud Commons API
+        "org.springframework.cloud.zookeeper.serviceregistry.ZookeeperServiceRegistryAutoConfiguration", // Spring Cloud Zookeeper Discovery API
+        "org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistryAutoConfiguration",       // Spring Cloud Consul Discovery API
+        "org.springframework.cloud.kubernetes.discovery.KubernetesDiscoveryClientAutoConfiguration",     // Spring Cloud Kubernetes Discovery API
+        "com.alibaba.cloud.nacos.registry.NacosServiceRegistryAutoConfiguration",                        // Spring Cloud Alibaba Nacos Discovery API
 })
 public class ServiceRegistrationEndpointAutoConfiguration {
 
     /**
      * Creates a {@link ServiceRegistrationEndpoint} bean for managing service registration via actuator.
-     *
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // The endpoint is auto-configured and accessible at /actuator/serviceRegistration
-     * @Autowired
-     * ServiceRegistrationEndpoint endpoint;
-     * Map<String, Object> metadata = endpoint.metadata();
-     * }</pre>
      *
      * @return a new {@link ServiceRegistrationEndpoint} instance
      */
@@ -71,14 +68,6 @@ public class ServiceRegistrationEndpointAutoConfiguration {
 
     /**
      * Creates a {@link ServiceDeregistrationEndpoint} bean for managing service deregistration via actuator.
-     *
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // The endpoint is auto-configured and accessible at /actuator/serviceDeregistration
-     * @Autowired
-     * ServiceDeregistrationEndpoint endpoint;
-     * boolean wasRunning = endpoint.stop();
-     * }</pre>
      *
      * @return a new {@link ServiceDeregistrationEndpoint} instance
      */
