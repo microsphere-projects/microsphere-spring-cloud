@@ -24,8 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Inherited
 @Import(value = {
-        EnableFeignAutoRefresh.Marker.class,
-        AutoRefreshCapabilityCustomizer.class
+        EnableFeignAutoRefresh.Marker.class
 })
 public @interface EnableFeignAutoRefresh {
 

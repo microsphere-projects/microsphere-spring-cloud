@@ -39,7 +39,7 @@ import static io.microsphere.util.ClassLoaderUtils.resolveClass;
  * @see AutoRefreshCapability
  * @since 1.0.0
  */
-class AutoRefreshCapabilityCustomizer implements SpecificationCustomizer {
+public class AutoRefreshCapabilityCustomizer implements SpecificationCustomizer {
 
     private static final Logger logger = getLogger(AutoRefreshCapabilityCustomizer.class);
 
