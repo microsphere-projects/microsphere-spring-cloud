@@ -43,4 +43,11 @@ public interface ServiceRegistryConstants {
      */
     String REGISTRATION_CLASS_NAME = "org.springframework.cloud.client.serviceregistry.Registration";
 
+    /**
+     * The class name of {@link org.springframework.cloud.client.serviceregistry.AutoServiceRegistration}
+     *
+     * @see org.springframework.cloud.client.serviceregistry.AutoServiceRegistration
+     */
+    String AUTO_SERVICE_REGISTRATION_CLASS_NAME = "org.springframework.cloud.client.serviceregistry.AutoServiceRegistration";
+
 }
