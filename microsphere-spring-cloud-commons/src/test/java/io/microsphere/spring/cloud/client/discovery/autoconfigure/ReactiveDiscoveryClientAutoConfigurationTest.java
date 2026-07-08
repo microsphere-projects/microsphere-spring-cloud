@@ -25,6 +25,8 @@ import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 
 import java.util.Set;
 
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
+
 /**
  * {@link ReactiveDiscoveryClientAutoConfiguration} Test
  *
@@ -34,9 +36,7 @@ import java.util.Set;
  */
 @SpringBootTest(classes = {
         ReactiveDiscoveryClientAutoConfigurationTest.class,
-}, properties = {
-
-})
+}, webEnvironment = NONE)
 class ReactiveDiscoveryClientAutoConfigurationTest extends AutoConfigurationTest<ReactiveDiscoveryClientAutoConfiguration> {
 
     @Override
