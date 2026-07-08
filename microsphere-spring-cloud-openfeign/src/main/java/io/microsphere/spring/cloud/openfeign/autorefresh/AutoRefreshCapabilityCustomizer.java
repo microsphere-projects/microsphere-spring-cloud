@@ -33,7 +33,7 @@ import static io.microsphere.util.ArrayUtils.combine;
  * @see AutoRefreshCapability
  * @since 1.0.0
  */
-class AutoRefreshCapabilityCustomizer implements SpecificationCustomizer {
+public class AutoRefreshCapabilityCustomizer implements SpecificationCustomizer {
 
     private static final Logger logger = getLogger(AutoRefreshCapabilityCustomizer.class);
 

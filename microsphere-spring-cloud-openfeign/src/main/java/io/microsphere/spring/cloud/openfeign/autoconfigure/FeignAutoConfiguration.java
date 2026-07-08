@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor.INSTANCE;
-import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_AUTO_CONFIGURATION_CLASS_NAME;
 import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_BUILDER_CUSTOMIZER_CLASS_NAME;
 
 /**
@@ -21,10 +20,10 @@ import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEI
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnOpenFeignAvailable
 @ConditionalOnClass(name = {
-        FEIGN_BUILDER_CUSTOMIZER_CLASS_NAME       // Spring Cloud OpenFeign API
+        FEIGN_BUILDER_CUSTOMIZER_CLASS_NAME                                                      // Spring Cloud OpenFeign API
 })
 @AutoConfigureAfter(name = {
-        FEIGN_AUTO_CONFIGURATION_CLASS_NAME       // Spring Cloud OpenFeign API
+        "org.springframework.cloud.openfeign.FeignAutoConfiguration",                            // Spring Cloud OpenFeign API
 })
 public class FeignAutoConfiguration {
 
