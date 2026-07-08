@@ -9,7 +9,7 @@ import static io.microsphere.reflect.FieldUtils.getFieldValue;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- *  @since 1.0.0
+ * @since 1.0.0
  */
 public class ErrorDecoderComponentAssert extends FeignComponentAssert<ErrorDecoder> {
 

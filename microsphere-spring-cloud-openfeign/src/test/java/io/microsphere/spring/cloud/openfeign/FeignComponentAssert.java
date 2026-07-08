@@ -4,7 +4,7 @@ import feign.InvocationHandlerFactory;
 
 /**
  * @author <a href="mailto:hanchao@66yunlian.com">韩超</a>
- *  @since 1.0.0
+ * @since 1.0.0
  */
 public abstract class FeignComponentAssert<T> {
 

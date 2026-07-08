@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- *  @since 1.0.0
+ * @since 1.0.0
  */
 public class ADecoder implements Decoder {
 

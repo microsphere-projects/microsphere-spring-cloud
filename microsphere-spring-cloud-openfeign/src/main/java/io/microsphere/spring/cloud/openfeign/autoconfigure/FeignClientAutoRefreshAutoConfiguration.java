@@ -17,7 +17,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 
-import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_AUTO_CONFIGURATION_CLASS_NAME;
 import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CAPABILITY_CLASS_NAME;
 import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CLIENT_FACTORY_BEAN_CLASS_NAME;
 
@@ -31,12 +30,13 @@ import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEI
  */
 @ConditionalOnOpenFeignAvailable
 @ConditionalOnClass(name = {
-        FEIGN_CAPABILITY_CLASS_NAME,             // OpenFeign Core API
-        FEIGN_CLIENT_FACTORY_BEAN_CLASS_NAME     // Spring Cloud OpenFeign API
+        FEIGN_CAPABILITY_CLASS_NAME,                                                             // OpenFeign Core API
+        FEIGN_CLIENT_FACTORY_BEAN_CLASS_NAME                                                     // Spring Cloud OpenFeign API
 })
 @ConditionalOnBean(Marker.class)
 @AutoConfigureAfter(name = {
-        FEIGN_AUTO_CONFIGURATION_CLASS_NAME      // Spring Cloud OpenFeign API
+        "org.springframework.cloud.openfeign.FeignAutoConfiguration",                            // Spring Cloud OpenFeign API
+        "io.microsphere.spring.cloud.context.named.autoconfigure.SpecificationAutoConfiguration" // Microsphere Spring Cloud Commons API
 })
 public class FeignClientAutoRefreshAutoConfiguration {
 
