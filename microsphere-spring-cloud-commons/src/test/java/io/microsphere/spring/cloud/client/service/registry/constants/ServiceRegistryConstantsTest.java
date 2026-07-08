@@ -20,6 +20,7 @@ package io.microsphere.spring.cloud.client.service.registry.constants;
 
 import org.junit.jupiter.api.Test;
 
+import static io.microsphere.spring.cloud.client.service.registry.constants.ServiceRegistryConstants.AUTO_SERVICE_REGISTRATION_CLASS_NAME;
 import static io.microsphere.spring.cloud.client.service.registry.constants.ServiceRegistryConstants.REGISTRATION_CLASS_NAME;
 import static io.microsphere.spring.cloud.client.service.registry.constants.ServiceRegistryConstants.SERVICE_REGISTRY_CLASS_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,5 +38,6 @@ class ServiceRegistryConstantsTest {
     void test() {
         assertEquals("org.springframework.cloud.client.serviceregistry.ServiceRegistry", SERVICE_REGISTRY_CLASS_NAME);
         assertEquals("org.springframework.cloud.client.serviceregistry.Registration", REGISTRATION_CLASS_NAME);
+        assertEquals("org.springframework.cloud.client.serviceregistry.AutoServiceRegistration", AUTO_SERVICE_REGISTRATION_CLASS_NAME);
     }
 }
