@@ -17,21 +17,13 @@
 
 package io.microsphere.spring.cloud.client.discovery.autoconfigure;
 
-import io.microsphere.spring.cloud.client.discovery.ReactiveDiscoveryClientAdapter;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import io.microsphere.spring.boot.test.AutoConfigurationTest;
+import io.microsphere.spring.cloud.client.discovery.autoconfigure.ReactiveDiscoveryClientAutoConfiguration.BlockingConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
-import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClientAutoConfiguration;
-import org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClientAutoConfiguration;
-import org.springframework.cloud.commons.util.UtilAutoConfiguration;
+import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient;
 
-import java.util.List;
-
-import static io.microsphere.collection.Lists.ofList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import java.util.Set;
 
 /**
  * {@link ReactiveDiscoveryClientAutoConfiguration} Test
@@ -41,35 +33,25 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  * @since 1.0.0
  */
 @SpringBootTest(classes = {
-        UtilAutoConfiguration.class,
-        SimpleReactiveDiscoveryClientAutoConfiguration.class,
-        CompositeDiscoveryClientAutoConfiguration.class,
-        ReactiveDiscoveryClientAutoConfiguration.class
+        ReactiveDiscoveryClientAutoConfigurationTest.class,
 }, properties = {
-        "spring.cloud.discovery.client.simple.instances.test[0].instanceId=1",
-        "spring.cloud.discovery.client.simple.instances.test[0].serviceId=test",
-        "spring.cloud.discovery.client.simple.instances.test[0].host=127.0.0.1",
-        "spring.cloud.discovery.client.simple.instances.test[0].port=8080",
-        "spring.cloud.discovery.client.simple.instances.test[0].metadata.key-1=value-1"
+
 })
-class ReactiveDiscoveryClientAutoConfigurationTest {
+class ReactiveDiscoveryClientAutoConfigurationTest extends AutoConfigurationTest<ReactiveDiscoveryClientAutoConfiguration> {
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
+    @Override
+    protected void configureAutoConfiguredClasses(Set<Class<?>> autoConfiguredClasses) {
+        autoConfiguredClasses.add(BlockingConfiguration.class);
+    }
 
-    @Autowired
-    private ReactiveDiscoveryClientAdapter adapter;
+    @Override
+    protected void configureGlobalDisabledPropertyValues(Set<String> globalDisabledPropertyValues) {
+        globalDisabledPropertyValues.add("spring.cloud.discovery.enabled=false");
+        globalDisabledPropertyValues.add("spring.cloud.discovery.reactive.enabled=false");
+    }
 
-    @Test
-    void test() {
-        assertEquals(CompositeDiscoveryClient.class, this.discoveryClient.getClass());
-        CompositeDiscoveryClient compositeDiscoveryClient = CompositeDiscoveryClient.class.cast(this.discoveryClient);
-        List<DiscoveryClient> discoveryClients = compositeDiscoveryClient.getDiscoveryClients();
-        assertEquals(1, discoveryClients.size());
-        assertSame(this.adapter, discoveryClients.get(0));
-        List<String> services = compositeDiscoveryClient.getServices();
-        assertEquals(ofList("test"), services);
-        assertEquals(services, discoveryClients.get(0).getServices());
-        assertEquals(services, this.adapter.getServices());
+    @Override
+    protected void configureGlobalMissingClasses(Set<Class<?>> globalMissingClasses) {
+        globalMissingClasses.add(ReactiveDiscoveryClient.class);
     }
 }
