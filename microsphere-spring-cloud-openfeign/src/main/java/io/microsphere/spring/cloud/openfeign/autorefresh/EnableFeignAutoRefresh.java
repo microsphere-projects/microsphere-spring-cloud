@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see FeignClientAutoRefreshAutoConfiguration
- *  @since 1.0.0
+ * @since 1.0.0
  */
 @Retention(RUNTIME)
 @Target(TYPE)
