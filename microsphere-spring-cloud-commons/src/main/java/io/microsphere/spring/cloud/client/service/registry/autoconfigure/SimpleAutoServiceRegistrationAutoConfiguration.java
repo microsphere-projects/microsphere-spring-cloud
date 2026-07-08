@@ -89,14 +89,6 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
     /**
      * Creates a {@link Registration} bean from the application name, server properties, and network info.
      *
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // Auto-configured via Spring Boot; the bean is available for injection:
-     * @Autowired
-     * Registration registration;
-     * String serviceId = registration.getServiceId();
-     * }</pre>
-     *
      * @param applicationName  the Spring application name resolved from {@code spring.application.name}
      * @param serverProperties the {@link ServerProperties} providing the server port
      * @param inetUtils        the {@link InetUtils} for resolving the host address
@@ -122,14 +114,6 @@ public class SimpleAutoServiceRegistrationAutoConfiguration {
 
     /**
      * Creates an {@link InMemoryServiceRegistry} bean as the default {@link ServiceRegistry} implementation.
-     *
-     * <h3>Example Usage</h3>
-     * <pre>{@code
-     * // Auto-configured when no other ServiceRegistry bean is present:
-     * @Autowired
-     * ServiceRegistry<Registration> serviceRegistry;
-     * serviceRegistry.register(registration);
-     * }</pre>
      *
      * @return a new {@link InMemoryServiceRegistry} instance
      */
