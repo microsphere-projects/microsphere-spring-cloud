@@ -33,5 +33,5 @@ import org.springframework.test.context.TestPropertySource;
         }
 )
 @EnableAutoConfiguration
-class WebFluxServiceRegistryAutoConfigurationTest extends WebServiceRegistryAutoConfigurationTest {
+class WebFluxServiceRegistryAutoConfigurationIntegrationTest extends WebServiceRegistryAutoConfigurationIntegrationTest {
 }
