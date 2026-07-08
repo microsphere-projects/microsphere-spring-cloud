@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 
 /**
  * @author <a href="mailto:hanchao@66yunlian.com">韩超</a>
- * @since 0.0.1
+ * @since 1.0.0
  */
 public class RetryerComponentAssert extends FeignComponentAssert<Retryer> {
 
