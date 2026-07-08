@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
- * {@link SimpleAutoServiceRegistrationAutoConfiguration} Test
+ * {@link SimpleAutoServiceRegistrationAutoConfiguration} Integration Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see SimpleAutoServiceRegistrationAutoConfiguration
@@ -21,7 +21,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  */
 @SpringBootTest(
         classes = {
-                SimpleAutoServiceRegistrationAutoConfigurationTest.class
+                SimpleAutoServiceRegistrationAutoConfigurationIntegrationTest.class
         },
         webEnvironment = RANDOM_PORT,
         properties = {
@@ -30,7 +30,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         }
 )
 @EnableAutoConfiguration
-class SimpleAutoServiceRegistrationAutoConfigurationTest {
+class SimpleAutoServiceRegistrationAutoConfigurationIntegrationTest {
 
     @Autowired
     private Registration registration;
