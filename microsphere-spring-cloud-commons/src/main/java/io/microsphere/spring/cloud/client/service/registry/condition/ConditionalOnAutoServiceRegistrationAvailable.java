@@ -42,6 +42,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
 @Documented
+@ConditionalOnClass(name = {
+        REGISTRATION_CLASS_NAME
+})
 @ConditionalOnBean(type = {
         REGISTRATION_CLASS_NAME
 })
