@@ -4,13 +4,20 @@ import io.microsphere.spring.cloud.openfeign.autorefresh.EnableFeignAutoRefresh;
 import io.microsphere.spring.cloud.openfeign.autorefresh.EnableFeignAutoRefresh.Marker;
 import io.microsphere.spring.cloud.openfeign.autorefresh.FeignClientConfigurationChangedListener;
 import io.microsphere.spring.cloud.openfeign.autorefresh.FeignComponentRegistry;
+import io.microsphere.spring.cloud.openfeign.condition.ConditionalOnOpenFeignAvailable;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.cloud.openfeign.FeignClientProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
+
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_AUTO_CONFIGURATION_CLASS_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CAPABILITY_CLASS_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CLIENT_FACTORY_BEAN_CLASS_NAME;
 
 /**
  * The Auto-Configuration class for {@link EnableFeignAutoRefresh}
@@ -18,9 +25,17 @@ import org.springframework.context.event.EventListener;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see EnableFeignAutoRefresh
- *  @since 1.0.0
+ * @since 1.0.0
  */
+@ConditionalOnOpenFeignAvailable
+@ConditionalOnClass(name = {
+        FEIGN_CAPABILITY_CLASS_NAME,             // OpenFeign Core API
+        FEIGN_CLIENT_FACTORY_BEAN_CLASS_NAME     // Spring Cloud OpenFeign API
+})
 @ConditionalOnBean(Marker.class)
+@AutoConfigureAfter(name = {
+        FEIGN_AUTO_CONFIGURATION_CLASS_NAME      // Spring Cloud OpenFeign API
+})
 public class FeignClientAutoRefreshAutoConfiguration {
 
     /**

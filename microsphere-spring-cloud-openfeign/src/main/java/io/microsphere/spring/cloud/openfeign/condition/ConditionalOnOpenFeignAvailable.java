@@ -22,7 +22,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.OPEN_FEIGN_CLASS_NAME;
+import static io.microsphere.spring.cloud.openfeign.constants.FeignConstants.FEIGN_CLASS_NAME;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -60,7 +60,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @ConditionalOnOpenFeignEnabled
 @ConditionalOnClass(name = {
-        OPEN_FEIGN_CLASS_NAME
+        FEIGN_CLASS_NAME
 })
 public @interface ConditionalOnOpenFeignAvailable {
 }
