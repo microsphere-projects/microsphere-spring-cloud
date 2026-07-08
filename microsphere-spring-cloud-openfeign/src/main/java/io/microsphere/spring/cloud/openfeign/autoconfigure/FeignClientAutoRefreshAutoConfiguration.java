@@ -18,7 +18,7 @@ import org.springframework.context.event.EventListener;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see EnableFeignAutoRefresh
- * @since 0.0.1
+ *  @since 1.0.0
  */
 @ConditionalOnBean(Marker.class)
 public class FeignClientAutoRefreshAutoConfiguration {
