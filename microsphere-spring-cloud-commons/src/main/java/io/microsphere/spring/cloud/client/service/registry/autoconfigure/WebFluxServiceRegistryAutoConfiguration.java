@@ -26,12 +26,14 @@ import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
  * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry} on the Spring WebFlux Application
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see io.microsphere.spring.boot.webflux.autoconfigure.WebFluxAutoConfiguration
  * @since 1.0.0
  */
 @ConditionalOnWebFluxAvailable
 @ConditionalOnAutoServiceRegistrationAvailable
 @AutoConfigureAfter(value = {
-        ServiceRegistryAutoConfiguration.class
+        ServiceRegistryAutoConfiguration.class,
+        SimpleAutoServiceRegistrationAutoConfiguration.class
 }, name = {
         "io.microsphere.spring.boot.webflux.autoconfigure.WebFluxAutoConfiguration"
 })

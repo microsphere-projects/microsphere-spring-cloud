@@ -40,12 +40,14 @@ import static java.lang.Boolean.FALSE;
  * Auto-Configuration class for {@link ServiceRegistry ServiceRegistry} on the Spring WebMVC Application
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @see io.microsphere.spring.boot.webmvc.autoconfigure.WebMvcAutoConfiguration
  * @since 1.0.0
  */
 @ConditionalOnWebMvcAvailable
 @ConditionalOnAutoServiceRegistrationAvailable
 @AutoConfigureAfter(value = {
-        ServiceRegistryAutoConfiguration.class
+        ServiceRegistryAutoConfiguration.class,
+        SimpleAutoServiceRegistrationAutoConfiguration.class
 }, name = {
         "io.microsphere.spring.boot.webmvc.autoconfigure.WebMvcAutoConfiguration"
 })
