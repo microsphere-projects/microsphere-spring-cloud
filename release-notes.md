@@ -274,4 +274,33 @@ For detailed changes, check the [Full Changelog](https://github.com/mercyblitz/p
 
 **Full Changelog:** Available in the project repository.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.21...0.1.22
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.21...0.1.22## v0.1.23
+
+# Release Notes - Version 0.1.23
+
+## 🆕 New Features
+- Add WebFlux service registry auto-configuration test for improved coverage. ([064830b](#))
+
+## 🐛 Bug Fixes
+- Fix service registry auto-configuration ordering to ensure proper initialization sequence. ([59b5382](#))
+
+## 📚 Documentation
+- Update README to reflect latest branch versions. ([32e956a](#))
+
+## 🔗 Dependency Updates
+- Bump `microsphere-spring-boot` to version 0.1.31 for enhanced functionality. ([f3e9013](#))
+- Add Boot processor dependencies for metadata generation. ([e7f4e4d](#))
+- Make commons starter dependencies non-optional. ([b436394](#))
+
+## 🧪 Test Improvements
+- Align test dependencies with JUnit Jupiter for consistency and modernization. ([464e5a7](#))
+
+## ⚙️ Build and Workflow Enhancements
+- Merge `release-1.x` into `dev-1.x` for branch alignment. ([4b63c60](#))
+- Bump version to next patch after publishing 0.1.22. ([b1e2698](#))
+
+---
+
+For detailed changes, refer to the commits above.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.22...0.1.23
