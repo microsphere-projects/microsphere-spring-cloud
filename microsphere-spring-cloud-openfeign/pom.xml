@@ -17,7 +17,7 @@
 
     <name>Microsphere :: Spring Cloud :: OpenFeign</name>
     <description>Microsphere Spring Cloud OpenFeign</description>
-    
+
     <dependencies>
 
         <!-- Microsphere Annotation Processor -->
@@ -34,12 +34,7 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- Microsphere Dependencies -->
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-boot-core</artifactId>
-        </dependency>
-
+        <!-- Spring Cloud Dependencies -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -59,6 +54,13 @@
         </dependency>
 
         <!-- Testing-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring Boot Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
