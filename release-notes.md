@@ -275,4 +275,33 @@ Thank you for using our project! 🚀
 - Removed redundant encoding property from configurations.  
 - Introduced class constants to streamline conditions in auto-configuration.  
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.21...0.2.22
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.21...0.2.22## v0.2.23
+
+# Release Notes for Version 0.2.23
+
+## New Features
+- **Spring Boot Processors**: Added Spring Boot processors to module POMs for enhanced module configuration. (#1d24512)
+- **WebFlux**: Introduced auto-configuration test for WebFlux service registry. (#4e33b01)
+
+## Bug Fixes
+- **Service Registry**: Fixed auto-configuration ordering issue in service registry. (#5206d8b)
+
+## Dependency Updates
+- **Microsphere**: Upgraded `microsphere-spring-boot` to version `0.2.31`. (#3185368)
+- **JUnit**: Added `JUnit Jupiter` as a test dependency. (#eda32b5)
+
+## Test Improvements
+- **OpenFeign**: Adjusted and refined module test dependencies. (#2f7545f)
+
+## Documentation
+- **Readme**: Updated README with latest branch version information. (#e0a88cd)
+
+## Build and Workflow Enhancements
+- **Commons web dependencies**: Marked as non-optional for improved dependency management. (#434144d)
+- **OpenFeign POM**: Cleaned up unnecessary whitespace. (#badca09)
+
+---
+
+For full details, refer to the [changelog](#).
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.22...0.2.23
