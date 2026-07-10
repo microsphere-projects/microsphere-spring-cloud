@@ -45,7 +45,8 @@ import static java.lang.Boolean.FALSE;
 @ConditionalOnWebMvcAvailable
 @ConditionalOnAutoServiceRegistrationAvailable
 @AutoConfigureAfter(value = {
-        ServiceRegistryAutoConfiguration.class
+        ServiceRegistryAutoConfiguration.class,
+        SimpleAutoServiceRegistrationAutoConfiguration.class
 }, name = {
         "io.microsphere.spring.boot.webmvc.autoconfigure.WebMvcAutoConfiguration"
 })
