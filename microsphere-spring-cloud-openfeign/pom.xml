@@ -39,7 +39,7 @@
             <artifactId>spring-boot-autoconfigure-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        
+
         <!-- Microsphere Spring Cloud Commons -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
