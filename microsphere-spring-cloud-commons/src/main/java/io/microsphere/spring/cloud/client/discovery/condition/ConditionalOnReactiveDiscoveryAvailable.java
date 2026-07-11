@@ -41,7 +41,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     <li>The Reactive Discovery Client class is present on the classpath.</li>
  * </ul>
  *
- * <h3>Example Usage:</h3>
+ * <h3>Example Usage</h3>
  * <pre>{@code
  * @Configuration
  * public class ReactiveDiscoveryConfig {
