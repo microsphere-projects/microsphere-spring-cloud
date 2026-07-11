@@ -304,4 +304,28 @@ Thank you for using our project! 🚀
 
 For full details, refer to the [changelog](#).
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.22...0.2.23
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.22...0.2.23## v0.2.24
+
+# Release Notes for Version 0.2.24
+
+## Dependency Updates
+- **microsphere-spring-boot**: Bumped to version `0.2.32`. ([8d49c8d](#))
+
+## Documentation
+- Updated README with the latest branch versions. ([61bd1dd](#))
+- Polished Javadoc headings for discovery conditions. ([3917b0b](#))
+
+## Build and Workflow Enhancements
+- Reorganized dependency blocks in the `commons` POM for improved readability. ([fa402c5](#))
+- Reordered OpenFeign Spring Boot processors for better structure. ([ea62b04](#))
+- Polished OpenFeign POM comment spacing. ([49ca2c4](#))
+
+## Other Changes
+- Routine merges between `main` and `release` branches. ([62b2527](#), [5538f29](#), [e5d33b2](#))
+- Bumped version to the next patch after publishing `0.2.23`. ([350f789](#))
+
+---
+
+For a complete list of changes, refer to the full changelog.
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.23...0.2.24
