@@ -38,7 +38,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * {@link ConditionalOnDiscoveryEnabled}, and {@link ConditionalOnBlockingDiscoveryEnabled} to ensure that
  * the discovery client is both present in the classpath and enabled for blocking operations.
  *
- * <h3>Example Usage:</h3>
+ * <h3>Example Usage</h3>
  * <pre>{@code
  * @Configuration
  * @ConditionalOnDiscoveryAvailable
