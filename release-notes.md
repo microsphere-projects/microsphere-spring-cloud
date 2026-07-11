@@ -303,4 +303,33 @@ For detailed changes, check the [Full Changelog](https://github.com/mercyblitz/p
 
 For detailed changes, refer to the commits above.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.22...0.1.23
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.22...0.1.23## v0.1.24
+
+# Release Notes - v0.1.24
+
+## New Features
+- Swapped OpenFeign test starters for processors for better modularity. ([db26ca3](#))
+
+## Bug Fixes
+- Fixed spacing in the README version table. ([13ba6e3](#))
+
+## Documentation
+- Updated README release version table for improved accuracy and readability. ([ae2f3ff](#))
+- Polished Javadocs for discovery condition functionality. ([e235a0f](#))
+
+## Dependency Updates
+- Bumped `microsphere-spring-boot` to v0.1.32. ([fa97494](#))
+
+## Build and Workflow Enhancements
+- Reordered commons POM dependencies by framework for better organization. ([a46e33d](#))
+- Bumped version to next patch (0.1.24) after publishing 0.1.23. ([f8afeb4](#))
+
+## Other Changes
+- Merged `release-1.x` into `dev-1.x`. ([7ef9d7c](#))
+- Merged PR #144 to align branches. ([1363db6](#)) 
+
+---
+
+**Full Changelog:** [0.1.23...0.1.24](#)
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.1.23...0.1.24
