@@ -5,9 +5,7 @@ import feign.ResponseHandler;
 import feign.Target;
 import io.microsphere.logging.Logger;
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -15,6 +13,8 @@ import java.util.Map;
 
 import static feign.Util.checkNotNull;
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.reflect.FieldUtils.getFieldValue;
+import static org.springframework.util.ClassUtils.isPresent;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -62,21 +62,14 @@ public class ObservableFeignInvocationHandler implements InvocationHandler {
     }
 
     protected Object loadMethodHandlerConfiguration(InvocationHandlerFactory.MethodHandler methodHandler) throws Exception {
-        if (ClassUtils.isPresent("feign.MethodHandlerConfiguration", ObservableFeignInvocationHandler.class.getClassLoader())) {
-            Class<?> configurationType = methodHandler.getClass();
-            Field field = configurationType.getDeclaredField("methodHandlerConfiguration");
-            field.setAccessible(true);
-            return field.get(methodHandler);
+        if (isPresent("feign.MethodHandlerConfiguration", ObservableFeignInvocationHandler.class.getClassLoader())) {
+            return getFieldValue(true, methodHandler, "methodHandlerConfiguration");
         }
         return methodHandler;
-
     }
 
     protected ResponseHandler loadResponseHandler(InvocationHandlerFactory.MethodHandler methodHandler) throws Exception {
-        Class<?> configurationType = methodHandler.getClass();
-        Field field = configurationType.getDeclaredField("responseHandler");
-        field.setAccessible(true);
-        return (ResponseHandler) field.get(methodHandler);
+        return getFieldValue(true, methodHandler, "responseHandler");
     }
 
     @Override

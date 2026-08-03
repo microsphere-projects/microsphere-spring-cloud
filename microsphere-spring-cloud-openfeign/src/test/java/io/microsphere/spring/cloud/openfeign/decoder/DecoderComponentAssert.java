@@ -5,7 +5,7 @@ import feign.codec.Decoder;
 import io.microsphere.spring.cloud.openfeign.FeignComponentAssert;
 import io.microsphere.spring.cloud.openfeign.components.DecoratedDecoder;
 
-import java.lang.reflect.Field;
+import static io.microsphere.reflect.FieldUtils.getFieldValue;
 
 /**
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
@@ -14,11 +14,8 @@ import java.lang.reflect.Field;
 public class DecoderComponentAssert extends FeignComponentAssert<Decoder> {
 
     @Override
-    protected Decoder loadCurrentComponent(Object configuration, ResponseHandler responseHandler) throws Exception {
-        Class<ResponseHandler> responseHandlerClass = ResponseHandler.class;
-        Field decoderField = responseHandlerClass.getDeclaredField("decoder");
-        decoderField.setAccessible(true);
-        DecoratedDecoder decoder = (DecoratedDecoder) decoderField.get(responseHandler);
+    protected Decoder loadCurrentComponent(Object configuration, ResponseHandler responseHandler) {
+        DecoratedDecoder decoder = getFieldValue(true, responseHandler, "decoder");
         return decoder.delegate();
     }
 }
