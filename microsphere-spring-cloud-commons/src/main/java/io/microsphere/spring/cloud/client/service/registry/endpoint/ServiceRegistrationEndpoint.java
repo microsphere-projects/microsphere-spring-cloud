@@ -84,6 +84,6 @@ public class ServiceRegistrationEndpoint extends AbstractServiceRegistrationEndp
     }
 
     private Object invoke(String methodName) {
-        return execute(() -> invokeMethod(serviceRegistration, methodName), e -> null);
+        return execute(() -> invokeMethod(true, serviceRegistration, methodName), e -> null);
     }
 }

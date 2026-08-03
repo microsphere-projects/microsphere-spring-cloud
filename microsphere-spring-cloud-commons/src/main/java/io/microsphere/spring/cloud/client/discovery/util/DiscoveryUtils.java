@@ -57,7 +57,7 @@ public abstract class DiscoveryUtils implements Utils {
      */
     @Nonnull
     public static Map<String, List<DefaultServiceInstance>> getInstancesMap(@Nonnull SimpleReactiveDiscoveryProperties properties) {
-        return invokeMethod(properties, "getInstances");
+        return invokeMethod(true, properties, "getInstances");
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class DiscoveryUtils implements Utils {
         DefaultServiceInstance local = properties.getLocal();
         simpleDiscoveryProperties.setInstance(local.getServiceId(), local.getHost(), local.getPort());
 
-        Map<String, List<DefaultServiceInstance>> instances = invokeMethod(properties, "getInstances");
+        Map<String, List<DefaultServiceInstance>> instances = getInstancesMap(properties);
         simpleDiscoveryProperties.setInstances(instances);
 
         return simpleDiscoveryProperties;
