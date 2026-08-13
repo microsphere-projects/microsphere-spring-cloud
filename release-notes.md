@@ -328,4 +328,26 @@ For full details, refer to the [changelog](#).
 
 For a complete list of changes, refer to the full changelog.
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.23...0.2.24
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.23...0.2.24## v0.2.25
+
+_Release notes generation failed. Raw commits since 0.2.24:_
+
+```
+6bb4ee5 Update version compatibility in README
+5effc65 chore: merge main into release [skip ci]
+547905b Fix endpoint reflective invocation access
+e80b95c Fix reactive discovery instances access
+abd06cf chore: merge main into release [skip ci]
+9a51c2e Refactor Feign tests to use FieldUtils
+fc69b5c Bump microsphere-spring-boot to 0.2.33
+783eacb chore: merge main into release [skip ci]
+8387f39 Bump microsphere-build to 0.3.11
+dc9042d chore: merge main into release [skip ci]
+b9df2e6 Bump JUnit Jupiter to 6.1.2
+26d3ecc chore: merge main into release [skip ci]
+65d89dd Bump microsphere-build parent to 0.3.10
+d01086e chore: merge release into main [skip ci]
+b8eca6e chore: bump version to next patch after publishing 0.2.24
+```
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.24...0.2.25
