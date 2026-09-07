@@ -350,4 +350,32 @@ d01086e chore: merge release into main [skip ci]
 b8eca6e chore: bump version to next patch after publishing 0.2.24
 ```
 
-**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.24...0.2.25
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.24...0.2.25## v0.2.26
+
+_Release notes generation failed. Raw commits since 0.2.25:_
+
+```
+d98c9b0 chore: merge main into release [skip ci]
+537eb91 Bump Spring Boot and Cloud versions
+0574437 Update version numbers in README.md
+081444e chore: merge main into release [skip ci]
+7b441d0 Merge branch 'main' of https://github.com/microsphere-projects/microsphere-spring-cloud
+3ffe685 Bump microsphere-spring-boot to 0.2.34
+e7aab02 chore: merge main into release [skip ci]
+b997aa5 Merge pull request #150 from microsphere-projects/dependabot/maven/org.springframework.cloud-spring-cloud-dependencies-2025.1.3
+1b2a3cd chore: merge main into release [skip ci]
+f26a266 Merge pull request #147 from microsphere-projects/dependabot/maven/org.junit-junit-bom-6.1.3
+561baab chore: merge main into release [skip ci]
+c89477d Merge pull request #148 from microsphere-projects/dependabot/maven/org.apache.maven-apache-maven-3.9.16
+2d5e43b chore: merge main into release [skip ci]
+c3fd5e6 Bump microsphere-build to 0.3.14
+007759d Bump org.springframework.cloud:spring-cloud-dependencies
+3b5d1c1 Bump org.apache.maven:apache-maven from 3.9.15 to 3.9.16
+8f43820 chore: merge main into release [skip ci]
+cf9d552 Bump microsphere-build parent to 0.3.12
+af81fef Bump org.junit:junit-bom from 6.1.2 to 6.1.3
+6bf10fd chore: merge release into main [skip ci]
+08cf3f9 chore: bump version to next patch after publishing 0.2.25
+```
+
+**Full Changelog**: https://github.com/microsphere-projects/microsphere-spring-cloud/compare/0.2.25...0.2.26
