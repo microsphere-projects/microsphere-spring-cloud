@@ -252,6 +252,9 @@ mvnw.cmd verify
 
 | Resource              | Link                                                                                                                             |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| Documentation home    | [docs/README.md](./docs/README.md) · [文档总索引（中文）](./docs/zh/README.md)                                                   |
+| User Guide            | [docs/user-guide](./docs/user-guide/README.md) · [用户文档（中文）](./docs/user-guide/zh/README.md)                             |
+| Developer Guide       | [docs/developer-guide](./docs/developer-guide/README.md) · [开发者文档（中文）](./docs/developer-guide/zh/README.md)            |
 | User Guide (DeepWiki) | [deepwiki.com/microsphere-projects/microsphere-spring-cloud](https://deepwiki.com/microsphere-projects/microsphere-spring-cloud) |
 | User Guide (ZRead)    | [zread.ai/microsphere-projects/microsphere-spring-cloud](https://zread.ai/microsphere-projects/microsphere-spring-cloud)         |
 | Wiki                  | [GitHub Wiki](https://github.com/microsphere-projects/microsphere-spring-cloud/wiki)                                             |
