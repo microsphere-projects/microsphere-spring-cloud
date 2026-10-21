@@ -12,6 +12,7 @@ English is the default language; Chinese documents are stored in parallel `zh/` 
 docs/
 ├── README.md                  ← you are here (English index)
 ├── zh/README.md               ← 中文总索引
+├── diff/source/               ← Tag-to-tag source diffs (main-diff / test-diff, EN + 中文)
 ├── user-guide/                ← User Guide (English, default)
 │   ├── README.md              ← User Guide index
 │   ├── zh/                    ← 用户文档（中文）
@@ -43,6 +44,7 @@ docs/
 
 - [User Guide](./user-guide/README.md) — APIs, configuration properties, runnable examples (derived from the modules' own test cases), version information and compatibility ranges.
 - [Developer Guide](./developer-guide/README.md) — architecture design, source-level analysis, design patterns, mermaid flow/sequence diagrams, module dependency graphs, build & test guidance.
+- [Tag Diff 0.2.26 vs 0.1.26](./diff/source/main-diff-0.2.26-vs-0.1.26-en.md) — per-module implementation comparison of the two latest tags, split into separate [`src/main`](./diff/source/main-diff-0.2.26-vs-0.1.26-en.md) and [`src/test`](./diff/source/test-diff-0.2.26-vs-0.1.26-en.md) reports (中文：[src/main](./diff/source/main-diff-0.2.26-vs-0.1.26.md) · [src/test](./diff/source/test-diff-0.2.26-vs-0.1.26.md)).
 
 ## Branches and Version Lines / Branch–Directory Mapping
 
