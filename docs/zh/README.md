@@ -11,6 +11,7 @@
 docs/
 ├── README.md                  ← 英文总索引
 ├── zh/README.md               ← 你在这里（中文总索引）
+├── diff/source/               ← 最新两个 tag 的源码差异对比（main-diff / test-diff，中英双语）
 ├── user-guide/                ← 用户文档（英文为默认语言）
 │   ├── README.md              ← 用户文档首页（英文）
 │   ├── zh/                    ← 用户文档首页（中文）
@@ -42,6 +43,7 @@ docs/
 
 - [用户文档（中文）](../user-guide/zh/README.md) —— API 解释、配置属性、可运行示例（取材于模块自身的测试用例）、版本信息与兼容范围。
 - [开发者文档（中文）](../developer-guide/zh/README.md) —— 架构设计、源码分析、设计模式、mermaid 流程图/时序图、模块依赖关系图、构建与测试指南。
+- [Tag 差异对比 0.2.26 vs 0.1.26（中文）](../diff/source/main-diff-0.2.26-vs-0.1.26.md) —— 最新两个 tag 按模块的源码差异对比，分为 [src/main](../diff/source/main-diff-0.2.26-vs-0.1.26.md) 与 [src/test](../diff/source/test-diff-0.2.26-vs-0.1.26.md) 两篇（[English: src/main](../diff/source/main-diff-0.2.26-vs-0.1.26-en.md) · [src/test](../diff/source/test-diff-0.2.26-vs-0.1.26-en.md)）。
 
 ## 分支与版本线 / 分支—目录对照
 
