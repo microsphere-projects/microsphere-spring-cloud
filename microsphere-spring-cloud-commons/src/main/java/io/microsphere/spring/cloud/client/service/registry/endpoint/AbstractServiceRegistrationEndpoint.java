@@ -45,7 +45,7 @@ public abstract class AbstractServiceRegistrationEndpoint implements SmartInitia
 
     protected int port;
 
-    protected static boolean running;
+    protected volatile boolean running;
 
     /**
      * {@inheritDoc}
