@@ -25,7 +25,9 @@ import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryCl
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static io.microsphere.collection.CollectionUtils.isNotEmpty;
@@ -90,9 +92,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         List<DiscoveryClient> discoveryClients = getDiscoveryClients();
         for (DiscoveryClient discoveryClient : discoveryClients) {
             List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
-            if (isNotEmpty(instances)) {
-                serviceInstances.addAll(instances);
-            }
+            addAllNoNullElements(serviceInstances, instances);
         }
         return serviceInstances;
     }
@@ -114,9 +114,7 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
         List<DiscoveryClient> discoveryClients = getDiscoveryClients();
         for (DiscoveryClient discoveryClient : discoveryClients) {
             List<String> serviceForClient = discoveryClient.getServices();
-            if (isNotEmpty(serviceForClient)) {
-                services.addAll(serviceForClient);
-            }
+            addAllNoNullElements(services, serviceForClient);
         }
         return newArrayList(services);
     }
@@ -216,5 +214,13 @@ public final class UnionDiscoveryClient implements DiscoveryClient, ApplicationC
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;
+    }
+
+    private <T> void addAllNoNullElements(Collection<T> target, Collection<T> source) {
+        if (isNotEmpty(source)) {
+            target.addAll(source.stream()
+                    .filter(Objects::nonNull)
+                    .toList());
+        }
     }
 }
