@@ -49,6 +49,7 @@ public class MultipleRegistration implements Registration {
         //init map
         for (Registration registration : registrations) {
             Class<? extends Registration> clazz = (Class) ultimateTargetClass(registration);
+            @SuppressWarnings("unchecked")
             List<Class<? extends Registration>> classes = (List) findAllClasses(clazz, type -> isAssignableFrom(Registration.class, type) && !Registration.class.equals(type));
             classes.forEach(type -> registrationMap.put(type, registration));
             this.defaultRegistration = registration;
