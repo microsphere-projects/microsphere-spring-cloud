@@ -20,10 +20,29 @@ import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.client.serviceregistry.Registration;
 
 /**
- * Default {@link Registration}
+ * Default {@link Registration} implementation for Spring Cloud service instances.
+ * <p>
+ * This class extends {@link DefaultServiceInstance} and implements the {@link Registration} interface,
+ * providing a concrete registration mechanism for services in the Spring Cloud registry.
+ *
+ * <h3>Example Usage</h3>
+ * <pre>{@code
+ * // Create a default service instance registration
+ * Registration registration = new DefaultRegistration(
+ *     "my-service",
+ *     "localhost",
+ *     8080,
+ *     true,
+ *     Map.of("version", "1.0.0")
+ * );
+ *
+ * // Use the registration to register the service
+ * serviceRegistry.register(registration);
+ * }</pre>
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see DefaultServiceInstance
+ * @see Registration
  * @since 1.0.0
  */
 public class DefaultRegistration extends DefaultServiceInstance implements Registration {
