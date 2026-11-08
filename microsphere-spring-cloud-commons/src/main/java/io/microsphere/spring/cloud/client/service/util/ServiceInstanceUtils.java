@@ -199,9 +199,20 @@ public class ServiceInstanceUtils extends BaseUtils {
         target.setSecure(source.isSecure());
         target.setHost(source.getHost());
         target.setPort(source.getPort());
-        Map<String, String> metadata = source.getMetadata();
-        metadata.clear();
-        metadata.putAll(source.getMetadata());
+        copyMetadata(source, target);
+    }
+
+    private static void copyMetadata(ServiceInstance source, DefaultServiceInstance target) {
+        Map<String, String> targetMetadata = target.getMetadata();
+        if (targetMetadata == null) {
+            // DefaultServiceInstance always initializes its metadata map; guard just in case
+            return;
+        }
+        targetMetadata.clear();
+        Map<String, String> sourceMetadata = source.getMetadata();
+        if (sourceMetadata != null) {
+            targetMetadata.putAll(sourceMetadata);
+        }
     }
 
     static List<WebEndpointMapping> parseWebEndpointMappings(String encodedJSON) {

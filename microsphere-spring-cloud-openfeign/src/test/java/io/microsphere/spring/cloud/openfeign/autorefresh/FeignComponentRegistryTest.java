@@ -20,6 +20,7 @@ package io.microsphere.spring.cloud.openfeign.autorefresh;
 import feign.Contract;
 import feign.QueryMapEncoder;
 import feign.RequestInterceptor;
+import feign.RetryableException;
 import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
@@ -31,8 +32,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.support.GenericApplicationContext;
 
 import java.util.List;
+import java.util.Set;
 
 import static io.microsphere.spring.cloud.openfeign.autorefresh.FeignComponentRegistry.getComponentClass;
+import static io.microsphere.spring.cloud.openfeign.autorefresh.FeignComponentRegistry.removeClientNamePrefix;
 import static io.microsphere.spring.cloud.openfeign.components.NoOpRequestInterceptor.INSTANCE;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -162,5 +165,72 @@ class FeignComponentRegistryTest {
         this.registry.refresh(clientName, "retryer[0]");
         this.registry.refresh(clientName, "error-decoder[0]", "decoder[0]", "encoder[0]");
         this.registry.refresh(clientName, "request-interceptors[0]", "default-request-headers[0]", "default-query-parameters[0]");
+    }
+
+    @Test
+    void testRemoveClientNamePrefix() {
+        assertEquals("retryer", removeClientNamePrefix("test-client.retryer", this.clientName));
+        // Bare sub-key form must be kept as-is (backward compatibility)
+        assertEquals("retryer", removeClientNamePrefix("retryer", this.clientName));
+        // A key belonging to another client must not be mangled
+        assertEquals("other-client.retryer", removeClientNamePrefix("other-client.retryer", this.clientName));
+    }
+
+    @Test
+    void testGetClientNames() {
+        // The default client name is always present
+        assertTrue(this.registry.getClientNames().contains(this.clientName));
+
+        TestRetryer testRetryer = new TestRetryer();
+        this.registry.register("test-client-2", testRetryer);
+        this.registry.registerRequestInterceptor("test-client-3", INSTANCE);
+
+        Set<String> clientNames = this.registry.getClientNames();
+        assertEquals(3, clientNames.size());
+        assertTrue(clientNames.contains(this.clientName));
+        assertTrue(clientNames.contains("test-client-2"));
+        assertTrue(clientNames.contains("test-client-3"));
+    }
+
+    @Test
+    void testRefreshWithPrefixedConfigs() {
+        TestRetryer testRetryer = new TestRetryer();
+        this.registry.register(this.clientName, testRetryer);
+
+        // Prefixed form (sent by FeignClientConfigurationChangedListener)
+        this.registry.refresh(this.clientName, this.clientName + ".retryer");
+        assertEquals(1, testRetryer.refreshedCount);
+
+        // Bare form (backward compatibility)
+        this.registry.refresh(this.clientName, "retryer");
+        assertEquals(2, testRetryer.refreshedCount);
+
+        // A key belonging to another client must not refresh this client's components
+        this.registry.refresh(this.clientName, "other-client.retryer");
+        assertEquals(2, testRetryer.refreshedCount);
+
+        // A non-matching component key must not refresh the component
+        this.registry.refresh(this.clientName, this.clientName + ".decoder");
+        assertEquals(2, testRetryer.refreshedCount);
+    }
+
+    static class TestRetryer implements Retryer, Refreshable {
+
+        int refreshedCount = 0;
+
+        @Override
+        public void refresh() {
+            this.refreshedCount++;
+        }
+
+        @Override
+        public void continueOrPropagate(RetryableException e) {
+            throw e;
+        }
+
+        @Override
+        public Retryer clone() {
+            return this;
+        }
     }
 }

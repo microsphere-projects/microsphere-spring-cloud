@@ -27,6 +27,8 @@ import org.springframework.cloud.client.DefaultServiceInstance;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static io.microsphere.collection.Lists.ofList;
 import static io.microsphere.json.JSONUtils.jsonObject;
@@ -169,8 +171,16 @@ public class ServiceInstanceUtilsTest {
     @Test
     void testSetProperties() {
         DefaultServiceInstance target = new DefaultServiceInstance();
+        Map<String, String> sourceMetadata = new LinkedHashMap<>();
+        sourceMetadata.put("version", "1.0.0");
+        sourceMetadata.put("zone", "cn-east-1");
+        this.serviceInstance.getMetadata().putAll(sourceMetadata);
         setProperties(this.serviceInstance, target);
         assertEquals(this.serviceInstance, target);
+        // The metadata must be copied from the source to the target
+        assertEquals(sourceMetadata, target.getMetadata());
+        // The source's metadata must remain intact
+        assertEquals(sourceMetadata, this.serviceInstance.getMetadata());
     }
 
     private Collection<WebEndpointMapping> createWebEndpointMappings() {

@@ -209,11 +209,11 @@ public class FeignComponentRegistry {
 
         boolean hasInterceptor = false;
         for (String changedConfig : changedConfigs) {
-            changedConfig = changedConfig.replace(clientName + ".", "");
+            changedConfig = removeClientNamePrefix(changedConfig, clientName);
             Class<?> clazz = getComponentClass(changedConfig);
             if (clazz != null) {
                 effectiveComponents.add(clazz);
-                hasInterceptor = RequestInterceptor.class.equals(clazz);
+                hasInterceptor |= RequestInterceptor.class.equals(clazz);
             }
         }
 
@@ -238,9 +238,51 @@ public class FeignComponentRegistry {
 
         if (hasInterceptor) {
             CompositedRequestInterceptor requestInterceptor = this.interceptorsMap.get(clientName);
-            if (requestInterceptor != null)
+            if (requestInterceptor != null) {
                 requestInterceptor.refresh();
+            }
         }
+    }
+
+    /**
+     * Removes the client name prefix from the given changed configuration key if present.
+     * Both forms are supported: {@code "<clientName>.<subKey>"} (e.g. "my-client.retryer")
+     * and the bare {@code "<subKey>"} (e.g. "retryer").
+     *
+     * <h3>Example Usage</h3>
+     * <pre>{@code
+     * String subKey = FeignComponentRegistry.removeClientNamePrefix("my-client.retryer", "my-client");
+     * // returns "retryer"
+     * }</pre>
+     *
+     * @param changedConfig the changed configuration key
+     * @param clientName    the Feign client name
+     * @return the configuration key without the client name prefix
+     */
+    static String removeClientNamePrefix(String changedConfig, String clientName) {
+        String prefix = clientName + ".";
+        return changedConfig.startsWith(prefix) ? changedConfig.substring(prefix.length()) : changedConfig;
+    }
+
+    /**
+     * Returns the names of all registered Feign clients, including the default client name.
+     * A client name is registered when at least one refreshable component or request
+     * interceptor has been registered for it.
+     *
+     * <h3>Example Usage</h3>
+     * <pre>{@code
+     * Set<String> clientNames = registry.getClientNames();
+     * // e.g. ["default", "my-client"]
+     * }</pre>
+     *
+     * @return the set of registered client names, including the default client name
+     */
+    public Set<String> getClientNames() {
+        Set<String> clientNames = newHashSet(this.refreshableComponents.size() + this.interceptorsMap.size() + 1);
+        clientNames.add(this.defaultClientName);
+        clientNames.addAll(this.refreshableComponents.keySet());
+        clientNames.addAll(this.interceptorsMap.keySet());
+        return clientNames;
     }
 
     /**
